@@ -1,12 +1,138 @@
+﻿<!DOCTYPE HTML>
 <html>
 <head>
-    <title>SansWord and Anne</title>
-</head>
-<body>
-    <div>
-        <iframe src="https://docs.google.com/forms/d/1UH3Q4aEwy7AA-ui7l9zoZf9_7xQc3IRl30HGk1OwcuQ/viewform?embedded=true" width="1024" height="768" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-    </div>
-   
+    <meta charset="utf-8">
+    <title>Your Name Here - Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">  
     
+    <link href="scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="scripts/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Icons -->
+    <link href="scripts/icons/general/stylesheets/general_foundicons.css" media="screen" rel="stylesheet" type="text/css" />  
+    <link href="scripts/icons/social/stylesheets/social_foundicons.css" media="screen" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]>
+        <link href="scripts/icons/general/stylesheets/general_foundicons_ie7.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="scripts/icons/social/stylesheets/social_foundicons_ie7.css" media="screen" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <link rel="stylesheet" href="scripts/fontawesome/css/font-awesome.min.css">
+    <!--[if IE 7]>
+        <link rel="stylesheet" href="scripts/fontawesome/css/font-awesome-ie7.min.css">
+    <![endif]-->
+
+    <link href="http://fonts.googleapis.com/css?family=Allura" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Palatino+Linotype" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Calligraffitti" rel="stylesheet" type="text/css">
+
+    <link href="styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="pageBody" style="padding-top:0;">
+
+
+<div id="decorative2">
+    <div class="container">
+
+        <div class="divPanel topArea notop nobottom">
+            <div class="row-fluid">
+                <div class="span12">
+
+                    <div id="divLogo" class="pull-left">
+                        <a href="index.html" id="divSiteTitle">文楷、以馨 - Welcome</a><br />
+                        <a href="index.html" id="divTagLine">愛情，眾水不能熄滅，大水也不能淹沒。</a>
+                    </div>
+
+                    <div id="divMenuRight" class="pull-right">
+                    <div class="navbar">
+                        <button type="button" class="btn btn-navbar-highlight btn-large btn-primary" data-toggle="collapse" data-target=".nav-collapse">
+                            NAVIGATION <span class="icon-chevron-down icon-white"></span>
+                        </button>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav nav-pills ddmenu">                                
+                                <li class="dropdown"><a href="index.html">Home</a></li>
+                                <li class="dropdown"><a href="timeline.html">Timeline</a></li>
+                                <li class="dropdown active"><a href="invite.html">邀請函</a></li>                                
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="contentOuterSeparator"></div>
+
+<div class="container">
+
+    <div class="divPanel page-content">
+
+        <div class="breadcrumbs" style="line-height:10px;">
+                <a href="index.html">Home</a> &nbsp;/&nbsp; <span>邀請函</span>
+            </div> 
+
+        <div class="row-fluid">
+            <!--Edit Main Content Area here-->
+                <div class="span12" id="divMain">
+
+                    <div class="container">  
+    
+<iframe src="https://docs.google.com/forms/d/1UH3Q4aEwy7AA-ui7l9zoZf9_7xQc3IRl30HGk1OwcuQ/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+
+
+</div>             		
+		                            
+                </div>
+            <!--End Main Content Area-->
+            </div>
+
+        <div id="footerInnerSeparator"></div>
+    </div>
+
+</div>
+
+<div id="footerOuterSeparator"></div>
+
+
+
+<script src="scripts/jquery.min.js" type="text/javascript"></script> 
+<script src="scripts/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="scripts/default.js" type="text/javascript"></script>
+<script type="text/javascript">
+setTimeout(
+  function() {
+    jQuery("#decorative2").slideUp();
+}, 2000);
+
+jQuery(".breadcrumbs").on("mouseenter", function(){
+    jQuery("#decorative2").slideDown();
+});
+
+jQuery("#decorative2").on("mouseleave", function(){
+    setTimeout(
+  function() {
+    jQuery("#decorative2").slideUp();
+}, 1000);
+});
+
+</script>
+
+
+
+
+
 </body>
 </html>
