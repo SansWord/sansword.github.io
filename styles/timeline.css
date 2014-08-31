@@ -4,6 +4,11 @@
     position: relative;
 }
 
+.countdown {
+    font-size: 0.7em;
+    color: gray;
+}
+
     .timeline:before {
         top: 0;
         bottom: 0;
