@@ -334,9 +334,14 @@ var $items = posts.sort(function(p1,p2){return p1.time - p2.time}).map(function(
 
 $items.forEach(function($item){
 $timelineUL.prepend($item);
-})})();
+});
 
-setTimeout(function(){$timelineUL.find("li:odd").addClass("timeline-inverted")},0);
+$timelineUL.find("li:odd").addClass("timeline-inverted");
+
+})();
+
+
+
 </script> 
 
 
