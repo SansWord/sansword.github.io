@@ -336,7 +336,7 @@ $items.forEach(function($item){
 $timelineUL.prepend($item);
 })})();
 
-$timelineUL.find("li:odd").addClass("timeline-inverted");
+setTimeout(function(){$timelineUL.find("li:odd").addClass("timeline-inverted")},0);
 </script> 
 
 
