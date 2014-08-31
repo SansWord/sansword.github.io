@@ -109,7 +109,7 @@
 
 <div id="fb-root"></div> <script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script>
 
-    <ul class="timeline">
+<ul class="timeline">
 
 <li>
           <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
@@ -335,7 +335,90 @@
               
           </div>
         </li>
-    </ul>
+</ul>
+
+
+<script type="text/javascript">
+ 
+ (function () {var posts = [
+
+{time:1409414400000,
+href:"https://www.facebook.com/photo.php?fbid=10204689762627854&amp;set=a.1117594063945.2019518.1349808041&amp;type=1",
+location:"home"
+},
+
+{time:1409328000000,
+href:"https://www.facebook.com/photo.php?fbid=10204677023069373&amp;set=a.1117594063945.2019518.1349808041&amp;type=1",
+location:"home"},
+
+
+{time:1408896000000,
+href:"https://www.facebook.com/akala.huang/posts/10204643329547056",
+location:"home"},
+
+
+{time:1408464000000,
+href:"https://www.facebook.com/akala.huang/posts/10204591043479937",
+location:"home"},
+
+
+{time:1407600000000,
+href:"https://www.facebook.com/photo.php?fbid=10204522484165997&set=a.4654562365942.2188650.1349808041&type=1",
+location:"home"}
+
+]
+
+function Color() {
+    var colors =  ["primary","success","warning","danger","info"],
+        i = 0;
+    return {
+        getNext: function() {
+            var color = colors[i++ % colors.length];            
+            return color;
+        }
+    }
+}
+
+var colors = Color();
+
+
+function getCountdown(time) {
+    return Math.floor((1411747200000 - time ) / 1000/60/60/24);
+}
+
+function getItem(post) {
+    var template = '<li><div class="timeline-badge @color@"><i class="glyphicon glyphicon-check"></i></div><div class="timeline-panel"><div class="timeline-heading"><h4 class="timeline-title">@date@<span class="countdown">倒數@countdown@天</span></h4><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i>@@location@</small></p></div><div class="timeline-body"><div class="post"><div class="fb-post" data-href="@href@" data-width="466"><div class="fb-xfbml-parse-ignore">由 <a href="https://www.facebook.com/akala.huang">SansWord Huang</a> <a href="@href@">貼文</a>。</div></div></div></div></li>';
+    //color, 
+    post.color = colors.getNext();
+    //date, 
+    var d = new Date(post.time);
+    post.date = d.getFullYear() + "/" + (d.getMonth()+ 1) + "/" + d.getDate();
+    //countdown, 
+    post.countdown = getCountdown(post.time);
+    //location,     
+    //href
+
+    return template.replace(/@color@/, post.color)
+    .replace(/@date@/, post.date)
+    .replace(/@countdown@/, post.countdown)
+    .replace(/@location@/, post.location)
+    .replace(/@href@/, post.href)
+
+
+}
+
+
+
+var $items = posts.map(function(post){return jQuery(getItem(post));}),
+    $timelineUL = jQuery("ul.timeline");
+
+$items.forEach(function($item){
+$timelineUL.append($item);
+})})();
+
+</script> 
+
+
 </div>             		
 		                            
                 </div>
