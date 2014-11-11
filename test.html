@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title></title>
+	<script src="./jquery-2.0.1.js"></script>
+	<script type="text/javascript">
+	jQuery(function(){
+		jQuery("#name, #url").on("input", generateLink);
+
+		function generateLink() {
+			console.log("generating link");
+			jQuery("#link").attr("href", 
+				"wemoin://?name="+jQuery("#name").val()+"&teamkube_url="+encodeURIComponent(jQuery("#url").val()));
+		}
+	});
+
+	</script>
+</head>
+<body>
+
+Name: <input autocapitalize="off" autocorrect="off" id="name" length="20" value="admin"></input><br>
+URL: <input id="url" length="20" value="http://cwep-paperless.gss.com.tw/team/default"></input><br>
+
+
+<a target="_blank" id="link" href="wemoin://?name=admin&amp;teamkube_url=http%3A%2F%2Fcwep-paperless.gss.com.tw%2Fteam%2Fdefault">open wemoin</a>
+
+</body>
+</html>
