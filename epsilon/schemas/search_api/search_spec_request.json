@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "description": "parameters of this query.",
+  "type": "object",
+  "properties": {
+    "username": {
+      "description": "username of user whom perform query",
+      "type": "string",
+      "default": ""
+    },
+    "include": {
+      "description": "include keywords of this query, will return documents contains all of these keywords",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "exclude": {
+      "description": "exclude keywords of this query, will return documents not contains these keywords",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "start": {
+      "description": "for pagination, first index of response, zero-based",
+      "type": "integer",
+      "default": 0
+    },
+    "rows": {
+      "description": "for pagination, number of documents return in single query",
+      "type": "integer",
+      "default": 10
+    },
+    "time_start": {
+      "description": "start time of time interval of result, the number of milliseconds since 1970/01/01, -1 when not limit",
+      "type": "integer",
+      "default": -1
+    },
+    "time_end": {
+      "description": "end time of time interval of result, the number of milliseconds since 1970/01/01, -1 when not limit",
+      "type": "integer",
+      "default": -1
+    },
+    "order_by": {
+      "description": "return result will order by given value",
+      "type": "string",
+      "enum": [
+        "date_desc",
+        "date_asc"
+      ],
+      "default": "date_desc"
+    }
+  }
+}
