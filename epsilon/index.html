@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
 <head>
     <meta charset="utf-8">
-    <title>ADIwg mdTools 0.1.0</title>
+    <title>JSON Schema Viewer 0.1.0</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
     <link rel="stylesheet" href="styles/json-schema-viewer.min.css" />
 
 </head>
@@ -15,19 +14,17 @@
             Loading...
         </div>
     </div>
-    <div class="ui-responsive-panel" data-role="page" id="viewer-page"  data-title="ADIwg mdJSON Schema Viewer">
-        <div data-role="header" class="md-navbar">
+    <div class="ui-responsive-panel" data-role="page" id="viewer-page">
+        <div data-role="header">
             <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
                 <a class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" href="#info-panel" title="Toggle Info">Menu</a>
-                <a class="ui-btn md-flex-btn ui-corner-all ui-icon-check ui-btn-icon-left" href="#validator-page" title="Go to Validator">Validator</a>
-                <a class="ui-btn md-flex-btn ui-icon-translate ui-btn-icon-left ui-corner-all" href="#translator-page"  title="Go to Translator">Translator</a>
+                <a class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-left" href="#validator-page" title="Go to Validator">Validator</a>
                 <!--<a href="#" class="ui-btn ui-btn-icon-right ui-icon-plus ui-btn-icon-notext ui-corner-all">Zoom-in</a>
                 <a href="#" class="ui-btn ui-btn-icon-right ui-icon-minus ui-btn-icon-notext ui-corner-all">Zoom-out</a>-->
 
             </div>
-            <h1 id="viewer-title">mdJSON Schema Viewer<span class="schema-version"></span></h1>
-            <!-- <a class="ui-btn-right ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all" href="#help-panel"  title="Toggle Help">Help</a> -->
-            <a data-rel="popup" data-position-to="window" class="ui-btn-right ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all" href="#popup-welcome"  title="Show Info">Info</a>
+            <h1 id="viewer-title">Viewer<span class="schema-version"></span></h1>
+            <a class="ui-btn-right ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all" href="#help-panel"  title="Toggle Help">Help</a>
         </div><!-- /header -->
         <div  role="main" class="ui-content" id="main-body">
             <div id="zoom-controls">
@@ -43,13 +40,7 @@
             </div>
         </div>
         <div data-role="footer">
-            <div id="schema-path" class="ui-content">
-                <a href="#permalink-popup" id="permalink" data-rel="popup">Select a Node</a>
-                <div data-role="popup" id="permalink-popup" class="ui-content" data-arrow="true">
-                    <label for="sharelink">Share:</label>
-                    <input type="text" id="sharelink" style="min-width:300px;" placeholder="Select a Node to create a permalink." value="" data-theme="a">
-                </div>
-            </div>
+            <div id="schema-path" class="ui-content">Select a Node</div>
         </div><!-- /footer -->
         <div data-display="push" data-role="panel" id="info-panel">
             <div data-role="header" data-theme="b" class="ui-mini">
@@ -108,21 +99,16 @@
         </div>
     </div>
 
-    <div data-role="page" id="validator-page"  data-title="ADIwg mdJSON Validator">
-        <div data-role="header" class="md-navbar">
-            <h1>mdJSON Validator <span class="schema-version"></span></h1>
-            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
-                <a class="ui-btn md-flex-btn ui-icon-eye ui-btn-icon-left ui-corner-all" href="#viewer-page"  title="Go to Viewer">Viewer</a>
-                <a class="ui-btn md-flex-btn ui-icon-translate ui-btn-icon-left ui-corner-all" href="#translator-page"  title="Go to Translator">Translator</a>
-            </div>
-            <a data-rel="popup" data-position-to="window" class="ui-btn-right ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all" href="#popup-welcome"  title="Show Info">Info</a>
+    <div data-role="page" id="validator-page">
+        <div data-role="header">
+            <h1>Validator<span class="schema-version"></span></h1>
+            <a class="ui-btn-left ui-btn ui-icon-eye ui-btn-icon-left ui-corner-all" href="#viewer-page"  title="Go to Viewer">Viewer</a>
         </div>
         <div role="main" class="ui-content">
             <div class="ui-grid-a ui-responsive">
                 <div class="ui-block-a section">
                     <label for="textarea-json">JSON to Validate:</label>
                     <textarea cols="40" rows="15" name="textarea-json" id="textarea-json" placeholder="Enter your JSON or Drag-n-Drop a file here..."></textarea>
-                    <a class="load-example" href="schemas/examples/minimum_example.json" data-target="textarea-json" data-prefetch="true">Load Example</a>
                 </div>
                 <div class="ui-block-b section">
                     <label for="file-upload">Upload File:</label>
@@ -144,82 +130,9 @@
             <div id="validation-results" class="ui-responsive">
             </div>
         </div>
+
     </div>
-
-    <div data-role="page" id="translator-page" data-title="ADIwg mdTranslator">
-        <div data-role="header" class="md-navbar">
-            <h1>mdTranslator</h1>
-            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
-            <a class="ui-btn md-flex-btn ui-icon-eye ui-btn-icon-left ui-corner-all" href="#viewer-page"  title="Go to Viewer">Viewer</a>
-            <a class="ui-btn md-flex-btn ui-corner-all ui-icon-check ui-btn-icon-left" href="#validator-page" title="Go to Validator">Validator</a>
-            </div>
-            <a data-rel="popup" data-position-to="window" class="ui-btn-right ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all" href="#popup-welcome"  title="Show Info">Info</a>
-        </div>
-        <div role="main" class="ui-content">
-                <form id="translation-form" name="translation-form" action="http://mdtranslator.adiwg.org/api/v1/translator">
-
-            <div class="ui-grid-a ui-responsive">
-                    <div class="ui-block-a section">
-                        <label for="textarea-translator">Input to <b>Translate:</b></label>
-                        <textarea cols="40" rows="15" name="file" id="textarea-translator" placeholder="Enter your text or Drag-n-Drop a file here..."></textarea>
-                        <a class="load-example" href="schemas/examples/minimum_example.json" data-target="textarea-translator" data-prefetch="true">Load Example</a>
-                    </div>
-                    <div class="ui-block-b section">
-                        <label for="file-upload">Upload File:</label>
-                        <input id="file-upload-translator" type="file" name="fileupload" data-role=""/>
-
-                        <div class="ui-field-contain">
-
-                            <label for="select-reader" class="select">Reader:</label>
-                            <select name="reader" id="select-reader" data-native-menu="false">
-                                <option value="" data-placeholder="true">Choose a Reader...</option>
-                                <option value="mdJson">ADIwg mdJSON</option>
-                            </select>
-                            <label for="select-writer" class="select">Writer:</label>
-                            <select name="writer" id="select-writer" data-native-menu="false">
-                                <option value="" data-placeholder="true">Choose a Writer...</option>
-                                <option value="">None</option>
-                                <option value="iso19115_2">ISO 19115-2</option>
-                                <option value="iso19110">ISO 19110</option>
-                            </select>
-                        </div>
-                        <div class="ui-field-contain">
-                            <fieldset data-role="controlgroup" data-type="horizontal">
-                                <legend>
-                                    Validation:
-                                </legend>
-                                <input type="radio" name="validate" id="radio-choice-h-2a" value="normal" checked="checked">
-                                <label for="radio-choice-h-2a">Normal</label>
-                                <input type="radio" name="validate" id="radio-choice-h-2b" value="strict">
-                                <label for="radio-choice-h-2b">Strict</label>
-                                <input type="radio" name="validate" id="radio-choice-h-2c" value="none">
-                                <label for="radio-choice-h-2c">None</label>
-                            </fieldset>
-                        </div>
-                        <div class="ui-field-contain">
-
-                            <fieldset data-role="controlgroup">
-                                <legend>
-                                    Options:
-                                </legend>
-                                <input type="checkbox" name="showAllTags" id="checkbox-showtags" value="true">
-                                <label for="checkbox-showtags">Output Empty Tags</label>
-                            </fieldset>
-                        </div>
-                    </div>
-            </div>
-                </form>
-
-            <button id="button-translate" class="ui-btn ui-icon-translate ui-btn-icon-bottom ui-disabled">
-                Choose a Reader!
-            </button>
-            <div id="trans-loader" data-theme="a"><h3>Translating...</h3></div>
-            <div id="translation-results" class="ui-responsive">
-            </div>
-        </div>
-    </div>
-
-    <div id="popup-error" data-history="false" data-theme="a" data-overlay-theme="b">
+    <div id="popup-error" data-theme="a" data-overlay-theme="b">
         <div data-role="header" data-theme="a">
             <h1>Error!</h1>
         </div>
@@ -228,58 +141,19 @@
         </p>
     </div>
 
-    <div id="popup-welcome" data-role="popup" data-history="false" data-theme="a" data-overlay-theme="b">
-        <div data-role="header" data-theme="b">
-            <h1>mdTools</h1>
-        </div>
-        <div class="ui-content">
-                <p>
-                    mdTools is an interface for <a href="http://www.adiwg.org">ADIwg</a> metadata tools.
-                    The purpose of these tools is to assist with the production of metadata, especially ISO-compliant
-                    metadata.
-                </p>
-                <hr />
-                <ul>
-                    <li>
-                        <h3>mdJSON Schema Viewer</h3>
-                        <p>
-                            Interactive documenatation tool for the <a href="https://github.com/adiwg/mdJson-schemas">ADIwg mdJSON schemas</a>.
-                        </p>
-                    </li>
-                    <li>
-                        <h3>mdJSON Validator</h3>
-                        <p>
-                            A tool to validate a metadata file using the mdJSON schemas.
-                        </p>
-                    </li>
-                    <li>
-                        <h3>mdTranslator</h3>
-                        <p>
-                            A tool that converts between metadata standards. For example, from mdJSON to ISO 19139.
-                            The tool is powered by the <a href="http://mdtranslator.adiwg.org/">mdTranslator webservice</a>.
-                        </p>
-                    </li>
-                </ul>
-                <hr />
-                <div id="welcome-footer">
-                    <a href="https://github.com/adiwg" class="ui-btn ui-btn-inline ui-icon-github ui-btn-icon-left">Check us out on GitHub!</a>
-                </div>
-
-            </div>
-    </div>
-
     <script type='text/javascript' src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script>
-        //handle permalinks before JQM is initialized
+    <script type='text/javascript' src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+    <script type='text/javascript' src="json-schema-viewer.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
         (function($) {
-            var hash = window.location.hash,
-                path = hash.match(/v=([^\&]+)/);
 
-            window.jsvInitPath = path ? path[1] : false;
-            window.location.hash = hash.match(/#[^\?]+/) || '';
+            JSV.init({
+                schema: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")+1) + 'schemas/schema/schema.json'
+            }, function(){
+                JSV.setVersion(tv4.getSchema(JSV.treeData.schema).version);
+            });
+
         })(jQuery);
     </script>
-    <script type='text/javascript' src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script type='text/javascript' src="json-schema-viewer.min.js"></script>
 </body>
 </html>
