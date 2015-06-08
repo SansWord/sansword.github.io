@@ -88,7 +88,7 @@
                             min = "0" + min;
                         }
                       }
-                      return "2015/6/"+day+" - "+hour + ":" + min;
+                      return "6/"+day+" - "+hour + ":" + min;
                     }
                 },
                 label: "距開場時間"
@@ -120,6 +120,34 @@
         },
         subchart: {
             show: true
+        },
+        tooltip: {
+            format: {
+                title: function (x) {
+                      x = x + 21*60 + 23;
+                      var month = 6,
+                          day = 1,
+                          hour = Math.floor(x / 60),
+                          min = x % 60;
+                      day += Math.floor(hour / 24);
+                      hour = hour % 24;
+                      if(hour < 10) {
+                        if(hour == 0) {
+                            hour = "00";
+                        } else {
+                            hour = "0" + hour;
+                        }
+                      }
+                      if(min < 10) {
+                        if(min == 0) {
+                            min = "00";
+                        } else {
+                            min = "0" + min;
+                        }
+                      }
+                      return "2015/6/"+day+" - "+hour + ":" + min;
+                    }
+            }
         }
     });
 </script>
