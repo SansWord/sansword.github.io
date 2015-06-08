@@ -11,6 +11,8 @@
 <script>
     var chart = c3.generate({
         data: {
+            type: 'bar',
+            hide: ['data1', 'data2'],
             xs: {
                 'data1': 'x',
                 'data2': 'x',
@@ -28,6 +30,11 @@
                 data1: 'HDTV TW4',
                 data2: '敵軍',
                 data3: '兩軍差距'
+            },
+            selection: {
+                enabled: true,
+                grouped: true,
+                multiple: false
             },
 //           labels: {
 // //            format: function (v, id) { return "Default Format on " + id; },
@@ -81,6 +88,15 @@
                     {value: 31, text: '我方領先最多: 31顆星'}
                 ]
             }
+        },
+        bar: {
+            ratio: 0.8
+        },
+        zoom: {
+            enabled: true
+        },
+        subchart: {
+            show: true
         }
     });
 </script>
