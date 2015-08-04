@@ -8,12 +8,14 @@
         <input type="button" id="button2" value="click to replace state">
     </body>
     <script type="text/javascript">
-        var location = window.history.location || window.location;
-        jQuery("#button1").on("click", function(){
-            history.pushState(false, false, "testToPush");
-        });
-        jQuery("#button2").on("click", function(){
-            history.pushState(false, false, "testToReplace");
-        });
+        (function() {
+            var location = window.history.location || window.location;
+            jQuery("#button1").on("click", function(){
+                history.pushState(false, false, "testToPush");
+            });
+            jQuery("#button2").on("click", function(){
+                history.pushState(false, false, "testToReplace");
+            });
+        }());
     </script>
 </html>
