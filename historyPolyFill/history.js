@@ -13,7 +13,7 @@
  *
  * Update: 2015-06-26 23:22
  */
-(function(factory) {
+var hackedHistory = (function(factory) {
     if (typeof define === 'function' && define['amd']) {
         // https://github.com/devote/HTML5-History-API/issues/73
         var rndKey = '[history' + (new Date()).getTime() + ']';
