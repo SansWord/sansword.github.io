@@ -1,8 +1,18 @@
 <html>
 <head>
     <script type="text/javascript" src="./history.js"></script>
+    <script type="text/javascript" src="./jquery.js"></script>
 </head>
     <body>
-        
+        <input type="button" id="button1" value="click to push state">
+        <input type="button" id="button2" value="click to replace state">
     </body>
+    <script type="text/javascript">
+        jQuery("#button1").on("click", function(){
+            history.pushState(false, false, "testToPush");
+        });
+        jQuery("#button2").on("click", function(){
+            history.pushState(false, false, "testToReplace");
+        });
+    </script>
 </html>
