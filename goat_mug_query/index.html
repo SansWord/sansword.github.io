@@ -14,8 +14,13 @@
             }
         </style>
         <script type="text/javascript">
+        var shipping = [[0,0],[1,0],[1,0],[0,1],[0,1],[0,1],[1,1],[1,1],[0,2],[0,2],[0,2],[1,2],[1,2],[0,3],[0,3],[0,3]];
         function orderToString(order) {
-            return "<p>"+order.name + "您好，</p><p>您共有&nbsp;"+order.total+"個羊杯杯，需預付"+order.total *100+"元(80元運費及20元海關關稅，溢收之費用於寄送時一併退回)</p>"
+            var shippingVector = shipping[order.total],
+                shippingFee = shippingVector[0] * 80 + shippingVector[1] * 110,
+                boxNum = shippingVector[0] + shippingVector[1],
+                customFee = order.total * 3;
+            return "<p>"+order.name + "您好，</p><p>您共有&nbsp;"+order.total+"個羊杯杯，最低需付"+(shippingFee + customFee)+"元("+shippingFee+"元運費及"+customFee+"元海關關稅，共計"+boxNum+"件包裹("+shippingVector[1]+"大"+shippingVector[0]+"小)，另可任意多付費用作為打賞主購之用)</p>"
              + "<p>以下為您的訂單細節：</p>"
              + "<p>" + titles.small_hemp + order.small_hemp + "</p>"
              + "<p>" + titles.small_brown + order.small_brown + "</p>"
@@ -68,10 +73,8 @@
             尚無資料，請輸入完整/正確之信箱(用來通知您消息的那個喔)
         </div>
         <div class="textArea">
-            <p>請匯款至 中國信託 (822) 0738540058033，匯款後於 <a href="https://goo.gl/ekGnTI">此處</a> 填單。</p>
-            <p>出貨將按照匯款順序。</p>
-            <p>如需面交者(願配合固定時間地點者)，不需匯款，此表單只供為查詢之用。</p>
-            <p>但面交者仍須於 <a href="https://goo.gl/ekGnTI">此處</a> 填單。</p></p>
+            <p>由於交貨方式以及運費計算有變動，因此無論過去是否曾填過單，是否勾選面交或著已經匯款，都還是懇請請於 <a href="https://goo.gl/ekGnTI">此處</a> 重新填單。</p>
+            <p>如需匯款請匯款至 中國信託 (822) 0738540058033</p>
             <p>如資訊有誤或有其他疑問，請來信詢問，我將於看到信的第一時間回應。</p>
 
         </div>
