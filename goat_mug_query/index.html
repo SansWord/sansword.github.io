@@ -20,7 +20,7 @@
                 shippingFee = shippingVector[0] * 80 + shippingVector[1] * 110,
                 boxNum = shippingVector[0] + shippingVector[1],
                 customFee = order.total * 3;
-            return "<p>"+order.name + "您好，</p><p>您共有&nbsp;"+order.total+"個羊杯杯，最低需付"+(shippingFee + customFee)+"元("+shippingFee+"元運費及"+customFee+"元海關關稅，共計"+boxNum+"件包裹("+shippingVector[1]+"大"+shippingVector[0]+"小)，另可任意多付費用作為打賞主購之用)</p>"
+            return "<p>"+order.name + "您好，</p><p>您共有&nbsp;"+order.total+"個羊杯杯，最低需付"+(shippingFee + customFee)+"元："+shippingFee+"元運費及"+customFee+"元海關關稅，共計"+boxNum+"件包裹("+shippingVector[1]+"大"+shippingVector[0]+"小)，另可任意多付費用作為打賞主購之用。</p>"
              + "<p>以下為您的訂單細節：</p>"
              + "<p>" + titles.small_hemp + order.small_hemp + "</p>"
              + "<p>" + titles.small_brown + order.small_brown + "</p>"
