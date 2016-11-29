@@ -1,0 +1,9243 @@
+﻿@charset "utf-8";
+/* CSS Document */
+* {
+	/* [disabled]background-color: rgba(238, 238, 240, 1); */
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	/* [disabled]overflow: hidden; */
+}
+.wrapper {
+	width:100%;
+	padding: 0px;
+	margin: 0px;
+	background: rgba(238, 238, 240, 1);
+	/*	margin-top: 0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 0;*/
+	
+}
+.goTop {
+	float: right;
+	height: 80px;
+	width: 80px;
+	overflow: visible;
+	position: absolute;
+	z-index: 1;
+	display: block;
+	margin-left: 90%;
+	visibility: visible;
+}
+
+/* js語法 */
+.AD1{
+	/* [disabled]background-color: #FDFFBB; */
+	/* [disabled]color: #fff; */
+	overflow: hidden;
+	position: fixed;
+	z-index: 10;
+	left: 1550px;
+	display: block;
+	float: right;
+	top: 400px;
+}
+.bg .AD1 a img {
+	margin: 0px;
+	padding: 0px;
+}
+/* js語法結束 */
+
+.top {
+	position: absolute;
+	float: left;
+	overflow: hidden;
+	z-index: 0;
+	left: 1290px;
+	top: -12px;
+	}
+	.menutab {
+		float: left;
+		width: 100%;
+	}
+.menutab .tabbox {
+	clear: both;
+	width: 1050px;
+	margin-right: auto;
+	margin-left: auto;
+	list-style-type: none;
+}
+.menutab .tabbox .subCategory {
+	width: 150px;
+	float: left;
+	list-style-type: none;
+	background-color: #FF0;
+	padding: 5px;
+	margin-top: 5px;
+/*	margin-bottom: 5px;*/
+}
+.menutab .tabbox .subCategory li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 17px;
+	line-height: 30px;
+	font-weight: bold;
+	color: #FFF;
+	text-decoration: none;
+	list-style-type: none;
+}
+.menutab .tabbox .subCategory li a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 17px;
+	line-height: 30px;
+	font-weight: bold;
+	color: #FFF;
+	text-decoration: none;
+	list-style-type: none;
+	padding-left: 5px;
+}
+
+.menutab .tabbox .subCategory li a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 17px;
+	line-height: 30px;
+	font-weight: bold;
+	color: #FF0;
+	text-decoration: none;
+	list-style-type: none;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #FF0;
+}
+.menutab .tabbox .picnews {
+	float: left;
+	width: 600px;
+	margin-right: 2px;
+	margin-left: 2px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	/* [disabled]height: 230px; */
+}
+.menutab .tabbox .picnews .n {
+	float: left;
+	width: 280px;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-top: 15px;
+}
+.menutab .tabbox .picnews .n .pic a img {
+	padding: 0px;
+	border: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 15px;
+	margin-left: 0px;
+	margin-top: 15px;
+}
+.menutab .tabbox .picnews .n .title{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 60px;
+	font-weight: bold;
+	color: #06F;
+	text-decoration: none;
+	text-align: center;
+	height: 60px;
+}
+.menutab .tabbox .picnews .n .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 24px;
+	color: #000;
+	text-decoration: none;
+	text-align: left;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	/* [disabled]font-weight: bold; */
+	width: 280px;
+}
+.menutab .tabbox .hotnews {
+	float: left;
+	width: 280px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	list-style-type: none;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+.menutab .tabbox .hotnews .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	float: left;
+	color: #FF0;
+	width: 280px;
+	background-color: #C00;
+	padding-left: 5px;
+}
+.menutab .tabbox .hotnews .text li {
+	float: left;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	text-decoration: none;
+	display: block;
+	color: #050505;
+	font-weight: 500;
+	line-height: 18px;
+	height: 35px;
+	width: 280px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+.menutab .tabbox .hotnews .text li a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	list-style-type: none;
+	width: 280px;
+	height: 35px;
+}
+.menutab .tabbox .li2 {
+	float: right;
+	width: 110px;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #AC0000;
+	display: block;
+	text-align: center;
+	height: 25px;
+	margin-top: 40px;
+}
+.menutab .tabbox .li2 a:link {
+	float: right;
+	width: 110px;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #AC0000;
+	display: block;
+	text-align: center;
+	height: 25px;
+	margin-top: 40px;
+}
+.menutab .tabbox .hotnews .text li2 a {
+	float: right;
+	width: 110px;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #AC0000;
+	display: block;
+	text-align: center;
+	height: 25px;
+	margin-top: 40px;
+}
+.menutab .tabbox .hotnews .text li2 a:visited {
+	float: right;
+	width: 110px;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #AC0000;
+	display: block;
+	text-align: center;
+	height: 25px;
+}
+
+.menutab .tabbox .hotnews .text li2 a:hover {
+	float: right;
+	width: 110px;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FF0;
+	background-color: #AC0000;
+	display: block;
+	text-align: center;
+	height: 25px;
+}
+
+
+
+.idlebox {
+	clear: none;
+	width: 1050px;
+	margin-right: auto;
+	margin-left: auto;
+	overflow: hidden;
+	background-color: #EFEFEF;
+	height: 330px;
+}
+
+.idlebox .picnews {
+	float: left;
+	height: 100%;
+	width: 580px;
+	padding-right: 2px;
+	padding-left: 8px;
+}
+.idlebox .picnews .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 35px;
+	font-weight: bold;
+	color: #C00;
+	text-decoration: none;
+	margin-top:10px
+}
+.idlebox .picnews .explanation {
+	float: left;
+	width: 450px;
+	padding-left: 55px;
+	padding-top: 20px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #006;
+}
+
+.idlebox .picnews .picnews .n {
+	width: 280px;
+	float: left;
+	margin-right: 3px;
+	margin-left: 3px;
+	margin-top: 10px;
+}
+.idlebox .picnews .picnews .n .title a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 18px;
+	color: #000;
+}
+.idlebox .picnews .picnews .n .title a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 18px;
+	color: #000;
+}
+
+
+.idlebox .share {
+	width: 430px;
+	padding: 1px;
+	text-align: right;
+	margin-left: 20px;
+	margin-top: 10px;
+	margin-bottom:10px;
+}
+
+.idlebox .share ul {
+	float: right;
+	width: 220px;
+	list-style-type: none;
+}
+.idlebox .share ul li a {
+	float: left;
+	margin-right: 2px;
+	margin-left: 2px;
+	height: 36px;
+	width: 40px;
+	list-style-type: none;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+.idlebox .listnews {
+	float: left;
+	margin-left: 20px;
+	width: 400px;
+	list-style-type: none;
+}
+.idlebox .listnews li a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	color: #000;
+	text-decoration: none;
+	list-style-type: none;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.idlebox .banner {
+	float: left;
+	margin-left: 20px;
+	width: 430px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.idlebox .banner img a{
+	padding: 0px;
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+}
+.idlebox .close {
+	float: right;
+	height: 25px;
+	width: 25px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.idlebox .close img a {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+.topBox {
+	width: 100%;
+	/*background-color: #FFF;*/
+	/* [disabled]clear: both; */
+	/* [disabled]overflow: hidden; */
+	/* [disabled]z-index: 1; */
+	margin-right: auto;
+	margin-left: auto;
+	background-image: url(http://www.cdn.org.tw/images/B.jpg);
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+
+
+.topmenu {
+	clear: both;
+	width: 990px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	/*background-color: #FFF;----6/22top*/
+	padding-top: 15px;
+	text-decoration: none;
+	list-style-type: none;
+	height: 20px;
+	overflow: hidden;
+	z-index: 1;
+}
+.topBox .iconmenu {
+	/* [disabled]clear: both; */
+	width: 990px;
+	/* [disabled]margin-right: auto; */
+	margin-bottom: 0px;
+	/* [disabled]margin-left: auto; */
+	/*background-color: #FFF;-----6/22top*/
+	padding-top: 15px;
+	/*background-color: #eeeef0;*/
+	text-decoration: none;
+	list-style-type: none;
+	height: 50px;
+	overflow: hidden;
+	z-index: 1;
+}
+.topBox .topmenu ul {
+	/*width: 400px;*/
+	width: 600px;
+	/*background-color: #FFF;----6/22top*/
+	float: left;
+}
+
+.topBox .topmenu ul li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;----6/22top*/
+	color: #000;
+}
+.topBox .topmenu ul li a:link {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFFFFF;----6/22top*/
+	text-decoration: none;
+}
+.topBox .topmenu ul li a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFFFFF;
+	text-decoration: none;
+}
+.topBox .topmenu ul li a:active {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFFFFF;
+	text-decoration: none;
+}
+.topBox .topmenu ul li a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFFFFF;------6/22top*/
+	text-decoration: none;
+}
+.topBox .topmenu ul li2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #c11920;
+}
+.topBox .topmenu ul li2 a:link {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #FF0;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #c11920;
+	text-decoration: none;
+}
+.topBox .topmenu ul li2 a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #FFF;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #C11920;
+	text-decoration: none;
+}
+.topBox .topmenu ul li2 a:active {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #FF0;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #C11920;
+	text-decoration: none;
+}
+.topBox .topmenu ul li2 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #FF0;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #C11920;
+	text-decoration: none;
+}
+.topBox .topmenu ul li3 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFFF00;
+	margin-right: 2px;
+	margin-left: 2px;
+	text-decoration: none;
+}
+
+.topBox .topmenu ul li3 a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #C00;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFFF00;
+	text-decoration: none;
+}
+.topBox .topmenu ul li3 a:active {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFFF00;
+	text-decoration: none;
+}
+.topBox .topmenu ul li3 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFFF00;
+	text-decoration: none;
+}
+.topBox .topmenu ul li4 a {
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    font-weight: bold;
+    color: #000;
+    width: 75px;
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    display: block;
+    background-color: #ffeac4;
+    text-decoration: none;
+}
+
+.topBox .topmenu ul li4 a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #FFF;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #ffeac4;;
+	text-decoration: none;
+}
+.topBox .topmenu ul li4 a:active {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #ffeac4;
+	text-decoration: none;
+}
+.topBox .topmenu ul li4 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 75px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color:  #ffeac4;
+	text-decoration: none;
+}
+.topBox .topmenu ul2 {
+	width: 55px;
+	/*background-color: #FFF;-----6/22top*/
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-align: center;
+	display: block;
+	float: left;
+	margin-left: 10px;
+}
+.topBox .topmenu ul2 li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 25px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;-----6/22top*/
+}
+.topBox .topmenu ul2 li a:link {
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+	/*background-color: #FFFFFF;-----6/22top*/
+}
+.topBox .topmenu ul2 li a:hover {
+	text-decoration: none;
+	color: #FF0;
+	background-color: #C11920;
+}
+.topBox .topmenu ul2 li a:visited {
+	text-decoration: none;
+	color: #000;
+	/*background-color: #FFF;----6/22top*/
+}
+.topBox .topmenu ul2 li2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 25px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;-----6/22top*/
+}
+.topBox .topmenu ul2 li2 a:link {
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+	/*background-color: #FFF;-----6/22top*/
+}
+.topBox .topmenu ul2 li2 a:visited {
+	text-decoration: none;
+	color: #000;
+	/*background-color: #FFF;-----6/22top*/
+}
+.topBox .topmenu ul2 li2 a:hover {
+	text-decoration: none;
+	color: #FF0;
+	background-color: #c11920;
+}
+.topBox .topmenu ul2 li2 a:active {
+	text-decoration: none;
+	/*background-color: #FFF;-----6/22top*/
+}
+.topBox .topmenu ul2 li a:active {
+	text-decoration: none;
+	background-color: #FFF;
+}
+.topBox .topmenu ul3 {
+	width: 250px;
+	/*background-color: #FFF;------6/22top*/
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-align: center;
+	display: block;
+	float: left;
+	margin-left: 10px;
+}
+.topBox .topmenu ul3 li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 65px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;----6/22top*/
+}
+.topBox .topmenu ul3 li a:active    {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 65px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;--------6/22top*/
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 65px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;----6/22top*/
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 65px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li a:link {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 65px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 30px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;--------------6/2TOP*/
+}
+.topBox .topmenu ul3 li1 a:link {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 30px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;--------------6/2TOP*/
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li1 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 30px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li1 a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 30px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;-----6/22top*/
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li1 a:active {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 30px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li1 a:hover a:active {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 30px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	/*background-color: #FFF;---6/22TOP*/
+	text-decoration: none;
+}
+.topBox .topmenu ul3 li2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 180px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFF;
+}
+.topBox .topmenu ul3 li2 a:link a:visited a:hover a:active {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	width: 15px;
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	display: block;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.topBox .topmenu .email {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #000;
+	text-decoration: none;
+	background-color: #FFF;
+	float: left;
+	width: 280px;
+	/* [disabled]height: 25px; */
+}
+.topBox .topmenu .email ul {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+}
+.topBox .topmenu .email ul li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #000;
+	text-decoration: none;
+	background-color: #FFF;
+	width: 65px;
+	text-align: left;
+}
+.topBox .topmenu .email ul li img {
+	float: right;
+}
+.topBox .topmenu .email ul li2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #CCC;
+	text-decoration: none;
+	background-color: #FFF;
+	text-align: left;
+	width: 210px;
+	/* [disabled]border-bottom-width: 10px; */
+	/* [disabled]border-bottom-style: solid; */
+	/* [disabled]border-bottom-color: #333; */
+	float: left;
+}
+.topBox .topmenu .email ul li3 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #CCC;
+	text-decoration: none;
+	background-color: #FFF;
+	/* [disabled]text-align: left; */
+	width: 38px;
+	float: left;
+}
+.topBox .topmenu .email ul li3 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #CCC;
+	text-decoration: none;
+	background-color: #FFF;
+	/* [disabled]text-align: left; */
+	width: 38px;
+	float: left;
+}
+.topBox .topmenu .email ul li3 a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #CCC;
+	text-decoration: none;
+	background-color: #FFF;
+	/* [disabled]text-align: left; */
+	width: 38px;
+	/* [disabled]float: right; */
+}
+.topBox .topmenu .email ul li3 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #CCC;
+	text-decoration: none;
+	background-color: #FFF;
+	/* [disabled]text-align: left; */
+	width: 38px;
+	/* [disabled]float: right; */
+}
+.mailtext {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	color: #CCC;
+	text-decoration: none;
+	background-color: #FFF;
+	width: 200px;
+	text-align: left;
+	border: thin solid #FFF;
+	/* [disabled]float: right; */
+}
+.iconmenu {
+	clear: both;
+	width: 1050px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	text-align: right;
+	background-color: #FFF;
+	height: 40px;
+}
+.iconmenutab {
+	clear: both;
+	background-color: #EFEFEF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #000;
+	text-decoration: none;
+	padding: 8px;
+	top:88px;
+	z-index:5px;
+	position:absolute;
+	text-align:left;
+	/*height:32%*/
+	/*height:40%;*/
+	height:220px;
+}
+.iconmenutab .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: 700;
+	color: #C31A21;
+	padding-left:20px;
+	text-decoration: none;
+}
+.iconmenutab .title2  {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: 700;
+	color: #CC0000;
+	text-decoration: none;
+}
+.iconmenutab .box {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 35px;
+	text-decoration: none;
+	width: 250px;
+	height: 35px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 25px;
+	margin-bottom: 10px;
+	color: #000;
+}
+.iconmenutab .text {
+	/* [disabled]width: 80%; */
+	float: left;
+    margin-right: 2px;
+    margin-left: 8px;
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 14px;
+    line-height: 16px;
+    color: #000;
+    text-decoration: none;
+    padding-left: 0px;
+    height: 80px;
+}
+.iconmenutab .l img {
+	float: left;
+	padding: 0px;
+	border: 0px;
+	/* [disabled]margin-top: 50px; */
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	/*margin-top: 35px;*/
+	margin-top: 22px;
+}
+.iconmenutab .r img {
+	float: right;
+	padding: 0px;
+	border: 0px;
+	/* [disabled]margin-top: 50px; */
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-top: 35px;
+}
+
+
+
+.iconmenutab .btn {
+	margin-right: auto;
+	margin-left: auto;
+	width: 100%;
+	text-align: center;
+}
+
+.iconmenutab .btn #B_Search {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 16px;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+}
+
+
+.topBox .iconmenu ul {
+	/*background-color: #FFF;----6/22top*/
+	float: right;
+}
+
+.topBox .iconmenu ul li {
+	float: left;
+	height: 37px;
+	width: 42px;
+	margin-right: 2px;
+	/*background-color: #FFF;----6/22top*/
+	list-style-type: none;
+	/* [disabled]margin-top: 10px; */
+	border: 0px;
+}
+
+.topBox .iconmenu ul li a{
+	float: left;
+	height: 37px;
+	width: 42px;
+	margin-right: 2px;
+	/*background-color: #FFF;----6/22top*/
+	list-style-type: none;
+	/* [disabled]margin-top: 10px; */
+}
+.topBox .iconmenu ul li a img {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+.logo {
+	clear: both;
+	width: 100%;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 15px;
+	margin-left: auto;
+	/*background-color: #FFF;-----6/22top*/
+	display: block;
+}
+.logo a {
+	clear: both;
+	width: 1050px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 15px;
+	margin-left: auto;
+	/*background-color: #FFF;------6/22top*/
+	display: block;
+}
+.topBox .menu{
+/*	width: 100%;
+	background-color: #FFF;
+	border-top-width: 1.5px;
+	border-bottom-width: 1.5px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-top-color: #000;
+	border-bottom-color: #000;
+	height: 130px;*/
+	/* [disabled]display: block; */
+	/* [disabled]overflow: hidden; */
+	width: 1500px;
+    background-color: #FFF;
+    border-top-width: 1.5px;
+    border-bottom-width: 1.5px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-color: #000;
+    border-bottom-color: #000;
+    height: 130px;
+    margin-left: auto;
+    margin-right: auto;
+}
+}
+.topBox .menu .menuList {
+	clear: none;
+	width: 100%;
+	/* [disabled]margin-right: auto; */
+	/* [disabled]margin-left: auto; */
+	background-color: #FFF;
+	height: 128px;
+	margin-top: 1px;
+	/* [disabled]margin-bottom: 0px; */
+}
+.topBox .menu .menuList .unit {
+	clear: none;
+	width: 900px;
+	/* [disabled]margin-top: 15px; */
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	background-color: #FFF;
+	height: 95px;
+	padding-top: 20px;
+	list-style-type: none;
+}
+.topBox .menu .menuList .unit li a{
+	float: left;
+	width: 125px;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 17px;
+	text-decoration: none;
+	text-align: center;
+	display: block;
+	color: #050505;
+	font-weight: 500;
+	line-height: 45px;
+	height: 50px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.topBox .menu .menuList .unit li {
+	float: left;
+	width: 80px;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 17px;
+	text-decoration: none;
+	text-align: center;
+	display: block;
+	color: #050505;
+	font-weight: 500;
+	line-height: 45px;
+	height: 50px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.topBox .menu .menuList .unit li3 a {
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 17px;
+	text-decoration: none;
+	display: block;
+	color: #000000;
+	font-weight: 500;
+	height: 35px;
+	line-height: 35px;
+	float: left;
+	width: 80%;
+}
+.topBox .menu .menuList .unit li3 a:hover {
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 17px;
+	text-decoration: none;
+	display: block;
+	color: #000000;
+	font-weight: 500;
+	height: 35px;
+	line-height: 35px;
+	float: left;
+	width: 80%;
+}
+.bar {
+	width: 1050px;
+	/* [disabled]margin-top: 5px; */
+	/* [disabled]margin-bottom: 5px; */
+	text-align: left;
+	margin-left: auto;
+	height: 34px;
+	line-height: 34px;
+	padding-left: 5px;
+	/* [disabled]font-family: "微軟正黑體", "新細明體", "Century Gothic"; */
+	/* [disabled]font-weight: bold; */
+	clear: both;
+	margin-right: auto;
+	padding-top: 10px;
+}
+.bar .hot {
+	width: 830px;
+	float: left;
+	background-color: #E82C00;
+}
+.bar .hot .HOT{
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	line-height: 34px;
+	font-weight: bold;
+	color: #FF0;
+	background-color: #E82C00;
+	width: 55px;
+	text-align: center;
+}
+.bar .hot .Hotnews{
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 34px;
+	color: #FFF;
+	background-color: #E82C00;
+	width: 760px;
+	text-decoration: none;
+}
+.bar .hot .Hotnews a:link {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 34px;
+	color: #FFF;
+	background-color: #E82C00;
+	text-decoration: none;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bar .hot .Hotnews a:visited {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 34px;
+	color: #FFF;
+	background-color: #E82C00;
+	text-decoration: none;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.share {
+	width: 215px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	text-align: left;
+	float: left;
+	margin-left: 5px;
+}
+.bg {
+	/*background-color: #EFEFF1;*/
+	background-color: rgba(238, 238, 240, 1);
+	/* [disabled]padding-bottom: 120px; */
+	clear: both;
+	width: 1500px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+.bg .news{
+	clear: both;
+	width: 1050px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	background-color: #EFEFF1;
+}
+.bg2 {
+	/*width: 100%;*/
+	background-color: #EFEFF1;
+	text-decoration: none;
+	list-style-type: none;
+	height: 100%;
+	/*	position: relative;*/
+	overflow: hidden;	/*overflow: hidden;*/
+	/*margin: auto;*/
+	/*overflow: auto;*/
+	width: 1500px;
+	margin-left:auto;
+	margin-right:auto;
+	
+	
+}
+.bg2 .con {
+	width: 1050px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.bg2 .con .subunit {
+	float: left;
+	width: 205px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.bg2 .con .subunit .title {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #ff4800;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #FF4800;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.bg2 .con .subunit .title a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #FF4800;
+	text-decoration: none;
+	text-align: right;
+}
+.bg2 .con .subunit .title a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #FF4800;
+	text-decoration: none;
+	text-align: right;
+}
+.bg2 .con .subunit .title a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #FF4800;
+	text-decoration: none;
+	text-align: right;
+}
+.bg2 .con .subunit .news {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	/*border-bottom-color: #666;
+	padding-bottom: 10px;
+	padding-top: 10px;/*
+border-bottom-color: #DEDEDE;
+	/*padding-bottom: 20px;
+    padding-top: 10px;*/
+}
+
+}
+
+.bg2 .con .subunit .news .t1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 22px;
+	color: #000000;
+	font-weight: bold;
+	width: 190px;
+	clear: both;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 5px;
+	text-decoration: none;	
+}
+.bg2 .con .subunit .news .t1 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 22px;
+	color: #000000;
+	font-weight: bold;
+	width: 190px;
+	clear: both;
+	margin-right: auto;
+	margin-left: auto;
+	text-decoration: none;
+	margin-bottom: 5px;
+}
+.bg2 .con .subunit .news .t2 a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 22px;
+	color: #000;
+	margin-bottom: 2px;
+	padding-bottom: 2px;
+	clear: both;
+	width: 190px;
+	margin-right: auto;
+	margin-left: auto;
+	text-decoration: none;
+}
+.bg2 .con .subunit .news .t2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 22px;
+	color: #000;
+	margin-bottom: 2px;
+	padding-bottom: 2px;
+	clear: both;
+	width: 190px;
+	margin-right: auto;
+	margin-left: auto;
+	text-decoration: none;
+}
+
+.bg2 .con .subunit .news .t2 a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 22px;
+	color: #000;
+	margin-bottom: 2px;
+	padding-bottom: 2px;
+	clear: both;
+	width: 190px;
+	margin-right: auto;
+	margin-left: auto;
+	text-decoration: none;
+}
+.bg2 .con .subunit .news .t2 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 22px;
+	color: #000;
+	margin-bottom: 2px;
+	padding-bottom: 2px;
+	clear: both;
+	width: 190px;
+	margin-right: auto;
+	margin-left: auto;
+	text-decoration: none;
+}
+
+
+
+
+.bg2 .con .BNnews {
+	float: left;
+	width: 215px;
+}
+.bg2 .con .nestext {
+	float: left;
+	width: 620px;
+	background-color: #FFF;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-top: 8px;
+	height: 100%;
+	overflow: hidden;
+}
+.bg2 .con .sideNews .category .title {
+	/*	float: left;
+	height: 45px;
+	width: 45px;
+	border-left-width: 5px;
+	border-left-style: solid;
+	border-left-color: #232323;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #232323;
+	font-weight: 600;
+	margin-top: 5px;
+	margin-left: 8px;
+	font-size: 18px;*/
+	background-color: #CC0000;
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+}
+.bg2 .con .sideNews .category title {
+	float: left;
+	height: 45px;
+	width: 45px;
+	border-left-width: 5px;
+	border-left-style: solid;
+	border-left-color: #232323;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #232323;
+	font-weight: 600;
+	margin-top: 5px;
+	margin-left: 8px;
+	font-size: 18px;
+}
+.bg2 .con .sideNews .category .list li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #232323;
+	margin-left: 8px;
+	font-size: 14px;
+	line-height: 18px;
+	text-decoration: none;
+}
+.bg2 .con .sideNews .category .list li a {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #232323;
+	margin-top: 5px;
+	font-size: 15px;
+	line-height: 20px;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	padding-bottom: 10px;
+}
+.bg2 .con .nestext .categoryTitle .text {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #C00;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #C03;
+	padding-left: 5px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.bg2 .con .nestext .categoryTitle .text span {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #C00;
+	/* [disabled]padding-left: 10px; */
+}
+
+.bg2 .con .nestext .toplook {
+	float: right;
+	/*width: 455px;*/
+	width: 385px;
+	margin-top: 5px;
+}
+.bg2 .con .nestext .toplook ul {
+	float: right;
+	width: 565px;
+	text-align: right;
+	margin-left: 15px;
+}
+.bg2 .con .nestext .toplook ul li{
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+	list-style-type: none;
+/*	margin-left: 5px;*/
+}
+.bg2 .con .nestext .toplook ul li a{
+	/*float: left;*/
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+    /*line-height: 25px;*/
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+	list-style-type: none;
+	/*margin-left: 5px;*/
+	width:70px
+}
+.bg2 .con .nestext .toplook ul li a:hover {
+	/*float: left;*/
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+	list-style-type: none;
+	/*margin-left: 5px;*/
+	background-color: #FFC;
+}
+.bg2 .con .nestext .toplook .bkBtn a{
+	color: #FF0;
+	text-align: center;
+	height: 20px;
+	width: 50px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	font-weight: bold;
+	float: left;
+	margin-top: 5px;
+	/*	padding-right: 2px;
+	padding-left: 2px;
+	margin-left: 5px;*/
+	margin-right: 5px;
+	text-decoration: none;
+	line-height: 18px;
+	background-color: #C00;
+}
+.bg2 .con .nestext .toplook .clickNo{
+	color: #000;
+	background-color: #FF3;
+	text-align: center;
+	height: 20px;
+	width: 130px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	font-weight: bold;
+	float: left;
+	margin-top: 5px;
+/*	padding-right: 2px;
+	padding-left: 2px;
+	margin-left: 5px;*/
+	margin-right:5px
+}
+.bg2 .con .nestext .toplook .Tsize{
+	float: left;
+	height: 21px;
+	width: 60px;
+	padding: 0px;
+	margin-top: 5px;
+/*	margin-right: 1px;
+	margin-bottom: 0px;
+	margin-left: 1px;*/
+	display: block;
+}
+.bg2 .con .nestext .toplook .Tsize li {
+	padding: 0px;
+	float: left;
+	height: 21px;
+	width: 21px;
+	margin-top: 0px;
+	margin-right: 3px;
+	margin-bottom: 0px;
+	margin-left: 3px;
+	list-style-type: none;
+}
+.bg2 .con .nestext .toplook .Tsize li a{
+	padding: 0px;
+	float: left;
+	height: 21px;
+	width: 21px;
+	margin-top: 0px;
+	margin-right: 1px;
+	margin-bottom: 0px;
+	margin-left: 1px;
+	list-style-type: none;
+}
+.bg2 .con .nestext .toplook .Tsize li2 {
+	padding: 0px;
+	float: left;
+	height: 21px;
+	width: 21px;
+	margin-top: 0px;
+	margin-right: 1px;
+	margin-bottom: 0px;
+	margin-left: 1px;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	display: none;
+}
+.bg2 .con .nestext .toplook .share {
+	float: left;
+	/*width: 200px;*/
+	width: 120px;
+	padding: 0px;
+	margin-top: 5px;
+/*	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 2px;*/
+}
+.bg2 .con .nestext .toplook .share li a{
+	float: left;
+	list-style-type: none;
+	padding: 0px;
+	margin-right: 2px;
+	margin-left: 2px;
+	/*width: 92px;*/
+	width: 30px;
+}
+.bg2 .con .nestext .toplook .share li a img{
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+
+}
+.bg2 .con .nestext .secTitle {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #c11920;
+	width: 98%;
+	float: left;
+	margin-top: 25px;
+	margin-left: 10px;
+}
+.bg2 .con .nestext .newsTitle {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 24px;
+	line-height: 32px;
+	font-weight: bold;
+	color: #c11920;
+	width: 98%;
+	float: left;
+	margin-top: 5px;
+	margin-left: 8px;
+}
+.bg2 .con .nestext .newsTitle a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 24px;
+	line-height: 32px;
+	font-weight: bold;
+	color: #c11920;
+	width: 98%;
+	float: left;
+	margin-top: 25px;
+	margin-left: 8px;
+}
+.bg2 .con .nestext .newsTitle a:visited{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 24px;
+	line-height: 32px;
+	font-weight: bold;
+	color: #c11920;
+	width: 98%;
+	float: left;
+	margin-top: 25px;
+	margin-left: 8px;
+}
+
+.bg2 .con .nestext .tool {
+	float: left;
+	height: 28px;
+	width: 90px;
+	margin-left: 5px;
+	margin-top: 15px;
+}
+.bg2 .con .nestext .tool li a{
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	height: 28px;
+	width: 25px;
+}
+.bg2 .con .nestext .other {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 15px;
+	color: #000;
+	float: right;
+	margin-top: 15px;
+	margin-right: 15px;
+}
+.bg2 .con .nestext .nevin {
+width: 90%;
+	text-align: left;
+	margin-top: 10px;
+	float: left;
+	clear: none;
+
+	margin-bottom: 10px;
+	padding-right: 5%;
+	padding-left: 5%;
+}
+.bg2 .con .nestext .nevin a{
+	/*width: 90%;*/
+	text-align: left;
+	margin-top: 10px;
+/*	float: left;*/
+	clear: none;
+	margin-bottom: 10px;
+/*	padding-right: 5%;
+	padding-left: 5%;*/
+}
+.bg2 .con .nestext .nevin .fblike {
+	text-align: left;
+	float: left;
+	width: 350px;
+	margin-right: 100px;
+	overflow: hidden;
+	clip: rect(auto,50px,auto,auto);
+}
+.bg2 .con .nestext .nevin img {
+/*	margin-top: 10px;
+	margin-bottom: 10px;*/
+}
+
+.bg2 .con .nestext .nevin .linefriend{
+	text-align: left;
+	float: left;
+	width: 350px;
+	margin-right: 100px;
+	overflow: hidden;
+	margin-top: 20px;	/*clip: rect(auto,50px,auto,auto);*/
+	}
+
+.bg2 .con .nestext .nevin .newspic img a{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	float: left;
+}
+.bg2 .con .nestext .nevin .newspic2 a {
+	margin: 0px;
+	float: left;
+	border: 0px;
+}
+
+.bg2 .con .nestext .nevin .bn img a{
+	padding: 0px;
+	float: left;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 95px;
+	width: 575px;
+}
+.bg2 .con .nestext .nevin .sharebt {
+	float: left;
+	width: 338px;
+}
+.bg2 .con .nestext .nevin .share li {
+	float: right;
+	list-style-type: none;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .nestext .nevin .share2 {
+	float: left;
+	width: 560px;
+	list-style-type: none;
+}
+.bg2 .con .nestext .nevin .share2 li {
+	float: right;
+	list-style-type: none;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-top:5px;
+}
+.bg2 .con .nestext .nevin .sharebt li #ckepop {
+	margin-top: 12px;
+}
+.bg2 .con .nestext .nevin .sharebt li {
+	float: left;
+	margin-top: 0px;
+	margin-right: 1px;
+	margin-bottom: 0px;
+	margin-left: 1px;
+	display: block;
+	list-style-type: none;
+}
+.bg2 .con .nestext .nevin .sharebt li a{
+	float: left;
+	margin-top: 0px;
+	margin-right: 1px;
+	margin-bottom: 0px;
+	margin-left: 1px;
+	display: block;
+	list-style-type: none;
+}
+.bg2 .con .nestext .nevin .sharebt li2 {
+	/*	float: left;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 1px;*/
+	margin-right: 1px;
+	display: block;
+	list-style-type: none;
+	margin-top:
+	margin-top:2px
+	margin-left:20px
+	margin-top:2px
+ 	margin-bottom: 5px;
+}
+.bg2 .con .nestext .nevin .title2 a:link {
+    float: left;
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    /* font-size: 18px; */
+    line-height: 25px;
+    font-weight: bold;
+    color: #5D34A2;
+    text-decoration: none;
+    width: 50px;
+    margin-top: 32px;
+    margin-left: 250px;
+    height: 20px;
+}
+.bg2 .con .nestext .nevin .title {
+	float: left;
+	/*width: 100%;*/
+	/*width: 250px;*/
+	margin-top: 15px;
+}
+.bg2 .con .nestext .nevin .title a:link {
+	float: left;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #5d34a2;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #5D34A2;
+	text-decoration: none;
+	/*width: 100%;*/
+	width: 150px;
+	margin-top: 20px;
+	height: 20px;
+}
+
+.bg2 .con .nestext .nevin .title a:visited {
+	float: left;
+	border-left-color: #5d34a2;
+	margin-top: 20px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #5D34A2;
+	text-decoration: none;
+	width: 150px;
+	height: 20px;
+}
+
+.bg2 .con .nestext .nevin .text {
+	float: left;
+	width: 100%;
+}
+.bg2 .con .nestext .nevin .ADclass {
+	float: left;
+	width: 100%;
+}
+.bg2 .con .nestext .nevin .ADclass .newlist {
+	background-color: #f5f5f5;
+	float: left;
+	/*height: 225%;*/
+    height: 145px;
+	width: 175px;
+	margin-top: 8px;
+	padding-top: 8px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .nestext .nevin .ADclass .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #6037A3;
+	padding-left: 5px;
+	margin-top: 15px;
+}
+.bg2 .con .nestext .nevin .ADclass .newlist .pic {
+	float: left;
+	width: 165px;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 5px;
+}
+.bg2 .con .nestext .nevin .ADclass .newlist .pic img {
+	margin: 0px;
+	padding: 0px;
+}
+
+
+.bg2 .con .nestext .nevin .mood {
+	float: left;
+	margin-left: 5px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	/* [disabled]font-size: 14px; */
+	/* [disabled]line-height: 25px; */
+	width: 215px;
+	height: 25px;
+}
+.bg2 .con .nestext .nevin .mood li2 {
+	float: left;
+	height: 28px;
+	display: block;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 30px;
+	width: 60px;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+.bg2 .con .nestext .nevin .mood li {
+	float: left;
+	height: 28px;
+	display: block;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 30px;
+	width: 20px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.bg2 .con .nestext .nevin .mood li a {
+	float: left;
+	height: 25px;
+	display: block;
+	list-style-type: none;
+	/* [disabled]width: 25px; */
+	/* [disabled]margin-right: 5px; */
+	/* [disabled]margin-left: 5px; */
+	/* [disabled]padding: 0px; */
+	/* [disabled]margin-top: 0px; */
+	/* [disabled]margin-bottom: 0px; */
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+	/* [disabled]font-size: 12px; */
+	line-height: 28px;
+}
+.bg2 .con .nestext .nevin .mood li .faceicon {
+	float: left;
+	width: 16px;
+	text-align: center;
+	display: block;
+	list-style-type: none;
+}
+.bg2 .con .nestext .nevin .mood li .percentage {
+	float: left;
+	width: 16px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 10px;
+	color: #333;
+	text-align: center;
+	display: block;
+	list-style-type: none;
+	line-height: 25px;
+}
+
+.bg2 .con .nestext .nevin .page {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	float: left;
+	width: 430px;
+	/* [disabled]margin-left: 0px; */
+	margin-top: 25px;
+}
+.bg2 .con .nestext .nevin .page span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	/*float: left;*/
+/*	width: 430px;*/
+	/* [disabled]margin-left: 0px; */
+	/*margin-top: 25px;*/
+	height: 35px;
+}
+.bg2 .con .nestext .nevin .page span a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	float: left;
+/*	width: 430px;*/
+	/* [disabled]margin-left: 0px; */
+	/*margin-top: 25px;*/
+	height: 35px;
+}
+.bg2 .con .nestext .nevin .page .back a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .nestext .nevin .page .back span a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-top: 31px;
+}
+
+.bg2 .con .nestext .nevin .page .next span a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .nestext .nevin .page .no a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 6px;
+	margin-top: 30.9px;
+}
+.bg2 .con .nestext .nevin .page .no span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 27px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+/*	margin-left: 6px;*/
+	margin-top: 30.9px;
+}
+.bg2 .con .nestext .nevin .page .no span a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+
+}
+.bg2 .con .nestext .nevin .page .no a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+
+.bg2 .con .nestext .nevin .page .no a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	background-color: #CC0000;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .nestext .nevin .btn {
+	/*float: right;*/
+/*	margin-top: 25px;*/
+	margin-top: -15px;
+	width: 190px;
+}
+.bg2 .con .nestext .nevin .btn .more a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	background-color: #CC0000;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 1px;
+	margin-left: 1px;
+}
+.bg2 .con .nestext .nevin .btn .home a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	background-color: #CC0000;
+	height: 30px;
+	width: 55px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 1px;
+	margin-left: 1px;
+}
+.bg2 .con .nestext .nevin .othernews {
+	float: left;
+	width: 600px;
+	margin-top: 50px;
+}
+.bg2 .con .nestext .nevin .othernews .relatedR {
+	float: left;
+	margin-top: 25px;
+}
+
+.bg2 .con .nestext .nevin .othernews .relatedR .rRtitle {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #de2f30;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #DE2F30;
+}
+
+.bg2 .con .nestext .nevin .othernews .relatedR .list a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	color: #000;
+	float: left;
+	margin-left: 15px;
+	list-style-type: none;
+	width: 500px;
+	margin-top: 5px;
+	/* [disabled]border-bottom-width: 1px; */
+	/* [disabled]border-bottom-style: solid; */
+	/* [disabled]border-bottom-color: #E8E8E8; */
+}
+
+.bg2 .con .nestext .nevin .othernews .newskeyword {
+	float: left;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	text-decoration: none;
+	height: 100%;
+}
+.bg2 .con .nestext .nevin .othernews .newskeyword .nktitle {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #554588;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #554588;
+	float: left;
+}
+.bg2 .con .nestext .nevin .othernews .newskeyword .list {
+	float: left;
+	height: 100%;
+	list-style-type: none;
+	width: 600px;
+}
+.bg2 .con .nestext .nevin .othernews .newskeyword .list ul {
+	float: left;
+	/*width: 650px;*/
+	margin-top: 5px;
+	height: 100%;
+	list-style-type: none;
+	/*width: 600px;*/
+	margin-right: 20px;
+	
+}
+.bg2 .con .nestext .nevin .othernews .newskeyword .list ul li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	/*	color: #000;*/
+	float: left;
+	text-decoration: none;
+	margin-left: 2px;
+	list-style-type: none;
+	display: block;
+	margin-right: 2px;
+	/* [disabled]width: 100%; */
+}
+.bg2 .con .nestext .nevin .othernews .newskeyword .list ul li a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #000;
+	float: left;
+	text-decoration: none;
+	margin-left: 2px;
+	list-style-type: none;
+	display: block;
+	margin-right: 2px;
+	/*width:8%*/
+}
+.bg2 .con .nestext .nevin .othernews .bn {
+	float: left;
+	height: 95px;
+	width: 282px;
+/*	margin-right: 2px;
+	margin-left: 2px;*/
+/*	margin-right: 8px;
+	margin-left: 8px;*/
+	padding: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	
+}
+.bg2 .con .nestext .nevin .othernews .NBnews {
+	float: left;
+	padding: 0px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	width: 95%;
+}
+.bg2 .con .nestext .nevin .othernews .NBnews .back {
+	float: left;
+	height: 60px;
+	/* [disabled]width: 80%; */
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.bg2 .con .nestext .nevin .othernews .NBnews .back .text {
+/*	background-color: #3e3a39;*/
+	/* [disabled]width: 100%; */
+	/*float: left;*/
+	/* [disabled]margin-top: 15px; */
+	/* [disabled]padding-left: 15px; */
+	/* [disabled]padding-right: 15px; */
+	/*	text-decoration: none;
+	position: relative;
+	left: 35px;*/
+	/* [disabled]top: -45px; */
+	/* [disabled]z-index: 1; */
+/*	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	height: 30px;
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;*/
+	background-color: #3e3a39; */
+    /* float: left; */
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    background-color: #3e3a39;
+    height: 30px;
+    font-size: 15px;
+    line-height: 30px;
+    color: #FF0;
+    text-decoration: none;
+    position: relative;
+    left: 35px;
+    top: -65px;
+    width: 95%;
+}
+
+/*.bg2 .con .nestext .nevin .othernews .NBnews .back .text {	
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	background-color: #3e3a39;
+	height: 30px;
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	float: left;
+	text-decoration: none;
+	position: relative;
+	left: 35px;
+	top: -45px;
+}*/
+
+.bg2 .con .nestext .nevin .othernews .NBnews .back .text a{
+/*	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	background-color: #3e3a39;
+	height: 30px;
+	width:95%;
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	float: left;
+	text-decoration: none;
+	position: relative;
+	left: 35px;
+	top: -60px;*/
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    background-color: #3e3a39;
+    /* width: 250px; */
+    font-size: 15px;
+    line-height: 15px;
+    color: #FF0;
+    text-decoration: none;
+    position: relative;
+    /* left: 10px; */
+   /* right: 10px;*/
+}
+.bg2 .con .nestext .nevin .othernews .NBnews .back .picbtn a {
+	padding: 0px;
+	border: 0px;
+	margin-top: 0px;
+	margin-right: 8px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	float: left;
+}
+
+
+.bg2 .con .nestext .nevin .othernews .NBnews .back .picbtn a img {
+	padding: 0px;
+	border: 0px;
+	margin-top: 0px;
+	margin-right: 8px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	float: left;
+}
+
+
+
+
+.bg2 .con .nestext .nevin .othernews .NBnews .next {
+	float: right;
+	height: 60px;
+	margin-right: 80px;
+	/* [disabled]width: 100%; */
+}
+.bg2 .con .nestext .nevin .othernews .NBnews .next .text {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	background-color: #3e3a39;
+	height: 30px;
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	/*width: 90%;*/
+	float: left;
+	/* [disabled]margin-top: 15px; */
+	/* [disabled]padding-left: 15px; */
+	/* [disabled]padding-right: 15px; */
+	text-decoration: none;
+}
+.bg2 .con .nestext .nevin .othernews .NBnews .next .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	background-color: #3e3a39;
+	height: 30px;
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	width: 100%;
+	/*float: left;*/
+	/* [disabled]margin-top: 15px; */
+	/* [disabled]padding-left: 15px; */
+	/* [disabled]padding-right: 15px; */
+	text-decoration: none;
+}
+
+.bg2 .con .nestext .nevin .othernews .NBnews .next .picbtn a {
+	float: right;
+	height: 60px;
+	width: 28px;
+	margin-right: 5px;
+	border: 0px;
+	/*left: 480px;*/
+	left: 75px;
+	top: -42px;
+	position: relative;
+	z-index: 1;
+}
+.bg2 .con .nestext .nevin .othernews .NBnews .next .picbtn a img {
+	padding: 0px;
+	border: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 8px;
+	float: right;
+}
+.bg2 .con .nestext .nevin .newspic2 {
+	float: left; 
+	height: 328px; 
+	width: 560px;
+	position: relative;
+	z-index: 0; 
+/*	top: -25px;*/ 
+	margin-bottom: 10px;
+	display: block; 
+}
+.bg2 .con .nestext .nevin .newspic2 a img {
+	float: left;
+	height: 328px;
+	width: 560px;
+	position: relative;
+	z-index: 0;
+	top: -50px;
+	margin-bottom: 10px;
+}
+
+.bg2 .con .nestext .nevin .left span {
+	position: relative;
+	z-index: 1;
+	float: left;
+	height: 72px;
+	width: 50px;
+	top: 120px;
+	left: 15px;
+}
+.bg2 .con .nestext .nevin .right span {
+	position: relative;
+	z-index: 1;
+	float: left;
+	height: 72px;
+	width: 50px;
+	top: 120px;
+	left: 430px;
+}
+.bg2 .con .nestext .title .text {
+	margin-left: 5px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #5d34a2;
+	text-decoration: none;
+	margin-top: 10px;
+}
+
+
+.bg2 .con .nestext .nevin .ADclass .newlist .text {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #000;
+	float: left;
+	width: 175px;
+	text-align: center;
+	margin-bottom: 8px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.bg2 .con .nestext .nevin .ADclass .newlist .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #000;
+	float: left;
+	width: 175px;
+	text-align: center;
+	font-weight: bold;
+	text-decoration: none;
+	margin-top: 5px;
+	margin-bottom: 8px;
+}
+
+.bg2 .con .nestext .lifenews   {
+	 float: left;
+	width: 100%;
+	padding-right: 2%;
+	padding-left: 3%;
+	margin-bottom: 30px;
+}
+
+.bg2 .con .nestext .lifenews li   {
+	float: left;
+	height: 150px;
+	width: 192px;
+	list-style-type: none;
+	margin-right: 1px;
+	margin-left: 1px;
+	/*background-image: url(../images/life_192x150.jpg);*/
+	background-repeat: no-repeat;
+	background-color: #FFF;	/*background-image: url(../images/life_192x150.jpg);*/
+}
+.bg2 .con .nestext .lifenews li .text {
+	background-color: #666;
+	margin-top: 110px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	/*	line-height: 15px;*/
+	color: #FFF;
+	padding-top: 2px;
+	padding-right: 1px;
+	padding-bottom: 2px;
+	padding-left: 1px;
+	text-decoration: none;
+	text-align: left;
+	list-style-type: none;
+	height: 35px;
+	width: 180px;
+}
+.bg2 .con .nestext .lifenews li .text a{
+	/*background-color: #666;*/
+	margin-top: 110px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	line-height: 15px;
+	color: #FFF;
+	padding-top: 2px;
+	padding-right: 1px;
+	padding-bottom: 3px;
+	padding-left: 1px;
+	text-decoration: none;
+	text-align: center;
+	list-style-type: none;
+	height: 35px;
+	width: 180px;
+	margin-left: 10px;
+	margin-right: 2px;
+	margin-top: 5px;
+}
+.bg2 .con .nestext .member {
+	float: left;
+	width: 310px;
+}
+.bg2 .con .nestext .todaynew {
+	float: left;
+	width: 310px;
+	margin-bottom:15px;
+}
+.bg2 .con .nestext .todaynew .title {
+	float: left;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #DE2F30;
+	margin-left: 20px;
+	margin-bottom: 10px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	color: #DE2F30;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.bg2 .con .nestext .todaynew li {
+	float: left;
+	list-style-type: none;
+	margin-left: 2px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+
+.bg2 .con .nestext .todaynew li .no {
+	background-color: #de2f30;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #FFF;
+	height: 16px;
+	width: 16px;
+	float: left;
+	padding: 1px;
+	text-align: center;
+	margin-left: 18px;
+}
+.bg2 .con .nestext .todaynew li .list {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #222222;
+	text-decoration: none;
+	margin-left: 5px;
+	float: left;
+	width: 240px;
+}
+.bg2 .con .nestext .todaynew li .list a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #222222;
+	text-decoration: none;
+	margin-left: 5px;
+	float: left;
+	width: 240px;
+}
+.bg2 .con .nestext .member .title {
+	float: left;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #57508b;
+	margin-left: 20px;
+	margin-bottom: 10px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	color: #57508b;
+	text-decoration: none;
+	font-weight: bold;
+}
+.bg2 .con .nestext .member .title a {
+	float: left;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #57508b;
+	margin-left: 20px;
+	margin-bottom: 10px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	color: #57508b;
+	text-decoration: none;
+	font-weight: bold;
+}
+.bg2 .con .nestext .member li {
+	float: left;
+	list-style-type: none;
+	margin-left: 2px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.bg2 .con .nestext .member li .no {
+	background-color: #57508b;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #FFF;
+	height: 16px;
+	width: 16px;
+	float: left;
+	padding: 1px;
+	text-align: center;
+	margin-left: 18px;
+}
+.bg2 .con .nestext .member li .list {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #222222;
+	text-decoration: none;
+	margin-left: 5px;
+	float: left;
+	width: 240px;
+}
+.bg2 .con .nestext .member li .list a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #222222;
+	text-decoration: none;
+	margin-left: 5px;
+	float: left;
+	width: 240px;
+}
+.bg2 .con .nestext .bn {
+	float: left;
+	height: 145px;
+	width: 615px;
+	margin-left: 3px;
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+.bg2 .con .weeklyNews {
+	float: left;
+	height: 100%;
+	width: 800px;
+	background-color: #FFF;
+	margin-top: 15px;
+}
+.bg2 .con .weeklyNews .tabbtn {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #636;
+	list-style-type: none;
+	width: 100%;
+	margin-right: 30px;
+}
+.bg2 .con .weeklyNews.tabbtn li {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .weeklyNews .tabbtn li2 {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .weeklyNews .tabbtn li2 a {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .weeklyNews .tabbtn li a {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+}
+.bg2 .con .weeklyNews .tabbtn li a:hover {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+}
+.bg2 .con .weeklyNews .title {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #c11920;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #C11920;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 30px;
+	margin-bottom:15px
+}
+.bg2 .con .weeklyNews .picbtn  {
+	float: left;
+	/*overflow: hidden;*/
+	/* [disabled]position: relative; */
+	/*z-index: 1;*/
+	z-index: 0;
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 780px;
+	margin-left: 15px;
+	height: 400px;
+}
+.bg2 .con .weeklyNews .title .text {
+	margin-left: 10px;
+}
+.bg2 .con .weeklyNews .picbtn .titlebox {
+	float: left;
+	background-color: #000;
+	text-decoration: none;	
+}
+.bg2 .con .weeklyNews .picbtn .titlebox a{
+	float: left;
+	height: 50px;
+	width: 722px;
+	position: relative;
+	z-index: 1;
+	top: 305px;
+	background-color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 25px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	/* [disabled]filter: Mask(Color=#000); */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+.bg2 .con .weeklyNews .picbtn .text .titlebox {
+	width: 722px;
+}
+
+
+.bg2 .con .weeklyNews .picbtn .Nbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 30px;
+	top: 260px;
+}
+
+
+.bg2 .con .weeklyNews .picbtn .Bbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 590px;
+	top: 260px;
+}
+.bg2 .con .weeklyNews .picbtn  .pic {
+	float: left;
+	z-index: 0;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	overflow: hidden;
+	position: relative;
+	clear: none;
+	height: 435px;
+	width: 742px;
+	top: -90px;
+}
+
+.bg2 .con .weeklyNews .listNews {
+	float: left;
+	width: 742px;
+	margin-left: 25px;
+}
+.bg2 .con .weeklyNews .listNews .news {
+	float: left;
+	width: 742px;
+}
+.bg2 .con .weeklyNews .listNews .news .no {
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    margin-bottom: 15px;
+}
+.bg2 .con .weeklyNews .listNews .news .no a {
+/*    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+    width: 25px;
+    background-color: #b5b5b6;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    margin-right: 3px;
+    margin-left: 3px;
+    margin-bottom: 15px;*/
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+    background-color: #b5b5b6;
+    height: 30px;
+    width: 25px;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    font-weight: bold;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+.bg2 .con .weeklyNews .listNews .news .no span a {
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+    width: 25px;
+    background-color: #b5b5b6;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    margin-right: 3px;
+    margin-left: 3px;
+    margin-bottom: 15px;
+}
+.bg2 .con .weeklyNews .listNews .news .no span {
+ /*   font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+    width: 25px;
+    background-color: #b5b5b6;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    margin-right: 3px;
+    margin-left: 3px;
+    margin-bottom: 15px;*/
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+    width: 25px;
+    background-color: #b5b5b6;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    margin-right: 3px;
+    margin-left: 3px;
+    margin-bottom: 15px;
+}
+.bg2 .con .weeklyNews .listNews .news .back span a:link {
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+    background-color: #b5b5b6;
+    height: 30px;
+    width: 60px;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    font-weight: bold;
+    margin-right: 3px;
+    margin-left: 3px;
+    padding-right: 10px;
+}
+.bg2 .con .weeklyNews .listNews .news .n1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #dfdfe0;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .weeklyNews .listNews .news .n2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #FFFFFF;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .weeklyNews .listNews .news .n1 li{
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+
+.bg2 .con .weeklyNews .listNews .news .n2 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+
+
+.bg2 .con .weeklyNews .listNews .news .n1 li2{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #7c0000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .weeklyNews .listNews .news .n1 li2 a{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .weeklyNews .listNews .news .n2 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #7c0000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .weeklyNews .listNews .news .n2 li2 a {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+
+.bg2 .con .weeklyNews .listNews .news .n1 li3{
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .weeklyNews .listNews .news .n1 li3 a {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .weeklyNews .listNews .news .n2 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .weeklyNews .listNews .news .n2 li3 a {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+
+.bg2 .con .weeklyNews .listNews .news .n1 li4{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .weeklyNews .listNews .news .n2 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .weeklyNews .listNews .news .n1 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+/*	margin-left: 5px;*/
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .weeklyNews .listNews .news .n2 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .weeklyNews .listNews .box {
+	float: left;
+	width: 260px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .weeklyNews .listNews .box .pic{
+	float: left;
+	height: 196px;
+	width: 260px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.bg2 .con .weeklyNews .listNews .box .text{
+	float: left;
+	width: 260px;
+}
+.bg2 .con .weeklyNews .listNews .box .newslist{
+	float: left;
+	width: 260px;
+	margin-right: 5px;
+	margin-left: 8px;
+	margin-top: 5px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #000;
+	padding-bottom: 8px;
+}
+.bg2 .con .weeklyNews .listNews .box .newslist li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	float: left;
+	font-weight: bold;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 260px;
+}
+.bg2 .con .weeklyNews .listNews .box .newslist li2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	float: left;
+	width: 260px;
+}
+.bg2 .con .weeklyNews .listNews .text {
+	width: 465px;
+	float: right;
+}
+.bg2 .con .weeklyNews .listNews {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.bg2 .con .weeklyNews .listNews .text .text1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #03C;
+	text-decoration: none;
+	margin-bottom: 8px;
+}
+.bg2 .con .weeklyNews .listNews .text li {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	float: left;
+	list-style-type: none;
+	width: 465px;
+}
+.bg2 .con .weeklyNews .listNews .text li .no {
+	background-color: #03C;
+	float: left;
+	height: 20px;
+	width: 20px;
+	text-align: center;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	list-style-type: none;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: bold;
+}
+.bg2 .con .weeklyNews .listNews .text li .no2 {
+	float: left;
+	height: 20px;
+	width: 20px;
+	text-align: center;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	list-style-type: none;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: bold;
+}
+
+.bg2 .con .weeklyNews .listNews .text li .text2 a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #000;
+	text-decoration: none;
+	padding-left: 2px;
+	float: left;
+}
+.bg2 .con .weeklyNews .listNews .text li .text2 a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #000;
+	text-decoration: none;
+	padding-left: 2px;
+	float: left;
+}
+.bg2 .con .weeklyNews .listNews .text li .text2 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #000;
+	text-decoration: none;
+	padding-left: 2px;
+	float: left;
+}
+.bg2 .con .weeklyNews .page  {
+/*	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	margin-top: 25px;
+	clear: none;
+	width: 55%;
+	height: 30px;
+	margin-bottom: 25px;
+	float: left;
+	margin-left: 150px;*/
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	/*background-color: #b5b5b6;*/
+	height: 30px;
+	/*width: 65px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .weeklyNews .page .back a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .weeklyNews .page .next {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .weeklyNews .page .next a  {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .weeklyNews .page .no #span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	/*background-color: #b5b5b6;*/
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .weeklyNews .page .no a  {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	/*background-color: #b5b5b6;*/
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	/*float: left;*/
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .weeklyNews .page .no a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .weeklyNews .page .no a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	background-color: #CC0000;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .contribute {
+	float: left;
+	height: 100%;
+	width: 800px;
+	background-color: #FFF;
+	margin-top: 15px;
+	list-style-type: none;
+}
+}
+
+
+.bg2 .con .contribute .title {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #CC6600;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #CC6600;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+
+
+.bg2 .con .contribute .title  {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #CC6600;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #CC6600;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+.bg2 .con .contribute .picbtn  {
+	float: left;
+	overflow: hidden;
+	/* [disabled]position: relative; */
+	z-index: 1;
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 780px;
+	margin-left: 25px;
+	height: 460px;
+}
+
+.bg2 .con .contribute .title .text {
+	margin-left: 10px;
+}
+
+
+.bg2 .con .contribute .listNews .tabbtn {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #C60;
+	list-style-type: none;
+	width: 100%;
+}
+
+.bg2 .con .contribute .listNews .tabbtn li {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C60;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.bg2 .con .contribute .listNews .tabbtn li2 {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C60;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+
+.bg2 .con .contribute .listNews .tabbtn li a{
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C60;
+}
+
+.bg2 .con .contribute .listNews .tabbtn li a:hover {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+}
+
+.bg2 .con .contribute .picbtn .titlebox {
+	float: left;
+	height: 50px;
+	width: 722px;
+	position: relative;
+	z-index: 1;
+	top: 305px;
+	background-color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 25px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	/* [disabled]filter: Mask(Color=#000); */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+
+
+.bg2 .con .contribute .picbtn .text .titlebox {
+	width: 722px;
+}
+.bg2 .con .contribute .picbtn .text .titlebox a {
+	width: 722px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #FFF;
+	text-decoration: none;
+}
+.bg2 .con .contribute .picbtn .text .titlebox a:hover {
+	width: 722px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #FFF;
+	text-decoration: none;
+}
+.bg2 .con .contribute .picbtn .text .titlebox a:visited {
+	width: 722px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #FFF;
+	text-decoration: none;
+}
+
+
+
+
+
+
+.bg2 .con .contribute .picbtn .Nbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 30px;
+	top: 260px;
+}
+
+
+
+.bg2 .con .contribute .picbtn .Bbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 590px;
+	top: 260px;
+}
+
+.bg2 .con .contribute .picbtn  .pic {
+	float: left;
+	z-index: 0;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	overflow: hidden;
+	position: relative;
+	clear: none;
+	height: 435px;
+	width: 742px;
+	top: -130px;
+}
+
+
+.bg2 .con .contribute .listNews {
+	float: left;
+	width: 742px;
+	margin-left: 25px;
+}
+
+.bg2 .con .contribute .listNews .news {
+	float: left;
+	width: 742px;
+}
+
+.bg2 .con .contribute .listNews .news .n1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #dfdfe0;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+
+.bg2 .con .contribute .listNews .news .n2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #FFFFFF;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+
+.bg2 .con .contribute .listNews .news .n1 li{
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+.bg2 .con .columnist .listNews .news .n1 li1 {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.bg2 .con .columnist .listNews .news .n2 li1 {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li2{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li3{
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li4{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .columnist {
+	float: left;
+	height: 100%;
+	width: 800px;
+	background-color: #FFF;
+	margin-top: 15px;
+	list-style-type: none;
+}
+.bg2 .con .columnist .title {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #663366;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #663366;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 15px;
+}
+.bg2 .con .columnist .picbtn {
+	float: left;
+	overflow: hidden;
+	/* [disabled]position: relative; */
+	z-index: 1;
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 780px;
+	margin-left: 25px;
+	height: 460px;
+}
+.bg2 .con .columnist .title .text {
+	margin-left: 10px;
+}
+.bg2 .con .columnist .listNews .tabbtn {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #636;
+	list-style-type: none;
+	width: 100%;
+}
+.bg2 .con .columnist .listNews .tabbtn li {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #636;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .columnist .listNews .tabbtn li2 {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #636;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .columnist .listNews .tabbtn li a {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #636;
+}
+.bg2 .con .columnist .listNews .tabbtn li a:hover {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+}
+.bg2 .con .columnist .picbtn .titlebox {
+	float: left;
+	height: 50px;
+	width: 722px;
+	position: relative;
+	z-index: 1;
+	top: 305px;
+	background-color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 25px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	/* [disabled]filter: Mask(Color=#000); */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+
+.bg2 .con .columnist .picbtn .text .titlebox {
+	width: 722px;
+}
+
+.bg2 .con .columnist .picbtn .text .titlebox a {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+
+.bg2 .con .columnist .picbtn .text .titlebox a:hover {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+
+
+.bg2 .con .columnist .picbtn .text .titlebox a:hover {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+
+
+
+.bg2 .con .columnist .picbtn .Nbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 30px;
+	top: 260px;
+}
+
+.bg2 .con .columnist .picbtn .Bbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 590px;
+	top: 260px;
+}
+
+.bg2 .con .columnist .picbtn .pic {
+	float: left;
+	z-index: 0;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	overflow: hidden;
+	position: relative;
+	clear: none;
+	height: 435px;
+	width: 742px;
+	top: -130px;
+}
+
+.bg2 .con .columnist .listNews {
+	float: left;
+	width: 742px;
+	margin-left: 25px;
+}
+
+.bg2 .con .columnist .listNews .news {
+	float: left;
+	width: 742px;
+}
+.bg2 .con .columnist .listNews .news .n1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #dfdfe0;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .columnist .listNews .news .n2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #FFFFFF;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .columnist .listNews .news .n1 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+.bg2 .con .columnist .listNews .news .n2 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+.bg2 .con .columnist .listNews .news .n1 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n1 li2 a {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .columnist .listNews .news .n1 li2 a:hover{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .columnist .listNews .news .n1 li2 a:visited {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .columnist .listNews .news .n2 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n1 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n2 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n1 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n2 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n1 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .columnist .listNews .news .n2 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .columnist .listNews .writer {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #636;
+	text-decoration: none;
+	float: left;
+	width: 100%;
+	margin-bottom: 5px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #636;
+	margin-top: 5px;
+}
+.bg2 .con .columnist .listNews .writerprofile {
+	float: left;
+	width: 740px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	height: 100%;
+	background-color: #EDDAED;
+}
+.bg2 .con .columnist .listNews .writerprofile .pic {
+	float: left;
+	width: 200px;
+	/* [disabled]height: 300px; */
+	margin: 10px;
+}
+.bg2 .con .columnist .listNews .writerprofile .text1 {
+	float: right;
+	width: 480px;
+	margin-top: 10px;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #000;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #000;
+}
+.bg2 .con .columnist .listNews .writerprofile .text2 {
+	float: right;
+	width: 480px;
+	margin-top: 5px;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 30px;
+	color: #000;
+}
+.bg2 .con .columnist .listNews .writerprofile .text2 a {
+	float: left;
+	width: 480px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 30px;
+	color: #009;
+	text-decoration: none;
+}
+
+
+
+
+.bg2 .con .columnist .listNews .writerbox {
+	float: left;
+	width: 365px;
+	height: 80px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	/* [disabled]border-bottom-width: 1px; */
+	/* [disabled]border-bottom-style: ridge; */
+	border-bottom-color: #999;
+	margin-right: 5px;
+}
+
+.bg2 .con .columnist .listNews .writerbox .pic {
+	float: left;
+	height: 70px;
+	width: 70px;
+	margin-right: 8px;
+}
+.bg2 .con .columnist .listNews .writerbox .text {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 20px;
+	color: #339;
+	text-decoration: none;
+	margin-top: 5px;
+	font-weight: bold;
+}
+.bg2 .con .columnist .listNews .writerbox .text a {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 20px;
+	color: #339;
+	text-decoration: none;
+	margin-top: 5px;
+	font-weight: bold;
+}
+.bg2 .con .columnist .listNews .writerbox .text a:visited {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 20px;
+	color: #339;
+	text-decoration: none;
+	margin-top: 5px;
+	font-weight: bold;
+}
+.bg2 .con .columnist .listNews .writerbox .text a:hover {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 20px;
+	color: #339;
+	text-decoration: none;
+	margin-top: 5px;
+	font-weight: bold;
+}
+
+
+
+.bg2 .con .columnist .listNews .writerbox .text2 {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #333;
+}
+.bg2 .con .columnist .listNews .writerbox .text2 a {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #333;
+	text-decoration: none;
+}
+.bg2 .con .columnist .listNews .writerbox .text2 a:visited {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #333;
+	text-decoration: none;
+}
+.bg2 .con .columnist .listNews .writerbox .text2 a:hover {
+	float: left;
+	width: 280px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #333;
+	text-decoration: none;
+}
+
+.bg2 .con .columnist .page  {
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    margin-top: 25px;
+    clear: none;
+    width: 600px;
+    /* height: 30px; */
+    margin-bottom: 25px;
+    float: left;
+    /* margin-left: 150px; */
+/*    margin-left: 30%;*/
+}
+.bg2 .con .columnist .page .next a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	/*width: 65px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .columnist .page .next {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	/*width: 65px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .columnist .page .back a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	/*width: 65px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+}
+.bg2 .con .columnist .page span .next {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	/*width: 65px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	overflow: hidden;
+}
+.bg2 .con .columnist .page span .next a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	overflow: hidden;
+}
+.bg2 .con .columnist .page .next a  {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 65px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+.bg2 .con .columnist .page .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #FFF;
+	font-size: 15px;
+	line-height: 30px;
+	/*background-color: #b5b5b6;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	margin-right: 3px;
+	margin-left: 3px;
+	/*width: 500px;*/
+}
+.bg2 .con .columnist .page .no span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .columnist .page .no span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .columnist .page .no {
+/*	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;*/
+}
+.bg2 .con .columnist .page span .back span  {
+font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #FFF;
+    background-color: #b5b5b6;
+    height: 30px;
+    width: 25px;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    font-weight: bold;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+.bg2 .con .columnist .page span .next span a {
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+    color: #FFF;
+    background-color: #b5b5b6;
+    height: 30px;
+    width: 12px;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    display: block;
+    font-weight: bold;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+.bg2 .con .columnist .page .next span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	/*width: 25px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .columnist .page .no a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .columnist .page .no a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .columnist .page .no a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	background-color: #CC0000;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .columnist .listNews .news .n1 li1 {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.bg2 .con .columnist .listNews .news .n2 li1 {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li2{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li3{
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li4{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+
+.bg2 .con .contribute .listNews .news .n1 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+
+.bg2 .con .contribute .listNews .news .n2 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .adService {
+	float: left;
+	height: 100%;
+	width: 800px;
+	background-color: #FFF;
+	margin-top: 15px;
+	list-style-type: none;
+}
+.bg2 .con .adService .title {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #ff6600;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #FF6600;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 15px;
+}
+.bg2 .con .adService .picbtn {
+	float: left;
+	overflow: hidden;
+	/* [disabled]position: relative; */
+	z-index: 1;
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 780px;
+	margin-left: 25px;
+	height: 460px;
+}
+.bg2 .con .adService .title .text {
+	margin-left: 10px;
+}
+.bg2 .con .adService .listNews .tabbtn {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #636;
+	list-style-type: none;
+	width: 100%;
+}
+.bg2 .con .adService .listNews .tabbtn li {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #636;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .adService .listNews .tabbtn li2 {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #636;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .adService .listNews .tabbtn li a {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #636;
+}
+.bg2 .con .adService .listNews .tabbtn li a:hover {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+}
+.bg2 .con .adService .picbtn .titlebox {
+	float: left;
+	height: 50px;
+	width: 722px;
+	position: relative;
+	z-index: 1;
+	top: 305px;
+	background-color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 25px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	/* [disabled]filter: Mask(Color=#000); */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+.bg2 .con .adService .picbtn .text .titlebox {
+	width: 722px;
+}
+.bg2 .con .cadService .picbtn .text .titlebox a {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+.bg2 .con .adService .picbtn .text .titlebox a:hover {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+
+.bg2 .con .adService .picbtn .text .titlebox a:hover {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+.bg2 .con .adService .picbtn .titlebox {
+	float: left;
+	height: 50px;
+	width: 722px;
+	position: relative;
+	z-index: 1;
+	top: 305px;
+	background-color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 25px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	/* [disabled]filter: Mask(Color=#000); */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+.bg2 .con .adService .picbtn .text .titlebox {
+	width: 722px;
+}
+.bg2 .con .adService .picbtn .text .titlebox a {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+.bg2 .con .adService .picbtn .text .titlebox a:hover {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+.bg2 .con .adService .picbtn .text .titlebox a:hover {
+	width: 722px;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+}
+.bg2 .con .adService .picbtn .Nbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 30px;
+	top: 260px;
+}
+.bg2 .con .adService .picbtn .Bbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 590px;
+	top: 260px;
+}
+.bg2 .con .adService .picbtn .pic {
+	float: left;
+	z-index: 0;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	overflow: hidden;
+	position: relative;
+	clear: none;
+	height: 435px;
+	width: 742px;
+	top: -130px;
+}
+.bg2 .con .adService .listNews {
+	float: left;
+	width: 742px;
+	margin-left: 25px;
+}
+
+.bg2 .con .adService .listNews .news {
+	float: left;
+	width: 742px;
+}
+.bg2 .con .adService .listNews .news .n1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #dfdfe0;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .columnist .listNews .news .n2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #FFFFFF;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .columnist .listNews .news .n1 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+.bg2 .con .columnist .listNews .news .n2 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+.bg2 .con .columnist .listNews .news .n1 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n2 li2 a {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .columnist .listNews .news .n1 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .columnist .listNews .news .n2 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .adService .listNews .news .n1 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .adService .listNews .news .n2 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .adService .listNews .news .n1 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .adService .listNews .news .n2 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .ranking .comeingsoon {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 35px;
+	line-height: 35px;
+	color: #C00;
+	font-weight: bold;
+	text-decoration: none;
+	margin-top: 50px;
+	/* [disabled]background-color: #FDD; */
+	height: 400px;
+	width: 650px;
+	text-align: center;
+	margin-left: 80px;
+}
+.bg2 .con .ranking {
+	float: left;
+	height: 100%;
+	width: 800px;
+	background-color: #FFF;
+	margin-top: 15px;
+}
+.bg2 .con .ranking .title {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #5d34a2;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #5d34a2;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 15px;
+	margin-bottom: 15px;
+}
+.bg2 .con .ranking .tabbtn{
+	float: left;
+	/*overflow: hidden;*/
+	/* [disabled]position: relative; */
+	z-index: 1;
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 780px;
+	/*margin-left: 25px;*/
+/*	height: 460px;*/
+	height: 50px;
+}
+.bg2 .con .ranking .tabbtn li a{
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+	margin-right: 5px;
+	margin-left: 5px;
+	font-size: 15px;
+	line-height: 18px;
+	font-weight: bold;
+}
+.bg2 .con .ranking .tabbtn li2 {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C60;
+}
+.bg2 .con .ranking .tabbtn li2 a {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bg2 .con .ranking .picbtn li {
+	text-decoration: none;
+	float: right;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C60;
+}
+.bg2 .con .ranking .title .text {
+	margin-left: 10px;
+}
+.bg2 .con .ranking .picbtn .titlebox {
+	float: left;
+	height: 50px;
+	width: 722px;
+	position: relative;
+	z-index: 1;
+	top: 305px;
+	background-color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 25px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	/* [disabled]filter: Mask(Color=#000); */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+.bg2 .con .ranking .listNews .news .page {
+	width: 100%;/*	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;*/
+	clear: none;}
+	
+.bg2 .con .video .page {
+	width: 100%;
+	clear: none;
+}
+.bg2 .con .ranking .listNews .news .back span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;
+}
+/*.bg2 .con .ranking .listNews .news .next {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;
+}*/
+.bg2 .con .ranking .listNews .news .next span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;
+}
+.bg2 .con .ranking .listNews .news .next span a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;
+}
+.bg2 .con .video .next span a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;
+}
+.bg2 .con .ranking .listNews .news .back span a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;
+}
+
+.bg2 .con  .video .back span a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 60px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-right: 10px;
+}
+
+/*.bg2 .con .ranking .listNews .news .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;*/
+	/*	
+	clear: none;
+	overflow: hidden;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}*/
+.bg2 .con .ranking .listNews .news .no span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	width:25px;
+	background-color: #b5b5b6;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	margin-right: 3px;
+	margin-left: 3px;
+	margin-bottom: 15px;
+}
+.bg2 .con .video .news .no span {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	width:25px;
+	background-color: #b5b5b6;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	margin-right: 3px;
+	margin-left: 3px;
+	margin-bottom: 15px;
+}
+.bg2 .con .ranking .listNews .news .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	/*background-color: #b5b5b6;*/
+/*	height: 30px;*/
+	/*width: 25px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+/*	font-weight: bold;*/
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .video .page .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	/*background-color: #b5b5b6;*/
+/*	height: 30px;*/
+	/*width: 25px;*/
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+/*	font-weight: bold;*/
+	margin-right: 3px;
+	margin-left: 3px;
+	margin-bottom:5px;
+}
+
+.bg2 .con .video .page .no .thispageno{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 15px;
+    line-height: 30px;
+	height: 30px;
+    width: 25px;
+    color: #FFF;
+    background-color: #b5b5b6;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-right: 3px;
+	margin-left: 3px;
+	float: left;
+}
+
+.bg2 .con .ranking .listNews .news .no a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .video .page .no a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .ranking .listNews .news .no  a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+
+.bg2 .con .video .page .no a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	background-color: #b5b5b6;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .ranking .listNews .news .no a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	background-color: #CC0000;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .video .page .no a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FF0;
+	background-color: #CC0000;
+	height: 30px;
+	width: 25px;
+	text-align: center;
+	text-decoration: none;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+.bg2 .con .ranking .picbtn .text .titlebox {
+	width: 722px;
+}
+.bg2 .con .ranking .picbtn .text .titlebox a {
+	width: 722px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #FFF;
+	text-decoration: none;
+}
+.bg2 .con .ranking .picbtn .text .titlebox a:visited {
+	width: 722px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #FFF;
+	text-decoration: none;
+}
+.bg2 .con .ranking .picbtn .text .titlebox a:hover {
+	width: 722px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #FFF;
+	text-decoration: none;
+}
+
+
+
+
+
+.bg2 .con .ranking .picbtn .Nbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 30px;
+	top: 260px;
+}
+
+
+.bg2 .con .ranking .picbtn .Bbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 590px;
+	top: 260px;
+}
+.bg2 .con .ranking .picbtn  .pic {
+	float: left;
+	z-index: 0;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	overflow: hidden;
+	position: relative;
+	clear: none;
+	height: 435px;
+	width: 742px;
+	top: -130px;
+}
+
+.bg2 .con .ranking .listNews {
+	float: left;
+	width: 742px;
+	margin-left: 25px;
+}
+.bg2 .con .ranking .listNews .news {
+	float: left;
+	width: 742px;
+}
+.bg2 .con .ranking .listNews .news .n1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #dfdfe0;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .ranking .listNews .news .n1 li{
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n1 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n1 li2 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+	text-decoration: none;
+}
+
+
+.bg2 .con .ranking .listNews .news .n1 li3{
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+
+.bg2 .con .ranking .listNews .news .n1 li4{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+
+.bg2 .con .ranking .listNews .news .n1 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+	text-decoration: none;
+}
+
+.bg2 .con .ranking .listNews .news .n1 li6 {
+	float: left;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 4px;
+	text-decoration: none;
+	color: #554588;
+}
+
+.bg2 .con ..ranking .listNews .news .n1 li2{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .ranking .listNews .news .n2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #FFFFFF;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .ranking .listNews .news .n2 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n2 li7 {
+	float: right;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n2 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n2 li2 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n2 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n2 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n2 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+	text-decoration: none;
+}
+.bg2 .con .ranking .listNews .news .n2 li6 {
+	float: left;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 4px;
+	text-decoration: none;
+	color: #554588;
+	/* [disabled]background-color: #554588; */
+}
+.bg2 .con .ranking .listNews .box .n {
+	float: left;
+	height: 175px;
+	width: 225px;
+	/*margin-top: 22px;
+	margin-bottom: 12px;*/
+	margin-right: 10px;
+	margin-left: 10px;
+	padding: 0px;
+	margin-bottom: 5px;
+}
+
+.bg2 .con .ranking .listNews .box .n .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #C00;
+	height: 35px;
+	width: 35px;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	float: left;
+	top: -20px;
+}
+
+
+
+.bg2 .con .ranking .listNews .box .n .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #FF0;
+	display: block;
+	text-decoration: none;
+	background-color: #C00;
+	height: 40px;
+	padding-top: 2px;
+	padding-right: 5px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	width: 216px;
+	float: left;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	top: 75px;
+	filter: Alpha(Opacity=80, FinishOpacity=80, Style=80, StartX=80, StartY=80, FinishX=80, FinishY=80);
+}
+
+.bg2 .con .ranking .listNews .box .n .pic {
+	height: 175px;
+	width: 225px;
+	float: left;
+	position: relative;
+	z-index: 0;
+	display: block;
+	overflow: hidden;
+	top: -115px;
+}
+.bg2 .con .ranking .listNews .box .n  .popularity{
+	float: left;
+	width: 225px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 15px;
+	color: #C00;
+	text-align: right;
+	position: relative;
+	top: 84px;
+	z-index: 1;
+}
+
+
+.bg2 .con .ranking .listNews .box .n2 {
+	float: left;
+	height: 175px;
+	width: 225px;
+	margin-top: 20px;
+	margin-bottom: 22px;
+	margin-right: 10px;
+	margin-left: 10px;
+	padding: 0px;
+}
+.bg2 .con .ranking .listNews .box .n2 .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #554588;
+	height: 35px;
+	width: 35px;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	float: left;
+	top: -5px;
+}
+.bg2 .con .ranking .listNews .box .n2 .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #FFF;
+	display: block;
+	text-decoration: none;
+	background-color: #333;
+	height: 40px;
+	padding-top: 2px;
+	padding-right: 5px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	width: 216px;
+	float: left;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	top: 90px;
+	filter: Alpha(Opacity=80, FinishOpacity=80, Style=80, StartX=80, StartY=80, FinishX=80, FinishY=80);
+}
+.bg2 .con .ranking .listNews .box .n2 .pic {
+	height: 175px;
+	width: 225px;
+	float: left;
+	position: relative;
+	z-index: 0;
+	display: block;
+	overflow: hidden;
+	top: -100px;
+}
+.bg2 .con .ranking .listNews .box .n2 .popularity {
+	float: left;
+	width: 225px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 15px;
+	color: #C00;
+	text-align: right;
+	position: relative;
+	top: 100px;
+	z-index: 1;
+}
+.bg2 .con .video {
+	float: left;
+	height: 100%;
+	width: 800px;
+	background-color: #FFF;
+	margin-top: 15px;
+}
+.bg2 .con .video .title {
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #c11920;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #c11920;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+
+.bg2 .con .video .picbtn  {
+	float: left;
+	overflow: hidden;
+	/* [disabled]position: relative; */
+	z-index: 1;
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 780px;
+	margin-left: 25px;
+	height: 460px;
+}
+
+
+
+.bg2 .con .video .title .text {
+	margin-left: 10px;
+}
+.bg2 .con .video .picbtn .titlebox {
+	float: left;
+	height: 50px;
+	width: 722px;
+	position: relative;
+	z-index: 1;
+	top: 305px;
+	background-color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 25px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+	/* [disabled]filter: Mask(Color=#000); */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+.bg2 .con .video .picbtn .text .titlebox {
+	width: 722px;
+}
+
+
+.bg2 .con .video .picbtn .Nbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 30px;
+	top: 260px;
+}
+
+
+.bg2 .con .video .picbtn .Bbtn a {
+	float: left;
+	height: 72px;
+	width: 50px;
+	position: relative;
+	z-index: 1;
+	left: 590px;
+	top: 260px;
+}
+.bg2 .con .video .picbtn  .pic {
+	float: left;
+	z-index: 0;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	overflow: hidden;
+	position: relative;
+	clear: none;
+	height: 435px;
+	width: 742px;
+	top: -130px;
+}
+
+.bg2 .con .video .listNews {
+	float: left;
+	width: 742px;
+	margin-left: 25px;
+}
+.bg2 .con .video .listNews .otherbox{
+	float: left;
+	width: 250px;
+	height: 80px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+}
+.bg2 .con .video .listNews .vediobox a img {
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+.bg2 .con .video .listNews .news {
+	float: left;
+	width: 250px;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #333;
+}
+.bg2 .con .video .listNews .news .text {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 18px;
+	color: #C11920;
+	font-weight: bold;
+}
+
+.bg2 .con .video .listNews .news .text2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 22px;
+	color: #333;
+}
+.bg2 .con .video .listNews .news .text2 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 22px;
+	color: #C00;
+	text-decoration: none;
+}
+
+.bg2 .con .video .listNews .vediobox{
+	float: right;
+	height: 273px;
+	width: 486px;
+}
+.bg2 .con .video .listNews .line{
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #000;
+	color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	width: 33%;
+}
+.bg2 .con .video .listNews .vediolist {
+	float: left;
+	padding-bottom: 50px;
+}
+.bg2 .con .video .listNews .vediolist .vl {
+	float: left;
+	width: 220px;
+	margin-right: 10px;
+	margin-left: 13px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.bg2 .con .video .listNews .vediolist .vl .pic {
+	float: left;
+	height: 124px;
+	width: 220px;
+	margin-bottom: 5px;
+	border: 0px;
+}
+.bg2 .con .video .listNews .vediolist .vl .pic a img {
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+
+.bg2 .con .video .listNews .vediolist .vl .text1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	float: left;
+	width: 220px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.bg2 .con .video .listNews .vediolist .vl .text1 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	float: left;
+	width: 220px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.bg2 .con .video .listNews .vediolist .vl .text2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+}
+.bg2 .con .video .listNews .vediolist .vl .text2 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	line-height: 18px;
+	color: #C00;
+	text-decoration: none;
+}
+
+
+
+
+.bg2 .con .video .listNews .otherbox .t1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 11px;
+	line-height: 20px;
+	color: #C00;
+	float: left;
+}
+
+
+.bg2 .con .video .listNews .otherbox .t2 a{
+	font-size: 15px;
+	line-height: 20px;
+	color: #333;
+	font-weight: bold;
+	width: 250px;
+	float: left;
+	height: 20px;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+}
+.bg2 .con .video .listNews .otherbox .t2 a:hover {
+/*	font-size: 15px;
+	line-height: 20px;
+	color: #FF0;
+	font-weight: bold;
+	width: 250px;
+	float: left;
+	height: 20px;
+	background-color: #333;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";*/
+	font-size: 15px;
+	line-height: 20px;
+	color: #333;
+	font-weight: bold;
+	width: 250px;
+	float: left;
+	height: 20px;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+}
+
+.bg2 .con .video .listNews .otherbox .t3 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	line-height: 25px;
+	/* [disabled]float: left; */
+	height: 25px;
+	text-decoration: none;
+	width: 250px;
+	text-align: right;
+	color: #333;
+    margin-top: 75px;
+}
+.bg2 .con .video .listNews .otherbox .t3 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	line-height: 25px;
+	/* [disabled]float: left; */
+	height: 25px;
+	text-decoration: none;
+	width: 250px;
+	text-align: right;
+	color: #333;
+}
+/*.bg2 .con .video .listNews .news .n1 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #dfdfe0;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+
+.bg2 .con .video .listNews .news .n1 li{
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+
+
+.bg2 .con .video .listNews .news .n1 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+
+.bg2 .con .video .listNews .news .n1 li3{
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .video .listNews .news .n1 li4{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+
+.bg2 .con .video .listNews .news .n1 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+
+.bg2 .con .video .listNews .news .n1 li2{
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .video .listNews .news .n2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	background-color: #FFFFFF;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	height: 32px;
+}
+.bg2 .con .video .listNews .news .n2 li {
+	float: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #C00;
+	list-style-type: none;
+	margin-left: 5px;
+}
+.bg2 .con .video .listNews .news .n2 li2 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .video .listNews .news .n2 li3 {
+	line-height: 28px;
+	height: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .video .listNews .news .n2 li4 {
+	line-height: 28px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #000;
+	margin-left: 5px;
+	float: left;
+}
+.bg2 .con .video .listNews .news .n2 li5 {
+	float: right;
+	height: 28px;
+	width: 28px;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+.bg2 .con .video .listNews .box .n {
+	float: left;
+	height: 175px;
+	width: 225px;
+	margin-top: 22px;
+	margin-bottom: 12px;
+	margin-right: 10px;
+	margin-left: 10px;
+	padding: 0px;
+}
+
+.bg2 .con .video .listNews .box .n .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #C00;
+	height: 35px;
+	width: 35px;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	float: left;
+	top: -20px;
+}
+.bg2 .con .video .listNews .box .n .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #FF0;
+	display: block;
+	text-decoration: none;
+	background-color: #C00;
+	height: 40px;
+	padding-top: 2px;
+	padding-right: 5px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	width: 216px;
+	float: left;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	top: 75px;
+	filter: Alpha(Opacity=80, FinishOpacity=80, Style=80, StartX=80, StartY=80, FinishX=80, FinishY=80);
+}
+.bg2 .con .video .listNews .box .n .pic {
+	height: 175px;
+	width: 225px;
+	float: left;
+	position: relative;
+	z-index: 0;
+	display: block;
+	overflow: hidden;
+	top: -115px;
+}
+.bg2 .con .video .listNews .box .n  .popularity{
+	float: left;
+	width: 225px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 15px;
+	color: #C00;
+	text-align: right;
+	position: relative;
+	top: 100px;
+	z-index: 1;
+}
+.bg2 .con .video .listNews .box .n2 {
+	float: left;
+	height: 175px;
+	width: 225px;
+	margin-top: 20px;
+	margin-bottom: 22px;
+	margin-right: 10px;
+	margin-left: 10px;
+	padding: 0px;
+}
+.bg2 .con .video .listNews .box .n2 .no {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #554588;
+	height: 35px;
+	width: 35px;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	float: left;
+	top: -5px;
+}
+.bg2 .con .video .listNews .box .n2 .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #FFF;
+	display: block;
+	text-decoration: none;
+	background-color: #333;
+	height: 40px;
+	padding-top: 2px;
+	padding-right: 5px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	width: 216px;
+	float: left;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	top: 90px;
+	filter: Alpha(Opacity=80, FinishOpacity=80, Style=80, StartX=80, StartY=80, FinishX=80, FinishY=80);
+}
+.bg2 .con .video .listNews .box .n2 .pic {
+	height: 175px;
+	width: 225px;
+	float: left;
+	position: relative;
+	z-index: 0;
+	display: block;
+	overflow: hidden;
+	top: -100px;
+}
+.bg2 .con .video .listNews .box .n2 .popularity {
+	float: left;
+	width: 225px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 15px;
+	color: #C00;
+	text-align: right;
+	position: relative;
+	top: 100px;
+	z-index: 1;
+}
+*/
+.bg2 .con .sideNews {
+	float: left;
+	width: 210px;
+	margin-left: 5px;
+	/* [disabled]margin-top: 15px; */
+	list-style-type: none;
+	padding-top: 15px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #333;
+	text-decoration: none;
+}
+
+
+
+.bg2 .con .sideNews .hotNews {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #C30;
+	/* [disabled]border-left-width: 10px; */
+	/* [disabled]border-left-style: solid; */
+	/* [disabled]border-left-color: #C00; */
+}
+.bg2 .con .sideNews .hotNews .text {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	color: #C00;
+	text-decoration: none;
+	/* [disabled]margin-left: 5px; */
+}
+.bg2 .con .sideNews .in {
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #F18E1D;
+	margin-top: 10px;
+}
+
+
+.bg2 .con .sideNews .in .title {
+	background-color: #f18e1d;
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	list-style-type: none;
+}
+
+
+.bg2 .con .sideNews .in .list li {
+	float: left;
+	margin-right: 2px;
+	margin-left: 2px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .in .list li a {
+	float: left;
+	margin-right: 2px;
+	margin-left: 2px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+
+.bg2 .con .sideNews .hot {
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #CC0000;
+	margin-top: 10px;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .hot .title {
+	background-color: #CC0000;
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .hot .list li {
+	float: left;
+	margin-right: 2px;
+	margin-left: 4px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .hot .list li a {
+	float: left;
+	margin-right: 2px;
+	margin-left: 4px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+.bg2 .con .sideNews .hot .list li a:hover {
+	float: left;
+	margin-right: 2px;
+	margin-left: 4px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+.bg2 .con .sideNews .hot .list li a:visited {
+	float: left;
+	margin-right: 2px;
+	margin-left: 4px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+
+
+.bg2 .con .sideNews .new {
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #FF6600;
+	margin-top: 10px;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .new .title {
+	background-color: #FF6600;
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .new .list li {
+	float: right;
+	margin-right: 2px;
+	margin-left: 2px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .new .list li a {
+/*	float: right;
+	margin-right: 2px;
+	margin-left: 2px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;*/
+	float: left;
+	margin-right: 2px;
+	margin-left: 8px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+.bg2 .con .sideNews .new .list li a:hover {
+	float: left;
+	margin-right: 2px;
+	margin-left: 8px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+
+.bg2 .con .sideNews .new .list li a:visited {
+	float: left;
+	margin-right: 2px;
+	margin-left: 8px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+.bg2 .con .sideNews .submit {
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #CC6600;
+	margin-top: 10px;
+}
+.bg2 .con .sideNews .columnist2 {
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #663366;
+	margin-top: 10px;
+}
+.bg2 .con .sideNews .submit2 .title {
+	background-color: #CC6600;
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+}
+.bg2 .con .sideNews .columnist2 .title {
+	background-color: #663366;
+	float: left;
+	width: 210px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+}
+
+.bg2 .con .sideNews .submit .list li {
+	float: left;
+	margin-right: 2px;
+	margin-left: 2px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+}
+.bg2 .con .sideNews .columnist2 .list li {
+	float: left;
+	margin-right: 2px;
+	margin-left: 2px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+}
+.bg2 .con .sideNews .columnist2 .list li a {
+	float: left;
+	margin-right: 2px;
+	margin-left: 2px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #333;
+	width: 210px;
+	list-style-type: none;
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+
+.bg2 .con .sideNews .ad {
+	float: left;
+	width: 210px;
+	margin-top: 5px;
+	height: 100px;
+	text-decoration: none;
+}
+.bg2 .con .sideNews .ad a {
+	color: #000;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 35px;
+	/* [disabled]font-weight: bold; */
+}
+.bg2 .con .sideNews .ad a:hover {
+	color: #C00;
+}
+
+
+.bg2 .con .sideNews .banenr {
+	float: left;
+	width: 210px;
+	margin-top: 5px;
+}
+
+.bg2 .con .sideNews .banner2 {
+	float: left;
+	margin-top: 5px;
+}
+
+.bg2 .BNnews {
+	float: left;
+	margin-top: 10px;
+	width: 210px;
+}
+
+
+.bg2 .BNnews .bn img {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+.bg2 .BNnews .hot .title {
+	background-color: #c11920;
+	height: 39px;
+	width: 45px;
+	margin-top: 10px;
+	text-align: center;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 16px;
+	font-weight: bold;
+	color: #FF0;
+	padding-top: 6px;
+	float: left;
+}
+
+
+.bg2 .BNnews .hot .list {
+	float: left;
+	width: 210px;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #c11920;
+	margin-bottom: 15px;
+}
+
+
+.bg2 .BNnews .hot .list li a{
+	float: left;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #000000;
+	text-decoration: none;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 10px;
+	padding-bottom: 10px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCCCCC;
+}
+.bg2 .BNnews .hot .list li a:lastchat{
+	float: left;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #000000;
+	text-decoration: none;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 10px;
+	padding-bottom: 10px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCCCCC;
+}
+.bg2 .BNnews .hot2 .title2 a{
+	margin-top: 0px;
+	text-align: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #C00;
+	float: left;
+	height: 25px;
+	text-decoration: none;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #C00;
+	display: block;
+	background-color: #FFF;
+	width: 200px;
+}
+.bg2 .BNnews .hot2 .title2 a:visited {
+	margin-top: 0px;
+	text-align: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #C00;
+	float: left;
+	height: 25px;
+	text-decoration: none;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #C00;
+	display: block;
+	background-color: #FFF;
+	width: 200px;
+}
+.bg2 .BNnews .hot3 .title2 a{
+	margin-top: 0px;
+	text-align: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #287396;
+	float: left;
+	height: 25px;
+	text-decoration: none;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #287396;
+	display: block;
+	background-color: #FFF;
+	width: 200px;
+}
+.bg2 .BNnews .hot3 .title2 {
+	margin-top: 0px;
+	text-align: left;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #287396;
+	float: left;
+	height: 25px;
+	text-decoration: none;
+	border-left-width: 10px;
+	border-left-style: solid;
+	border-left-color: #287396;
+	display: block;
+	background-color: #FFF;
+	width: 200px;
+}
+
+
+
+.bg2 .BNnews .hot2 .list {
+	float: left;
+	width: 210px;
+	margin-bottom: 15px;
+	background-color: #FFF;
+}
+
+.bg2 .BNnews .hot2 .list li a {
+	float: left;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #000000;
+	text-decoration: none;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 10px;
+}
+.bg2 .BNnews .hot2 .hot3 .list .list .vedio a{
+	margin-top: 10px;
+	margin-bottom: 5px;
+	float: left;
+	margin-left: 10px;
+	height: 107px;
+	width: 190px;
+}
+.bg2 .BNnews .hot2 .list .pic a {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	float: left;
+	margin-left: 5px;
+	height: 107px;
+	width: 190px;
+}
+
+.bg2 .BNnews .hot2 .list .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+	margin-left: 10px;
+	margin-bottom: 15px;
+	float: left;
+	width: 190px;
+	text-align: left;
+}
+.bg2 .BNnews .hot2 .list .title a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	margin-bottom: 2px;
+	float: left;
+	width: 190px;
+	text-align: left;
+}
+.bg2 .BNnews .hot2 .list .title li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+	font-size: 15px;
+	line-height: 25px;
+	text-decoration: none;
+	list-style-type: none;
+}
+
+
+
+.bg2 .BNnews .hot2 .list .text {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 12px;
+	line-height: 18px;
+	color: #666;
+	text-decoration: none;
+	margin-bottom: 8px;
+	margin-left: 10px;
+	text-align: center;
+}
+
+
+.bg2 .BNnews .hot2 .list .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 12px;
+	line-height: 18px;
+	color: #666;
+	text-decoration: none;
+	margin-bottom: 8px;
+	margin-left: 10px;
+	text-align: center;
+}
+.bg2 .BNnews .hot2 .hot3 .list {
+	float: left;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #000000;
+	text-decoration: none;
+	margin-top: 0px;
+	margin-bottom: 3px;
+}
+.bg2 .BNnews .hot2 .hot3 .list a{
+	float: left;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #000000;
+	text-decoration: none;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 5px;
+}
+
+.bg2 .BNnews .hot2 .hot3 .list .list .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.bg2 .BNnews .hot2 .hot3 .list .list .title a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 28px;
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.bg2 .BNnews .hot2 .list .hot3 .list .titletext {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	margin-bottom: 5px;
+	float: left;
+	width: 195px;
+	text-align: center;
+	margin-left: 5px;
+	margin-top: 10px;
+}
+.bg2 .BNnews .hot2 .list .hot3 .list .titletext a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	margin-bottom: 5px;
+	float: left;
+	width: 195px;
+	text-align: center;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.bg2 .BNnews .hot2 .hot3 .title2 {
+	/* [disabled]margin: 0px; */
+}
+.bg2 .BNnews .in .title {
+	background-color: #f18e1d;
+	height: 39px;
+	width: 45px;
+	margin-top: 10px;
+	text-align: center;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 16px;
+	font-weight: bold;
+	color: #FFF;
+	padding-top: 6px;
+	float: left;
+}
+.bg2 .BNnews .in .list {
+	float: left;
+	width: 210px;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #f18e1d;
+	margin-bottom: 15px;
+}
+.bg2 .BNnews .in .list li a {
+	float: left;
+	list-style-type: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #000000;
+	text-decoration: none;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 10px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #FFF;
+}
+
+.bg2 .BNnews .bn2 {
+	float: left;
+	/*height: 80px;*/
+	height: 110px;
+	width: 210px;
+	padding: 0px;
+	margin-top: 5px;
+	margin-bottom: 2px;
+}
+.bg2 .BNnews .fb {
+	float: left;
+	height: 32px;
+	width: 210px;
+	margin-top: 35px;
+	margin-bottom: 2px;
+	/*visibility: hidden;*/
+}
+.NewsContTxt2   {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #000000;
+	text-decoration: none;
+	margin-left: 50px;
+}
+.h1    {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #000000;
+	text-decoration: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.h1 a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #0000FF;
+}
+.h1 a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #0000FF;
+}
+
+/*.iconmenutab {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	color: #000;
+	height: 150px;
+	width: 300px;
+	background-color: #CCC;
+}*/
+
+.h2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #0066CC;
+	font-weight: bold;
+}
+
+.h3 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 25px;
+	line-height: 28px;
+	color: #CC0000;
+	font-weight: bold;
+	margin-top: 15px;
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+	text-decoration: none;
+}
+.h4 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #000000;
+	font-weight: bold;
+}
+.h5 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 28px;
+	color: #990000;
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+	text-decoration: none;
+	text-align: center;
+}
+.h5 a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 28px;
+	color: #990000;
+	/*float: left;*/
+	/* [disabled]width: 100%; */
+	margin-bottom: 10px;
+	text-decoration: none;
+	text-align: center;
+}
+
+.h6 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #000000;
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+.h7 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	line-height: 28px;
+	color: #000000;
+	font-weight: 800;
+	width: 80%;
+	text-align: left;
+	margin-top: 10px;
+	margin-right: auto;
+	/*margin-bottom: 55px;*/
+margin-bottom: 20px;
+	margin-left: auto;
+}
+
+.h10 {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 18px;
+	line-height: 30px;
+	color: #333;
+	text-decoration: none;
+	text-align: center;
+	width: 600px;
+	margin-right: auto;
+	margin-left: auto;
+	font-weight: normal;
+}
+
+.h11 {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 25px;
+	line-height: 35px;
+	color: #06C;
+	text-decoration: none;
+	text-align: center;
+	width: 600px;
+	margin-right: auto;
+	margin-left: auto;
+	font-weight: normal;
+}
+
+.bar .share ul li {
+	float: left;
+	width: 40px;
+	list-style-type: none;
+	display: block;
+	margin-right: 2px;
+	margin-left: 1px;
+}
+
+.bg .bar .share ul li a img {
+	margin: 0px;
+	padding: 0px;
+}
+
+.news .newstitle {
+	height: 40px;
+	width: 130px;
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	font-weight: bold;
+	color: #c11920;
+	background-color: #ffe903;
+	text-align: center;
+	display: block;
+	padding-top: 15px;
+	float: left;
+	clear: none;
+}
+.news .news {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 37px;
+	font-weight: bold;
+	color: #000;
+	float: left;
+	text-align: left;
+	height: 56px;
+	width: 905px;
+	clear: none;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-top: 16px;
+	padding-left: 15px;
+}
+.bg .ADBN{
+	clear: both;
+	width: 1050px;
+	margin: auto;
+	padding-top: 4px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
+.bg .ADBN .BN{
+	text-align: center;
+	width: 1035px;
+	margin: auto;
+	/* [disabled]border: 0px; */
+}
+.bg .ADBN .BN a img {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+.bg .mix{
+	clear: none;
+	width: 1050px;
+	margin-top: 5px;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-left: auto;
+	height: 440px;
+	/*background-color: #F4F4F6;*/
+	background-color: rgba(238, 238, 240, 1);
+}
+.bg .mix .daily{
+	float: left;
+	width: 810px;
+}
+.bg .mix .daily .title{
+	float: left;
+	height: 22px;
+	width: 810px;
+	margin-bottom: 5px;
+}
+.bg .mix .right{
+	float: right;
+	width: 212px;
+	background-color: #EFEFF1;
+}
+.bg .mix .daily .pic{
+	float: left;
+	height: 407px;
+	width: 810px;
+}
+.bg .mix .right .banner img a{
+	clear: none;
+	height: 83px;
+	width: 212px;
+	margin-top: 2px;
+	margin-right: auto;
+	margin-bottom: 2px;
+	margin-left: auto;
+}
+.bg .mix .right .banner{
+	float: left;
+	width: 212px;
+	margin-top: 5px;
+}
+.bg .mix .right .member{
+	clear: both;
+	margin-top: 10px;
+	float: left;
+	width: 212px;
+	margin-bottom: 10px;
+	list-style-type: none;
+}
+.bg .mix .right .member .title{
+	clear: both;
+	list-style-type: none;
+}
+.bg .mix .right .member .pic{
+	float: left;
+	height: 80px;
+	width: 80px;
+	margin-right: 1px;
+	margin-top: 2px;
+	clear: none;
+	list-style-type: none;
+}
+.bg .mix .right .member .text{
+	float: left;
+	list-style-type: none;
+}
+.bg .mix .right .member .text ul{
+	float: left;
+	width: 120px;
+	list-style-type: none;
+}
+.bg .mix .right .member .text ul li{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	width: 120px;
+	/*	margin-left: 15px;*/
+	margin-top: 1px;
+	text-decoration: none;
+	color: #000;
+	list-style-type: none;
+}
+.bg .mix .right .member .text ul li a:link{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	width: 120px;
+	/*margin-left: 15px;*/
+	margin-top: 1px;
+	text-decoration: none;
+	color: #000;
+	list-style-type: none;
+}
+.bg .mix .right .member .text ul li a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 20px;
+	width: 120px;
+/*	margin-left: 15px;*/
+	margin-top: 1px;
+	text-decoration: none;
+	color: #000;
+	list-style-type: none;
+}
+.bg .mix .right .news{
+	float: left;
+	width: 212px;
+	margin-top: 8px;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #366BBB;
+}
+.bg .mix .right .news .btn ul li{
+	float: left;
+	height: 68px;
+	width: 70px;
+	margin-bottom: 5px;
+	list-style-type: none;
+}
+.bg .mix .right .news .newscon{
+	float: left;
+	width: 212px;
+	/* [disabled]margin-top: 5px; */
+}
+.bg .mix .right .news .newscon .pic{
+	float: left;
+	height: 68px;
+	width: 72px;
+	margin-right: 1px;
+	margin-left: 1px;
+}
+.bg .mix .right .news .newscon .title{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 23px;
+	font-weight: bold;
+	color: #2E6AC2;
+	float: left;
+	height: 69px;
+	width: 138px;
+	text-decoration: none;
+}
+.bg .mix .right .news .newscon .title a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 23px;
+	font-weight: bold;
+	color: #2E6AC2;
+	float: left;
+	height: 69px;
+	width: 138px;
+	text-decoration: none;
+}
+.bg .mix .right .news .newscon .text{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 22px;
+	color: #595757;
+	float: left;
+	width: 212px;
+	height:95px;
+}
+.bg .focus{
+	clear: both;
+	width: 1050px;
+	margin-top: 20px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	/* [disabled]background-color: #EFEFF1; */
+}
+.bg .focus .HF{
+	float: left;
+	height: 630px;
+	width: 610px;
+	background-color: #FFF;
+	margin: 0px;
+}
+.focus .HF .hot {
+	float: left;
+	width: 305px;
+	/* [disabled]clear: both; */
+	background-color: #FFF;
+}
+.focus .HF .hot .title a{
+	width: 290px;
+	float: left;
+	background-color: #FFF;
+	margin-bottom: 8px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	color: #305BCE;
+	text-decoration: none;
+	font-weight: bold;
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #305BCE;
+}
+
+.focus .HF .hot .title2 a{
+	width: 290px;
+	float: left;
+	background-color: #FFF;
+	margin-bottom: 8px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	color: #305BCE;
+	text-decoration: none;
+	font-weight: bold;
+	text-align: right;
+	border-right-color: #305BCE;
+}
+
+.focus .HF .hot .title3 a{
+	width: 290px;
+	float: left;
+	background-color: #FFF;
+	margin-bottom: 3px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	color: #FF4801;
+	text-decoration: none;
+	font-weight: bold;
+	text-align:right
+}
+
+.focus .HF .hot .pic {
+	clear: both;
+	height: 120px;
+	width: 280px;
+	/* [disabled]margin-top: 0px; */
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+	background-color: #FFF;
+}
+.focus .HF .hot .pic img {
+	background-color: #FFF;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+}
+.focus .HF .hot .text {
+	/* [disabled]background-color: #FFF; */
+	width: 285px;
+	margin-right: auto;
+	margin-left: auto;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	/* [disabled]padding-top: 5px; */
+	clear: none;
+}
+.focus .HF .hot .text ul {
+	clear: none;
+	width: 212px;
+}
+.focus .HF .hot .text ul li {
+	height: 24px;
+	clear: both;
+	float: left;
+	/* [disabled]background-color: #FFF; */
+	width: 280px;
+	list-style-type: none;
+	/* [disabled]border-bottom-width: 1px; */
+	/* [disabled]border-bottom-style: solid; */
+	/* [disabled]border-bottom-color: #999; */
+}
+.focus .HF .hot .text ul li2  {
+	clear: none;
+	float: left;
+	width: 280px;
+	margin-top: 8px;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-left: auto;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #9fa0a0;
+	background-color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 1px;
+	color: #FFF;
+}
+.focus .HF .hot .text ul li .pic {
+	float: left;
+	height: 24px;
+	width: 25px;
+	clear: none;
+	padding: 0px;
+	list-style-type: none;
+	background-color: #FFF;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.focus .HF .hot .text ul li .text a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #2e5bcd;
+	text-decoration: none;
+	list-style-type: none;
+	height: 24px;
+	clear: none;
+	float: left;
+	background-color: #FFF;
+	width: 260px;
+	/* [disabled]margin-left: 5px; */
+	margin-bottom: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	/* [disabled]padding-left: 2px; */
+}
+.focus .HF .hot .text ul li .text a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #2e5bcd;
+	text-decoration: none;
+	list-style-type: none;
+	height: 24px;
+	clear: none;
+	float: left;
+	/* [disabled]background-color: #FFF; */
+	width: 260px;
+	/* [disabled]margin-left: 5px; */
+	margin-bottom: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+}
+.focus .HF .hot .text ul li .text a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #2e5bcd;
+	text-decoration: none;
+	list-style-type: none;
+	height: 24px;
+	clear: none;
+	float: left;
+	/* [disabled]background-color: #FFF; */
+	width: 260px;
+	/* [disabled]margin-left: 5px; */
+	margin-bottom: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+}
+.focus .HF .hot .text ul li3 .text a{
+	height: 24px;
+	clear: both;
+	float: left;
+	background-color: #FFF;
+	width: 260px;
+	list-style-type: none;
+	/* [disabled]border-bottom-width: 1px; */
+	/* [disabled]border-bottom-style: solid; */
+	/* [disabled]border-bottom-color: #999; */
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #333333;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: 400;
+}
+.focus .HF .immediate {
+	float: right;
+	width: 305px;
+	/* [disabled]clear: both; */
+	background-color: #FFF;
+}
+.focus .HF .immediate .hot{
+	float: left;
+	width: 305px;
+	clear: both;
+	background-color: #FFF;
+	/* [disabled]margin-left: 5px; */
+	padding-bottom: 5px;
+}
+.focus .HF .immediate .hot .title a {
+	width: 290px;
+	float: left;
+	background-color: #FFF;
+	margin-bottom: 8px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bolder;
+	color: #FF4801;
+	display: block;
+	text-decoration: none;
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #FF4701;
+}
+.focus .HF .immediate .hot .pic {
+	clear: both;
+	height: 120px;
+	width: 280px;
+	/* [disabled]margin-top: 0px; */
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+	background-color: #FFF;
+}
+.focus .HF .immediate .hot .pic img {
+	background-color: #FFF;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+}
+.focus .HF .immediate .hot .text {	/*
+	[disabled]background-color: #FFF; */
+	width: 285px;
+	margin-right: auto;
+	margin-left: auto;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	/* [disabled]padding-top: 5px; */
+	clear: none;
+}
+.focus .HF .immediate .hot .text ul {
+	clear: none;
+	width: 212px;
+}
+.focus .HF .immediate .hot .text ul li {
+	height: 24px;
+	clear: both;
+	float: left;
+	/* [disabled]background-color: #FFF; */
+	width: 280px;
+	list-style-type: none;
+	/* [disabled]border-bottom-width: 1px; */
+	/* [disabled]border-bottom-style: solid; */
+	/* [disabled]border-bottom-color: #999; */
+}
+.focus .HF .immediate .hot .text ul li2 {
+	clear: none;
+	float: left;
+	width: 280px;
+	margin-top: 8px;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-left: auto;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #9fa0a0;
+	background-color: #FFF;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 1px;
+	color: #FFF;
+}
+.focus .HF .immediate .hot .text ul li .pic {
+	float: left;
+	height: 24px;
+	width: 25px;
+	clear: none;
+	padding: 0px;
+	list-style-type: none;
+	background-color: #FFF;
+	margin: 0px;
+}
+.focus .HF .immediate .hot .text ul li .text a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #FE0000;
+	text-decoration: none;
+	list-style-type: none;
+	height: 24px;
+	clear: none;
+	float: left;
+	background-color: #FFF;
+	width: 260px;
+	/* [disabled]margin-left: 5px; */
+	margin-bottom: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	/* [disabled]padding-left: 2px; */
+}
+.focus .HF .immediate .hot .text ul li .text a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #FE0000;
+	text-decoration: none;
+	list-style-type: none;
+	height: 24px;
+	clear: none;
+	float: left;
+	/* [disabled]background-color: #FFF; */
+	width: 260px;
+	/* [disabled]margin-left: 5px; */
+	margin-bottom: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+}
+.focus .HF .immediate .hot .text ul li .text a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	color: #FE0000;
+	text-decoration: none;
+	list-style-type: none;
+	height: 24px;
+	clear: none;
+	float: left;
+	/* [disabled]background-color: #FFF; */
+	width: 260px;
+	/* [disabled]margin-left: 5px; */
+	margin-bottom: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+}
+.focus .HF .immediate .hot .text ul li3 .text a {
+	height: 24px;
+	clear: both;
+	float: left;
+	background-color: #FFF;
+	width: 260px;
+	list-style-type: none;
+	/* [disabled]border-bottom-width: 1px; */
+	/* [disabled]border-bottom-style: solid; */
+	/* [disabled]border-bottom-color: #999; */
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #333333;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 25px;
+	font-weight: 400;
+}
+.focus .HF .immediate .hot .week {
+	background-color: #FFF;
+	height: 155px;
+	width: 282px;
+	/* [disabled]margin-right: auto; */
+	/* [disabled]margin-left: auto; */
+	/* [disabled]text-align: center; */
+	margin-top: 5px;
+	float: left;
+}
+.focus .focusnews {
+	float: right;
+	width: 428px;
+	/* [disabled]clear: both; */
+	/* [disabled]margin-left: 10px; */
+	background-color: #EFEFF1;
+}
+.focus .focusnews .title {
+	float: left;
+	height: 25px;
+	width: 400px;
+	margin-bottom: 10px;
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #30B0B9;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #31B1BA;
+	display: block;
+	clip: rect(auto,auto,auto,auto);
+	clear: none;
+}
+.focus .focusnews .title a{
+	float: left;
+	height: 25px;
+	width: 400px;
+	margin-bottom: 10px;
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #30B0B9;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #31B1BA;
+	display: block;
+	clip: rect(auto,auto,auto,auto);
+	clear: none;
+}
+.focus .focusnews .title a:visited {
+	float: left;
+	height: 25px;
+	width: 400px;
+	margin-bottom: 10px;
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #30B0B9;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #31B1BA;
+	display: block;
+	clip: rect(auto,auto,auto,auto);
+	clear: none;
+}
+.focus .focusnews .title a:hover {
+	float: left;
+	height: 25px;
+	width: 400px;
+	margin-bottom: 10px;
+	font-size: 18px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #30B0B9;
+	text-decoration: none;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #31B1BA;
+	display: block;
+	clip: rect(auto,auto,auto,auto);
+	clear: none;
+}
+.focus .focusnews .box {
+	float: left;
+	height: 200px;
+	width: 210px;
+	margin-right: 2px;
+	margin-left: 2px;
+	margin-bottom: 15px;
+}
+
+.focus .focusnews .box .pic {
+	height: 158px;
+	width: 210px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 5px;
+	background-color: rgba(255,255,255,0.2)
+}
+.focus .focusnews .box .titlelink {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	width: 195px;
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+	height: 30px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.focus .focusnews .box .titlelink a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	/* [disabled]width: 135px; */
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+	height: 30px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+.focus .focusnews .box .titlelink a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	/* [disabled]width: 135px; */
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+	height: 30px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.focus .focusnews .box .titlelink a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 18px;
+	color: #000;
+	text-decoration: none;
+	/* [disabled]width: 135px; */
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+	height: 30px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.bg .BN1045x135{
+	clear: both;
+	height: 135px;
+	width: 1050px;
+	overflow:hidden;
+	margin-top: 5px;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-left: auto;
+	text-decoration: none;
+	/*padding: 0px;*/
+	padding-top: 10px;
+	text-align: center;
+}
+.bg .zone{
+	clear: both;
+	width: 1050px;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+	height: 470px;
+	height:auto;
+	overflow:hidden;
+}
+.bg .zone .left { width:100%; height:auto; overflow:hidden;}
+.bg .zone .left .article { width:100%; height:auto; overflow:hidden;}
+.bg .zone .left .article .line { width:100%; max-width:300px; height:auto; overflow:hidden; float:right;}
+.bg .zone .left .article .line a { display:block; width:100%; height:auto; overflow:hidden;}
+.bg .zone .left .article .line a img { width:100%; height:auto;}
+.BN740x145 { width:100%; max-width:740px; height:145px; overflow:hidden; float:left; margin-top:10px;}
+#topics { width:742px; height:auto; overflow:hidden; float:left;}
+.fb {
+	width: 100%;
+	max-width: 300px;
+	height: auto;
+	overflow: hidden;
+	float: right;
+	/*padding-left: 480px;*/
+}
+.zone .left .article .title {
+	/* [disabled]height: 48px; */
+	width: 742px;
+	float: left;
+	/* [disabled]margin: 0px; */
+	background-color: #D73D35;
+}
+.zone .left .article .title li {
+	float: left;
+	/*width: 246px;*/
+	width: 345px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFF00;
+	background-color: #D73D35;
+	line-height: 35px;
+	/*text-align: center;*/
+	display: block;
+	list-style-type: none;
+	text-decoration: none;
+}
+.zone .left .article .title li  a{
+	float: left;
+	width: 400px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFF00;
+	background-color: #D73D35;
+	line-height: 35px;
+	/*text-align: center;*/
+	display: block;
+	list-style-type: none;
+	text-decoration: none;
+}
+.zone .left .article .title li a:hover {
+	float: left;
+	width: 400px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFF00;
+	background-color: #A92721;
+	line-height: 35px;
+	/*text-align: center;*/
+	display: block;
+	list-style-type: none;
+	text-decoration: none;
+}
+
+.zone .left .article .text {
+	float: left;
+	height: 320px;
+	width: 738px;
+	background-color: #FFF;
+	margin: 0px;
+	border-right-width: 2px;
+	border-bottom-width: 2px;
+	border-left-width: 2px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #D73D35;
+	border-bottom-color: #D73D35;
+	border-left-color: #D73D35;
+}
+
+.zone .left .article .text li {
+	font-family: "微軟正黑體", "Century Gothic", "新細明體", Arial;
+	font-size: 14px;
+	line-height: 18px;
+	color: #333;
+	float: left;
+	width: 738px;
+	/*		
+	height: 320px;
+	
+	background-color: #FFF;
+border-right-color: #D73D35;
+	border-bottom-color: #D73D35;
+	border-left-color: #D73D35;*/
+}
+
+.zone .left .article .text li a {
+	font-family: "微軟正黑體", "Century Gothic", "新細明體", Arial;
+	font-size: 14px;
+	line-height: 18px;
+	color: #333;
+	float: left;
+/*	float: left;
+	height: 320px;
+	width: 738px;
+	background-color: #FFF;
+	border-right-color: #D73D35;
+	border-bottom-color: #D73D35;
+	border-left-color: #D73D35;*/
+}
+
+.zone .left .article .line a{
+	float: right;
+	height: 130px;
+	width: 300px;
+	margin-bottom: 10px;
+}
+.zone .left .article .fb  a{
+	float: right;
+	height: 378px;
+	width: 300px;
+	margin-left: 5px;
+}
+.zone .left .article .text .pic {
+	float: left;
+	height: 280px;
+	width: 305px;
+	margin-left: 15px;
+	background-color: #FFF;
+	margin-top: 15px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #C00;
+	text-decoration: none;
+}
+.zone .left .article .text .pic a {
+	margin-top: 15px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #C00;
+	text-decoration: none;
+	font-size: 18px;
+	/*padding-top: 30px;*/
+	float: left;
+}
+.zone .left .article .text .pic .img img {
+	margin: 0px;
+	float: left;
+	height: 245px;
+	width: 305px;
+	clear: none;
+}
+.zone .left .article .text .pic .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 25px;
+	color: #595757;
+	background-color: #FFF;
+	width: 285px;
+	height: 25px;
+	text-align: left;
+	float: left;
+	margin-left: 10px;
+	font-weight: bold;
+}
+.zone .left .article .text .text {
+	float: right;
+	width: 380px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-color: #FFF;
+	border-right-color: #FFF;
+	border-bottom-color: #FFF;
+	border-left-color: #FFF;
+	margin-right: 25px;
+	margin-top: 2px;
+	height: 280px;
+}
+.zone .left .article .text .text li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	color: #353538;
+	float: left;
+	font-weight: bold;
+	list-style-type: none;
+/*	margin-top: 1px;
+	margin-bottom: 1px;*/
+	b/*ackground-color: #FFF;*/
+	text-decoration: none;
+}
+.zone .left .article .text .text li a:link{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	color: #353538;
+	float: left;
+	font-weight: bold;
+	list-style-type: none;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.zone .left .article .text .text li a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	color: #353538;
+	float: left;
+	font-weight: bold;
+	list-style-type: none;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.zone .left .article .text .text li a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 35px;
+	color: #353538;
+	float: left;
+	font-weight: bold;
+	list-style-type: none;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	background-color: #FFF;
+	text-decoration: none;
+}
+.zone .left .article .text .text li2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 15px;
+	/* [disabled]color: #FFFFFF; */
+	float: left;
+	font-weight: bold;
+	list-style-type: none;
+	background-color: #FFF;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999;
+	width: 380px;
+	text-decoration: none;
+	/* [disabled]height: 1px; */
+}
+.zone .left .article .text .BN740x145{
+/*	float: left;*/
+	float: right;
+	height: 145px;
+	width: 740px;
+	margin-top: 55px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	margin-left: 0px;
+}
+.zone .left .article .text .BN740x145 a {
+/*	float: left;*/
+	/*float: right;*/
+	height: 145px;
+	width: 740px;
+	margin-top: 55px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	margin-left: 25px;
+}
+.VA {
+	clear: both;
+	width: 1050px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	float: none;
+	padding: 0px;
+	background-color: #EFEFF0;
+}
+.VA .vedio {
+	float: left;
+	height: 315px;
+	width: 561px;
+	margin-right: 2px;
+	margin-left: 2px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.VA .vedio .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 22px;
+	color: #347a9b;
+	float: left;
+	font-weight: bold;
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #347a9b;
+	margin-bottom: 5px;
+}
+.VA .vedio .moreBtn a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #347A9B;
+	float: right;
+	height: 22px;
+	width: 60px;
+	display: block;
+	text-decoration: none;
+}
+.VA .vedio .moreBtn a:visited {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #347A9B;
+	float: right;
+	height: 22px;
+	width: 60px;
+	display: block;
+	text-decoration: none;
+}
+.VA .vedio .moreBtn a:hover {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #347A9B;
+	float: right;
+	height: 22px;
+	width: 60px;
+	display: block;
+	text-decoration: none;
+}
+.VA .activity {
+	height: 300px;
+	width: 451px;
+	float: right;
+	background-color: #FFF;
+	/*margin-top: 15px;*/
+	margin-top: 2px;
+	margin-bottom: 15px;
+	padding: 2px;
+}
+.VA .activity .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 22px;
+	color: #ff8400;
+	float: left;
+	font-weight: bold;
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #ff8400;
+	margin-bottom: 5px;
+	background-color: #FFF;
+	/* [disabled]margin-top: 2px; */
+	text-decoration: none;
+}
+.VA .activity .title a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 22px;
+	color: #ff8400;
+	/*float: left;*/
+	font-weight: bold;
+	border-left-width: 15px;
+	/*border-left-style: solid;*/
+	border-left-color: #ff8400;
+	margin-bottom: 5px;
+	background-color: #FFF;
+	/* [disabled]margin-top: 2px; */
+	text-decoration: none;
+}
+.VA .activity .moreBtn a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 20px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #FF8400;
+	float: right;
+	height: 22px;
+/*	width: 60px;*/
+	display: block;
+	text-decoration: none;
+	/* [disabled]margin-top: 2px; */
+}
+.VA .activity .news {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-align: left;
+	float: left;
+	background-color: #FFF;
+	width: 440px;
+	list-style-type: none;
+	margin-left: 5px;
+	display: block;
+	text-decoration: none;
+}
+.VA .activity .news ul {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-align: left;
+	float: left;
+	background-color: #FFF;
+	width: 440px;
+	list-style-type: none;
+	margin-left: 5px;
+	display: block;
+	text-decoration: none;
+}
+.VA .activity .news ul li a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #353538;
+	text-align: left;
+	float: left;
+	background-color: #FFF;
+	width: 430px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #E3E3E3;
+	list-style-type: none;
+	margin-left: 5px;
+	display: block;
+	text-decoration: none;
+}
+.VA .VAsmall {
+	float: left;
+	width: 564px;
+	/* [disabled]margin-top: 25px; */
+	margin-bottom: 15px;
+}
+.VA .VAsmall ul {
+	float: left;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	width: 560px;
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+}
+.VA .VAsmall ul li {
+	float: left;
+	height: 75px;
+	width: 130px;
+	list-style-type: none;
+	margin-right: 2px;
+	margin-left: 5px;
+	margin-top: 25px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #333;
+	font-size: 12px;
+	line-height: 18px;
+	text-decoration: none;
+	margin-bottom: 15px;
+}
+
+.bg .VA .VAsmall ul li .title{
+    font-family: "微軟正黑體", "新細明體", "Century Gothic";
+    font-size: 14px;
+    line-height: 14px;
+    color: #000;
+    text-decoration: none;
+    float: left;
+    /* margin-left: 5px; */
+    /* padding-top: 8px; */
+    font-weight: bold;
+    width: 150px;
+    margin-bottom: 5px;
+}
+
+.bg .VA .VAsmall ul li .title a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 14px;
+	color: #000;
+	text-decoration: none;
+	float: left;
+	margin-left: 5px;
+	padding-top: 8px;
+	font-weight: bold;
+}
+
+.bg .VA .VAsmall ul li .text{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	line-height: 13px;
+	color: #666;
+	text-decoration: none;
+	margin-left:5px
+}
+
+.bg .VA .VAsmall ul li .text a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 13px;
+	line-height: 13px;
+	color: #666;
+	text-decoration: none;
+	margin-left:5px
+}
+.VA .BN {
+	/*float: left;*/
+	float: right;
+	height: 120px;
+	width: 145px;
+	/*margin-left: 35px;*/
+	margin-right: 307px;
+}
+.bg .history {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	text-decoration: none;
+	width: 100%;
+	margin-top: 65px;
+	margin-top:10px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+	float: left;
+}
+
+.VA .otherad {
+	clear: both;
+	width: 1050px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #EFEFF0;
+	height: 250px;
+	/*margin-bottom: 0px;*/
+	margin-bottom: 5px;
+	padding-top: 15px;
+}
+
+.bg .history .con {
+	width: 1050px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+.bg .history .con .title a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	font-weight: bold;
+	color: #3e3a39;
+	float: left;
+	border-left-width: 18px;
+	border-left-style: solid;
+	border-left-color: #3e3a39;
+	width: 99%;
+	text-decoration: none;
+}
+.VA .otherad .title {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #F55054;
+	border-left-width: 15px;
+	border-left-style: solid;
+	border-left-color: #F55054;
+	float: left;
+	width: 250px;
+	/* [disabled]background-color: #FFF; */
+	font-size: 18px;
+	font-weight: bold;
+	margin-top: 20px;
+	margin-bottom: 5px;
+	text-decoration: none;
+}
+.VA .otherad .title a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	/*color: #2da02a;*/
+	color: #F55054;
+	border-left-width: 15px;
+/*	border-left-style: solid;*/
+	border-left-color: #F55054;
+	float: left;
+	width: 250px;
+	/* [disabled]background-color: #FFF; */
+	font-size: 18px;
+	font-weight: bold;
+	/*margin-top: 20px;*/
+	margin-bottom: 5px;
+	text-decoration: none;
+}
+
+.VA .otherad .more a {
+	background-color: #F55054;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	color: #FFF;
+	float: right;
+	text-decoration: none;
+	font-weight: bold;
+	padding-left: 5px;
+	margin: 0px 28px 25px 0px;
+	text-align: center;
+}
+
+.bg .history .con .leftbtn  a{
+	float: left;
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top: 100px;
+	border: 0px;
+	text-decoration: none;
+}
+.bg .history .con .rightbtn a{
+	float: right;
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top: 100px;
+	border: 0px;
+}
+.bg .history .con .list {
+	float: left;
+	width: 300px;
+	margin-right: 8px;
+	margin-left: 8px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	color: #000;
+	margin-top: 10px;
+}
+.bg .history .con .list a{
+	float: left;
+	width: 300px;
+	margin-right: 8px;
+	margin-left: 8px;
+	text-decoration: none;
+	color: #000;
+}
+
+.bg .history .con .list .pic {
+	float: left;
+	height: 140px;
+	width: 300px;
+	border: 0px;
+}
+
+.bg .history .con .list .list {
+	float: left;
+	width: 300px;
+}
+
+
+.VA .otherad .more a{
+	height: 25px;
+	width: 75px;
+	/*background-color: #2DA02A;*/
+	background-color: #F55054;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	line-height: 25px;
+	color: #FFF;
+	float: right;
+	text-decoration: none;
+	font-weight: bold;
+	margin-top: 20px;
+	padding-right: 2px;
+	padding-left: 3px;
+}
+.bg .history .con .list .list li {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 18px;
+	color: #000;
+	text-decoration: none;
+	list-style-type: none;
+	float: left;
+	width: 300px;
+	font-weight: bold;
+}
+.bg .history .con .list .list li2 {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	text-decoration: none;
+	color: #000;
+	float: left;
+	width: 290px;
+	list-style-type: none;
+}
+
+
+/*.VA .otherad .pic {
+	clear: both;
+	width: 1050px;
+	margin-right: auto;
+	margin-left: auto;
+	 [disabled]background-color: #FFF; 
+	height: 220px;
+	 [disabled]border: 0px; 
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+}*/
+.bg .VA .otherad .pic {
+	clear: both;
+	width: 1050px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #FFF0F0;
+	height: 445px;
+	border: 0px;
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	margin-bottom: 10px;
+}
+.bg .VA .otherad .pic .box {
+	float: left;
+	width: 240px;
+	/* [disabled]margin-right: 2px; */
+	/* [disabled]margin-left: 2px; */
+	margin-top: 5px;
+	padding-left: 18px;
+	padding-top: 10px;
+	margin-bottom: 5px;
+}
+.bg .VA .otherad .pic .box .img {
+	margin: 0px;
+	height: 174px;
+	width: 232px;
+	padding: 0px;
+}
+.bg .VA .otherad .pic .box .img a {
+	margin: 0px;
+	height: 174px;
+	width: 232px;
+	padding: 0px;
+}
+
+.bg .VA .otherad .pic .box .txt {
+	width: 232px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 15px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #3e3a39;
+	text-align: center;
+	text-decoration: none;
+}
+
+
+.bg .VA .otherad .pic .box .txt a {
+	width: 232px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 15px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #3e3a39;
+	text-align: center;
+	text-decoration: none;
+}
+.bg .VA .otherad .pic .box .txt a:hover {
+	width: 232px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 15px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FF0;
+	background-color: #3e3a39;
+	text-align: center;
+	text-decoration: none;
+}
+.bg .VA .otherad .pic .box .txt a:visited {
+	width: 232px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 15px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #3e3a39;
+	text-align: center;
+	text-decoration: none;
+}
+
+
+
+.VA .otherad .pic ul {
+	clear: both;
+	width: 955px;
+	margin-right: auto;
+	margin-left: auto;
+	/* [disabled]background-color: #FFF; */
+	height: 150px;
+	list-style-type: none;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.VA .otherad .pic ul li {
+/*	height: 200px;*/
+	width: 255px;
+	/* [disabled]background-color: #FFF; */
+	float: left;
+	margin-right: 5px;
+	margin-left: 5px;
+	display: block;
+}
+.VA .otherad .pic ul li a img  {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+.VA .otherad .pic ul li2 {
+	height: 50px;
+	width: 50px;
+	/* [disabled]background-color: #FFF; */
+	float: left;
+	padding: 0px;
+	display: block;
+	text-align: center;
+	margin-top: 80px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.VA .otherad .pic ul li2 a {
+	padding: 0px;
+	margin: 0px;
+	height: 50px;
+	width: 50px;
+}
+.VA .otherad .pic ul li2 a img  {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+.job {
+	text-align: center;
+	width: 700px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+.vedio2 {
+	margin-right: auto;
+	margin-left: auto;
+	width: 700px;
+	text-align: center;
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+.joblist {
+	text-align: left;
+	width: 700px;
+	margin-right: auto;
+	margin-left: auto;
+	height: auto;
+}
+.listbox1 {
+	float: left;
+	width: 675px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+.listbox2    {
+	background-color: #fffef0;
+	float: left;
+	width: 675px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+.jobRed {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #cc0000;
+	text-decoration: none;
+	margin-top: 5px;
+	display: block;
+	margin-bottom: 2px;
+	margin-left: 10px;
+}
+.jobYear {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #1b1b1b;
+	text-decoration: none;
+	margin-top: 5px;
+	display: block;
+	margin-bottom: 5px;
+	margin-left: 10px;
+}
+.jobLine {
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #EE8085;
+	width: 700px;
+	float: left;
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.jobBtn {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	display: block;
+	margin-bottom: 10px;
+	background-color: #e94816;
+	float: right;
+	width: 80px;
+	text-align: center;
+	margin-top: 0px;
+	margin-left: 20px;
+}
+.jobBtn a:link {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	display: block;
+	background-color: #e94816;
+	float: right;
+	width: 80px;
+	text-align: center;
+	margin-top: 0px;
+	margin-left: 20px;
+}
+.jobBtn a:visited {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	display: block;
+	background-color: #e94816;
+	float: right;
+	width: 80px;
+	text-align: center;
+	margin-top: 0px;
+	margin-left: 20px;
+}
+
+
+
+.jobtext {
+	font-family: "微軟正黑體", "新細明體", sans-serif;
+	font-size: 14px;
+	color: #434343;
+	text-decoration: none;
+	margin-top: 5px;
+	display: block;
+	margin-bottom: 10px;
+	line-height: 22px;
+	margin-left: 10px;
+}
+
+
+
+
+
+.copyright {
+	/*width: 100%;*/
+	height: 300px;
+	background-color: #3b3b3b;
+	bottom: 0px;
+	z-index: 0;
+	clear: none;
+	/*	overflow: hidden;*/
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+	text-decoration: none;
+	overflow: hidden;
+	display: block;	/*top: -115px;*/
+	margin-right:auto;
+	margin-left:auto;
+	width:1500px;
+}
+.copyright .box {
+	/*clear: both;*/
+	width: 800px;
+/*	margin-right: auto;
+	margin-left: auto;*/
+	margin:auto ;
+	/* [disabled]margin-top: 50px; */
+	background-color: #3B3B3B;
+	padding-top: 15px;
+	overflow: hidden;
+}
+.copyright .box .left li1 a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 30px;
+	line-height: 30px;
+	font-weight: bold;
+	color: #f59e21;
+	/* [disabled]background-color: #FFF; */
+	border: 2px solid #f59e21;
+	float: left;
+	margin-left: 5px;
+	list-style-type: none;
+	display: block;
+	margin-top: 20px;
+}
+.copyright .box .left li2 a{
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 30px;
+	line-height: 30px;
+	font-weight: bold;
+	color: #fff000;
+	/* [disabled]background-color: #FFFFFF; */
+	border: 2px solid #fff000;
+	float: left;
+	margin-left: 5px;
+	list-style-type: none;
+	display: block;
+	margin-top: 20px;
+}
+.copyright .left {
+	float: left;
+	width: 400px;
+	background-color: #3B3B3B;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #FFF;
+}
+.copyright .box .left .menu {
+	float: left;
+	width: 400px;
+	background-color: #3B3B3B;
+	display: block;
+	list-style-type: none;
+}
+
+.copyright .box .left ul {
+	/* [disabled]clear: both; */
+	/* [disabled]width: 800px; */
+	/* [disabled]margin-right: auto; */
+	/* [disabled]margin-left: auto; */
+	/* [disabled]background-color: #3B3B3B; */
+	/* [disabled]margin-top: 15px; */
+	/* [disabled]display: block; */
+	/* [disabled]float: left; */
+}
+.copyright .box .left li a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 30px;
+	color: #FFF;
+	text-decoration: none;
+	background-color: #3B3B3B;
+	list-style-type: none;
+	/* [disabled]z-index: 1; */
+	/* [disabled]position: relative; */
+	/* [disabled]overflow: hidden; */
+}
+.copyright .right {
+	float: right;
+	width: 395px;
+	background-color: #3B3B3B;
+	text-align: left;
+	list-style-type: none;
+}
+.copyright .box .right .menu {
+	float: left;
+	width: 380px;
+	padding-left: 15px;
+	padding-top: 15px;
+	background-color: #3B3B3B;
+	margin: 0px;
+	border-bottom-width: 0px;
+	border-bottom-style: solid;
+	border-bottom-color: #000;
+	padding-bottom: 5px;
+}
+.copyright .box .right .menu li a {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 16px;
+	/* [disabled]font-weight: bold; */
+	color: #fff000;
+	float: left;
+	text-decoration: none;
+	text-indent: 10px;
+}
+.copyright .box .right .menu li2  {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	/* [disabled]font-weight: bold; */
+	color: #fff000;
+	float: left;
+	text-decoration: none;
+	margin-top: 5px;
+}
+.copyright .box .copyrighttext  {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 14px;
+	line-height: 25px;
+	color: #FFF;
+	width: 365px;
+	float: right;
+}
+.form {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+	font-size: 15px;
+	line-height: 18px;
+	font-weight: bold;
+	color: #FFF;
+	background-color: #C00;
+	height: 25px;
+	width: 100px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	margin-left: 28px;
+}
+
+
+.supportTxt {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+}
+.Searchtxt {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+}
+.CareesTit {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+}
+.NewsContant {
+	font-family: "微軟正黑體", "新細明體", "Century Gothic";
+}
+.htmlpage{
+	/*margin-right: auto;
+	margin-left: auto;	*/
+	margin-left: 45px;
+	}
