@@ -119,7 +119,7 @@ function Snake() {
     var y = 0;
     var xSpeed = 1;
     var ySpeed = 0;
-    var tailTotal = MAX_POINT;
+    var tailTotal = 0;
     var tail = [];
     var previousEat = false;
 
