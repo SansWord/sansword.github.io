@@ -101,8 +101,8 @@ function drawFood() {
 function pickFoodLocation() {
     pickFoodRetry++;
     food = createVector(
-        floor(random(0, MAX_ROW - 1)) * BOX_SIZE,
-        floor(random(0, MAX_COLUMN - 1)) * BOX_SIZE
+        floor(random(0, MAX_ROW)) * BOX_SIZE,
+        floor(random(0, MAX_COLUMN)) * BOX_SIZE
     );
     if (pickFoodRetry > MAX_PICKFOOD_RETRY) {
         freePickFoodMode = true;
