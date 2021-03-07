@@ -166,7 +166,7 @@ function Snake() {
       var tailPoint = tail[i];
       renderPoint(tailPoint.x, tailPoint.y, 255);
     }
-    renderPoint(x, y, 255);
+    renderPoint(x, y, 'rgb(255,0,0)')
     if(previousEat) {
       renderPoint(previousEat.x, previousEat.y, 'rgb(0,255,0)');
     }
