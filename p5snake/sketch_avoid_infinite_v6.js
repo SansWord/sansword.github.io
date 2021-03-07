@@ -201,7 +201,7 @@ function Snake() {
         for (var i = 0; i < tail.length; i++) {
             var tailPoint = tail[i];
             var color=Math.max(0, 255-checkMapRepeat(repeatMap, tailPoint)*40);
-            var colorCode = 'rgb(255,'+color+',255)';
+            var colorCode = 'rgb(255,255,'+color+')';
             renderPoint(tailPoint.x, tailPoint.y, colorCode);
         }
         renderPoint(x, y, 'rgb(255,0,0)')
