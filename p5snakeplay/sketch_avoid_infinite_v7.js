@@ -1,7 +1,7 @@
-var TOTAL_ROW = 40,
+var TOTAL_ROW = 12,
     BOX_SIZE = Math.floor(window.innerWidth / TOTAL_ROW),
-    MAX_ROW = Math.floor(window.innerWidth / BOX_SIZE) - 3,
-    MAX_COLUMN = Math.floor(window.innerHeight / BOX_SIZE),
+    MAX_ROW = Math.floor(window.innerWidth / BOX_SIZE) - 2,
+    MAX_COLUMN = Math.floor(window.innerHeight / BOX_SIZE) - 2,
     WIDTH = MAX_ROW * BOX_SIZE,
     HEIGHT = MAX_COLUMN * BOX_SIZE,
     MAX_POINT = MAX_ROW * MAX_COLUMN,
@@ -18,7 +18,7 @@ var s,
 function setup() {
     createCanvas(WIDTH, HEIGHT);
     s = new Snake();
-    frameRate(10);
+    frameRate(8);
     pickFoodLocation();
 
 
