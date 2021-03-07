@@ -1,6 +1,6 @@
 var TOTAL_ROW = 40,
     BOX_SIZE = Math.floor(window.innerWidth / TOTAL_ROW),
-	MAX_ROW = Math.floor(window.innerWidth / BOX_SIZE),
+    MAX_ROW = Math.floor(window.innerWidth / BOX_SIZE),
     MAX_COLUMN = Math.floor(window.innerHeight / BOX_SIZE),
     WIDTH = MAX_ROW * BOX_SIZE,
     HEIGHT = MAX_COLUMN * BOX_SIZE,
@@ -8,10 +8,10 @@ var TOTAL_ROW = 40,
     MAX_PICKFOOD_RETRY = 500;
 
 var s,
-	food,
-	haveToMoveNext = false,
-	drawing = true,
-	pickFoodRetry = 0,
+    food,
+    haveToMoveNext = false,
+    drawing = true,
+    pickFoodRetry = 0,
     freePickFoodMode = false;
 
 function setup() {
@@ -119,7 +119,7 @@ function Snake() {
     var y = 0;
     var xSpeed = 1;
     var ySpeed = 0;
-    var tailTotal = 0;
+    var tailTotal = MAX_POINT;
     var tail = [];
     var previousEat = false;
 
@@ -173,7 +173,6 @@ function Snake() {
     function updatePos() {
         tail.unshift(createVector(x, y));
         tail = tail.slice(0, tailTotal);
-        //console.log(tail.length);
 
         x += xSpeed * BOX_SIZE + WIDTH;
         y += ySpeed * BOX_SIZE + HEIGHT;
@@ -183,10 +182,27 @@ function Snake() {
 
     }
 
+    function checkMapRepeat(repeatMap, point) {
+        if (!repeatMap.hasOwnProperty(""+point.x)) {
+            repeatMap[""+point.x] = new Object();
+            repeatMap[""+point.x][""+point.y] = 1;
+            return 0;
+        }
+        if (!repeatMap[""+point.x].hasOwnProperty(""+point.y)) {
+            repeatMap[""+point.x][""+point.y] = 1;
+            return 0;
+        }
+        repeatMap[""+point.x][""+point.y] = repeatMap[""+point.x][""+point.y]+1;
+        return repeatMap[""+point.x][""+point.y]-1;
+    }
+
     function show() {
+        var repeatMap = new Object();
         for (var i = 0; i < tail.length; i++) {
             var tailPoint = tail[i];
-            renderPoint(tailPoint.x, tailPoint.y, 255);
+            var color=Math.max(0, 255-checkMapRepeat(repeatMap, tailPoint)*40);
+            var colorCode = 'rgb(255,'+color+',255)';
+            renderPoint(tailPoint.x, tailPoint.y, colorCode);
         }
         renderPoint(x, y, 'rgb(255,0,0)')
         if (previousEat) {
