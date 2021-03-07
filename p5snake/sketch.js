@@ -1,4 +1,4 @@
-var scl = 15;
+var scl = Math.floor(window.innerWidth/40);
 var WIDTH = Math.floor(window.innerWidth/scl)*scl,
     HEIGHT = Math.floor(window.innerHeight/scl)*scl;
 
