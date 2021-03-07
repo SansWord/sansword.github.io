@@ -1,6 +1,14 @@
-var scl = Math.floor(window.innerWidth/40);
-var WIDTH = Math.floor(window.innerWidth/scl)*scl,
-    HEIGHT = Math.floor(window.innerHeight/scl)*scl;
+var TOTAL_ROW = 40,
+    scl = Math.floor(window.innerWidth/TOTAL_ROW);
+var MAX_ROW=Math.floor(window.innerWidth/scl),
+    MAX_COLUMN=Math.floor(window.innerHeight/scl),
+    WIDTH = MAX_ROW*scl,
+    HEIGHT = MAX_COLUMN*scl,
+    MAX_POINT= MAX_ROW*MAX_COLUMN;
+
+
+var pickFoodRetry=0,
+    MAX_PICKFOOD_RETRY=500;
 
 var s;
 
@@ -90,14 +98,17 @@ function keyPressed() {
 function drawFood() {
   renderPoint(food.x, food.y, '#fae');
 }
-
 function pickFoodLocation() {
+  pickFoodRetry++;
+  console.log(pickFoodRetry);
   food=createVector(
     floor(random(0,WIDTH/scl-1))*scl,
     floor(random(0,HEIGHT/scl-1))*scl
   );
-  if(s.checkCollide(food.x, food.y)) {
+  if(pickFoodRetry<=MAX_PICKFOOD_RETRY && s.checkCollide(food.x, food.y)) {
     pickFoodLocation();
+  } else {
+    pickFoodRetry=0;
   }
 }
 
@@ -146,6 +157,9 @@ function Snake() {
       pickFoodLocation();
       previousEat=createVector(x, y);
       tailTotal++;
+      if(tailTotal >= MAX_POINT) {
+        tailTotal=0;
+      }
     }
   }
 
