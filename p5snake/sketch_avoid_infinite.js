@@ -157,7 +157,7 @@ function Snake() {
       pickFoodLocation();
       previousEat=createVector(x, y);
       tailTotal++;
-      if(tailTotal >= MAX_POINT) {
+      if(tailTotal >= MAX_POINT*2) {
         tailTotal=0;
       }
     }
