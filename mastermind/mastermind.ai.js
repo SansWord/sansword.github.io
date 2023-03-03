@@ -16,11 +16,12 @@ function Guess() {
         history.push([currentGuess, response])
         // TODO try remove possible answer from this response
         calculateNextPossibleAnswers(response);
-        if(nextPossibleAnswer.length!=0) {
+        var isPossible = nextPossibleAnswer.length!=0;
+        if(isPossible) {
             possibleAnswers = nextPossibleAnswer;
             console.log("possibleAnswer left:", possibleAnswers.length);
         }
-        return nextPossibleAnswer.length != 0;
+        return [isPossible, possibleAnswers.length];
     };
     const getCurrentGuess = () => {
         return currentGuess;
@@ -161,16 +162,14 @@ function submit() {
     var response = getInput();
     var validInput = inputIsValid();
     if (validInput) {
-        var possible = guess.submit(response);
-        displayCurrentRow(guess.getCurrentGuess(), response, validInput);
+        var submitResult = guess.submit(response),
+            possible = submitResult[0];
+        displayCurrentRow(guess.getCurrentGuess(), response, validInput, submitResult);
         if (possible) {
             $("#currentRow .error").removeClass("error");
             if (response[0] != 4) {
                 generateNewRow();
             }
-        } else {
-            notifyUserError("This is impossible, don't lie me");
-            generateNewRow();
         }
     } else {
         notifyUserError("input is invalid");
@@ -226,7 +225,7 @@ function intToDigits(val, digitNum=4) {
     return digits;
 }
 
-function displayCurrentRow(guess, response, inputIsValid) {
+function displayCurrentRow(guess, response, inputIsValid, guessSubmitResponse) {
     var guessTD = $("#currentRow td:nth-child(2)"),
         responseTD = $("#currentRow td:nth-child(3)"),
         descriptionTD = $("#currentRow td:nth-child(4)");
@@ -240,8 +239,10 @@ function displayCurrentRow(guess, response, inputIsValid) {
     } else if (response[0] == 4) {
         descriptionTD.html("Sucess!!!");
         $("#currentRow").addClass("success")
+    } else if(guessSubmitResponse[0]){
+        descriptionTD.html("Keep going!!! " + guessSubmitResponse[1] + " choices left");
     } else {
-        descriptionTD.html("Keep going!!!");
+        notifyUserError("This is impossible, don't lie me");
     }
 }
 
