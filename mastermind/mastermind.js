@@ -114,7 +114,7 @@ function calculateGuessResult(guess, expectedDigits) {
 function submit() {
     // display on screen
     var rawInput = $("#guess").val();
-    var validInput = inputIsValid(rawInput);
+    var validInput = isValidGuess(rawInput);
     var response = ["-", "-"];
     if (validInput) {
         guess = parseInt(rawInput);
@@ -128,7 +128,7 @@ function submit() {
     }
 }
 
-function inputIsValid(input) {
+function isValidGuess(input) {
     if (!inputPattern.test(input)) {
         return false;
     }

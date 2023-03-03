@@ -1,0 +1,55 @@
+<html>
+  <head>
+  	<title>Mastermind game</title>
+    <script src="jquery-3.6.3.min.js"></script>
+    <script src="mastermind.ai.js"></script>
+    <link rel="stylesheet" href="mastermind.css">
+  </head>
+  <body>
+    <p>
+      Write a 4-digit number without repetition on a paper.
+      Respond x A x B to computer and your computer would guess the answer.
+    </p>
+
+    <input type="button" id="reset" value="restart" onclick="reset()"/> Press button or ESC to start a new game.
+    <table>
+      <tr>
+        <td>
+          <div id="calculator">
+          <div>
+            Response Calculator: <br/>
+            If you trust me, you can input your answer and I'll calculate the response for you. I won't peek. <br/>
+            Your Answer: <input type="text" id="userAnswer"/>
+          </div>
+          <div>
+            Response: <p id="calculatedResponse"> - A - B</p>
+          </div>
+            Automatic input for you:
+            <input type="radio" id="yes" name="auto_input" value="yes" checked>
+            <label for="yes">Yes</label>
+            <input type="radio" id="no" name="auto_input" value="no">
+            <label for="no">No</label><br>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div>
+            Guess History <br/>
+            <table id="history">
+              <tr>
+                <th>#</th>
+                <th>Guess</th>
+                <th>Response</th>
+                <th>Desc</th>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <script type="text/javascript">
+      start();
+    </script>
+  </body>
+</html>

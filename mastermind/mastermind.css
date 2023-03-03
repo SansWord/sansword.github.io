@@ -1,10 +1,16 @@
-table, th, td {
+table#history th, table#history td {
   border: 1px solid white;
   border-collapse: collapse;
 }
-th, td {
+table#history th, table#history td {
   background-color: #96D4D4;
 }
-tr.success td {
+table#history tr.success td {
   background-color: #ffff1a;
 }
+
+table#history td.error {
+  background-color: red;
+}
+
+#calculator p { display: inline }
