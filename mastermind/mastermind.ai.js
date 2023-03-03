@@ -9,8 +9,8 @@ function Guess() {
         nextPossibleAnswer = [0];
         possibleAnswers = [];
         for (var i = 0; i < 10000; i++) {
-            if (isValidGuess(i)) {
-                possibleAnswers.push(i);
+            if (isValidGuess(pad(""+i))) {
+                possibleAnswers.push([i, intToDigits(i)]);
             }
         }
         console.log("starts with " + possibleAnswers.length + " possible answers.")
@@ -41,11 +41,12 @@ function Guess() {
 
     function calculateNextPossibleAnswers(response) {
         nextPossibleAnswer = [];
-        var pseudoAnswer = intToDigits(currentGuess);
+        var currentGuessDigits = currentGuess[1];
         for(var i = 0; i<possibleAnswers.length; i++) {
             var currentPossibleAnswer = possibleAnswers[i];
-            var pseudoResponse = calculateGuessResult(currentPossibleAnswer, pseudoAnswer);
-            if(pseudoResponse[0]==response[0] && pseudoResponse[1]==response[1]) {
+            var currentPossibleAnswerDigits = currentPossibleAnswer[1];
+            var pseudoResponse = fastCalculateGuessResult(currentGuessDigits, currentPossibleAnswerDigits);
+            if(isListEqual(pseudoResponse, response)) {
                 nextPossibleAnswer.push(currentPossibleAnswer);
             }
         }
@@ -75,6 +76,7 @@ function start() {
 
         var targetId = $(e.target).attr("id");
         if (targetId == "userAnswer") {
+            // TODO buggy, can't work
             if (whichKey == "Enter") {
                 calculateUserResponse();
             }
@@ -129,11 +131,11 @@ function start() {
     });
 
     $("#userAnswer").on("input", function(e) {
+        console.log("trigger input event");
         // handle answer special logic
         calculateUserResponse();
     });
 
-    runUnitTests();
     reset();
 }
 
@@ -152,8 +154,12 @@ function clearHistoryUI() {
 }
 
 // [x, y] as xA yB
-function calculateGuessResult(guess, expectedDigits=4) {
+function calculateGuessResult(guess, expectedDigits) {
     var guessDigits = intToDigits(guess, 4);
+    return fastCalculateGuessResult(guessDigits, expectedDigits);
+}
+
+function fastCalculateGuessResult(guessDigits, expectedDigits) {
     var a = 0,
         b = 0;
     for (var i = 0; i < 4; i++) {
@@ -174,7 +180,7 @@ function submit() {
     if (validInput) {
         var submitResult = guess.submit(response),
             possible = submitResult[0];
-        displayCurrentRow(guess.getCurrentGuess(), response, validInput, submitResult);
+        displayCurrentRow(response, validInput, submitResult);
         if (possible) {
             $("#currentRow .error").removeClass("error");
         }
@@ -208,22 +214,11 @@ function clearUserInput() {
 }
 
 function isValidGuess(input) {
-    var inputStr = pad(input)
-    if (!inputPattern.test(inputStr)) {
+    if (!inputPattern.test(input)) {
         return false;
     }
-    inputDigits = intToDigits(inputStr, 4);
+    inputDigits = intToDigits(parseInt(input));
     return (new Set(inputDigits)).size == 4;
-}
-
-function generateRandomAnswer() {
-    var canidate = 0;
-    // pick a number as number until it is valid.
-    while (!answerIsValid(canidate)) {
-        canidate = Math.floor(Math.random() * (10000 - 123) + 123);
-    }
-    var digits = intToDigits(canidate, 4);
-    return digits;
 }
 
 function intToDigits(val, digitNum=4) {
@@ -235,11 +230,11 @@ function intToDigits(val, digitNum=4) {
     return digits;
 }
 
-function displayCurrentRow(guess, response, inputIsValid, guessSubmitResponse) {
+function displayCurrentRow(response, inputIsValid, guessSubmitResponse) {
     var guessTD = $("#currentRow td:nth-child(2)"),
         responseTD = $("#currentRow td:nth-child(3)"),
         descriptionTD = $("#currentRow td:nth-child(4)");
-    guessTD.html(pad(guess, 4));
+    guessTD.html(pad(guess.getCurrentGuess()[0]));
     responseTD.html(response[0] + "A" + response[1] + "B");
     if (!inputIsValid) {
         descriptionTD.html("Invalid Input!!!!");
@@ -261,54 +256,17 @@ function generateNewRow(useCurrentGuess = false) {
     if (!useCurrentGuess) {
         guess.getNextGuess();
     }
-    $('<tr id="currentRow"><td>' + currentRow + '</td><td id="guess"> ' + pad(guess.getCurrentGuess()) + '  </td><td><select id="A" name="A"><option value="-1">-</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> A, <select id="B" name="B"><option value="-1">-</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> B <input type="button" name="submit" value="submit" onclick="submit()" /></td><td>-</td></tr>').insertAfter($('#history tr').parent().children().last());
+    $('<tr id="currentRow"><td>' + currentRow + '</td><td id="guess"> ' + pad(guess.getCurrentGuess()[0]) + '  </td><td><select id="A" name="A"><option value="-1">-</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> A, <select id="B" name="B"><option value="-1">-</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> B <input type="button" name="submit" value="submit" onclick="submit()" /></td><td>-</td></tr>').insertAfter($('#history tr').parent().children().last());
     calculateUserResponse();
     const chunkSize = 10;
     var chunks = []
     var arr = guess.getPossibleAnswers();
     for (let i = 0; i < arr.length; i += chunkSize) {
         const chunk = arr.slice(i, i + chunkSize);
-        chunks.push(chunk.map(function(e) {return pad(e);}).join(", "));
+        chunks.push(chunk.map(function(e) {return pad(e[0]);}).join(", "));
     }
 
     $("#possibleAnswers").html(chunks.join("</br>"));
-}
-
-// check if canidate is a 4-digit number without repetition
-function answerIsValid(canidate) {
-    // magic number: anything small than 123 is a 4-digit number with at least 2 digit with the same number.
-    if ((canidate < 123) || (canidate >= 10000)) {
-        return false;
-    }
-    var digits = [];
-    for (var i = 0; i < 4; i++) {
-        var currentDigit = canidate % 10;
-        if (digits.indexOf(currentDigit) != -1) {
-            return false;
-        }
-        digits.push(currentDigit);
-        canidate = Math.floor(canidate / 10)
-    }
-    return true;
-}
-
-function runUnitTests() {
-    testAnswerIsValid();
-}
-
-function testAnswerIsValid() {
-    var cases = [
-        [0, false],
-        [930, false],
-        [1234, true]
-    ];
-    for (var i = 0; i < cases.length; i++) {
-        var testSubject = cases[i][0],
-            expectedResult = cases[i][1];
-        if (answerIsValid(testSubject) != expectedResult) {
-            console.log("test case failed: " + testSubject);
-        }
-    }
 }
 
 function pad(str, max = 4) {
@@ -322,7 +280,10 @@ function calculateUserResponse() {
     if (isValidGuess(userInputAnswer)) {
         console.log("calculating user response");
         var userInputAnswerDigits = intToDigits(parseInt(userInputAnswer));
-        var response = calculateGuessResult(guess.getCurrentGuess(), userInputAnswerDigits);
+        var response = fastCalculateGuessResult(
+            guess.getCurrentGuess()[1],
+            userInputAnswerDigits
+            );
         $("#calculatedResponse").html(response[0] + " A "+response[1]+" B");
         if(autoInput == "yes") {
             $("#A").val(response[0]);
@@ -347,8 +308,17 @@ function togglePossibleAnswers(isShow) {
     $("#possibleAnswers").toggle(isShow);
 }
 
-
-
+function isListEqual(list1, list2) {
+    if(list1.length!=list2.length) {
+        return false;
+    }
+    for(var i = 0; i <list1.length; i++) {
+        if(list1[i]!=list2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
 
 
