@@ -207,7 +207,7 @@ function clearUserInput() {
 }
 
 function isValidGuess(input) {
-    var inputStr = "" + input;
+    var inputStr = pad(input)
     if (!inputPattern.test(inputStr)) {
         return false;
     }
@@ -267,7 +267,7 @@ function generateNewRow(useCurrentGuess = false) {
     var arr = guess.getPossibleAnswers();
     for (let i = 0; i < arr.length; i += chunkSize) {
         const chunk = arr.slice(i, i + chunkSize);
-        chunks.push(chunk.join(", "));
+        chunks.push(chunk.map(function(e) {return pad(e);}).join(", "));
     }
 
     $("#possibleAnswers").html(chunks.join("</br>"));
