@@ -126,6 +126,7 @@ function submit() {
     if (response[0] != 4) {
         generateNewRow();
     }
+    displayPossibleAnswers()
 }
 
 function isValidGuess(input) {
@@ -193,6 +194,10 @@ function answerIsValid(canidate) {
         canidate = Math.floor(canidate / 10)
     }
     return true;
+}
+
+function displayPossibleAnswers() {
+    
 }
 
 function runUnitTests() {

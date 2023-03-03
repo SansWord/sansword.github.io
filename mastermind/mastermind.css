@@ -14,3 +14,18 @@ table#history td.error {
 }
 
 #calculator p { display: inline }
+
+#possibleAnswersHolder {
+  border: 1px solid gray;
+  border-collapse: collapse;
+}
+
+#possibleAnswersHolder div {
+	display: none;
+  border: 1px solid gray;
+  border-collapse: collapse;
+}
+
+td {
+	vertical-align: top
+}

@@ -6,7 +6,8 @@ function Guess() {
 
     const reset = () => {
         history = [];
-        nextPossibleAnswer = [0]
+        nextPossibleAnswer = [0];
+        possibleAnswers = [];
         for (var i = 0; i < 10000; i++) {
             if (isValidGuess(i)) {
                 possibleAnswers.push(i);
@@ -16,7 +17,6 @@ function Guess() {
     };
     const submit = (response) => {
         history.push([currentGuess, response])
-        // TODO try remove possible answer from this response
         calculateNextPossibleAnswers(response);
         var isPossible = nextPossibleAnswer.length!=0;
         if(isPossible) {
@@ -143,6 +143,7 @@ function reset() {
     guess.reset();
     generateNewRow();
     $("#startingRow").children().last().html("Starts with " + guess.getPossibleAnswers().length +" possible answers.");
+    togglePossibleAnswers(false);
 }
 
 function clearHistoryUI() {
@@ -238,9 +239,7 @@ function displayCurrentRow(guess, response, inputIsValid, guessSubmitResponse) {
         responseTD = $("#currentRow td:nth-child(3)"),
         descriptionTD = $("#currentRow td:nth-child(4)");
     guessTD.html(pad(guess, 4));
-    console.log("before html");
     responseTD.html(response[0] + "A" + response[1] + "B");
-    console.log("after html");
     if (!inputIsValid) {
         descriptionTD.html("Invalid Input!!!!");
         clearUserInput();
@@ -263,6 +262,15 @@ function generateNewRow(useCurrentGuess = false) {
     }
     $('<tr id="currentRow"><td>' + currentRow + '</td><td id="guess"> ' + pad(guess.getCurrentGuess()) + '  </td><td><select id="A" name="A"><option value="-1">-</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> A, <select id="B" name="B"><option value="-1">-</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> B <input type="button" name="submit" value="submit" onclick="submit()" /></td><td>-</td></tr>').insertAfter($('#history tr').parent().children().last());
     calculateUserResponse();
+    const chunkSize = 10;
+    var chunks = []
+    var arr = guess.getPossibleAnswers();
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize);
+        chunks.push(chunk.join(", "));
+    }
+
+    $("#possibleAnswers").html(chunks.join("</br>"));
 }
 
 // check if canidate is a 4-digit number without repetition
@@ -334,6 +342,9 @@ function clearCalculator() {
     $('#no').prop('checked', false);
 }
 
+function togglePossibleAnswers(isShow) {
+    $("#possibleAnswers").toggle(isShow);
+}
 
 
 
