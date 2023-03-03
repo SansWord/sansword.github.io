@@ -43,9 +43,10 @@ function Guess() {
         nextPossibleAnswer = [];
         var pseudoAnswer = intToDigits(currentGuess);
         for(var i = 0; i<possibleAnswers.length; i++) {
-            var pseudoResponse = calculateGuessResult(possibleAnswers[i], pseudoAnswer);
+            var currentPossibleAnswer = possibleAnswers[i];
+            var pseudoResponse = calculateGuessResult(currentPossibleAnswer, pseudoAnswer);
             if(pseudoResponse[0]==response[0] && pseudoResponse[1]==response[1]) {
-                nextPossibleAnswer.push(possibleAnswers[i]);
+                nextPossibleAnswer.push(currentPossibleAnswer);
             }
         }
     }
