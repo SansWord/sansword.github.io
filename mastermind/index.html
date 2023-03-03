@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="mastermind.css">
   </head>
   <body>
-    <input type="button" id="reset" value="reset" onclick="reset()"/>
+    <p>
+    Input number directly, enter to submit your guess.
+    It should be a 4-digit number without any repetition,
+    Otherwise it'll be invalid.
+    </p>
+
+    <input type="button" id="reset" value="restart" onclick="reset()"/> Press button or ESC to start a new game.
     <div>
       Guess History <br/>
       <table id="history">
