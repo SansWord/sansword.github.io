@@ -176,9 +176,9 @@ function submit() {
         displayCurrentRow(guess.getCurrentGuess(), response, validInput, submitResult);
         if (possible) {
             $("#currentRow .error").removeClass("error");
-            if (response[0] != 4) {
-                generateNewRow();
-            }
+        }
+        if (response[0] != 4) {
+            generateNewRow();
         }
     } else {
         notifyUserError("input is invalid");
