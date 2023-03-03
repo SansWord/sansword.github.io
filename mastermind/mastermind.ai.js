@@ -73,17 +73,18 @@ function start() {
 
 
     $(document).keypress(function(e) {
-
+        var whichKey = e.key;
         var targetId = $(e.target).attr("id");
         if (targetId == "userAnswer") {
-            // TODO buggy, can't work
             if (whichKey == "Enter") {
                 calculateUserResponse();
+                var userAnswerField = $("#userAnswer");
+                if(isValidGuess(userAnswerField.val())) {
+                    userAnswerField.blur();
+                }
             }
             return;
         }
-
-        var whichKey = e.key;
         if (whichKey == "Enter") {
             if ($(".success").length == 0) {
                 submit();
