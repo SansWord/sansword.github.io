@@ -6,6 +6,7 @@ function Guess() {
 
     const reset = () => {
         history = [];
+        nextPossibleAnswer = [0]
         for (var i = 0; i < 10000; i++) {
             if (isValidGuess(i)) {
                 possibleAnswers.push(i);
@@ -133,6 +134,7 @@ function start() {
 function reset() {
     currentRow = 0;
     clearHistoryUI();
+    clearCalculator();
     guess.reset();
     generateNewRow();
 }
@@ -302,7 +304,6 @@ function pad(str, max = 4) {
 function calculateUserResponse() {
     var userInputAnswer = $("#userAnswer").val();
     var autoInput = $('input[name=auto_input]:checked').val();
-    console.log(autoInput);
     if (isValidGuess(userInputAnswer)) {
         console.log("calculating user response");
         var userInputAnswerDigits = intToDigits(parseInt(userInputAnswer));
@@ -320,24 +321,12 @@ function calculateUserResponse() {
     }
 }
 
-
-        // <td>
-        //   <div id="calculator">
-        //   <div>
-        //     Response Calculator: <br/>
-        //     If you trust me, you can input your answer and I'll calculate the response for you. I won't peek. <br/>
-        //     Your Answer: <input type="text" id="userAnswer"/>
-        //   </div>
-        //   <div>
-        //     Response: <p id="calculatedResponse"> - A - B</p>
-        //   </div>
-        //     Automatic input for you:
-        //     <input type="radio" id="yes" name="auto_input" value="yes" checked>
-        //     <label for="yes">Yes</label>
-        //     <input type="radio" id="no" name="auto_input" value="CSS">
-        //     <label for="no">No</label><br>
-        //   </div>
-        // </td>
+function clearCalculator() {
+    $("#userAnswer").val("");
+    $("#calculatedResponse").html("- A - B");
+    $('#yes').prop("checked", true);
+    $('#no').prop('checked', false);
+}
 
 
 
