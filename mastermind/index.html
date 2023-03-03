@@ -1,0 +1,25 @@
+<html>
+  <head>
+  	<title>Mastermind game</title>
+    <script src="jquery-3.6.3.min.js"></script>
+    <script src="mastermind.js"></script>
+    <link rel="stylesheet" href="mastermind.css">
+  </head>
+  <body>
+    <input type="button" id="reset" value="reset" onclick="reset()"/>
+    <div>
+      Guess History <br/>
+      <table id="history">
+        <tr>
+          <th>#</th>
+          <th>Guess</th>
+          <th>Response</th>
+          <th>Desc</th>
+        </tr>
+      </table>
+    </div>
+    <script type="text/javascript">
+      start();
+    </script>
+  </body>
+</html>
