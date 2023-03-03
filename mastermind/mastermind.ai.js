@@ -12,6 +12,7 @@ function Guess() {
                 possibleAnswers.push(i);
             }
         }
+        console.log("starts with " + possibleAnswers.length + " possible answers.")
     };
     const submit = (response) => {
         history.push([currentGuess, response])
@@ -34,6 +35,9 @@ function Guess() {
     const getHistory = () => {
         return history;
     };
+    const getPossibleAnswers = () => {
+        return possibleAnswers;
+    }
 
     function calculateNextPossibleAnswers(response) {
         nextPossibleAnswer = [];
@@ -51,7 +55,8 @@ function Guess() {
         submit,
         getCurrentGuess,
         getNextGuess,
-        getHistory
+        getHistory,
+        getPossibleAnswers
     }
 }
 
@@ -137,10 +142,11 @@ function reset() {
     clearCalculator();
     guess.reset();
     generateNewRow();
+    $("#startingRow").children().last().html("Starts with " + guess.getPossibleAnswers().length +" possible answers.");
 }
 
 function clearHistoryUI() {
-    $("#history tr").next().remove();
+    $("#history tr").next().next().remove();
 }
 
 // [x, y] as xA yB
