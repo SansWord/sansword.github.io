@@ -67,6 +67,11 @@ let guess = Guess(),
     currentInputFieldSelector = "#A";
 
 const inputPattern = new RegExp("^[0-9]{4}$");
+const inputSubsetPattern = new RegExp("^[0-9]{0,3}$");
+
+function isAutoInput() {
+    return $('input[name=auto_input]:checked').val()=="yes";
+}
 
 function start() {
     console.log("start");
@@ -81,6 +86,9 @@ function start() {
                 var userAnswerField = $("#userAnswer");
                 if(isValidGuess(userAnswerField.val())) {
                     userAnswerField.blur();
+                    if(isAutoInput()) {
+                        submit();
+                    }
                 }
             }
             return;
@@ -276,8 +284,9 @@ function pad(str, max = 4) {
 }
 
 function calculateUserResponse() {
+
     var userInputAnswer = $("#userAnswer").val();
-    var autoInput = $('input[name=auto_input]:checked').val();
+    var autoInput = isAutoInput();
     if (isValidGuess(userInputAnswer)) {
         console.log("calculating user response");
         var userInputAnswerDigits = intToDigits(parseInt(userInputAnswer));
@@ -286,13 +295,17 @@ function calculateUserResponse() {
             userInputAnswerDigits
             );
         $("#calculatedResponse").html(response[0] + " A "+response[1]+" B");
-        if(autoInput == "yes") {
+        if(autoInput) {
             $("#A").val(response[0]);
             $("#B").val(response[1]);
         }
     } else {
-        $("#calculatedResponse").html("- A - B");
-        if(autoInput == "yes") {
+        if(isSubsetAnswer()) {
+            $("#calculatedResponse").html("- A - B");
+        } else {
+            $("#calculatedResponse").html("- A - B, invalid answer.");
+        }
+        if(autoInput) {
             clearUserInput();
         }
     }
@@ -321,6 +334,21 @@ function isListEqual(list1, list2) {
     return true;
 }
 
+function isSubsetAnswer() {
+    var input = $("#userAnswer").val();
+    return isSubsetGuess(input);
+}
+
+function isSubsetGuess(input) {
+    if(input=="") {
+        return true;
+    }
+    if(!inputSubsetPattern.test(input)) {
+       return false;
+    }
+    inputDigits = intToDigits(parseInt(input), input.length);
+    return (new Set(inputDigits)).size == inputDigits.length;
+}
 
 
 
