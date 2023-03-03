@@ -2,19 +2,19 @@ function Answer() {
     let secretDigits = [];
 
     const reset = () => {
-    	secretDigits = generateRandomAnswer();
+        secretDigits = generateRandomAnswer();
     };
     const respond = (guess) => {
-    	return calculateGuessResult(guess, secretDigits);
+        return calculateGuessResult(guess, secretDigits);
     };
     return {
-    	reset,
-    	respond
+        reset,
+        respond
     }
 }
 
 let answer = Answer(),
-	currentRow = 0;
+    currentRow = 0;
 const inputPattern = new RegExp("^[0-9]{4}$");
 
 function start() {
@@ -23,8 +23,8 @@ function start() {
         var whichKey = e.key;
         if (whichKey == "Enter") {
             console.log('You pressed enter, submit current guess');
-            if($(".success").length == 0) {
-            	submit();
+            if ($(".success").length == 0) {
+                submit();
             }
             e.stopPropagation();
             e.preventDefault();
@@ -60,6 +60,21 @@ function start() {
             e.stopPropagation();
             e.preventDefault();
             return;
+        }
+
+        if (e.key == "Backspace") {
+            if ($(e.target).attr("id") == "guess") {
+                // already focus on input
+                return;
+            }
+            // backspace is pressed, remove last char of input
+            var currentInput = jQuery("#guess").val();
+            if (!currentInput || currentInput.length == 0) {
+                return
+            } else {
+                var newValue = currentInput.substring(0, currentInput.length - 1);
+                jQuery("#guess").val(newValue);
+            }
         }
     })
 
@@ -100,7 +115,7 @@ function submit() {
     // display on screen
     var rawInput = $("#guess").val();
     var validInput = inputIsValid(rawInput);
-    var response = ["-","-"];
+    var response = ["-", "-"];
     if (validInput) {
         guess = parseInt(rawInput);
         response = answer.respond(guess);
