@@ -94,6 +94,11 @@
             font-size: 30px;
             text-align: center;
         }
+        .view {
+            width: 210px;
+            height: 250px;
+            float: left;
+        }
         .pic {
             
             width: 192px;
@@ -168,10 +173,7 @@
         <button onclick="shuffle();">洗牌</button>
     </div>
     <div id="view">
-        <table>
-            <tr>
-                <td>
-                    <div id="firstView" class="view">
+        <div id="firstView" class="view">
                         <div class="name">韓文昌</div>
                         <div class="pic">
                             <div class="top first"></div>
@@ -179,8 +181,6 @@
                             <div class="bottom first"></div>
                         </div>
                     </div>
-                </td>
-                <td>
                     <div id="secondView" class="view">
                         <div class="name">柯國瑜</div>
                         <div class="pic">
@@ -189,8 +189,6 @@
                             <div class="bottom second"></div>
                         </div>
                     </div>
-                </td>
-                <td>
                     <div id="thirdView" class="view">
                         <div class="name">黃國哲</div>
                         <div class="pic">
@@ -199,9 +197,6 @@
                             <div class="bottom third"></div>
                         </div>
                     </div>
-                </td>
-            </tr>
-        </table>
     </div>
     <script type="text/javascript">
         shuffle();
