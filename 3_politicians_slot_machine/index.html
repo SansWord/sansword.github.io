@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>三巨頭拉罷</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery-1.8.2.min.js"></script>
+    <script type="text/javascript">
+        function shuffle() {
+            console.log("shuffle");
+            var DATA = ["first", "second", "third"];
+            var name = {
+                "first": {
+                    "top": "韓",
+                    "middle": "文",
+                    "bottom": "昌"  
+                },
+                "second": {
+                    "top": "柯",
+                    "middle": "國",
+                    "bottom": "瑜"   
+                },
+                "third": {
+                    "top": "黃",
+                    "middle": "國",
+                    "bottom": "哲"   
+                },
+            }
+            var top = shuffleArr(DATA);
+            var middle = shuffleArr(DATA);
+            var bottom = shuffleArr(DATA);
+
+            console.log(top);
+            console.log(middle);
+            console.log(bottom);
+
+            jQuery(".view .pic div").removeClass("first second third")
+
+            // set pic of #firstView
+            jQuery("#firstView .top").addClass(top[0]);
+            jQuery("#firstView .middle").addClass(middle[0]);
+            jQuery("#firstView .bottom").addClass(bottom[0]);
+            jQuery("#firstView .name").text(
+                  name[top[0]]["top"]
+                + name[middle[0]]["middle"]
+                + name[bottom[0]]["bottom"]
+                );
+
+            // set pic of #secondView
+            jQuery("#secondView .top").addClass(top[1]);
+            jQuery("#secondView .middle").addClass(middle[1]);
+            jQuery("#secondView .bottom").addClass(bottom[1]);
+            jQuery("#secondView .name").text(
+                  name[top[1]]["top"]
+                + name[middle[1]]["middle"]
+                + name[bottom[1]]["bottom"]
+                );
+
+
+            // set pic of #thirdView
+            jQuery("#thirdView .top").addClass(top[2]);
+            jQuery("#thirdView .middle").addClass(middle[2]);
+            jQuery("#thirdView .bottom").addClass(bottom[2]);
+            jQuery("#thirdView .name").text(
+                  name[top[2]]["top"]
+                + name[middle[2]]["middle"]
+                + name[bottom[2]]["bottom"]
+                );
+
+        }
+
+        function shuffleArr(dataArr) {
+            var array = dataArr.filter(() => true);
+            let currentIndex = array.length;
+
+            // While there remain elements to shuffle...
+            while (currentIndex != 0) {
+
+            // Pick a remaining element...
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+              array[randomIndex], array[currentIndex]];
+            return array;
+        }
+}
+
+
+    </script>
+    <style type="text/css">
+        .name {
+            font-size: 30px;
+            text-align: center;
+        }
+        .pic {
+            
+            width: 192px;
+            height: 214px;
+        }
+
+        .pic div {
+            width: 192px;
+        }
+
+        .pic .first.top {
+            background-position: 0px 0px;
+            height: 66px;
+        }
+
+        .pic .first.middle {
+            background-position: 0px -66px;
+            height: 66px;
+        }
+
+        .pic .first.bottom {
+            background-position: 0px -132px;
+            height: 66px;
+        }
+
+        .pic .second.top {
+            background-position: 0px 0px;
+            height: 73px;
+        }
+
+        .pic .second.middle {
+            background-position: 0px -73px;
+            height: 64px;
+        }
+
+        .pic .second.bottom {
+            background-position: 0px -137px;
+            height: 66px;
+        }
+
+        .pic .third.top {
+            background-position: 0px 0px;
+            height: 80px;
+        }
+
+        .pic .third.middle {
+            background-position: 0px -80px;
+            height: 46px;
+        }
+
+        .pic .third.bottom {
+            background-position: 0px -126px;
+            height: 66px;
+        }
+
+        .pic div.first {
+            background-image: url(1.png);
+        }
+
+        .pic div.second {
+            background-image: url(2.png);
+        }
+
+        .pic div.third {
+            background-image: url(3.png);
+        }
+
+    </style>
+</head>
+<body >
+    <div id="control" >
+        <button onclick="shuffle();">洗牌</button>
+    </div>
+    <div id="view">
+        <table>
+            <tr>
+                <td>
+                    <div id="firstView" class="view">
+                        <div class="name">韓文昌</div>
+                        <div class="pic">
+                            <div class="top first"></div>
+                            <div class="middle first"></div>
+                            <div class="bottom first"></div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div id="secondView" class="view">
+                        <div class="name">柯國瑜</div>
+                        <div class="pic">
+                            <div class="top second"></div>
+                            <div class="middle second"></div>
+                            <div class="bottom second"></div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div id="thirdView" class="view">
+                        <div class="name">黃國哲</div>
+                        <div class="pic">
+                            <div class="top third"></div>
+                            <div class="middle third"></div>
+                            <div class="bottom third"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        shuffle();
+    </script>
+</body>
+</html>
