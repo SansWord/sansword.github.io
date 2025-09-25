@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Rubik's Cube | @sansword</title>
+  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"><link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+  <p>BLD Practice Tool</p>
+
+  <table>
+    <tr>
+      <td>
+  <div id="cube">
+    <table>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="U_C_1" class="up corner">A</td>
+        <td id="U_E_1" class="up edge">A</td>
+        <td id="U_C_2" class="up corner">B</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="U_E_4" class="up edge">D</td>
+        <td id="U_Center"   class="up"></td>
+        <td id="U_E_2" class="up edge">B</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="U_C_4" class="up corner">D</td>
+        <td id="U_E_3" class="up edge">C</td>
+        <td id="U_C_3" class="up corner buffer">C</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td id="L_C_1" class="left corner">I</td>
+        <td id="L_E_1" class="left edge">I</td>
+        <td id="L_C_2" class="left corner">J</td>
+        <td id="F_C_1" class="front corner">E</td>
+        <td id="F_E_1" class="front edge">E</td>
+        <td id="F_C_2" class="front corner">F</td>
+        <td id="R_C_1" class="right corner">Q</td>
+        <td id="R_E_1" class="right edge">Q</td>
+        <td id="R_C_2" class="right corner">R</td>
+        <td id="B_C_1" class="back corner">M</td>
+        <td id="B_E_1" class="back edge">M</td>
+        <td id="B_C_2" class="back corner">N</td>
+      </tr>
+
+      <tr>
+        <td id="L_E_4" class="left edge">L</td>
+        <td id="L_Center"   class="left"></td>
+        <td id="L_E_2" class="left edge">J</td>
+        <td id="F_E_4" class="front edge">H</td>
+        <td id="F_Center"   class="front"></td>
+        <td id="F_E_2" class="front edge">F</td>
+        <td id="R_E_4" class="right edge">T</td>
+        <td id="R_Center"   class="right"></td>
+        <td id="R_E_2" class="right edge">R</td>
+        <td id="B_E_4" class="back edge">P</td>
+        <td id="B_Center"   class="back"></td>
+        <td id="B_E_2" class="back edge">N</td>
+      </tr>
+
+      <tr>
+        <td id="L_C_4" class="left corner">L</td>
+        <td id="L_E_3" class="left edge">K</td>
+        <td id="L_C_3" class="left corner">K</td>
+        <td id="F_C_4" class="front corner">H</td>
+        <td id="F_E_3" class="front edge">G</td>
+        <td id="F_C_3" class="front corner">G</td>
+        <td id="R_C_4" class="right corner">T</td>
+        <td id="R_E_3" class="right edge">S</td>
+        <td id="R_C_3" class="right corner">S</td>
+        <td id="B_C_4" class="back corner">P</td>
+        <td id="B_E_3" class="back edge">O</td>
+        <td id="B_C_3" class="back corner">O</td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="D_C_1" class="down corner">U</td>
+        <td id="D_E_1" class="down edge buffer">U</td>
+        <td id="D_C_2" class="down corner">V</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="D_E_4" class="down edge">Y</td>
+        <td id="D_Center"   class="down"></td>
+        <td id="D_E_2" class="down edge">V</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td id="D_C_4" class="down corner">Y</td>
+        <td id="D_E_3" class="down edge">W</td>
+        <td id="D_C_3" class="down corner">W</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="12" style="color:white;font-size:15px">
+          Orientation:
+        <button class="orientation" onclick="rotateCube('U', 1);"> U </button>
+        <button class="orientation" onclick="rotateCube('D', 1);"> D </button>
+        <button class="orientation" onclick="rotateCube('L', 1);"> L </button>
+        <button class="orientation" onclick="rotateCube('R', 1);"> R </button>
+        <button class="orientation" onclick="rotateCube('F', 1);"> F </button>
+        <button class="orientation" onclick="rotateCube('B', 1);"> B </button>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+      </td>
+      <td>
+
+  <div id="input">
+    <div id="R">
+    <button onclick="rotateLayer('R', 1);"> R </button>
+    <button onclick="rotateLayer('R', 2);"> R2 </button>
+    <button onclick="rotateLayer('R', 3);"> R' </button>
+    <button onclick="rotateLayer('R', 1, true);"> Rw </button>
+    <button onclick="rotateLayer('R', 2, true);"> Rw2 </button>
+    <button onclick="rotateLayer('R', 3, true);"> Rw' </button>
+    </div>
+    <div id="L">
+    <button onclick="rotateLayer('L', 1);"> L </button>
+    <button onclick="rotateLayer('L', 2);"> L2 </button>
+    <button onclick="rotateLayer('L', 3);"> L' </button>
+    <button onclick="rotateLayer('L', 1, true);"> Lw </button>
+    <button onclick="rotateLayer('L', 2, true);"> Lw2 </button>
+    <button onclick="rotateLayer('L', 3, true);"> Lw' </button>
+    </div>
+    <div id="U">
+    <button onclick="rotateLayer('U', 1);"> U </button>
+    <button onclick="rotateLayer('U', 2);"> U2 </button>
+    <button onclick="rotateLayer('U', 3);"> U' </button>
+    <button onclick="rotateLayer('U', 1, true);"> Uw </button>
+    <button onclick="rotateLayer('U', 2, true);"> Uw2 </button>
+    <button onclick="rotateLayer('U', 3, true);"> Uw' </button>
+    </div>
+    <div id="D">
+    <button onclick="rotateLayer('D', 1);"> D </button>
+    <button onclick="rotateLayer('D', 2);"> D2 </button>
+    <button onclick="rotateLayer('D', 3);"> D' </button>
+    <button onclick="rotateLayer('D', 1, true);"> Dw </button>
+    <button onclick="rotateLayer('D', 2, true);"> Dw2 </button>
+    <button onclick="rotateLayer('D', 3, true);"> Dw' </button>
+    </div>
+    <div id="F">
+    <button onclick="rotateLayer('F', 1);"> F </button>
+    <button onclick="rotateLayer('F', 2);"> F2 </button>
+    <button onclick="rotateLayer('F', 3);"> F' </button>
+    <button onclick="rotateLayer('F', 1, true);"> Fw </button>
+    <button onclick="rotateLayer('F', 2, true);"> Fw2 </button>
+    <button onclick="rotateLayer('F', 3, true);"> Fw' </button>
+    </div>
+    <div id="B">
+    <button onclick="rotateLayer('B', 1);"> B </button>
+    <button onclick="rotateLayer('B', 2);"> B2 </button>
+    <button onclick="rotateLayer('B', 3);"> B' </button>
+    <button onclick="rotateLayer('B', 1, true);"> Bw </button>
+    <button onclick="rotateLayer('B', 2, true);"> Bw2 </button>
+    <button onclick="rotateLayer('B', 3, true);"> Bw' </button>
+    </div>
+    <div id="misc">
+    <button onclick="resetCube();"> Reset </button>
+    <button onclick="resetCubeOrientation();" style="width: 280px"> Reset Orientation</button>
+
+    </div>
+  </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="text" id="scramble"
+          value="D'LUD2R'F2D2F2L2U2L2BF2L2D2R'D2F'Rw2Uw2"
+        />
+        <!-- L'D2R'F'D'R2B'DR'F2L2D2F'B'R2U2R2L'D2 -->
+        <button id="submitScramble" class="submit" onclick="submitScramble();"> Submit Scramble</button>
+        <button id="submitScramble" class="submit" onclick="generateScramble();"> Scramble</button>
+      </td>
+    </tr>
+        <tr>
+      <td colspan="2">
+        <input type="text" id="solution"
+          value="VWHATNKREHBDQ,NSDBTBKOU"
+        />
+        <!-- TPDYWVBMEHNH,GOBEIPKR -->
+        <button id="submitSolution" class="submit" onclick="submitSolution();"> Submit Solution</button>
+        <button id="hisotry" class="submit" onclick="addToHistory();">Add to History</button>
+      </td>
+    </tr>
+  </table>
+
+<script src="node_modules/scrambow/dist/scrambow.js"></script>
+<script  src="./script.js"></script>
+
+</body>
+</html>

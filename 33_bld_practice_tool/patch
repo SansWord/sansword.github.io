@@ -1,0 +1,2231 @@
+From 3a3cbf80969271ee4df8650ac5e5f8de28183676 Mon Sep 17 00:00:00 2001
+From: SansWord <sansword@gmail.com>
+Date: Sun, 21 Sep 2025 08:18:52 -0700
+Subject: [PATCH] init commit with working scramble and solution function
+
+---
+ READ.md    |   6 +
+ index.html | 220 ++++++++++++++++
+ script.js  | 876 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ style.css  | 113 ++++++++
+ 4 files changed, 1215 insertions(+)
+
+diff --git a/READ.md b/READ.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..32084ef255b87443891053c995d5b156e283c897
+--- /dev/null
++++ b/READ.md
+@@ -0,0 +1,6 @@
++TODO
++
++0. upload to github page
++1. support Xw action
++2. color configurable
++3. buffer configurable
+\ No newline at end of file
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..d166ebaedb7b47af70ab622ec3e24f97ac0b3df3
+--- /dev/null
++++ b/index.html
+@@ -0,0 +1,220 @@
++<!DOCTYPE html>
++<html lang="en" >
++<head>
++  <meta charset="UTF-8">
++  <title>Rubik's Cube | @sansword</title>
++  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"><link rel="stylesheet" href="./style.css">
++
++</head>
++<body>
++  <p>BLD Practice Tool</p>
++
++  <table>
++    <tr>
++      <td>
++  <div id="cube">
++    <table>
++      <tr>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td id="U_C_1" class="up"></td>
++        <td id="U_E_1" class="up"></td>
++        <td id="U_C_2" class="up"></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++      </tr>
++      <tr>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td id="U_E_4" class="up"></td>
++        <td id="U_Center"   class="up"></td>
++        <td id="U_E_2" class="up"></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++      </tr>
++      <tr>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td id="U_C_4" class="up"></td>
++        <td id="U_E_3" class="up"></td>
++        <td id="U_C_3" class="up"></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++      </tr>
++
++      <tr>
++        <td id="L_C_1" class="left"></td>
++        <td id="L_E_1" class="left"></td>
++        <td id="L_C_2" class="left"></td>
++        <td id="F_C_1" class="front"></td>
++        <td id="F_E_1" class="front"></td>
++        <td id="F_C_2" class="front"></td>
++        <td id="R_C_1" class="right"></td>
++        <td id="R_E_1" class="right"></td>
++        <td id="R_C_2" class="right"></td>
++        <td id="B_C_1" class="back"></td>
++        <td id="B_E_1" class="back"></td>
++        <td id="B_C_2" class="back"></td>
++      </tr>
++
++      <tr>
++        <td id="L_E_4" class="left"></td>
++        <td id="L_Center"   class="left"></td>
++        <td id="L_E_2" class="left"></td>
++        <td id="F_E_4" class="front"></td>
++        <td id="F_Center"   class="front"></td>
++        <td id="F_E_2" class="front"></td>
++        <td id="R_E_4" class="right"></td>
++        <td id="R_Center"   class="right"></td>
++        <td id="R_E_2" class="right"></td>
++        <td id="B_E_4" class="back"></td>
++        <td id="B_Center"   class="back"></td>
++        <td id="B_E_2" class="back"></td>
++      </tr>
++
++      <tr>
++        <td id="L_C_4" class="left"></td>
++        <td id="L_E_3" class="left"></td>
++        <td id="L_C_3" class="left"></td>
++        <td id="F_C_4" class="front"></td>
++        <td id="F_E_3" class="front"></td>
++        <td id="F_C_3" class="front"></td>
++        <td id="R_C_4" class="right"></td>
++        <td id="R_E_3" class="right"></td>
++        <td id="R_C_3" class="right"></td>
++        <td id="B_C_4" class="back"></td>
++        <td id="B_E_3" class="back"></td>
++        <td id="B_C_3" class="back"></td>
++      </tr>
++
++      <tr>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td id="D_C_1" class="down"></td>
++        <td id="D_E_1" class="down"></td>
++        <td id="D_C_2" class="down"></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++      </tr>
++
++      <tr>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td id="D_E_4" class="down"></td>
++        <td id="D_Center"   class="down"></td>
++        <td id="D_E_2" class="down"></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++      </tr>
++
++      <tr>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td id="D_C_4" class="down"></td>
++        <td id="D_E_3" class="down"></td>
++        <td id="D_C_3" class="down"></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++        <td></td>
++      </tr>      
++
++    </table>
++  </div>
++
++      </td>
++      <td>
++        
++  <div id="input">
++    <div id="R">
++    <button onclick="rotateLayer('R', 1);"> R </button>
++    <button onclick="rotateLayer('R', 2);"> R2 </button>
++    <button onclick="rotateLayer('R', 3);"> R' </button>
++    </div>
++    <div id="L">
++    <button onclick="rotateLayer('L', 1);"> L </button>
++    <button onclick="rotateLayer('L', 2);"> L2 </button>
++    <button onclick="rotateLayer('L', 3);"> L' </button>
++    </div>
++    <div id="U">
++    <button onclick="rotateLayer('U', 1);"> U </button>
++    <button onclick="rotateLayer('U', 2);"> U2 </button>
++    <button onclick="rotateLayer('U', 3);"> U' </button>
++    </div>
++    <div id="D">
++    <button onclick="rotateLayer('D', 1);"> D </button>
++    <button onclick="rotateLayer('D', 2);"> D2 </button>
++    <button onclick="rotateLayer('D', 3);"> D' </button>
++    </div>
++    <div id="F">
++    <button onclick="rotateLayer('F', 1);"> F </button>
++    <button onclick="rotateLayer('F', 2);"> F2 </button>
++    <button onclick="rotateLayer('F', 3);"> F' </button>
++    </div>
++    <div id="B">
++    <button onclick="rotateLayer('B', 1);"> B </button>
++    <button onclick="rotateLayer('B', 2);"> B2 </button>
++    <button onclick="rotateLayer('B', 3);"> B' </button>
++    </div>
++    <div id="misc">
++    <button onclick="resetCube();"> Reset </button>
++
++    </div>
++  </div>
++      </td>
++    </tr>
++    <tr>
++      <td colspan="2">
++        <input type="text" id="scramble"
++          value="D'LUD2R'F2D2F2L2U2L2BF2L2D2R'D2F'L2U2"
++        />
++        <!-- L'D2R'F'D'R2B'DR'F2L2D2F'B'R2U2R2L'D2 -->
++        <button id="submitScramble" class="submit" onclick="submitScramble();"> submit scramble</button>
++      </td>
++    </tr>
++        <tr>
++      <td colspan="2">
++        <input type="text" id="solution"
++          value="VWHATNKREHBDQ,NSDBTBKOU"
++        />
++        <!-- TPDYWVBMEHNH,GOBEIPKR -->
++        <button id="submitSolution" class="submit" onclick="submitSolution();"> submit solution</button>
++      </td>
++    </tr>
++  </table>
++
++
++
++
++<script  src="./script.js"></script>
++
++</body>
++</html>
+diff --git a/script.js b/script.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..eae6d80249bbb4932eb143cf2f5d7fa4dd98f93b
+--- /dev/null
++++ b/script.js
+@@ -0,0 +1,876 @@
++faces = ["U", "D", "F", "B", "L", "R"];
++types = ["E", "C"];
++color_classes = ["up", "down", "left", "right", "front", "back"]
++
++cube_position = {
++  "edges": [
++    "UB",
++    "UR",
++    "UF",
++    "UL",
++    "FL",
++    "FR",
++    "BR",
++    "BL",
++    "DF",
++    "DR",
++    "DB",
++    "DL",
++  ],
++  "corners": [
++    "ULB",
++    "UBR",
++    "URF",
++    "UFL",
++    "DLF",
++    "DFR",
++    "DRB",
++    "DBL"
++  ]
++}
++
++cube_definition = {
++  // 12 edges with 0,1 orientation
++  "edges": [
++    {
++      "id": 0,
++      "faces": ["up", "back"]
++    },
++    {
++      "id": 1,
++      "faces": ["up", "right"]
++    },
++    {
++      "id": 2,
++      "faces": ["up", "front"]
++    },
++    {
++      "id": 3,
++      "faces": ["up", "left"]
++    },
++    {
++      "id": 4,
++      "faces": ["front", "left"]
++    },
++    {
++      "id": 5,
++      "faces": ["front", "right"]
++    },
++    {
++      "id": 6,
++      "faces": ["back", "right"]
++    },
++    {
++      "id": 7,
++      "faces": ["back", "left"]
++    },
++    {
++      "id": 8,
++      "faces": ["down", "front"]
++    },
++    {
++      "id": 9,
++      "faces": ["down", "right"]
++    },
++    {
++      "id": 10,
++      "faces": ["down", "back"]
++    },
++    {
++      "id": 11,
++      "faces": ["down", "left"]
++    }
++  ],
++  // 8 corners with 0,1,2 orientation
++  "corners": [
++    {
++      "id": 0,
++      "faces": ["up", "left", "back"]
++    },
++    {
++      "id": 1,
++      "faces": ["up", "back", "right"]
++    },
++    {
++      "id": 2,
++      "faces": ["up", "right", "front"]
++    },
++    {
++      "id": 3,
++      "faces": ["up", "front", "left"]
++    },
++    {
++      "id": 4,
++      "faces": ["down", "left", "front"]
++    },
++    {
++      "id": 5,
++      "faces": ["down", "front", "right"]
++    },
++    {
++      "id": 6,
++      "faces": ["down", "right", "back"]
++    },
++    {
++      "id": 7,
++      "faces": ["down", "back", "left"]
++    }
++  ],
++  // 6 centers with 0,1,2,3 orientation
++  "centers": [
++    {
++      "id": 0,
++      "faces": ["up", "up", "up", "up"]
++    },
++    {
++      "id": 1,
++      "faces": ["front", "front", "front", "front"]
++    },
++    {
++      "id": 2,
++      "faces": ["right", "right", "right", "right"]
++    },
++    {
++      "id": 3,
++      "faces": ["back", "back", "back", "back"]
++    },
++    {
++      "id": 4,
++      "faces": ["left", "left", "left", "left"]
++    },
++    {
++      "id": 5,
++      "faces": ["down", "down", "down", "down"]
++    }
++  ]
++}
++
++cube = {
++  // 12 edges with 0,1 orientation
++  "edges": [
++    {
++      "id": 0,
++      "orientation": 0
++    },
++    {
++      "id": 1,
++      "orientation": 0
++    },
++    {
++      "id": 2,
++      "orientation": 0
++    },
++    {
++      "id": 3,
++      "orientation": 0
++    },
++    {
++      "id": 4,
++      "orientation": 0
++    },
++    {
++      "id": 5,
++      "orientation": 0
++    },
++    {
++      "id": 6,
++      "orientation": 0
++    },
++    {
++      "id": 7,
++      "orientation": 0
++    },
++    {
++      "id": 8,
++      "orientation": 0
++    },
++    {
++      "id": 9,
++      "orientation": 0
++    },
++    {
++      "id": 10,
++      "orientation": 0
++    },
++    {
++      "id": 11,
++      "orientation": 0
++    }
++  ],
++  // 8 corners with 0,1,2 orientation
++  "corners": [
++    {
++      "id": 0,
++      "orientation": 0
++    },
++    {
++      "id": 1,
++      "orientation": 0
++    },
++    {
++      "id": 2,
++      "orientation": 0
++    },
++    {
++      "id": 3,
++      "orientation": 0
++    },
++    {
++      "id": 4,
++      "orientation": 0
++    },
++    {
++      "id": 5,
++      "orientation": 0
++    },
++    {
++      "id": 6,
++      "orientation": 0
++    },
++    {
++      "id": 7,
++      "orientation": 0
++    }
++  ],
++  // 6 centers with 0,1,2,3 orientation
++  "centers": [
++    {
++      "id": 0,
++      "orientation": 0
++    },
++    {
++      "id": 1,
++      "orientation": 0
++    },
++    {
++      "id": 2,
++      "orientation": 0
++    },
++    {
++      "id": 3,
++      "orientation": 0
++    },
++    {
++      "id": 4,
++      "orientation": 0
++    },
++    {
++      "id": 5,
++      "orientation": 0
++    }
++  ],
++}
++
++reset_cube = {
++  // 12 edges with 0,1 orientation
++  "edges": [
++    {
++      "id": 0,
++      "orientation": 0
++    },
++    {
++      "id": 1,
++      "orientation": 0
++    },
++    {
++      "id": 2,
++      "orientation": 0
++    },
++    {
++      "id": 3,
++      "orientation": 0
++    },
++    {
++      "id": 4,
++      "orientation": 0
++    },
++    {
++      "id": 5,
++      "orientation": 0
++    },
++    {
++      "id": 6,
++      "orientation": 0
++    },
++    {
++      "id": 7,
++      "orientation": 0
++    },
++    {
++      "id": 8,
++      "orientation": 0
++    },
++    {
++      "id": 9,
++      "orientation": 0
++    },
++    {
++      "id": 10,
++      "orientation": 0
++    },
++    {
++      "id": 11,
++      "orientation": 0
++    }
++  ],
++  // 8 corners with 0,1,2 orientation
++  "corners": [
++    {
++      "id": 0,
++      "orientation": 0
++    },
++    {
++      "id": 1,
++      "orientation": 0
++    },
++    {
++      "id": 2,
++      "orientation": 0
++    },
++    {
++      "id": 3,
++      "orientation": 0
++    },
++    {
++      "id": 4,
++      "orientation": 0
++    },
++    {
++      "id": 5,
++      "orientation": 0
++    },
++    {
++      "id": 6,
++      "orientation": 0
++    },
++    {
++      "id": 7,
++      "orientation": 0
++    }
++  ],
++  // 6 centers with 0,1,2,3 orientation
++  "centers": [
++    {
++      "id": 0,
++      "orientation": 0
++    },
++    {
++      "id": 1,
++      "orientation": 0
++    },
++    {
++      "id": 2,
++      "orientation": 0
++    },
++    {
++      "id": 3,
++      "orientation": 0
++    },
++    {
++      "id": 4,
++      "orientation": 0
++    },
++    {
++      "id": 5,
++      "orientation": 0
++    }
++  ],
++}
++
++function testExistence() {
++  for (var i = 0; i < faces.length; i++) {
++    for (var j = 0; j < types.length; j++) {
++      for (var k = 1; k <= 4; k++) {
++        var id = faces[i] + "_" + types[j] + "_" + k;
++        console.log(document.getElementById(id) == undefined)
++      }
++    }
++  }
++
++  for (var i = 0; i < faces.length; i++) {
++    var id = faces[i] + "_Center";
++    console.log(document.getElementById(id) == undefined)
++  }
++}
++
++function clearColorClasses(elm) {
++  for (var i = 0; i < color_classes.length; i++) {
++    elm.classList.remove(color_classes[i]);
++  }
++}
++
++function clearCube() {
++  for (var i = 0; i < faces.length; i++) {
++    for (var j = 0; j < types.length; j++) {
++      for (var k = 1; k <= 4; k++) {
++        var id = faces[i] + "_" + types[j] + "_" + k;
++        clearColorClasses(document.getElementById(id))
++      }
++    }
++  }
++
++  for (var i = 0; i < faces.length; i++) {
++    var id = faces[i] + "_Center";
++    clearColorClasses(document.getElementById(id))
++  }
++}
++
++function renderCenters() {
++  center_faces = ["U", "F", "R", "B", "L", "D"];
++  centers = cube.centers;
++  for (var i = centers.length - 1; i >= 0; i--) {
++    getFace(center_faces[i],"Center").classList = cube_definition.centers[centers[i].id].faces[centers[i].orientation]
++  }
++}
++
++function renderEdges() {
++  edges = cube.edges;
++
++  edge_faces = [
++    ["U", "B"],
++    ["U", "R"],
++    ["U", "F"],
++    ["U", "L"],
++    ["F", "L"],
++    ["F", "R"],
++    ["B", "R"],
++    ["B", "L"],
++    ["D", "F"],
++    ["D", "R"],
++    ["D", "B"],
++    ["D", "L"],
++  ]
++  edge_nums = [
++    [1,1],
++    [2,1],
++    [3,1],
++    [4,1],
++
++    [4,2],
++    [2,4],
++    [4,2],
++    [2,4],
++
++    [1,3],
++    [2,3],
++    [3,3],
++    [4,3],
++  ]
++  for (var i = 0; i < edges.length; i++) {
++    //console.log("--")
++    for (var j = 0; j < 2; j ++) {
++      //console.log(cube_definition.edges[edges[i].id].faces[(edges[i].orientation + j)%2])
++      getFace(edge_faces[i][j], "E", edge_nums[i][j]).classList = cube_definition.edges[edges[i].id].faces[(edges[i].orientation + j)%2]
++    }
++  }
++}
++
++function renderCorners() {
++  corners = cube.corners;
++
++  corner_faces = [
++    ["U", "L", "B"],
++    ["U", "B", "R"],
++    ["U", "R", "F"],
++    ["U", "F", "L"],
++
++    ["D", "L", "F"],
++    ["D", "F", "R"],
++    ["D", "R", "B"],
++    ["D", "B", "L"]
++  ]
++  corner_nums = [
++    [1,1,2],
++    [2,1,2],
++    [3,1,2],
++    [4,1,2],
++
++    [1,3,4],
++    [2,3,4],
++    [3,3,4],
++    [4,3,4]
++  ]
++  for (var i = 0; i < corners.length; i++) {
++    //console.log("-- " + i)
++    for (var j = 0; j < 3; j ++) {
++      //console.log(cube_definition.corners[corners[i].id].faces[(corners[i].orientation + j)%3])
++      var corner = getFace(corner_faces[i][j], "C", corner_nums[i][j]);
++      //console.log(corner)
++      corner.classList = cube_definition.corners[corners[i].id].faces[(corners[i].orientation + j)%3]
++    }
++  }
++
++
++}
++
++function renderCube() {
++  clearCube();
++  renderCenters();
++  renderCorners();
++  renderEdges();
++}
++
++function getFace(face, type, num) {
++  if (type == "Center") {
++    id = face + "_Center";
++  } else {
++    id = face + "_" + type + "_" + num;
++  }
++
++  //console.log("getting face:" + id);
++
++  return document.getElementById(id);
++}
++
++renderCube()
++
++function rotateLayer(layer, times /*1, 2, 3*/) {
++  for(var i = 0; i < times; i++) {
++    rotateLayerOnce(layer);
++  }
++  clearCube();
++  renderCube();
++}
++
++function rotateLayerOnce(layer) {
++  //center_faces = ["U", "F", "R", "B", "L", "D"];
++  rotateEdgeOnce(layer);
++  rotateCornerOnce(layer);
++  rotateCenterOnce(layer);
++}
++
++function rotateEdgeOnce(layer) {
++  var flip = false;
++  switch (layer) {
++    case "U": // 0,1,2,3, done
++      var movingIds = [0,1,2,3];
++      break;
++    case "L": // 3,4,11,7, done
++      var movingIds = [3,4,11,7];
++      break;
++    case "F": // 2,5,8,4, done
++      var movingIds = [2,5,8,4];
++      var flip = true;
++      break;
++    case "R": //1,6,9,5, done
++      var movingIds = [1,6,9,5];
++      break;
++    case "B": //
++      var movingIds = [0,7,10,6];
++      var flip = true;
++      break;
++    case "D": // 8,9,10,11, done
++      var movingIds = [8,9,10,11];
++      break;
++  }
++  var movingEdges = [
++    cube.edges[movingIds[0]],
++    cube.edges[movingIds[1]],
++    cube.edges[movingIds[2]],
++    cube.edges[movingIds[3]],
++  ];
++  cube.edges[movingIds[0]] = movingEdges[3];
++  cube.edges[movingIds[1]] = movingEdges[0];
++  cube.edges[movingIds[2]] = movingEdges[1];
++  cube.edges[movingIds[3]] = movingEdges[2];
++  if (flip) {
++    flipEdges(layer);
++  }
++}
++
++function flipEdges(layer) {
++  switch (layer) {
++    case "F": // 2,5,8,4
++      flipEdge(cube.edges[2], 1);
++      flipEdge(cube.edges[5], 1);
++      flipEdge(cube.edges[8], 1);
++      flipEdge(cube.edges[4], 1);
++      break;
++    case "B": // 0,7,10,6
++      flipEdge(cube.edges[0], 1);
++      flipEdge(cube.edges[7], 1);
++      flipEdge(cube.edges[10], 1);
++      flipEdge(cube.edges[6], 1);
++      break;
++  }
++}
++
++function rotateCornerOnce(layer) {
++  var flip = false;
++  switch (layer) {
++    case "U": // 0,1,2,3, done
++      var movingIds = [0,1,2,3];
++      break;
++    case "L": // 0,3,4,7
++      var movingIds = [0,3,4,7];
++      var flip = true;
++      break;
++    case "F": // 3,2,5,4, done
++      var movingIds = [3,2,5,4];
++      var flip = true;
++      break;
++    case "R": // 2,1,6,5, done
++      var movingIds = [2,1,6,5];
++      var flip = true;
++      break;
++    case "B": // 1,0,7,6
++      var movingIds = [1,0,7,6];
++      var flip = true;
++      break;
++    case "D": // 4,5,6,7, done
++      var movingIds = [4,5,6,7];
++      break;
++  }
++  var movingCorners = [
++    cube.corners[movingIds[0]],
++    cube.corners[movingIds[1]],
++    cube.corners[movingIds[2]],
++    cube.corners[movingIds[3]],
++  ];
++  cube.corners[movingIds[0]] = movingCorners[3];
++  cube.corners[movingIds[1]] = movingCorners[0];
++  cube.corners[movingIds[2]] = movingCorners[1];
++  cube.corners[movingIds[3]] = movingCorners[2];
++  if (flip) {
++    //console.log("handle flipping");
++    flipCorners(layer);
++  }
++}
++
++function flipCorners(layer) {
++  switch (layer) {
++    case "R": // 2,1,6,5
++      flipCorner(cube.corners[2], 1);
++      flipCorner(cube.corners[1], 2);
++      flipCorner(cube.corners[6], 1);
++      flipCorner(cube.corners[5], 2);
++      break;
++
++    case "F": // 3,2,5,4
++      flipCorner(cube.corners[3], 1);
++      flipCorner(cube.corners[2], 2);
++      flipCorner(cube.corners[5], 1);
++      flipCorner(cube.corners[4], 2);
++      break;
++
++    case "L": // 0,3,4,7
++      flipCorner(cube.corners[0], 1);
++      flipCorner(cube.corners[3], 2);
++      flipCorner(cube.corners[4], 1);
++      flipCorner(cube.corners[7], 2);
++      break;
++
++    case "B": // 1,0,7,6
++      flipCorner(cube.corners[1], 1);
++      flipCorner(cube.corners[0], 2);
++      flipCorner(cube.corners[7], 1);
++      flipCorner(cube.corners[6], 2);
++      break;
++
++  }
++}
++
++function rotateCenterOnce(layer) {
++  //center_faces = ["U", "F", "R", "B", "L", "D"];
++  center_idxs = {
++    "U": 0,
++    "F": 1,
++    "R": 2,
++    "B": 3,
++    "L": 4,
++    "D": 5
++  }
++  var center_idx = center_idxs[layer];
++  var center_orientation = cube.centers[center_idx].orientation
++  //console.log("before:" + center_orientation);
++  cube.centers[center_idx].orientation = (center_orientation + 1) % 4;
++  //console.log("after:" + cube.centers[center_idx].orientation)
++}
++
++function resetCube() {
++  cube = JSON.parse(JSON.stringify(reset_cube));
++  renderCube();
++}
++
++function submitScramble() {
++  const reg = /(?:[LRUDFB]2?'?)/gm;
++
++  var scramble = document.getElementById("scramble").value.toUpperCase();
++  console.log("receving scrambe: " + scramble);
++  resetCube();
++
++  if (!scramble) {
++    return
++  }
++
++  //const testScramble = "RL2FB2R'U2R'D'LB2U'F2D2B2R2U2R2UR";
++  //scramble = testScramble;
++  var operations = scramble.match(reg)
++  for (var i = 0; i < operations.length; i++) {
++    var operation = operations[i];
++    if (operation.length == 1) {
++      layer = operation
++      var times = 1
++    } else {
++      var times = operation[1] == "2" ? 2 : 3;
++      layer = operation[0];
++    }
++    rotateLayer(layer, times)
++  }
++
++}
++
++function submitSolution() {
++  var solution = document.getElementById("solution").value.toUpperCase();
++  console.log("receving solution: " + solution);
++
++  if (!solution) {
++    return
++  }
++
++  var edge_encoding = solution.split(",")[0];
++  var corner_encoding = solution.split(",")[1];
++  console.log("receving encodings: [" + edge_encoding + "], [" + corner_encoding + "]");
++  handleEdgeEncoding(edge_encoding);
++  handleCornerEncoding(corner_encoding);
++  renderCube();
++}
++
++function handleEdgeEncoding(encoding) {
++  if (!encoding) {
++    return;
++  }
++  console.log("handle edge with encoding: " + encoding)
++  //A-Y
++  // moving buffer (UD) with target
++  var targets = {
++    // id, orientation
++    "A": [ 0, 0],
++    "B": [ 1, 0],
++    "C": [ 2, 0],
++    "D": [ 3, 0],
++
++    "E": [ 2, 1],
++    "F": [ 5, 0],
++    "G": [ 8, 1],
++    "H": [ 4, 0],
++
++    "I": [ 3, 1],
++    "J": [ 4, 1],
++    "K": [11, 1],
++    "L": [ 7, 1],
++
++    "M": [ 0, 1],
++    "N": [ 7, 0],
++    "O": [10, 1],
++    "P": [ 6, 0],
++
++    "Q": [ 1, 1],
++    "R": [ 6, 1],
++    "S": [ 9, 1],
++    "T": [ 5, 1],
++
++    "U": [ 8, 0],
++    "V": [ 9, 0],
++    "W": [10, 0],
++    "Y": [11, 0]
++  }
++
++  // swaping 8 and target with orientation
++  var buffer = 8
++  for (var i = 0; i < encoding.length; i++) {
++    var target = targets[encoding.charAt(i)];
++
++    if (i%2 == 1) {
++      // odd mode, handle C/E, W,O
++      switch(target) {
++        case "C":
++          target = "E"
++          break;
++        case "E":
++          target = "C"
++          break;
++        case "W":
++          target = "O"
++          break;
++        case "O":
++          target = "W"
++          break;
++      }
++    }
++
++    console.log(target);
++    var targetId = target[0];
++    var orientation = target[1];
++    var tmp = cube.edges[buffer];
++    cube.edges[buffer] = cube.edges[targetId];
++    cube.edges[targetId] = tmp;
++    flipEdge(cube.edges[buffer], orientation);
++    flipEdge(cube.edges[targetId], orientation);
++  }
++
++}
++
++function handleCornerEncoding(encoding) {
++  if (!encoding) {
++    return;
++  }
++  console.log("handle corner with encoding: " + encoding)
++  //A-Y
++  // moving buffer (UFR) with target
++  var targets = {
++    // id, orientation
++    "A": [0, 0],
++    "B": [1, 0],
++    "C": [2, 0],
++    "D": [3, 0],
++    "E": [3, 1],
++    "F": [2, 2],
++    "G": [5, 1],
++    "H": [4, 2],
++    "I": [0, 1],
++    "J": [3, 2],
++    "K": [4, 1],
++    "L": [7, 2],
++    "M": [1, 1],
++    "N": [0, 2],
++    "O": [7, 1],
++    "P": [6, 2],
++    "Q": [2, 1],
++    "R": [1, 2],
++    "S": [6, 1],
++    "T": [5, 2],
++    "U": [4, 0],
++    "V": [5, 0],
++    "W": [6, 0],
++    "Y": [7, 0]
++  }
++
++  // swaping 2 and target with orientation
++  
++  for (var i = 0; i < encoding.length; i++) {
++    //var buffer = i%2 == 0 ? 2 : 1;
++    buffer = 2;
++    var target = targets[encoding.charAt(i)];
++    console.log(target);
++    var targetId = target[0];
++    var orientation = target[1];
++
++    //swap targetId with buffer
++    var tmp = cube.corners[buffer];
++    cube.corners[buffer] = cube.corners[targetId];
++    cube.corners[targetId] = tmp;
++
++    flipCorner(cube.corners[buffer], orientation);
++    flipCorner(cube.corners[targetId], -orientation);
++  }
++
++}
++
++function flipEdge(edge, orientation) {
++  edge.orientation = (edge.orientation + orientation) % 2;
++}
++
++function flipCorner(corner, orientation) {
++  corner.orientation = (corner.orientation + orientation + 3) % 3;
++}
+\ No newline at end of file
+diff --git a/style.css b/style.css
+new file mode 100644
+index 0000000000000000000000000000000000000000..b5a72d6ef39b14b095c9d0011d055f071b9cd1b4
+--- /dev/null
++++ b/style.css
+@@ -0,0 +1,113 @@
++:root {
++  --rubiks-up: #FFFFFF; /* White */
++  --rubiks-down: #FFD500; /* Cyber Yellow */
++  --rubiks-right: #B90000;   /* UE Red */
++  --rubiks-left: #FF5900; /* Pantone Orange */
++  --rubiks-back: #0045AD;  /* Cobalt Blue */
++  --rubiks-front: #009B48; /* Pigment Green */
++  --rubiks-background: black;
++}
++
++@font-face {
++  font-family: "BungeeFont";
++  font-weight: normal;
++  font-style: normal;
++  src: url("data:font/truetype;charset=utf-8;base64,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") format("woff2"), url("data:font/truetype;charset=utf-8;base64,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") format("woff");
++}
++*, *:before, *:after {
++  -webkit-user-select: none;
++  -moz-user-select: none;
++  user-select: none;
++  box-sizing: border-box;
++  cursor: inherit;
++  margin: 0;
++  padding: 0;
++  outline: none;
++  font-size: inherit;
++  font-family: inherit;
++  font-weight: inherit;
++  font-style: inherit;
++  text-transform: uppercase;
++}
++*:focus {
++  outline: none;
++}
++
++html {
++  -webkit-tap-highlight-color: transparent;
++  -webkit-text-size-adjust: 100%;
++  -webkit-font-smoothing: antialiased;
++  -moz-osx-font-smoothing: grayscale;
++  -ms-text-size-adjust: 100%;
++  -webkit-text-size-adjust: 100%;
++  overflow: hidden;
++  height: 100%;
++}
++
++body {
++  font-family: "BungeeFont", sans-serif;
++  font-weight: normal;
++  font-style: normal;
++  line-height: 1;
++  cursor: default;
++  overflow: hidden;
++  height: 100%;
++  font-size: 5rem;
++}
++
++
++#cube td {
++  width: 50px;
++  height: 50px;
++  background: var(--rubiks-background);
++  border: 1px solid var(--rubiks-background);
++}
++
++#cube {
++  padding: 5px;
++  background: var(--rubiks-background);
++  float: left;
++}
++
++
++#cube td.up {
++  background-color: var(--rubiks-up);
++}
++
++#cube td.down {
++  background-color: var(--rubiks-down);
++}
++
++#cube td.left {
++  background-color: var(--rubiks-left);
++}
++
++#cube td.right {
++  background-color: var(--rubiks-right);
++}
++
++#cube td.front {
++  background-color: var(--rubiks-front);
++}
++
++#cube td.back {
++  background-color: var(--rubiks-back);
++}
++
++table button {
++  font-size: 30px;
++  width: 120px;
++}
++
++button.submit {
++  font-size: 20px;
++  width: 220px;
++}
++input {
++  font-size: 20px;
++  width: 70%;
++  text-align: center;
++}
++
++
++
+
+From dc4d3c673853472ef2253e47713efd6f8693b503 Mon Sep 17 00:00:00 2001
+From: SansWord <sansword@gmail.com>
+Date: Wed, 24 Sep 2025 21:13:10 -0700
+Subject: [PATCH] support rotate middle layer and whole cube
+
+---
+ script.js | 104 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
+
+diff --git a/script.js b/script.js
+index eae6d80249bbb4932eb143cf2f5d7fa4dd98f93b..58673c16e439fcf3bdeea9931169d956817d7a3c 100644
+--- a/script.js
++++ b/script.js
+@@ -3,6 +3,14 @@ types = ["E", "C"];
+ color_classes = ["up", "down", "left", "right", "front", "back"]
+ 
+ cube_position = {
++  "centers": [
++    "U",
++    "F",
++    "R",
++    "B",
++    "L",
++    "D",
++  ],
+   "edges": [
+     "UB",
+     "UR",
+@@ -687,6 +695,102 @@ function rotateCenterOnce(layer) {
+   //console.log("after:" + cube.centers[center_idx].orientation)
+ }
+ 
++function rotateMiddleLayer(layer, times /*1, 2, 3*/) {
++  for(var i = 0; i < times; i++) {
++    rotateMiddleLayerOnce(layer);
++  }
++  clearCube();
++  renderCube();
++}
++
++function rotateMiddleLayerOnce(layer) {
++  //center_faces = ["U", "F", "R", "B", "L", "D"];
++  var flip = false;
++  switch (layer) {
++    case "X": // R
++      var movingCenterIds = [0,3,5,1];
++      var movingEdgeIds = [2,0,10,8];
++      break;
++    case "Y": // U
++      var movingCenterIds = [1,4,3,2];
++      var movingEdgeIds = [5,4,7,6];
++      break;
++    case "Z": // F
++      var movingCenterIds = [0,2,5,4];
++      var movingEdgeIds = [3,1,9,11];
++      break;
++  }
++  var movingCenters = [
++    cube.centers[movingCenterIds[0]],
++    cube.centers[movingCenterIds[1]],
++    cube.centers[movingCenterIds[2]],
++    cube.centers[movingCenterIds[3]],
++  ];
++  cube.centers[movingCenterIds[0]] = movingCenters[3];
++  cube.centers[movingCenterIds[1]] = movingCenters[0];
++  cube.centers[movingCenterIds[2]] = movingCenters[1];
++  cube.centers[movingCenterIds[3]] = movingCenters[2];
++
++  var movingEdges = [
++    cube.edges[movingEdgeIds[0]],
++    cube.edges[movingEdgeIds[1]],
++    cube.edges[movingEdgeIds[2]],
++    cube.edges[movingEdgeIds[3]],
++  ];
++  cube.edges[movingEdgeIds[0]] = movingEdges[3];
++  cube.edges[movingEdgeIds[1]] = movingEdges[0];
++  cube.edges[movingEdgeIds[2]] = movingEdges[1];
++  cube.edges[movingEdgeIds[3]] = movingEdges[2];
++
++  for (let i = 0; i < 4; i++) {
++    movingEdges[i].orientation = (movingEdges[i].orientation + 1) % 2;
++  }
++
++}
++
++function rotateCube(layer, times /*1, 2, 3*/) {
++  for(var i = 0; i < times; i++) {
++    rotateCubeOnce(layer);
++  }
++  clearCube();
++  renderCube();
++}
++
++function rotateCubeOnce(layer) {
++  switch (layer) {
++    case "U":
++      rotateLayer("U", 1);
++      rotateMiddleLayer("Y", 1);
++      rotateLayer("D", 3);
++      break;
++    case "L":
++      rotateLayer("L", 1);
++      rotateMiddleLayer("X", 3);
++      rotateLayer("R", 3);
++      break;
++    case "F":
++      rotateLayer("F", 1);
++      rotateMiddleLayer("Z", 1);
++      rotateLayer("B", 3);
++      break;
++    case "R":
++      rotateLayer("R", 1);
++      rotateMiddleLayer("X", 1);
++      rotateLayer("L", 3);
++      break;
++    case "B":
++      rotateLayer("B", 1);
++      rotateMiddleLayer("Z", 3);
++      rotateLayer("F", 3);
++      break;
++    case "D":
++      rotateLayer("D", 1);
++      rotateMiddleLayer("Y", 3);
++      rotateLayer("U", 3);
++      break;
++  }
++} 
++
+ function resetCube() {
+   cube = JSON.parse(JSON.stringify(reset_cube));
+   renderCube();
+
+From 88df23a881290391ac4f8b99184f8efdb969a292 Mon Sep 17 00:00:00 2001
+From: SansWord <sansword@gmail.com>
+Date: Wed, 24 Sep 2025 21:25:49 -0700
+Subject: [PATCH] support widle layer in scramble pattern
+
+---
+ script.js | 65 +++++++++++++++++++++++++++++++++++++++++++++++----------------
+ style.css |  2 +-
+ 2 files changed, 50 insertions(+), 17 deletions(-)
+
+diff --git a/script.js b/script.js
+index 58673c16e439fcf3bdeea9931169d956817d7a3c..a1c9fdc8636a930605494b8100801da106cb910c 100644
+--- a/script.js
++++ b/script.js
+@@ -707,18 +707,30 @@ function rotateMiddleLayerOnce(layer) {
+   //center_faces = ["U", "F", "R", "B", "L", "D"];
+   var flip = false;
+   switch (layer) {
+-    case "X": // R
++    case "R": // R
+       var movingCenterIds = [0,3,5,1];
+       var movingEdgeIds = [2,0,10,8];
+       break;
+-    case "Y": // U
++    case "L": // L
++      var movingCenterIds = [0,1,5,3];
++      var movingEdgeIds = [2,8,10,0];
++      break;
++    case "U": // U
+       var movingCenterIds = [1,4,3,2];
+       var movingEdgeIds = [5,4,7,6];
+       break;
+-    case "Z": // F
++    case "D": // D
++      var movingCenterIds = [1,2,3,4];
++      var movingEdgeIds = [5,6,7,4];
++      break;
++    case "F": // F
+       var movingCenterIds = [0,2,5,4];
+       var movingEdgeIds = [3,1,9,11];
+       break;
++    case "B": // B
++      var movingCenterIds = [0,4,5,2];
++      var movingEdgeIds = [3,11,9,1];
++      break;
+   }
+   var movingCenters = [
+     cube.centers[movingCenterIds[0]],
+@@ -760,32 +772,32 @@ function rotateCubeOnce(layer) {
+   switch (layer) {
+     case "U":
+       rotateLayer("U", 1);
+-      rotateMiddleLayer("Y", 1);
++      rotateMiddleLayer("U", 1);
+       rotateLayer("D", 3);
+       break;
+     case "L":
+       rotateLayer("L", 1);
+-      rotateMiddleLayer("X", 3);
++      rotateMiddleLayer("L", 1);
+       rotateLayer("R", 3);
+       break;
+     case "F":
+       rotateLayer("F", 1);
+-      rotateMiddleLayer("Z", 1);
++      rotateMiddleLayer("F", 1);
+       rotateLayer("B", 3);
+       break;
+     case "R":
+       rotateLayer("R", 1);
+-      rotateMiddleLayer("X", 1);
++      rotateMiddleLayer("R", 1);
+       rotateLayer("L", 3);
+       break;
+     case "B":
+       rotateLayer("B", 1);
+-      rotateMiddleLayer("Z", 3);
++      rotateMiddleLayer("B", 1);
+       rotateLayer("F", 3);
+       break;
+     case "D":
+       rotateLayer("D", 1);
+-      rotateMiddleLayer("Y", 3);
++      rotateMiddleLayer("D", 1);
+       rotateLayer("U", 3);
+       break;
+   }
+@@ -797,7 +809,7 @@ function resetCube() {
+ }
+ 
+ function submitScramble() {
+-  const reg = /(?:[LRUDFB]2?'?)/gm;
++  const reg = /(?:[LRUDFB]W?2?'?)/gm;
+ 
+   var scramble = document.getElementById("scramble").value.toUpperCase();
+   console.log("receving scrambe: " + scramble);
+@@ -812,16 +824,37 @@ function submitScramble() {
+   var operations = scramble.match(reg)
+   for (var i = 0; i < operations.length; i++) {
+     var operation = operations[i];
+-    if (operation.length == 1) {
+-      layer = operation
+-      var times = 1
++    handleScrambleOperation(operation);
++  }
++
++}
++
++function handleScrambleOperation(operation) {
++  // operation: [UDLRFB]w?[2']? 
++  if (operation.length == 1) {
++    layer = operation
++    var times = 1
++    var wide = false;
++  } else if (operation.length == 3){
++    var times = operation[2] == "2" ? 2 : 3;
++    layer = operation[0];
++    var wide = true;
++  } else {
++    // [UDLRFB]w or [UDLRFB][2']?
++    if (operation[1] == 'W') {
++      times = 1;
++      wide = true;
++      layer = operation[0];
+     } else {
+-      var times = operation[1] == "2" ? 2 : 3;
+       layer = operation[0];
++      wide = false;
++      var times = operation[2] == "2" ? 2 : 3;
+     }
+-    rotateLayer(layer, times)
+   }
+-
++  rotateLayer(layer, times)
++  if (wide) {
++    rotateMiddleLayer(layer, times);
++  }
+ }
+ 
+ function submitSolution() {
+diff --git a/style.css b/style.css
+index b5a72d6ef39b14b095c9d0011d055f071b9cd1b4..0feb8c9dadeadeb76a4e7b8f1fbe35f6b6f1aa19 100644
+--- a/style.css
++++ b/style.css
+@@ -27,7 +27,7 @@
+   font-family: inherit;
+   font-weight: inherit;
+   font-style: inherit;
+-  text-transform: uppercase;
++  /*text-transform: uppercase;*/
+ }
+ *:focus {
+   outline: none;
+
+From c95ea6cb2c8debf9ed2dbfabed38b6ead4900e9f Mon Sep 17 00:00:00 2001
+From: SansWord <sansword@gmail.com>
+Date: Wed, 24 Sep 2025 22:07:08 -0700
+Subject: [PATCH] add buttons to rotate wide layer, whole cube and reset cube
+ orientation
+
+---
+ index.html | 38 ++++++++++++++++++++++---
+ script.js  | 96 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ style.css  |  5 ++++
+ 3 files changed, 127 insertions(+), 12 deletions(-)
+
+diff --git a/index.html b/index.html
+index d166ebaedb7b47af70ab622ec3e24f97ac0b3df3..5c94ed3965534f1bd4ce841c5d88b94e0d1355f1 100644
+--- a/index.html
++++ b/index.html
+@@ -145,7 +145,18 @@
+         <td></td>
+         <td></td>
+         <td></td>
+-      </tr>      
++      </tr>
++      <tr>
++        <td colspan="12" style="color:white;font-size:15px">
++          Orientation:
++        <button class="orientation" onclick="rotateCube('U', 1);"> U </button>
++        <button class="orientation" onclick="rotateCube('D', 1);"> D </button>
++        <button class="orientation" onclick="rotateCube('L', 1);"> L </button>
++        <button class="orientation" onclick="rotateCube('R', 1);"> R </button>
++        <button class="orientation" onclick="rotateCube('F', 1);"> F </button>
++        <button class="orientation" onclick="rotateCube('B', 1);"> B </button>
++        </td>
++      </tr>
+ 
+     </table>
+   </div>
+@@ -158,34 +169,53 @@
+     <button onclick="rotateLayer('R', 1);"> R </button>
+     <button onclick="rotateLayer('R', 2);"> R2 </button>
+     <button onclick="rotateLayer('R', 3);"> R' </button>
++    <button onclick="rotateLayer('R', 1, true);"> Rw </button>
++    <button onclick="rotateLayer('R', 2, true);"> Rw2 </button>
++    <button onclick="rotateLayer('R', 3, true);"> Rw' </button>
+     </div>
+     <div id="L">
+     <button onclick="rotateLayer('L', 1);"> L </button>
+     <button onclick="rotateLayer('L', 2);"> L2 </button>
+     <button onclick="rotateLayer('L', 3);"> L' </button>
++    <button onclick="rotateLayer('L', 1, true);"> Lw </button>
++    <button onclick="rotateLayer('L', 2, true);"> Lw2 </button>
++    <button onclick="rotateLayer('L', 3, true);"> Lw' </button>
+     </div>
+     <div id="U">
+     <button onclick="rotateLayer('U', 1);"> U </button>
+     <button onclick="rotateLayer('U', 2);"> U2 </button>
+     <button onclick="rotateLayer('U', 3);"> U' </button>
++    <button onclick="rotateLayer('U', 1, true);"> Uw </button>
++    <button onclick="rotateLayer('U', 2, true);"> Uw2 </button>
++    <button onclick="rotateLayer('U', 3, true);"> Uw' </button>
+     </div>
+     <div id="D">
+     <button onclick="rotateLayer('D', 1);"> D </button>
+     <button onclick="rotateLayer('D', 2);"> D2 </button>
+     <button onclick="rotateLayer('D', 3);"> D' </button>
++    <button onclick="rotateLayer('D', 1, true);"> Dw </button>
++    <button onclick="rotateLayer('D', 2, true);"> Dw2 </button>
++    <button onclick="rotateLayer('D', 3, true);"> Dw' </button>
+     </div>
+     <div id="F">
+     <button onclick="rotateLayer('F', 1);"> F </button>
+     <button onclick="rotateLayer('F', 2);"> F2 </button>
+     <button onclick="rotateLayer('F', 3);"> F' </button>
++    <button onclick="rotateLayer('F', 1, true);"> Fw </button>
++    <button onclick="rotateLayer('F', 2, true);"> Fw2 </button>
++    <button onclick="rotateLayer('F', 3, true);"> Fw' </button>
+     </div>
+     <div id="B">
+     <button onclick="rotateLayer('B', 1);"> B </button>
+     <button onclick="rotateLayer('B', 2);"> B2 </button>
+     <button onclick="rotateLayer('B', 3);"> B' </button>
++    <button onclick="rotateLayer('B', 1, true);"> Bw </button>
++    <button onclick="rotateLayer('B', 2, true);"> Bw2 </button>
++    <button onclick="rotateLayer('B', 3, true);"> Bw' </button>
+     </div>
+     <div id="misc">
+     <button onclick="resetCube();"> Reset </button>
++    <button onclick="resetCubeOrientation();" style="width: 280px"> Reset Orientation</button>
+ 
+     </div>
+   </div>
+@@ -194,10 +224,10 @@
+     <tr>
+       <td colspan="2">
+         <input type="text" id="scramble"
+-          value="D'LUD2R'F2D2F2L2U2L2BF2L2D2R'D2F'L2U2"
++          value="D'LUD2R'F2D2F2L2U2L2BF2L2D2R'D2F'Rw2Uw2"
+         />
+         <!-- L'D2R'F'D'R2B'DR'F2L2D2F'B'R2U2R2L'D2 -->
+-        <button id="submitScramble" class="submit" onclick="submitScramble();"> submit scramble</button>
++        <button id="submitScramble" class="submit" onclick="submitScramble();"> Submit Scramble</button>
+       </td>
+     </tr>
+         <tr>
+@@ -206,7 +236,7 @@
+           value="VWHATNKREHBDQ,NSDBTBKOU"
+         />
+         <!-- TPDYWVBMEHNH,GOBEIPKR -->
+-        <button id="submitSolution" class="submit" onclick="submitSolution();"> submit solution</button>
++        <button id="submitSolution" class="submit" onclick="submitSolution();"> Submit Solution</button>
+       </td>
+     </tr>
+   </table>
+diff --git a/script.js b/script.js
+index a1c9fdc8636a930605494b8100801da106cb910c..92a62c47016a23acac412ab8e297aa16cf50c0fc 100644
+--- a/script.js
++++ b/script.js
+@@ -532,9 +532,12 @@ function getFace(face, type, num) {
+ 
+ renderCube()
+ 
+-function rotateLayer(layer, times /*1, 2, 3*/) {
++function rotateLayer(layer, times /*1, 2, 3*/, wide) {
+   for(var i = 0; i < times; i++) {
+     rotateLayerOnce(layer);
++    if (wide) {
++      rotateMiddleLayerOnce(layer);
++    }
+   }
+   clearCube();
+   renderCube();
+@@ -848,13 +851,10 @@ function handleScrambleOperation(operation) {
+     } else {
+       layer = operation[0];
+       wide = false;
+-      var times = operation[2] == "2" ? 2 : 3;
++      var times = operation[1] == "2" ? 2 : 3;
+     }
+   }
+-  rotateLayer(layer, times)
+-  if (wide) {
+-    rotateMiddleLayer(layer, times);
+-  }
++  rotateLayer(layer, times, wide);
+ }
+ 
+ function submitSolution() {
+@@ -868,11 +868,60 @@ function submitSolution() {
+   var edge_encoding = solution.split(",")[0];
+   var corner_encoding = solution.split(",")[1];
+   console.log("receving encodings: [" + edge_encoding + "], [" + corner_encoding + "]");
++  resetCubeOrientation();
+   handleEdgeEncoding(edge_encoding);
+   handleCornerEncoding(corner_encoding);
+   renderCube();
+ }
+ 
++function resetCubeOrientation() {
++  // 1. find D and reset to position
++  let dPosition = -1;
++  for (let i = 0; i < 6; i++) {
++    if (cube.centers[i].id == 5) {
++      dPosition = i;
++    }
++  }
++
++  switch (dPosition) {
++    case 0:
++      rotateCube("R", 2);
++      break;
++    case 1:
++      rotateCube("L", 1);
++      break;
++    case 2:
++      rotateCube("F", 1);
++      break;
++    case 3:
++      rotateCube("R", 1);
++      break;
++    case 4:
++      rotateCube("B", 1);
++      break;
++  }
++  // 2. find F and reset to position
++  // 1. find D and reset to position
++  let fPosition = -1;
++  for (let i = 1; i < 5; i++) {
++    if (cube.centers[i].id == 1) {
++      dPosition = i;
++    }
++  }
++
++  switch (dPosition) {
++    case 2:
++      rotateCube("U", 1);
++      break;
++    case 3:
++      rotateCube("U", 2);
++      break;
++    case 4:
++      rotateCube("U", 3);
++      break;
++  }
++}
++
+ function handleEdgeEncoding(encoding) {
+   if (!encoding) {
+     return;
+@@ -936,7 +985,6 @@ function handleEdgeEncoding(encoding) {
+       }
+     }
+ 
+-    console.log(target);
+     var targetId = target[0];
+     var orientation = target[1];
+     var tmp = cube.edges[buffer];
+@@ -989,7 +1037,6 @@ function handleCornerEncoding(encoding) {
+     //var buffer = i%2 == 0 ? 2 : 1;
+     buffer = 2;
+     var target = targets[encoding.charAt(i)];
+-    console.log(target);
+     var targetId = target[0];
+     var orientation = target[1];
+ 
+@@ -1004,10 +1051,43 @@ function handleCornerEncoding(encoding) {
+ 
+ }
+ 
++function randomCubeRotation(times) {
++  for (let i = 0; i < times; i++) {
++    randomCubeRotationOnce();
++  }
++}
++
++function randomCubeRotationOnce() {
++  const layers = ["U", "D", "L", "R", "F", "B"];
++  layer = layers[Math.floor(Math.random() * 6)];
++  times = Math.floor(Math.random() * 3)
++  rotateCube(layer, times);
++}
++
+ function flipEdge(edge, orientation) {
+   edge.orientation = (edge.orientation + orientation) % 2;
+ }
+ 
+ function flipCorner(corner, orientation) {
+   corner.orientation = (corner.orientation + orientation + 3) % 3;
++}
++
++function testResetCubeOrientation() {
++  randomCubeRotation(3);
++  var center = [];
++  for (let i = 0; i < 6; i++) {
++    center.push(cube.centers[i].id);
++  }
++  resetCubeOrientation();
++  for (let i = 0; i < 6; i++) {
++    if (cube.centers[i].id != i) {
++      currentCenter = [];
++      for (let j = 0; j < 6; j++) {
++        currentCenter.push(cube.centers[j].id);
++      }
++      console.log("wrong position, case:" + center + ", result:" + currentCenter);
++      break;
++    }
++  }
++
+ }
+\ No newline at end of file
+diff --git a/style.css b/style.css
+index 0feb8c9dadeadeb76a4e7b8f1fbe35f6b6f1aa19..918dad4e811aa3c8b035a2226d24cbe03a8d8ef8 100644
+--- a/style.css
++++ b/style.css
+@@ -108,6 +108,11 @@ input {
+   width: 70%;
+   text-align: center;
+ }
++button.orientation {
++  width: 50px;
++  height: 80px;
++  margin: 10px;
++}
+ 
+ 
+ 
+
+From 725524862ac5367b70f6020ebcfd84237232f0a1 Mon Sep 17 00:00:00 2001
+From: SansWord <sansword@gmail.com>
+Date: Wed, 24 Sep 2025 22:25:06 -0700
+Subject: [PATCH] add encoding reminder
+
+---
+ index.html | 98 +++++++++++++++++++++++++++++++-------------------------------
+ script.js  | 12 ++++----
+ style.css  | 15 ++++++++++
+ 3 files changed, 70 insertions(+), 55 deletions(-)
+
+diff --git a/index.html b/index.html
+index 5c94ed3965534f1bd4ce841c5d88b94e0d1355f1..187d3b4fc216473a4b9184131a2f7d2ee8084883 100644
+--- a/index.html
++++ b/index.html
+@@ -18,9 +18,9 @@
+         <td></td>
+         <td></td>
+         <td></td>
+-        <td id="U_C_1" class="up"></td>
+-        <td id="U_E_1" class="up"></td>
+-        <td id="U_C_2" class="up"></td>
++        <td id="U_C_1" class="up corner">A</td>
++        <td id="U_E_1" class="up edge">A</td>
++        <td id="U_C_2" class="up corner">B</td>
+         <td></td>
+         <td></td>
+         <td></td>
+@@ -32,9 +32,9 @@
+         <td></td>
+         <td></td>
+         <td></td>
+-        <td id="U_E_4" class="up"></td>
++        <td id="U_E_4" class="up edge">D</td>
+         <td id="U_Center"   class="up"></td>
+-        <td id="U_E_2" class="up"></td>
++        <td id="U_E_2" class="up edge">B</td>
+         <td></td>
+         <td></td>
+         <td></td>
+@@ -46,9 +46,9 @@
+         <td></td>
+         <td></td>
+         <td></td>
+-        <td id="U_C_4" class="up"></td>
+-        <td id="U_E_3" class="up"></td>
+-        <td id="U_C_3" class="up"></td>
++        <td id="U_C_4" class="up corner">D</td>
++        <td id="U_E_3" class="up edge">C</td>
++        <td id="U_C_3" class="up corner buffer">C</td>
+         <td></td>
+         <td></td>
+         <td></td>
+@@ -58,57 +58,57 @@
+       </tr>
+ 
+       <tr>
+-        <td id="L_C_1" class="left"></td>
+-        <td id="L_E_1" class="left"></td>
+-        <td id="L_C_2" class="left"></td>
+-        <td id="F_C_1" class="front"></td>
+-        <td id="F_E_1" class="front"></td>
+-        <td id="F_C_2" class="front"></td>
+-        <td id="R_C_1" class="right"></td>
+-        <td id="R_E_1" class="right"></td>
+-        <td id="R_C_2" class="right"></td>
+-        <td id="B_C_1" class="back"></td>
+-        <td id="B_E_1" class="back"></td>
+-        <td id="B_C_2" class="back"></td>
++        <td id="L_C_1" class="left corner">I</td>
++        <td id="L_E_1" class="left edge">I</td>
++        <td id="L_C_2" class="left corner">J</td>
++        <td id="F_C_1" class="front corner">E</td>
++        <td id="F_E_1" class="front edge">E</td>
++        <td id="F_C_2" class="front corner">F</td>
++        <td id="R_C_1" class="right corner">Q</td>
++        <td id="R_E_1" class="right edge">Q</td>
++        <td id="R_C_2" class="right corner">R</td>
++        <td id="B_C_1" class="back corner">M</td>
++        <td id="B_E_1" class="back edge">M</td>
++        <td id="B_C_2" class="back corner">N</td>
+       </tr>
+ 
+       <tr>
+-        <td id="L_E_4" class="left"></td>
++        <td id="L_E_4" class="left edge">L</td>
+         <td id="L_Center"   class="left"></td>
+-        <td id="L_E_2" class="left"></td>
+-        <td id="F_E_4" class="front"></td>
++        <td id="L_E_2" class="left edge">J</td>
++        <td id="F_E_4" class="front edge">H</td>
+         <td id="F_Center"   class="front"></td>
+-        <td id="F_E_2" class="front"></td>
+-        <td id="R_E_4" class="right"></td>
++        <td id="F_E_2" class="front edge">F</td>
++        <td id="R_E_4" class="right edge">T</td>
+         <td id="R_Center"   class="right"></td>
+-        <td id="R_E_2" class="right"></td>
+-        <td id="B_E_4" class="back"></td>
++        <td id="R_E_2" class="right edge">R</td>
++        <td id="B_E_4" class="back edge">P</td>
+         <td id="B_Center"   class="back"></td>
+-        <td id="B_E_2" class="back"></td>
++        <td id="B_E_2" class="back edge">N</td>
+       </tr>
+ 
+       <tr>
+-        <td id="L_C_4" class="left"></td>
+-        <td id="L_E_3" class="left"></td>
+-        <td id="L_C_3" class="left"></td>
+-        <td id="F_C_4" class="front"></td>
+-        <td id="F_E_3" class="front"></td>
+-        <td id="F_C_3" class="front"></td>
+-        <td id="R_C_4" class="right"></td>
+-        <td id="R_E_3" class="right"></td>
+-        <td id="R_C_3" class="right"></td>
+-        <td id="B_C_4" class="back"></td>
+-        <td id="B_E_3" class="back"></td>
+-        <td id="B_C_3" class="back"></td>
++        <td id="L_C_4" class="left corner">L</td>
++        <td id="L_E_3" class="left edge">K</td>
++        <td id="L_C_3" class="left corner">K</td>
++        <td id="F_C_4" class="front corner">H</td>
++        <td id="F_E_3" class="front edge">G</td>
++        <td id="F_C_3" class="front corner">G</td>
++        <td id="R_C_4" class="right corner">T</td>
++        <td id="R_E_3" class="right edge">S</td>
++        <td id="R_C_3" class="right corner">S</td>
++        <td id="B_C_4" class="back corner">P</td>
++        <td id="B_E_3" class="back edge">O</td>
++        <td id="B_C_3" class="back corner">O</td>
+       </tr>
+ 
+       <tr>
+         <td></td>
+         <td></td>
+         <td></td>
+-        <td id="D_C_1" class="down"></td>
+-        <td id="D_E_1" class="down"></td>
+-        <td id="D_C_2" class="down"></td>
++        <td id="D_C_1" class="down corner">U</td>
++        <td id="D_E_1" class="down edge buffer">U</td>
++        <td id="D_C_2" class="down corner">V</td>
+         <td></td>
+         <td></td>
+         <td></td>
+@@ -121,9 +121,9 @@
+         <td></td>
+         <td></td>
+         <td></td>
+-        <td id="D_E_4" class="down"></td>
++        <td id="D_E_4" class="down edge">Y</td>
+         <td id="D_Center"   class="down"></td>
+-        <td id="D_E_2" class="down"></td>
++        <td id="D_E_2" class="down edge">V</td>
+         <td></td>
+         <td></td>
+         <td></td>
+@@ -136,9 +136,9 @@
+         <td></td>
+         <td></td>
+         <td></td>
+-        <td id="D_C_4" class="down"></td>
+-        <td id="D_E_3" class="down"></td>
+-        <td id="D_C_3" class="down"></td>
++        <td id="D_C_4" class="down corner">Y</td>
++        <td id="D_E_3" class="down edge">W</td>
++        <td id="D_C_3" class="down corner">W</td>
+         <td></td>
+         <td></td>
+         <td></td>
+@@ -163,7 +163,7 @@
+ 
+       </td>
+       <td>
+-        
++
+   <div id="input">
+     <div id="R">
+     <button onclick="rotateLayer('R', 1);"> R </button>
+diff --git a/script.js b/script.js
+index 92a62c47016a23acac412ab8e297aa16cf50c0fc..703238597cc7ad18b1f02b8cfaafe27821704df8 100644
+--- a/script.js
++++ b/script.js
+@@ -427,7 +427,7 @@ function renderCenters() {
+   center_faces = ["U", "F", "R", "B", "L", "D"];
+   centers = cube.centers;
+   for (var i = centers.length - 1; i >= 0; i--) {
+-    getFace(center_faces[i],"Center").classList = cube_definition.centers[centers[i].id].faces[centers[i].orientation]
++    getFace(center_faces[i],"Center").classList.add(cube_definition.centers[centers[i].id].faces[centers[i].orientation]);
+   }
+ }
+ 
+@@ -468,7 +468,7 @@ function renderEdges() {
+     //console.log("--")
+     for (var j = 0; j < 2; j ++) {
+       //console.log(cube_definition.edges[edges[i].id].faces[(edges[i].orientation + j)%2])
+-      getFace(edge_faces[i][j], "E", edge_nums[i][j]).classList = cube_definition.edges[edges[i].id].faces[(edges[i].orientation + j)%2]
++      getFace(edge_faces[i][j], "E", edge_nums[i][j]).classList.add(cube_definition.edges[edges[i].id].faces[(edges[i].orientation + j)%2]);
+     }
+   }
+ }
+@@ -504,7 +504,7 @@ function renderCorners() {
+       //console.log(cube_definition.corners[corners[i].id].faces[(corners[i].orientation + j)%3])
+       var corner = getFace(corner_faces[i][j], "C", corner_nums[i][j]);
+       //console.log(corner)
+-      corner.classList = cube_definition.corners[corners[i].id].faces[(corners[i].orientation + j)%3]
++      corner.classList.add(cube_definition.corners[corners[i].id].faces[(corners[i].orientation + j)%3]);
+     }
+   }
+ 
+@@ -804,7 +804,7 @@ function rotateCubeOnce(layer) {
+       rotateLayer("U", 3);
+       break;
+   }
+-} 
++}
+ 
+ function resetCube() {
+   cube = JSON.parse(JSON.stringify(reset_cube));
+@@ -833,7 +833,7 @@ function submitScramble() {
+ }
+ 
+ function handleScrambleOperation(operation) {
+-  // operation: [UDLRFB]w?[2']? 
++  // operation: [UDLRFB]w?[2']?
+   if (operation.length == 1) {
+     layer = operation
+     var times = 1
+@@ -1032,7 +1032,7 @@ function handleCornerEncoding(encoding) {
+   }
+ 
+   // swaping 2 and target with orientation
+-  
++
+   for (var i = 0; i < encoding.length; i++) {
+     //var buffer = i%2 == 0 ? 2 : 1;
+     buffer = 2;
+diff --git a/style.css b/style.css
+index 918dad4e811aa3c8b035a2226d24cbe03a8d8ef8..608200a75563603ab2f35199ec1814387bef7b8a 100644
+--- a/style.css
++++ b/style.css
+@@ -61,6 +61,21 @@ body {
+   height: 50px;
+   background: var(--rubiks-background);
+   border: 1px solid var(--rubiks-background);
++
++  text-align: center;
++}
++
++#cube td.buffer {
++  border: 4px solid magenta;
++}
++
++#cube td.corner {
++  font-size: 30px;
++  font-style: italic;
++}
++
++#cube td.edge {
++  font-size: 30px;
+ }
+ 
+ #cube {
+
+From 63f91417cfe88042871fc3ef97bfad56ed2a0446 Mon Sep 17 00:00:00 2001
+From: SansWord <sansword@gmail.com>
+Date: Wed, 24 Sep 2025 22:37:32 -0700
+Subject: [PATCH] update README to sync progress
+
+---
+ READ.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/READ.md b/READ.md
+index 32084ef255b87443891053c995d5b156e283c897..517b7e3a75e9dba903a08c9c8e75b84d1b77e56f 100644
+--- a/READ.md
++++ b/READ.md
+@@ -1,6 +1,6 @@
+ TODO
+ 
+ 0. upload to github page
+-1. support Xw action
++1. keep scramble/solution history in local storage
+ 2. color configurable
+ 3. buffer configurable
+\ No newline at end of file
+
+From f3ab1d660724f530a9d51e2ff87944f91481923a Mon Sep 17 00:00:00 2001
+From: SansWord <sansword@gmail.com>
+Date: Wed, 24 Sep 2025 23:04:56 -0700
+Subject: [PATCH] store pattern/solution history
+
+---
+ index.html |  1 +
+ script.js  | 49 +++++++++++++++++++++++++++++++++++++++++++++++--
+ style.css  |  3 ++-
+ 3 files changed, 50 insertions(+), 3 deletions(-)
+
+diff --git a/index.html b/index.html
+index 187d3b4fc216473a4b9184131a2f7d2ee8084883..e7ff31f270de38d8dfa9d8e2f54b63df7a667645 100644
+--- a/index.html
++++ b/index.html
+@@ -237,6 +237,7 @@
+         />
+         <!-- TPDYWVBMEHNH,GOBEIPKR -->
+         <button id="submitSolution" class="submit" onclick="submitSolution();"> Submit Solution</button>
++        <button id="hisotry" class="submit" onclick="addToHistory();">Add to History</button>
+       </td>
+     </tr>
+   </table>
+diff --git a/script.js b/script.js
+index 703238597cc7ad18b1f02b8cfaafe27821704df8..5973ec55b02f07f7ce5ef60d9bb2569e67202552 100644
+--- a/script.js
++++ b/script.js
+@@ -814,7 +814,7 @@ function resetCube() {
+ function submitScramble() {
+   const reg = /(?:[LRUDFB]W?2?'?)/gm;
+ 
+-  var scramble = document.getElementById("scramble").value.toUpperCase();
++  var scramble = getScramblePattern();
+   console.log("receving scrambe: " + scramble);
+   resetCube();
+ 
+@@ -858,7 +858,7 @@ function handleScrambleOperation(operation) {
+ }
+ 
+ function submitSolution() {
+-  var solution = document.getElementById("solution").value.toUpperCase();
++  var solution = getSolution();
+   console.log("receving solution: " + solution);
+ 
+   if (!solution) {
+@@ -1089,5 +1089,50 @@ function testResetCubeOrientation() {
+       break;
+     }
+   }
++}
++
++function getScramblePattern() {
++  return document.getElementById("scramble").value.toUpperCase();
++}
++
++function getSolution() {
++  return document.getElementById("solution").value.toUpperCase();
++}
++
++function addToHistory() {
++  var patternHistory = getPatternHistory();
++  var patternToAdd = getScramblePattern();
++  var solutionToAdd = getSolution();
++  for (let i = 0; i < patternHistory.length; i++) {
++    if (patternHistory[i].pattern == patternToAdd
++        && patternHistory[i].solution == solutionToAdd
++      ) {
++      return;
++    }
++  }
++  patternHistory.push(
++    {
++      "time": new Date(),
++      "pattern":getScramblePattern(),
++      "solution":getSolution()
++    }
++  );
++  localStorage.setItem("patternHistory", JSON.stringify(patternHistory))
++}
++
++function getPatternHistory() {
++  var storedHistory = localStorage.getItem("patternHistory");
++  if (!storedHistory) {
++    return [];
++  } else {
++    try {
++      return JSON.parse(storedHistory);
++    } catch (error) {
++      return [];
++    }
++  }
++}
+ 
++function clearHistory() {
++  localStorage.setItem("patternHistory", "[]");
+ }
+\ No newline at end of file
+diff --git a/style.css b/style.css
+index 608200a75563603ab2f35199ec1814387bef7b8a..997341b7c1e960c022aa54aab497fe2a0f1feed1 100644
+--- a/style.css
++++ b/style.css
+@@ -72,6 +72,7 @@ body {
+ #cube td.corner {
+   font-size: 30px;
+   font-style: italic;
++  color: gray;
+ }
+ 
+ #cube td.edge {
+@@ -120,7 +121,7 @@ button.submit {
+ }
+ input {
+   font-size: 20px;
+-  width: 70%;
++  width: 60%;
+   text-align: center;
+ }
+ button.orientation {
