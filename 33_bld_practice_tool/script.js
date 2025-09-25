@@ -1147,3 +1147,10 @@ function generateScramble() {
   document.getElementById("solution").value = ""
   submitScramble();
 }
+
+function easterEgg() {
+  // Thanks https://rubiks-cube-solver.com/ to calculate scramble pattorn for solution SANSWORD,TAIWAN
+  // a special scramble pattern with goofy (yet correct) solution
+  document.getElementById("scramble").value = "U'F2DB2F2UR2UL'DU2RB'UB'L2RBU2";
+  document.getElementById("solution").value = "SANSWORD,TAIWAN"
+}
