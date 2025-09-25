@@ -865,6 +865,8 @@ function submitSolution() {
     return
   }
 
+  submitScramble();
+
   var edge_encoding = solution.split(",")[0];
   var corner_encoding = solution.split(",")[1];
   console.log("receving encodings: [" + edge_encoding + "], [" + corner_encoding + "]");
