@@ -285,7 +285,7 @@
 <body>
 
   <header>
-    <a class="logo" href="https://sansword.github.io/sans_blog/">SansWord</a>
+    <a class="logo" href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a>
     <div class="header-right">
       <a href="https://github.com/SansWord" target="_blank">GitHub</a>
       <a href="https://www.linkedin.com/in/sansword/" target="_blank">LinkedIn</a>
@@ -299,17 +299,20 @@
   <article>
 
     <h1 class="article-title">My Tiny AI Bootcamp</h1>
+
     <p class="article-subtitle">What a skeptical 13-year backend engineer learned from 3 weeks of building with Claude.</p>
 
     <div class="author-bar">
       <div class="avatar">S</div>
       <div class="author-info">
-        <span class="author-name">SansWord</span>
-        <span class="author-meta">Backend Engineer · 2025</span>
+        <span class="author-name"><a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a></span>
+        <span class="author-meta">A data platform builder with 13 years of experience, curious about AI systems — learning by building, one project at a time.</span>
       </div>
     </div>
 
     <div class="body">
+
+      <blockquote>The most important thing is — I abandoned my prejudices and tried to understand this "new stuff" more. Keep learning, embracing new technology, and reflecting on what I can contribute.</blockquote>
 
       <h2><span class="section-tag">tl;dr</span></h2>
       <p>Over the past 3 weeks, I went from AI skeptic to building 3 real projects with Claude — here's what a 13-year backend engineer learned.</p>
@@ -321,7 +324,10 @@
 
       <div class="divider">· · ·</div>
 
-      <h2><span class="section-tag">Project 1</span>cut_sh — Frame-Accurate MP4 Editing</h2>
+      <h2><span class="section-tag">Project 1</span>
+      <a href="https://sansword.github.io/cut_sh/" target="_blank">cut_sh — Frame-Accurate MP4 Editing
+      </a>
+      </h2>
       <p>It started with a question to Claude asking how to use an ffmpeg command. I wanted to be able to cut a video recording without heavy encoding, but cutting at a keyframe would be near the timestamp I want, not the accurate frame.</p>
       <p>After 2–3 prompts, I realized: "Hey, am I coding with Claude for the first time?"</p>
       <p>This is something I'm familiar with. I reviewed everything Claude generated, asking it to refactor as I wanted. After about 2–3 hours, I had a script exactly the way I wanted.</p>
@@ -337,17 +343,42 @@
 
       <div class="divider">· · ·</div>
 
-      <h2><span class="section-tag">Project 2</span>sans_cube — Bluetooth Rubik's Cube Analyzer</h2>
+      <h2><span class="section-tag">Project 2</span>
+      <a href="https://sansword.github.io/sans_cube/#solve--2" target="_blank">
+      sans_cube — Bluetooth Rubik's Cube Analyzer
+      </a>
+      </h2>
       <p>After cut_sh, I found how AI can fill the gap of what I don't know. So I wanted to build something I was technically not familiar with. As a Rubik's cuber for 20-ish years, I really wanted a website that could analyze my solves — break them into phases and give detailed analysis. There are already websites doing this, but they lack some key features I need.</p>
       <p>I was also curious how to use JavaScript to talk to Bluetooth devices. That's an area I don't know.</p>
       <p>On the opposite side, I'm familiar with the requirements. I have my taste for look and feel.</p>
-      <p>So I started using Superpower — a Claude plugin to brainstorm, plan, and implement in TDD.</p>
-      <p>The painful part was the usage. I kept bumping into session limits in the middle of development. I chose to wait 5 hours at first, but then decided to buy extra usage. I thought if I capped the usage at $80, it would cost at most 5×.</p>
+      <p>So I started using <a href="https://github.com/obra/superpowers" target="_blank">Superpower</a> — a Claude plugin to brainstorm, plan, and implement in TDD.</p>
+      <p>The painful part was the usage. I kept bumping into session limits in the middle of development. I chose to wait 5 hours at first, but then decided to buy extra usage. I thought if I capped the usage at $80, it would cost at most 5× - Claude Max plan.</p>
       <p>This also made me cautious with my prompts, forcing me to break development into phases.</p>
       <p>I have my own technical tastes. For example, I didn't want it to call the BLE library directly — build a <code>CubeDriver</code> interface first, and then implement the driver with BLE logic. This decision made it easier later to support mouse and touch by just implementing a pointer driver. I don't know if AI could have proposed the OOP design in the first place if I had not asked for it. This might be the part where I can provide my experience to steer the project.</p>
 
       <a class="project-link" href="https://sansword.github.io/sans_cube/#solve--2" target="_blank">
-        <span class="project-link-emoji">🟧</span>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+          <!-- top face -->
+          <polygon points="14,2 26,8 14,14 2,8" fill="#f5c400"/>
+          <!-- left face -->
+          <polygon points="2,8 14,14 14,26 2,20" fill="#009b48"/>
+          <!-- right face -->
+          <polygon points="26,8 14,14 14,26 26,20" fill="#e05a00"/>
+          <!-- grid lines top -->
+          <line x1="14" y1="2" x2="14" y2="14" stroke="white" stroke-width="0.8"/>
+          <line x1="8" y1="5" x2="20" y2="11" stroke="white" stroke-width="0.8"/>
+          <line x1="20" y1="5" x2="8" y2="11" stroke="white" stroke-width="0.8"/>
+          <!-- grid lines left -->
+          <line x1="2" y1="8" x2="14" y2="14" stroke="white" stroke-width="0.8"/>
+          <line x1="2" y1="14" x2="14" y2="20" stroke="white" stroke-width="0.8"/>
+          <line x1="6" y1="10" x2="6" y2="22" stroke="white" stroke-width="0.8"/>
+          <line x1="10" y1="12" x2="10" y2="24" stroke="white" stroke-width="0.8"/>
+          <!-- grid lines right -->
+          <line x1="26" y1="8" x2="14" y2="14" stroke="white" stroke-width="0.8"/>
+          <line x1="26" y1="14" x2="14" y2="20" stroke="white" stroke-width="0.8"/>
+          <line x1="22" y1="10" x2="22" y2="22" stroke="white" stroke-width="0.8"/>
+          <line x1="18" y1="12" x2="18" y2="24" stroke="white" stroke-width="0.8"/>
+        </svg>
         <div class="project-link-body">
           <span class="project-link-title">sans_cube — Bluetooth Rubik's Cube solve analyzer</span>
           <span class="project-link-url">sansword.github.io/sans_cube</span>
@@ -356,11 +387,15 @@
 
       <div class="divider">· · ·</div>
 
-      <h2><span class="section-tag">Project 3</span>sans_yt_summary — YouTube Transcript Summarizer</h2>
+      <h2><span class="section-tag">Project 3</span>
+        <a href="https://github.com/SansWord/sans_yt_summary/" target="_blank">
+        sans_yt_summary — YouTube Transcript Summarizer
+        </a>
+      </h2>
       <p>After the previous fun project, I wanted to build a tool instead of an application. I have a lot of system design mock interview videos and wanted to prioritize them. I know LLMs are good for that.</p>
       <p>In this project I explored the boundary between determinism and flexibility. First I built a Python script to fetch transcripts from YouTube, which requires deterministic behavior. Then I passed the transcript and a summarization prompt into the LLM to summarize.</p>
       <p>I wanted to find the balance between a deterministic script and space for the LLM. I also wanted to make something reusable on the command line.</p>
-      <p>With <code>SKILL.md</code>, I can invoke the script in natural language — not only in English but also in my native language. After 1 day, I had a working skill that I could install into my other Claude projects.</p>
+      <p>With <a href="https://github.com/SansWord/sans_yt_summary/blob/main/skills/sans-yt-summary/SKILL.md" target="_blank"><code>SKILL.md</code></a>, I can invoke the script in natural language — not only in English but also in my native language. After 1 day, I had a working skill that I could install into my other Claude projects.</p>
       <p>But something felt wrong. Since I released this and allowed others to install the plugin, could I accidentally make something that would break my users' runtime? I learned from social media that people are tricking AI into doing things — could someone install my plugin and end up breaking their environment?</p>
       <p>Prompt injection became a concern. After the first draft, I worried: what if someone shouted <code>rm -rf /</code> in a video? Injection attacks are something I learned about with SQL, JavaScript, logs, and data pipelines — and LLMs are no exception.</p>
       <p>So I added instructions in <code>SKILL.md</code> asking it to add a sentinel tag, but found it could sometimes skip it. Then I realized the key boundary of deterministic behavior: <strong>if you need something to happen, put it in the script.</strong></p>
@@ -380,7 +415,7 @@
       <p>In this two-week bootcamp, I learned different aspects of using Claude. I still feel uncomfortable saying "I discussed something with AI" or "I asked AI to build this and that." But now I understand how it works more.</p>
       <p>The next step is to be more efficient and stable: saving context windows, setting up a personal <code>CLAUDE.md</code> to configure my development preferences (or not?). Exploring how to allow multiple engineers to collaborate in one repo using AI.</p>
 
-      <blockquote>The most important thing is — I abandoned my prejudices and tried to understand this "new stuff" more. Keep learning, embracing new technology, and reflecting on what I can contribute.</blockquote>
+      The most important thing is — I abandoned my prejudices and tried to understand this "new stuff" more. Keep learning, embracing new technology, and reflecting on what I can contribute.
 
       <h2><span class="section-tag">Cost &amp; Setup</span></h2>
       <p>Claude + Superpower plugin<br/>$20 for Claude Pro and $80 for extra usage.</p>
@@ -396,8 +431,10 @@
       <div class="footer-author">
         <div class="avatar">S</div>
         <div class="footer-author-body">
-          <span class="footer-author-name">SansWord</span>
-          <span class="footer-author-bio">Backend engineer for 13 years. Building things I care about, with tools I'm still learning.</span>
+          <span class="footer-author-name">
+            <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a>
+          </span>
+          <span class="footer-author-bio">A data platform builder with 13 years of experience, curious about AI systems — learning by building, one project at a time.</span>
           <div class="footer-author-links">
             <a href="https://www.linkedin.com/in/sansword/" target="_blank">LinkedIn</a>
             <a href="https://github.com/SansWord" target="_blank">GitHub</a>
