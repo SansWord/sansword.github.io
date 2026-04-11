@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Using AI to Prepare — Study Guide</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">System Design Study Guide</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="interview.html">Interview Skills</a></li>
+      <li><a href="mock.html">Mock Interview</a></li>
+      <li><a href="ai-prep.html" class="active">AI Prep</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Part 4 — Preparation</div>
+    <h1>Using AI to Prepare for System Design Interviews</h1>
+    <p class="hero-lead">This entire guide came out of a single conversation with Claude. Here's how that session worked — and how you can run your own.</p>
+  </div>
+</div>
+
+<div class="article-body">
+  <div class="container">
+
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#philosophy">The core idea</a></li>
+        <li><a href="#how-it-worked">How this session worked</a></li>
+        <li><a href="#prompts">Prompts that worked well</a></li>
+        <li><a href="#principles">Principles for AI-assisted prep</a></li>
+        <li><a href="#run-your-own">Running your own session</a></li>
+      </ol>
+    </div>
+
+    <h2 id="philosophy">The core idea</h2>
+
+    <p>Most people use AI like a search engine — ask a question, read the answer, move on. That produces surface-level familiarity but not deep understanding. You might be able to recite "use Redis sorted sets" without being able to explain why, or handle a follow-up question when the interviewer changes a constraint.</p>
+
+    <p>A more effective approach is to use AI as a Socratic partner — someone who answers your questions, challenges your understanding, asks you to restate things, and surfaces gaps you didn't know you had. This is closer to how you'd learn from a senior engineer sitting next to you than from reading documentation.</p>
+
+    <p>The difference in outcome is significant. After a passive reading session, you know what the answer is. After an active Socratic session, you know <em>why</em> the answer is right, what breaks when constraints change, and how to reconstruct the reasoning under pressure.</p>
+
+    <h2 id="how-it-worked">How this session worked</h2>
+
+    <p>The conversation that became this guide started with a simple question: <em>"I'm preparing a system design interview. The topic is a leaderboard. Is this similar to the top-k question?"</em></p>
+
+    <p>What followed was several hours of back-and-forth, driven by genuine curiosity rather than a structured curriculum. Topics emerged naturally from questions, and each answer generated more questions. The session covered:</p>
+
+    <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 2">
+      <li>Whether a leaderboard is really a top-k problem (it's a superset)</li>
+      <li>How to use clarification questions as a steering tool</li>
+      <li>Fan-out on write vs read, the celebrity problem, and the hybrid</li>
+      <li>Why approximate ranking works and how score histograms enable it</li>
+      <li>Range-based sharding and how it connects to the histogram</li>
+      <li>The full write path end-to-end</li>
+      <li>Operational concerns: cache warming, reconciliation, monitoring</li>
+      <li>Redis command internals — what ZCOUNT actually does, why it's O(log N)</li>
+      <li>A gap analysis: what's covered vs what's missing before the real interview</li>
+      <li>A speed round mock interview with feedback</li>
+    </ul>
+
+    <p>The session wasn't linear. Questions jumped around. Some topics got revisited multiple times from different angles. That's normal — and it's part of what makes the learning stick.</p>
+
+    <h2 id="prompts">Prompts that worked well</h2>
+
+    <p>These are the actual prompts — lightly edited for clarity — that drove the most useful parts of the session.</p>
+
+    <h3>Starting broad and scoping in</h3>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">I'm preparing a system design interview. The topic is a leaderboard for a game. Is this similar to the top-k question? I'm aiming for a senior backend engineer role familiar with distributed systems.</div>
+      </div>
+    </div>
+
+    <p>Starting with your level and goal helps calibrate the depth of the response. Without it, you might get a beginner explanation or an over-detailed one.</p>
+
+    <h3>Verifying your understanding in your own words</h3>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">Let me describe the solution in my own words and check if I'm right. First, I'm a normal user with few friends. When I update my score, I fan out to update my friends' leaderboard — not much to do. When I read my leaderboard, there would be my normal friends' scores ranked. But the graph DB also gives me a list of my celebrity friends, so I fetch those celebrity friends' current scores, merge into my score cache, and display to me.</div>
+      </div>
+    </div>
+
+    <p>This is the single most effective technique in the session. Restating a concept in your own words — before the AI confirms or corrects — forces active processing rather than passive reception. It also surfaces gaps immediately.</p>
+
+    <h3>Asking about implications, not just explanations</h3>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">How does this mindset change my clarification questions?</div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">With the current setup, is it easy to support giving user feedback on "how much you improve/worse after this score update"?</div>
+      </div>
+    </div>
+
+    <p>Asking "how does this change X" is more useful than asking "explain X." It forces the AI to connect concepts rather than explain them in isolation — and it mirrors how interviewers probe depth.</p>
+
+    <h3>Catching your own confusion and asking precisely</h3>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">I'm confused about the hybrid approach. If I have only 50 friends (below threshold), but I have a celebrity friend with 10k friends, is my friend leaderboard fan-out on read or write?</div>
+      </div>
+    </div>
+
+    <p>Naming the specific point of confusion — not just "I don't understand" — leads to precise answers. This question led to one of the most useful clarifications in the session: the fan-out decision is made from the writer's perspective, not the reader's.</p>
+
+    <h3>Asking for a gap analysis</h3>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">Do these random questions cover what I need for a system design interview, or did I miss some fundamental area?</div>
+      </div>
+    </div>
+
+    <p>Periodic gap analysis is essential. It's easy to go deep on one area and miss whole categories. Asking explicitly surfaces blind spots — in this case, the write path end-to-end, cache warming, anti-cheat, and monitoring were all missing.</p>
+
+    <h3>Requesting a specific format</h3>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">I want to see how the mock interview looks end-to-end first before doing my own. Can you play both roles?</div>
+      </div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">I want a brief mock. Option A: speed round — you ask 8–10 sharp questions an interviewer would ask, I answer each in 2–3 sentences max.</div>
+      </div>
+    </div>
+
+    <p>Being specific about format — "play both roles," "speed round," "2–3 sentences max" — produces more useful output than open-ended requests. The AI adapts to your format preference.</p>
+
+    <h3>Pushing back on an explanation</h3>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">You</div>
+        <div class="qa-text">In this case, that means I don't need prefix sum for k-neighbor but only sharding and ZRANGEBYSCORE, correct?</div>
+      </div>
+    </div>
+
+    <p>When something doesn't add up, say so and push for confirmation. This question correctly identified that prefix sum and k-neighbor are solving different problems. The AI confirmed — and made the separation explicit.</p>
+
+    <h2 id="principles">Principles for AI-assisted prep</h2>
+
+    <p><strong>Use it as a Socratic partner, not a lecture source.</strong> Don't just read answers. Restate, question, challenge. The goal is to build reasoning, not memorize content.</p>
+
+    <p><strong>Verify in your own words after every concept.</strong> Before moving on, restate what you understood. "So if I understand correctly..." is the most useful phrase in a prep session. It forces processing, surfaces misunderstandings, and builds the habit for the actual interview.</p>
+
+    <p><strong>Ask "why does this matter" and "what breaks if I don't do this."</strong> These questions turn explanations into intuitions. Knowing that ZRANGEBYSCORE is O(log N + M) is useful. Knowing <em>why</em> M being unpredictable is dangerous for k-neighbor queries — and that it leads to adaptive δ estimation — is what sticks under pressure.</p>
+
+    <p><strong>Ask for pushback on your designs.</strong> "What's wrong with this approach?" or "Play devil's advocate on this decision" surfaces weaknesses you wouldn't find on your own.</p>
+
+    <p><strong>Request gap analysis periodically.</strong> After covering a topic area, ask "what am I missing?" or "what would a senior interviewer ask that I haven't covered?" This prevents going deep on one area while missing entire categories.</p>
+
+    <p><strong>Use the mock interview strategically.</strong> Don't do the mock first. Do it after you've covered the material — as a test of whether the knowledge holds under time pressure, not as a discovery mechanism. Watch the full example first, then do your own.</p>
+
+    <p><strong>Keep notes of what you find confusing.</strong> Questions like "wait, how do I know the player's score before identifying its bucket?" came from genuine confusion mid-session. Those moments of confusion are the most valuable — they identify exactly the gaps worth drilling.</p>
+
+    <h2 id="run-your-own">Running your own session</h2>
+
+    <p>Here's a template for starting your own system design prep session. Adapt the topic and role to your interview.</p>
+
+    <pre><code>I'm preparing for a system design interview for a [senior/staff]
+[backend/fullstack] engineer role. The topic I want to prepare is
+[your topic]. I have [X] years of experience and I'm comfortable
+with [distributed systems / databases / etc].
+
+I want to use this conversation as a Socratic prep session, not
+just a lecture. Start by giving me an overview of the problem space
+and what makes it interesting at senior level. Then I'll ask
+questions as they come up.
+
+My goal is to be able to handle a 45-minute interview on this topic
+with the following structure:
+1. Functional requirements (3-4 min)
+2. Non-functional requirements (2-3 min)
+3. Entities (3-4 min)
+4. APIs (3-4 min)
+5. High level design (10-12 min)
+6. Deep dive (15-18 min)</code></pre>
+
+    <p>Then during the session, use these prompts as needed:</p>
+
+    <pre><code>"Let me restate this in my own words and check if I'm right: ..."
+
+"How does this change my clarification questions?"
+
+"What breaks if I skip this?"
+
+"I'm confused about [specific thing]. Can you clarify?"
+
+"Do these topics cover what I need, or am I missing something?"
+
+"Can you play devil's advocate on this design decision?"
+
+"I want to see a full example of a good 45-minute interview on
+this topic before I do my own mock."
+
+"Now give me a speed round — 8 questions, I'll answer each
+in 2-3 sentences."</code></pre>
+
+    <div class="insight">
+      <div class="insight-label">Final note</div>
+      The goal of a prep session is not to reach the end of the material. It's to build the ability to reason about the problem under pressure. A session where you truly understand 60% of the concepts is more useful than one where you've been told about 100% of them.
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>Built by <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a> · Prepared with Claude</span>
+    <span><a href="index.html">← Back to guide</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

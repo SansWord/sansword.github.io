@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard System Design — A Study Guide</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">System Design Study Guide</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="interview.html">Interview Skills</a></li>
+      <li><a href="mock.html">Mock Interview</a></li>
+      <li><a href="ai-prep.html">AI Prep</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">System Design Study Guide</div>
+    <h1>Design a leaderboard.<br>Learn to think like a senior engineer.</h1>
+    <p class="hero-lead">A practical guide to system design interviews — using a real-time game leaderboard as the through-line. Built from a real preparation session.</p>
+    <div class="hero-meta">
+      <span>By <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a></span>
+      <span>·</span>
+      <span>Prepared with Claude</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-body">
+  <div class="container">
+
+    <p>This guide came out of a single, deep preparation session for a senior backend engineering interview. The topic was a game leaderboard — something that looks simple on the surface but hides a surprising amount of distributed systems complexity underneath.</p>
+
+    <p>What emerged wasn't just a leaderboard design. It was a way of thinking about system design problems: how to ask the right clarifying questions, how to scope complexity, how to move through a 45-minute interview without getting lost.</p>
+
+    <p>There are two things you can take from this guide. The leaderboard design itself — Redis sorted sets, sharding, approximate ranking, fan-out patterns. And the meta-skills — how to structure an interview, how to use clarification questions as a steering tool, how to demonstrate senior judgment under time pressure.</p>
+
+    <hr class="divider">
+    <h2>What's in this guide</h2>
+
+  </div>
+
+  <div class="container-wide">
+    <div class="cards-grid">
+
+      <a class="card" href="leaderboard.html">
+        <div class="card-eyebrow">Part 1</div>
+        <h3>Leaderboard System Design</h3>
+        <p>From a simple Redis sorted set to a sharded, approximate-ranking system serving 100M players. Covers global, regional, friend, and guild leaderboards.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="interview.html">
+        <div class="card-eyebrow">Part 2</div>
+        <h3>System Design Interview Skills</h3>
+        <p>How to structure 45 minutes, use clarification questions as a steering tool, present tradeoffs, and push back on requirements like a senior engineer.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="mock.html">
+        <div class="card-eyebrow">Part 3</div>
+        <h3>Mock Interview Examples</h3>
+        <p>Two formats: a full end-to-end example showing ideal structure and answers, and a speed round showing how to stay concise under pressure.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="ai-prep.html">
+        <div class="card-eyebrow">Part 4</div>
+        <h3>Using AI to Prepare</h3>
+        <p>How this entire guide was built through a conversation with Claude — and how you can run your own preparation session using the same approach.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="container">
+
+    <hr class="divider">
+    <h2>How to use this guide</h2>
+
+    <p>If you're preparing for a system design interview, start with <a href="interview.html">Interview Skills</a> to understand the meta-structure, then read <a href="leaderboard.html">Leaderboard Design</a> as a worked example. Use the <a href="mock.html">Mock Interview</a> as a reference for what good answers sound like, then run your own session using the <a href="ai-prep.html">AI Prep</a> approach.</p>
+
+    <p>If you're here to learn distributed systems concepts, <a href="leaderboard.html">Leaderboard Design</a> is a self-contained deep dive. The concepts — Redis sorted sets, range-based sharding, approximate ranking, fan-out patterns — apply well beyond leaderboards.</p>
+
+    <p>Sections marked <span class="tag tag-fundamental">fundamental</span> are accessible to anyone with basic backend knowledge. Sections marked <span class="tag tag-advanced">advanced</span> assume comfort with distributed systems concepts.</p>
+
+    <hr class="divider">
+    <h2>Prerequisites</h2>
+
+    <p>To get the most out of this guide, you should already be comfortable with the following. If any of these feel shaky, spend time on them first — the advanced concepts won't stick without a solid foundation.</p>
+
+    <p><strong>Data structures.</strong> Sorted structures and why they exist, binary search intuition (O(log N)), hash maps for O(1) lookup, heaps for top-k problems.</p>
+
+    <p><strong>Complexity.</strong> O(1), O(log N), O(N), O(N log N) — and the instinct that O(N) is a red flag at 100M scale.</p>
+
+    <p><strong>Databases.</strong> Why PostgreSQL is a source of truth (ACID, durability), what a cache is and why it's never authoritative, read vs write patterns and why they scale differently.</p>
+
+    <p><strong>Distributed systems basics.</strong> CAP theorem intuitively, horizontal vs vertical scaling, sharding concepts, replication (primary + replicas), eventual consistency.</p>
+
+    <p><strong>Message queues.</strong> Producer/consumer pattern, at-least-once delivery, why Kafka is replayable and why that matters for recovery.</p>
+
+    <p><strong>API design.</strong> REST conventions, pagination (offset vs cursor), rate limiting.</p>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>Built by <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a> · Prepared with Claude</span>
+    <span>System Design Study Guide</span>
+  </div>
+</footer>
+
+</body>
+</html>

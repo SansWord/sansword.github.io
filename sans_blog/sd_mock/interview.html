@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Design Interview Skills — Study Guide</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">System Design Study Guide</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="interview.html" class="active">Interview Skills</a></li>
+      <li><a href="mock.html">Mock Interview</a></li>
+      <li><a href="ai-prep.html">AI Prep</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Part 2 — Meta-skills</div>
+    <h1>System Design Interview Skills</h1>
+    <p class="hero-lead">The structure, pacing, and judgment calls that separate a senior answer from a correct one.</p>
+  </div>
+</div>
+
+<div class="article-body">
+  <div class="container">
+
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#structure">Interview structure and time budget</a></li>
+        <li><a href="#clarification">Clarification questions as a steering tool</a></li>
+        <li><a href="#scope">Scope sizing before diving deep</a></li>
+        <li><a href="#tradeoffs">Presenting tradeoffs</a></li>
+        <li><a href="#pushback">Pushing back on requirements</a></li>
+        <li><a href="#verify">Verifying in your own words</a></li>
+        <li><a href="#dependency">Dependency-driven topic ordering</a></li>
+        <li><a href="#common">Common mistakes</a></li>
+      </ol>
+    </div>
+
+    <!-- ── Section 1 ── -->
+    <h2 id="structure">Interview structure and time budget</h2>
+
+    <p>A 45-minute system design interview has a natural structure. The biggest mistake is spending too long on requirements and running out of time for the deep dive — which is where senior judgment is actually demonstrated.</p>
+
+    <table>
+      <thead><tr><th>Phase</th><th>Time</th><th>Goal</th></tr></thead>
+      <tbody>
+        <tr><td>Functional requirements</td><td>3–4 min</td><td>Understand what to build. 3–4 sharp questions, clean summary, move on.</td></tr>
+        <tr><td>Non-functional requirements</td><td>2–3 min</td><td>Scale, latency targets, consistency tolerance. Numbers justify later decisions.</td></tr>
+        <tr><td>Entities</td><td>3–4 min</td><td>Name the core data structures. Forces clarity before you design anything.</td></tr>
+        <tr><td>APIs</td><td>3–4 min</td><td>Define the contract. Often skipped by candidates — interviewers notice.</td></tr>
+        <tr><td>High level design</td><td>10–12 min</td><td>A working system that satisfies functional requirements. Don't optimize yet.</td></tr>
+        <tr><td>Deep dive</td><td>15–18 min</td><td>Where senior judgment shows. Let the interviewer guide the area, but have 2–3 ready to propose.</td></tr>
+        <tr><td>Buffer / Q&A</td><td>2–3 min</td><td>Questions, wrapping up.</td></tr>
+      </tbody>
+    </table>
+
+    <p>High level design should be a working system on the whiteboard that satisfies functional requirements — not a perfect one. Optimization and edge cases belong in the deep dive. A common failure mode: going deep on one component during high level design and running out of time before covering the full system.</p>
+
+    <!-- ── Section 2 ── -->
+    <h2 id="clarification">Clarification questions as a steering tool</h2>
+
+    <p>Clarification questions are not a formality before the "real" interview begins. They are a steering mechanism. Each answer should visibly change something in your design — and the interviewer should be able to see that connection.</p>
+
+    <p>The goal isn't to ask many questions. It's to ask questions whose answers determine which branch of the design tree you go down. A sharp clarification question signals that you understand the design space well enough to know what matters.</p>
+
+    <div class="callout">
+      <div class="callout-label">The test for a good clarification question</div>
+      If the answer wouldn't change anything about your design, it's not worth asking. Every question should unlock a decision.
+    </div>
+
+    <p><strong>Product questions before technical questions.</strong> Don't jump straight to scale numbers. Ask about scope, semantics, and model first — because those answers determine which technical questions are even worth asking.</p>
+
+    <p>Wrong order:</p>
+    <pre><code>→ "How many users do we have?"
+→ "What's the read/write ratio?"</code></pre>
+
+    <p>Right order:</p>
+    <pre><code>→ "What leaderboard scopes do we need — global, regional, friend?"
+→ "Is the social graph symmetric friends or asymmetric follows?"
+→ "Staleness tolerance — exact rank or movement signal sufficient?"
+→ Then: "How many players are we designing for?"</code></pre>
+
+    <p><strong>Use answers to justify tradeoffs out loud.</strong> After getting an answer, say what it changes:</p>
+
+    <blockquote>"Since scores only increase, most score updates will be no-ops on the leaderboard — that simplifies the write path significantly."</blockquote>
+
+    <p>This shows the interviewer you're not just collecting information — you're actively translating requirements into design decisions.</p>
+
+    <p><strong>Clarification questions as a pacing tool.</strong> If you're unsure how deep to go on a topic, a clarification question buys you thinking time and directs the conversation. "Before I go deeper on the sharding strategy — is approximate rank acceptable, or do we need exact rank?" frames the next 10 minutes of the interview.</p>
+
+    <!-- ── Section 3 ── -->
+    <h2 id="scope">Scope sizing before diving deep</h2>
+
+    <p>Before asking <em>how</em> to build something, ask <em>how big</em> it is. Size determines complexity class, and complexity class determines the right design.</p>
+
+    <p>This is especially important for problems with multiple scopes — like a leaderboard with global, regional, and friend variants. Each scope has a different N, and the right design for each scope is different.</p>
+
+    <pre><code>Friend leaderboard, 50 friends    → fetch all scores, sort in memory, done
+Friend leaderboard, 5000 friends  → fan-out architecture needed
+Regional, 5M players              → single sorted set, ZREVRANK fine
+Regional, 50M players             → approximate rank treatment
+Global, 100M players              → full complexity: sharding, histogram, prefix sum</code></pre>
+
+    <p>Stating this out loud in the interview is valuable: <em>"Friend and regional leaderboards are essentially bounded top-k problems — the interesting distributed systems challenges are concentrated in the global leaderboard."</em> That scoping statement signals senior judgment. It says you won't waste time over-engineering the simple cases.</p>
+
+    <p><strong>The complexity class mental model.</strong> Once you've placed a problem in a complexity class, the design almost follows automatically. Small N → top-k, direct Redis call, done. Large N → you need an approximation layer and a sharding strategy. The design isn't arbitrary — it's the natural solution for that complexity class.</p>
+
+    <!-- ── Section 4 ── -->
+    <h2 id="tradeoffs">Presenting tradeoffs</h2>
+
+    <p>Every design decision has a cost. Naming both sides of every tradeoff is the core habit that distinguishes senior answers. Not "I'll use X" but "X gives us Y benefit at the cost of Z — that tradeoff is acceptable because..."</p>
+
+    <p>Interviewers aren't grading you on whether you picked the right answer. They're grading you on whether you understand <em>why</em> it's the right answer for this context — and whether you'd pick differently in a different context.</p>
+
+    <p><strong>The tradeoff format.</strong> Lead with the insight, then the mechanism, then the cost:</p>
+
+    <blockquote>"Fan-out on write gives us O(1) friend leaderboard reads, but at the cost of write amplification proportional to friend count. With a hard cap of 500 friends, that's at most 500 cache writes per score update — acceptable. Without a cap, we'd need to fall back to fan-out on read for high-degree users."</blockquote>
+
+    <p><strong>Eventual consistency as a chosen tradeoff, not a constraint.</strong> When you accept eventual consistency, say so explicitly and say why. "I'm accepting a few seconds of staleness here because rank is approximate by design anyway — there's no point paying for strong consistency to protect an already-approximate value."</p>
+
+    <p><strong>Know when consistency actually matters.</strong> The flip side: be able to identify the cases where eventual consistency is <em>not</em> acceptable. PostgreSQL as the score source of truth is written synchronously before Kafka — because if that data is lost, you can't recover. Redis is eventually consistent because it's a derived view that can always be recomputed from PostgreSQL.</p>
+
+    <!-- ── Section 5 ── -->
+    <h2 id="pushback">Pushing back on requirements</h2>
+
+    <p>When an interviewer changes a requirement — "actually, I need exact real-time rank for every player" — they're often probing. They want to see if you collapse immediately, refuse to budge, or negotiate with tradeoffs.</p>
+
+    <p>The right response: acknowledge the requirement, surface the cost, propose a spectrum of options, ask what's driving the requirement.</p>
+
+    <p><strong>Wrong pushback</strong> — sounds defensive:</p>
+    <pre><code>"That's really hard to do at scale, I'm not sure that's feasible."</code></pre>
+
+    <p><strong>Right pushback</strong> — sounds like an engineer:</p>
+    <pre><code>"We can do exact rank — it changes a few things. We lose the O(1) prefix sum
+approximation and go back to ZREVRANK on the full sorted set, which means
+cross-shard coordination on every rank query. At 100M players that's O(log N)
+per shard plus aggregation — manageable but slower. Is there a specific use
+case driving this? Exact rank on a post-match summary screen is much cheaper
+than exact rank updated in real-time during gameplay."</code></pre>
+
+    <p><strong>The accuracy spectrum.</strong> For any consistency requirement, present a spectrum rather than a binary:</p>
+
+    <table>
+      <thead><tr><th>Option</th><th>Mechanism</th><th>Cost</th><th>Good for</th></tr></thead>
+      <tbody>
+        <tr><td>Approximate rank</td><td>Prefix sum, O(1)</td><td>±bucket_size error</td><td>In-game feedback, rank movement</td></tr>
+        <tr><td>Exact rank on demand</td><td>ZREVRANK across shards</td><td>O(log N) + latency</td><td>Post-match summary, profile page</td></tr>
+        <tr><td>Hybrid</td><td>Approximate in-game, exact async stored on player record</td><td>Slight delay on exact</td><td>Both surfaces, best of both</td></tr>
+      </tbody>
+    </table>
+
+    <p>The hybrid answer — approximate for real-time, exact async for non-real-time surfaces — is almost always the right senior answer. It reframes the question from "accurate vs approximate" to "which surface needs which level of accuracy."</p>
+
+    <!-- ── Section 6 ── -->
+    <h2 id="verify">Verifying in your own words</h2>
+
+    <p>After working through a complex topic with the interviewer, restate your understanding before moving on. This does three things: forces you to actually process what was said, surfaces misunderstandings immediately, and shows the interviewer your reasoning rather than just your conclusion.</p>
+
+    <p>The pattern:</p>
+    <blockquote>"So if I understand this correctly — range-based sharding lets me compute global rank cheaply because rank is just a sum of shard cardinalities above me, but it risks hot shards if score distribution is uneven. I'd mitigate that with equal-frequency boundaries upfront. Does that match what you're thinking?"</blockquote>
+
+    <p>Same conclusion as just saying "I'll use range-based sharding" — but the interviewer sees your reasoning and you've implicitly invited a correction if you're off track.</p>
+
+    <p>This habit also serves as a pacing tool. Restating before moving on signals a natural transition point and gives both you and the interviewer a moment to align before going deeper.</p>
+
+    <!-- ── Section 7 ── -->
+    <h2 id="dependency">Dependency-driven topic ordering</h2>
+
+    <p>Topics in system design have dependencies — you can't explain adaptive bucket boundaries without first establishing why fixed buckets exist, which requires explaining approximate rank, which requires establishing that exact rank is expensive at scale.</p>
+
+    <p>The discipline is: surface each topic at the layer it belongs to. Don't jump layers. The dependency map for leaderboard design looks roughly like this:</p>
+
+    <pre><code>Layer 0 — Clarification:
+  scope sizing → score semantics → social model → staleness tolerance
+
+Layer 1 — Foundations:
+  Redis sorted sets → top-k vs k-neighbor distinction → score semantics implications
+
+Layer 2 — Scale foundations:
+  score histogram → ZRANGEBYSCORE for neighbors → Kafka write buffer
+
+Layer 3 — Scale advanced:
+  adaptive bucket boundaries → prefix sum → range-based sharding
+
+Layer 4 — Synthesis:
+  global rank formula → rank movement delta
+
+Layer 5 — Friend leaderboard:
+  fan-out on write → fan-out on read → celebrity hybrid → app-layer merge
+
+Layer 6 — Operational:
+  cache warming → reconciliation → idempotency → monitoring</code></pre>
+
+    <p>In practice this means: in the requirements phase, ask scope-sizing questions but don't explain prefix sum. In the high level design, mention Redis sorted sets and Kafka but don't explain adaptive bucket boundaries. In the deep dive, when the interviewer asks about rank at scale, build from histogram → fixed buckets → equal-frequency → prefix sum in sequence.</p>
+
+    <p><strong>Why this works.</strong> It creates a conversation where complexity is revealed progressively. The interviewer sees you build up from first principles. It also protects your time budget — you only go deep on an area if the interviewer pulls on it. If they don't ask about adaptive buckets, you don't need to explain it.</p>
+
+    <!-- ── Section 8 ── -->
+    <h2 id="common">Common mistakes</h2>
+
+    <p><strong>Spending too long on requirements.</strong> Requirements should feel like a conversation, not an interrogation. 3–4 sharp questions, clean summary, move on. If requirements take more than 5 minutes, you're running out of time for the deep dive.</p>
+
+    <p><strong>Treating high level design as a deep dive.</strong> High level design is a working system that satisfies functional requirements. Not a perfect one. Save optimization, edge cases, and failure modes for the deep dive where they belong.</p>
+
+    <p><strong>Going deep on simple sub-problems.</strong> A friend leaderboard of 50 people is a trivial fetch-and-sort. Don't spend 5 minutes architecting it. Recognize when something is in the easy complexity class and say so explicitly, then move on.</p>
+
+    <p><strong>Naming solutions without explaining why.</strong> "I'll use a Redis sorted set" is not an answer. "I'll use a Redis sorted set because it gives O(log N) writes and O(log N + K) reads for top-k, with rank queries built in — and it keeps members sorted automatically so I never sort manually" is an answer.</p>
+
+    <p><strong>Not driving the interview.</strong> After finishing one area, say what you want to cover next: "I want to make sure we cover the write path and failure handling before we run out of time — should I go there?" This shows ownership of the conversation and makes sure you cover what matters most.</p>
+
+    <p><strong>Collapsing immediately when pushed back.</strong> If the interviewer challenges your design, don't immediately abandon it. Engage: understand the concern, check if it's valid, either defend your decision with reasoning or update it with explicit justification.</p>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>Built by <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a> · Prepared with Claude</span>
+    <span><a href="index.html">← Back to guide</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

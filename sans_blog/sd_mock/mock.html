@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Interview Examples — Study Guide</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .mock-phase {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: 2.5rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mock-phase::after {
+      content: '';
+      flex: 1;
+      border-top: 1px solid var(--border);
+    }
+    .mock-phase .timer {
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      font-style: normal;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .assessment {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 2rem 0;
+    }
+    .assessment-title {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+    .assessment-row {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 6px;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+    }
+    .assessment-label { min-width: 200px; color: var(--text-secondary); }
+    .good { color: #16a34a; font-weight: 500; }
+    .weak { color: #d97706; font-weight: 500; }
+    .speed-q {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+    .speed-q-header {
+      background: var(--bg-secondary);
+      padding: 12px 20px;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+    }
+    .speed-q-body { padding: 16px 20px; }
+    .speed-q-answer {
+      padding: 12px 20px;
+      background: #f0f9ff;
+      border-top: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .speed-q-note {
+      padding: 10px 20px;
+      background: var(--bg-tertiary);
+      border-top: 1px solid var(--border);
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">System Design Study Guide</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="interview.html">Interview Skills</a></li>
+      <li><a href="mock.html" class="active">Mock Interview</a></li>
+      <li><a href="ai-prep.html">AI Prep</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Part 3 — Practice</div>
+    <h1>Mock Interview Examples</h1>
+    <p class="hero-lead">Two formats: a full end-to-end example showing ideal structure, and a speed round showing how to stay concise under pressure.</p>
+  </div>
+</div>
+
+<div class="article-body">
+  <div class="container">
+
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#full-mock">Full mock interview (45 min)</a></li>
+        <li><a href="#speed-round">Speed round (8 questions)</a></li>
+      </ol>
+    </div>
+
+    <h2 id="full-mock">Full mock interview</h2>
+    <p>This is an end-to-end example of a well-structured 45-minute system design interview for a senior backend engineering role. Read it as a reference for what good answers sound like, how transitions work, and how the candidate controls pacing.</p>
+
+    <!-- Phase 1 -->
+    <div class="mock-phase">Functional requirements <span class="timer">0:00 – 3:30</span></div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">Design a leaderboard system for a large-scale multiplayer mobile game with a global player base. Take it wherever you think is most important — feel free to ask me any clarifying questions before you start.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Thanks. Before I design, a few questions to make sure I'm solving the right problem. First — what leaderboard scopes do we need? Just global, or also regional, friend, and guild?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">Global is required. Friend leaderboard is a nice-to-have. Let's include regional too.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Got it. Can scores decrease, or only increase? And is the leaderboard tracking personal best, current score, or a cumulative total?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">Scores can only increase. The leaderboard tracks personal best — highest score ever achieved.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Good — that simplifies writes a lot since most updates will be no-ops. Last two: do we need daily/weekly/all-time windows? And when a player finishes a match, do they need to see their exact rank immediately, or is a movement signal acceptable — "you moved up ~200,000 spots"?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">Yes to time windows — daily, weekly, all-time. On rank: players care about seeing movement. Exact rank is less critical.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Perfect. So functional requirements: global, regional, and friend leaderboards; personal best scoring, scores never decrease; daily/weekly/all-time windows; approximate rank with movement signal after each match.</div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="mock-phase">Non-functional requirements <span class="timer">3:30 – 6:00</span></div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">For scale: I'll assume 100M registered players, ~10M daily active. Score updates happen after each match — peak maybe 500k updates/sec. Reads are heavier — players check leaderboards frequently, probably 2–3x write volume.<br><br>On consistency: since scores only increase, a few seconds of staleness on rank is acceptable. Availability over consistency. P99 read latency target: under 100ms.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">What about the friend leaderboard — same staleness tolerance?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Friend leaderboards need tighter consistency — players know each other personally, they'll notice stale data. I'd target a few seconds lag at most and prioritize accuracy over perfect freshness there.</div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="mock-phase">Entities <span class="timer">6:00 – 9:00</span></div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Core entities: <strong>Player</strong> — player_id, display_name, region_id. <strong>Score</strong> — player_id, personal_best, last_updated. <strong>FriendRelation</strong> — player_id, friend_id, symmetric. <strong>Leaderboard</strong> — scope, time_window, ordered list of player+score.<br><br>The score entity is the source of truth. The leaderboard is always a derived view — never written to directly, always computed from scores.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">Good distinction. How does the friend relation affect leaderboard design?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Friend leaderboard is a personalized view — each player has their own ranked list of friends. The social graph determines which scores to include, but the scores come from the global score store. I'll cover the fan-out strategy in the deep dive.</div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="mock-phase">APIs <span class="timer">9:00 – 12:00</span></div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Four key endpoints. <code>POST /scores</code> — body: player_id, new_score. Updates personal best if higher, triggers downstream leaderboard updates, returns rank delta.<br><br><code>GET /leaderboard/{scope}/{window}</code> — scope: global/regional/friend, window: daily/weekly/alltime. Paginated top-k with ranks.<br><br><code>GET /leaderboard/{scope}/{window}/me</code> — requesting player's rank plus nearby players ±5.<br><br><code>GET /leaderboard/friend/{window}</code> — friend leaderboard for requesting player.<br><br>The POST is write path; GETs are read path. They'll have very different performance characteristics.</div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="mock-phase">High level design <span class="timer">12:00 – 23:00</span></div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text"><strong>Write path:</strong> Score update hits the Score Service, which checks personal best against a Redis hash. If the new score beats it, write to PostgreSQL first — source of truth — then publish a ScoreUpdated event to Kafka. Three consumers handle this asynchronously: Global, Regional, and Friend leaderboard consumers. This decouples the write spike from Redis and makes each leaderboard type independently scalable.<br><br><strong>Storage:</strong> Redis sorted sets are the core — ZADD for writes, ZRANGE for top-k, ZREVRANK for exact rank. One sorted set per scope + window combination. PostgreSQL stores personal bests as the durable source of truth.<br><br><strong>Read path:</strong> The Leaderboard Service serves all reads. Top-k hits Redis directly, cached with a short TTL. "My rank" uses a score histogram for approximate rank. Friend leaderboard merges a per-user cached sorted set with live fetches for high-degree users — I'll detail this in the deep dive.<br><br><strong>Time windows:</strong> Each window is a separate sorted set. Daily and weekly keys carry TTLs aligned to the boundary.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">How do daily and weekly resets work exactly?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Each time window is a separate key. Daily TTL is ~25 hours, weekly ~8 days. When a score updates, the consumer writes to all three windows. The all-time window only updates if it's a new personal best; daily and weekly always update since they track best score within the window. At reset, the old key expires and a new one starts accumulating. Before expiry, a background job can snapshot the top-k to cold storage for historical records.</div>
+      </div>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="mock-phase">Deep dive <span class="timer">23:00 – 42:00</span></div>
+
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">Let's go deeper on rank. How does a player see their rank after the match? They have 100M other players in the system.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">This is where the problem diverges from top-k. ZREVRANK gives exact rank in O(log N), but at 100M players on a single node, millions of concurrent rank queries plus constant writes makes this a hot key problem.<br><br>My solution is a score histogram with a prefix sum array. Since the game has bounded discrete scores — say 0 to 10,000 in multiples of 50 — I have 200 fixed buckets. Each bucket stores a count of players in that score range. I maintain a prefix sum over those counts, recomputed every few seconds by a background job.<br><br>Approximate rank becomes a single array index read — O(1) from application memory, no Redis query needed. Error is bounded by bucket size. For rank movement delta: snapshot prefix_sum before and after the score update, return the difference.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">You mentioned sharding. How would you shard the sorted set?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">Range-based sharding by score, aligned with the histogram bucket boundaries. 4 shards covering 0–2500, 2501–5000, 5001–7500, 7501–10000. Since we know the score distribution from game mechanics, I'd use equal-frequency boundaries so each shard holds roughly the same number of players.<br><br>Global rank = sum of ZCARD for all shards above mine — O(1) from cached bucket counts — plus ZREVRANK within my own shard at O(log N/shards). The bucket counts I already maintain for approximate rank double as shard cardinalities. These two systems reinforce each other.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">What about the friend leaderboard?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">The key insight is the fan-out decision is made from the writer's perspective based on their friend count, not the reader's.<br><br>Normal users below a threshold — say 500 friends — fan out on write. When their score updates, the Kafka consumer writes their new score into each friend's cached sorted set. Reads are O(1).<br><br>High-degree users above the threshold skip fan-out. Their score lives only in the global sorted set. When any user opens their friend leaderboard, normal friends' scores come from the per-user cache, high-degree friends' scores are batch-fetched via ZSCORE from the global set, and the merge happens in application memory.<br><br>Friend add/remove: for fan-out-on-write users, immediately update both users' cached sorted sets. The friend list itself is cached separately from the graph DB.</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role">Interviewer</div>
+        <div class="qa-text">How do you handle a Redis shard going down?</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-role you">Candidate</div>
+        <div class="qa-text">With replicas, the leaderboard continues to be served — reads fall back to replicas, which are slightly stale but acceptable. Writes buffer in Kafka during failover, so no score updates are lost within the Kafka retention window — I'd set that to at least 24 hours.<br><br>Redis Sentinel handles primary re-election automatically. If the entire shard is lost, a background job bootstraps the new node from PostgreSQL — batch SELECT scores within the shard's score range, ZADD in pipelines. Then replay Kafka events to catch up writes that arrived during recovery. This takes 10–30 minutes depending on shard size.<br><br>During that window, the affected score range can't be served — that's a real service interruption. The mitigation is replicas in separate availability zones so the probability of all copies being lost simultaneously is very low.</div>
+      </div>
+    </div>
+
+    <div class="assessment">
+      <div class="assessment-title">Assessment</div>
+      <div class="assessment-row"><span class="assessment-label">Requirements</span><span class="good">✓ Sharp questions, clean summary, under 3:30</span></div>
+      <div class="assessment-row"><span class="assessment-label">Entities + APIs</span><span class="good">✓ Source of truth vs derived view distinction made early</span></div>
+      <div class="assessment-row"><span class="assessment-label">High level design</span><span class="good">✓ Working system, didn't over-optimize upfront</span></div>
+      <div class="assessment-row"><span class="assessment-label">Rank at scale</span><span class="good">✓ Histogram + prefix sum, correct complexity analysis</span></div>
+      <div class="assessment-row"><span class="assessment-label">Sharding</span><span class="good">✓ Range-based, aligned with buckets, shard cardinalities insight</span></div>
+      <div class="assessment-row"><span class="assessment-label">Friend leaderboard</span><span class="good">✓ Fan-out decision from writer's perspective, correct merge</span></div>
+      <div class="assessment-row"><span class="assessment-label">Failure handling</span><span class="good">✓ Full failure spectrum covered, Kafka as recovery mechanism</span></div>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="speed-round">Speed round</h2>
+    <p>Eight questions an interviewer would ask. Read the question, form your own answer, then compare. The goal is to answer in 2–3 sentences without rambling.</p>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 1</span></div>
+      <div class="speed-q-body">What clarifying questions would you ask before designing a leaderboard system?</div>
+      <div class="speed-q-answer">What leaderboard scopes are needed — global, regional, friend, guild? Is the social graph symmetric friends or asymmetric follows, and is there a cap? Is the leaderboard tracking personal best, current score, or cumulative total — and can scores decrease? Do players need exact rank or is a movement signal sufficient? Do we need time windows — daily, weekly, all-time?</div>
+      <div class="speed-q-note">Start with product shape before scale numbers. Each answer should visibly change something in your design.</div>
+    </div>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 2</span></div>
+      <div class="speed-q-body">A player just set a new personal best. Walk me through what happens in the system.</div>
+      <div class="speed-q-answer">Score Service receives the update, checks the current personal best from a Redis hash, and since the new score is higher, writes to PostgreSQL first (source of truth), then publishes a ScoreUpdated event to Kafka. Kafka consumers asynchronously update the global, regional, and friend leaderboard sorted sets in Redis. The Score Service returns a rank delta to the client immediately, computed optimistically from the prefix sum before and after.</div>
+      <div class="speed-q-note">PostgreSQL before Kafka — always write to source of truth first. Rank delta is optimistic, not waited for.</div>
+    </div>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 3</span></div>
+      <div class="speed-q-body">How does a player see their rank among 100M players?</div>
+      <div class="speed-q-answer">Approximate rank via a score histogram. The score space is divided into buckets, each storing a player count. A prefix sum over those counts gives approximate rank in O(1) from application memory — no Redis call needed. Error is bounded by bucket size, which is acceptable since the product requirement is a movement signal, not exact rank.</div>
+      <div class="speed-q-note">Don't jump to ZREVRANK. It works on a single node but is a hot key at 100M scale. Prefix sum solves the read scalability problem.</div>
+    </div>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 4</span></div>
+      <div class="speed-q-body">How does the friend leaderboard work? Assume symmetric friends capped at 500.</div>
+      <div class="speed-q-answer">Symmetric + capped means fan-out on write. When a player sets a new personal best, a Kafka consumer ZADDs their score into each of their friends' per-user sorted sets — at most 500 writes. Reads are O(1), just serve the pre-built sorted set. Friend add/unfriend immediately updates both users' cached sorted sets.</div>
+      <div class="speed-q-note">The cap is the key — it bounds write amplification. Without a cap, you need the celebrity hybrid pattern.</div>
+    </div>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 5</span></div>
+      <div class="speed-q-body">Your Redis node holding the global leaderboard is getting hammered. What do you do?</div>
+      <div class="speed-q-answer">First, add read replicas — route all ZRANGE and ZREVRANK calls to replicas, keeping the primary for writes only. If write throughput is the bottleneck, shard by score range using equal-frequency boundaries aligned with the histogram buckets. Kafka consumers pipeline writes to each shard, keeping throughput well above the 100–150k writes/sec single-node ceiling.</div>
+      <div class="speed-q-note">Replicas first (cheaper), sharding second. Name what problem you're solving — read vs write bottleneck.</div>
+    </div>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 6</span></div>
+      <div class="speed-q-body">How do you find the 5 players just above and below a given player?</div>
+      <div class="speed-q-answer">Query by score proximity, not rank offset. Estimate a score window δ from bucket density (players per score point), then ZRANGEBYSCORE on the correct shard within (score - δ) to (score + δ), over-fetch slightly, trim to the closest 10. This is O(log N + M) and naturally shardable since a score range almost always hits exactly one shard.</div>
+      <div class="speed-q-note">Don't use ZREVRANK + ZRANGE by rank offset — rank offset requires global rank knowledge which breaks under sharding. Score is always exact even when rank is approximate.</div>
+    </div>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 7</span></div>
+      <div class="speed-q-body">I need exact real-time rank for every player, updated within 1 second of any score change. How do you respond?</div>
+      <div class="speed-q-answer">We can do exact rank — it changes the design meaningfully. Exact rank requires synchronous ZREVRANK plus ZCARD across all shards on every score update, adding latency to the write path and cross-shard coordination overhead. Before committing to that, I want to understand what surface needs this — exact rank on a post-match summary screen is much cheaper than exact rank updated in real-time during gameplay. Can you tell me the specific use case?</div>
+      <div class="speed-q-note">Push back with tradeoffs and a clarifying question. Don't collapse immediately and don't refuse to engage.</div>
+    </div>
+
+    <div class="speed-q">
+      <div class="speed-q-header"><span>Question 8</span></div>
+      <div class="speed-q-body">How do you handle a Redis shard going down?</div>
+      <div class="speed-q-answer">Reads fall back to replicas — slightly stale but acceptable. Writes buffer in Kafka during failover so no updates are lost within the retention window. Redis Sentinel handles primary re-election automatically. If the entire shard is lost, bootstrap from PostgreSQL via batch SELECT and ZADD pipeline, then replay Kafka events to catch up. Replicas in separate availability zones make total shard loss very unlikely.</div>
+      <div class="speed-q-note">Cover the full failure spectrum: partial failure (primary down) and total failure (full shard lost). Kafka is both a write buffer and a recovery mechanism.</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>Built by <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a> · Prepared with Claude</span>
+    <span><a href="index.html">← Back to guide</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

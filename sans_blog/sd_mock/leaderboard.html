@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard System Design — Study Guide</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">System Design Study Guide</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+      <li><a href="interview.html">Interview Skills</a></li>
+      <li><a href="mock.html">Mock Interview</a></li>
+      <li><a href="ai-prep.html">AI Prep</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Part 1 — System Design</div>
+    <h1>Leaderboard System Design</h1>
+    <p class="hero-lead">From a single Redis sorted set to a distributed system serving 100 million players. Every design decision made explicit.</p>
+  </div>
+</div>
+
+<div class="article-body">
+  <div class="container">
+
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#top-k">Is this just a top-k problem?</a></li>
+        <li><a href="#clarification">Clarification questions</a></li>
+        <li><a href="#entities">Entities and APIs</a></li>
+        <li><a href="#foundation">Foundation: Redis sorted sets</a></li>
+        <li><a href="#scopes">Leaderboard scopes</a></li>
+        <li><a href="#friend">Friend leaderboard and fan-out</a></li>
+        <li><a href="#rank">The rank problem</a></li>
+        <li><a href="#histogram">Score histogram and prefix sum</a></li>
+        <li><a href="#sharding">Sharding the global leaderboard</a></li>
+        <li><a href="#write">Write path end-to-end</a></li>
+        <li><a href="#ops">Operational concerns</a></li>
+        <li><a href="#redis-ref">Redis command reference</a></li>
+      </ol>
+    </div>
+
+    <!-- ── Section 1 ── -->
+    <h2 id="top-k">Is this just a top-k problem? <span class="tag tag-fundamental">fundamental</span></h2>
+
+    <p>At first glance a leaderboard looks like a top-k problem: given a large set of scores, return the top 100 players. That's one Redis call. Done.</p>
+
+    <p>But a real leaderboard is a superset of top-k. The top-k question assumes you only care about the players at the very top. A game leaderboard needs to serve every player — including the one ranked #50,000,000 who wants to know their rank and see the players just above and below them.</p>
+
+    <p>That's a fundamentally different problem. It's the difference between a shared static window and a personalized dynamic window unique to each player.</p>
+
+    <table>
+      <thead><tr><th>Top-k</th><th>Full leaderboard</th></tr></thead>
+      <tbody>
+        <tr><td>Same result for everyone</td><td>Unique rank per player</td></tr>
+        <tr><td>Easy to cache aggressively</td><td>Can't cache personalized views</td></tr>
+        <tr><td>Fixed window at the top</td><td>Dynamic window anywhere in ranking</td></tr>
+        <tr><td>O(log N + K) one call</td><td>Rank computation is a global property</td></tr>
+      </tbody>
+    </table>
+
+    <p>The distinction matters for scope sizing: friend leaderboards (50–500 players) and regional leaderboards (a few million) are essentially bounded top-k problems. The global leaderboard at 100M players is where the distributed systems complexity lives.</p>
+
+    <!-- ── Section 2 ── -->
+    <h2 id="clarification">Clarification questions <span class="tag tag-fundamental">fundamental</span></h2>
+
+    <p>Before designing anything, ask questions that place each leaderboard scope into the right complexity class. The goal isn't to delay — it's to use each answer to visibly change something in your design.</p>
+
+    <p><strong>Scope and scale.</strong> What leaderboard scopes are needed — global, regional, friend, guild? How many total players? This determines whether you're solving a top-k problem or a distributed rank problem.</p>
+
+    <p><strong>Score semantics.</strong> Is the leaderboard tracking personal best, current score, or cumulative total? Can scores decrease? Personal best scores that only increase are dramatically simpler — most score updates become no-ops on the leaderboard.</p>
+
+    <p><strong>Social graph model.</strong> Symmetric friends (mutual, both must agree) or asymmetric follows (one-sided)? Is there a hard cap on friend count? A symmetric model with a cap of 500 keeps the friend leaderboard in top-k territory. An uncapped asymmetric model creates a celebrity problem that requires a different architecture.</p>
+
+    <p><strong>Staleness tolerance.</strong> Does a player need to see their exact rank immediately after a match, or is a directional signal sufficient — "you moved up ~200,000 spots"? The answer determines whether you need exact rank computation or approximate rank via histograms.</p>
+
+    <p><strong>Time windows.</strong> Daily, weekly, all-time? Each window is essentially a separate leaderboard. Do windows need to reset instantaneously or can they roll over gradually?</p>
+
+    <div class="insight">
+      <div class="insight-label">Key insight</div>
+      The social graph question is the single highest-leverage clarification. Friend list size and graph model (symmetric vs asymmetric) determines whether the friend leaderboard is a trivial fetch-and-sort or a full fan-out architecture problem.
+    </div>
+
+    <!-- ── Section 3 ── -->
+    <h2 id="entities">Entities and APIs <span class="tag tag-fundamental">fundamental</span></h2>
+
+    <p><strong>Core entities:</strong> <code>Player</code> (player_id, display_name, region_id), <code>Score</code> (player_id, personal_best, last_updated), <code>FriendRelation</code> (player_id, friend_id — symmetric), <code>Leaderboard</code> (scope, time_window, ordered list of player+score — always a derived view, never written to directly).</p>
+
+    <p>The score entity is the source of truth. The leaderboard is always computed from scores — never authoritative itself.</p>
+
+    <p><strong>Key API endpoints:</strong></p>
+
+    <pre><code>POST /scores
+  body: { player_id, new_score }
+  → updates personal best if higher, triggers downstream updates
+  → returns: { rank_before, rank_after, delta }
+
+GET /leaderboard/{scope}/{window}?page=&size=
+  scope: global | regional | friend
+  window: daily | weekly | alltime
+  → returns paginated top-k with ranks
+
+GET /leaderboard/{scope}/{window}/me
+  → returns requesting player's rank + nearby players (±5)
+
+GET /leaderboard/friend/{window}
+  → returns friend leaderboard for requesting player</code></pre>
+
+    <!-- ── Section 4 ── -->
+    <h2 id="foundation">Foundation: Redis sorted sets <span class="tag tag-fundamental">fundamental</span></h2>
+
+    <p>A Redis sorted set is a collection where every member has an associated score. Redis keeps members sorted by score automatically at all times. It's the right data structure for leaderboards because it gives you O(log N) writes and O(log N + K) reads for top-k, with rank queries built in.</p>
+
+    <p>The key intuition: every time you <code>ZADD</code>, Redis re-inserts the member at the correct position in an internal skiplist. You never sort manually. The tradeoff is it lives entirely in memory.</p>
+
+    <table>
+      <thead><tr><th>Command</th><th>What it does</th><th>Complexity</th></tr></thead>
+      <tbody>
+        <tr><td><code>ZADD key score member</code></td><td>Add or update a member's score. Returns 1 if new, 0 if updated.</td><td>O(log N)</td></tr>
+        <tr><td><code>ZINCRBY key delta member</code></td><td>Atomically increment score. Used for cumulative scoring and guild aggregates.</td><td>O(log N)</td></tr>
+        <tr><td><code>ZREVRANK key member</code></td><td>0-based rank, highest score = 0. Returns nil if not found.</td><td>O(log N)</td></tr>
+        <tr><td><code>ZRANGE key 0 99 REV WITHSCORES</code></td><td>Top 100 entries, highest first, with scores.</td><td>O(log N + K)</td></tr>
+        <tr><td><code>ZRANGEBYSCORE key min max WITHSCORES</code></td><td>All entries within a score range. Result count M is unpredictable.</td><td>O(log N + M)</td></tr>
+        <tr><td><code>ZSCORE key member</code></td><td>A single member's current score. O(1).</td><td>O(1)</td></tr>
+        <tr><td><code>ZCARD key</code></td><td>Total member count. O(1).</td><td>O(1)</td></tr>
+        <tr><td><code>ZCOUNT key min max</code></td><td>Count members in a score range without fetching them. Uses skiplist span counters — O(log N), not O(M).</td><td>O(log N)</td></tr>
+        <tr><td><code>ZREM key member</code></td><td>Remove a member. Used when a player changes regions.</td><td>O(log N)</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Single instance limits.</strong> Redis is in-memory and single-threaded for writes. One entry ≈ 70–100 bytes, so 100M players ≈ 10GB — fits on a large instance but creates a single point of failure. A single node handles ~100–150k writes/sec unpipelined, ~500k–1M pipelined. Beyond this, you need replicas for read scale and sharding for write scale.</p>
+
+    <div class="callout">
+      <div class="callout-label">Rule of thumb</div>
+      Add replicas when read traffic is high. Shard when memory exceeds 60% of one node or write rate exceeds ~100k/sec sustained.
+    </div>
+
+    <!-- ── Section 5 ── -->
+    <h2 id="scopes">Leaderboard scopes <span class="tag tag-fundamental">fundamental</span></h2>
+
+    <p>Each leaderboard scope is a separate sorted set. The write path stays clean — one Kafka event per score update, different consumers handle different scopes independently.</p>
+
+    <p><strong>Global leaderboard.</strong> One sorted set covering all players. At 100M players this is where the distributed systems complexity lives — sharding, approximate rank, hot key problems.</p>
+
+    <p><strong>Regional leaderboard.</strong> One sorted set per region. Scoped top-k. If a player changes region, atomically <code>ZREM</code> from old and <code>ZADD</code> to new. At 10 regions × 10M players each, a single sorted set per region is usually sufficient without sharding.</p>
+
+    <p><strong>Guild leaderboard.</strong> Two variants with different complexity. Individual ranking within a guild (same as friend leaderboard, bounded by guild size) is simple. Guild aggregate ranking — guilds ranked by sum of member scores — is harder: every individual score update triggers a <code>ZINCRBY</code> on the guild aggregate sorted set. This is a read-modify-write that Redis handles atomically.</p>
+
+    <p><strong>Time windows.</strong> Each window is a separate sorted set. Daily and weekly keys carry a TTL aligned to the window boundary. At reset, the old key expires and a new one starts accumulating. Before expiry, a background job can snapshot the top-k to cold storage for historical records.</p>
+
+    <pre><code>leaderboard:global:alltime
+leaderboard:global:weekly        ← TTL ~8 days
+leaderboard:global:daily         ← TTL ~25 hours
+leaderboard:region:{id}:alltime
+leaderboard:guild:{id}:members
+leaderboard:guild:{id}:aggregate
+user:{id}:friend_leaderboard     ← one per user</code></pre>
+
+    <!-- ── Section 6 ── -->
+    <h2 id="friend">Friend leaderboard and fan-out <span class="tag tag-advanced">advanced</span></h2>
+
+    <p>The friend leaderboard is a personalized view — each player has their own ranked list of friends. The social graph determines which scores to include, but the scores themselves come from the global score store.</p>
+
+    <p><strong>Fan-out on write.</strong> When a player's score updates, push the new score into each of their friends' cached sorted sets. Reads are O(1) — just serve the pre-built cache. Cost: write amplification proportional to friend count.</p>
+
+    <p><strong>Fan-out on read.</strong> When a player opens their friend leaderboard, fetch all friends' current scores live. Always accurate, no cache to maintain. Cost: read is O(friends) live lookups. Friend add/remove is a non-event — next read reflects current state automatically.</p>
+
+    <p><strong>The celebrity problem.</strong> The fan-out decision is made from the writer's perspective based on their friend count. A user with 50 friends fans out to 50 caches — cheap. A celebrity with 10,000 friends would fan out to 10,000 caches on every score update — prohibitive. The hybrid solution:</p>
+
+    <div class="callout">
+      <div class="callout-label">Hybrid fan-out strategy</div>
+      <p style="margin-bottom:0">Normal users (below threshold, e.g. 500 friends) → fan-out on write. Each friend's cached sorted set gets a <code>ZADD</code> on every score update.</p>
+      <p style="margin:8px 0 0">Celebrity users (above threshold) → skip fan-out. Their score stays only in the global sorted set, fetched live at read time.</p>
+    </div>
+
+    <p><strong>Read path for friend leaderboard.</strong> Fetch the friend list from cache (not the graph DB directly — that's the source of truth but not queried on every read). Normal friends' scores come from the per-user cached sorted set. Celebrity friends' scores are batch-fetched via <code>ZSCORE</code> from the global sorted set. Merge and sort in the application layer. Return to client.</p>
+
+    <p><strong>Friend add/remove.</strong> For fan-out on write users: immediately update both users' cached sorted sets. For celebrity users: the friend list cache is invalidated — next read fetches fresh. The cached sorted set never contains celebrity entries, so there's nothing to remove there.</p>
+
+    <div class="insight">
+      <div class="insight-label">Key insight</div>
+      The fan-out decision is asymmetric — it's made from the writer's perspective based on their out-degree. The reader always gets a consistent experience: a mix of pre-cached normal friend scores and live-fetched celebrity scores, transparent to them.
+    </div>
+
+    <!-- ── Section 7 ── -->
+    <h2 id="rank">The rank problem <span class="tag tag-advanced">advanced</span></h2>
+
+    <p>This is what makes a leaderboard fundamentally different from top-k. To know you're rank #4,821,033 out of 100M players, the system needs to know how many players score higher than you. <code>ZREVRANK</code> does this in O(log N) — which sounds fine, but at 100M players with millions of concurrent rank queries plus constant writes, a single sorted set becomes a hot key.</p>
+
+    <p>More importantly, rank is a <em>global property</em>. Once you shard the sorted set, no single node knows the global rank of any player. You need a way to compute global rank across shards efficiently.</p>
+
+    <p><strong>The neighbor query compounds this.</strong> Finding the 5 players just above and below you requires knowing your exact rank offset first. <code>ZREVRANK</code> + <code>ZRANGE</code> works on a single node but breaks under sharding.</p>
+
+    <p><strong>Score-range queries as the solution for neighbors.</strong> Instead of querying by rank offset, query by score proximity. Nearby players have nearby scores.</p>
+
+    <pre><code>ZRANGEBYSCORE leaderboard (1440) (1460) WITHSCORES
+→ O(log N + M) where M = players in that score band</code></pre>
+
+    <p>This is naturally shardable — a score range query almost always hits exactly one shard. The tradeoff is M is unpredictable in dense score regions. Fix this with an adaptive score window: estimate density from bucket counts (players per score point), compute δ dynamically so the window reliably returns ~10 results.</p>
+
+    <!-- ── Section 8 ── -->
+    <h2 id="histogram">Score histogram and prefix sum <span class="tag tag-advanced">advanced</span></h2>
+
+    <p>The score histogram is a lightweight approximation layer that sits in front of the expensive exact-rank query. It answers "what is my approximate rank?" in O(1) from application memory, with zero Redis calls.</p>
+
+    <p><strong>Structure.</strong> Divide the score space into buckets. Each bucket stores a count of players in that score range — just an integer, no IDs. For a game with bounded discrete scores (0–10,000 in multiples of 50), you have 200 fixed buckets.</p>
+
+    <pre><code>bucket 0-50:      500,000 players
+bucket 51-100:    480,000 players
+bucket 101-150:   320,000 players
+...200 buckets total</code></pre>
+
+    <p><strong>Bucket width.</strong> Use equal-frequency bucketing — each bucket should contain roughly the same number of players. Game score distributions are uneven (many players in the middle, few at the top). Equal-width buckets give poor rank accuracy in dense regions. Equal-frequency gives uniform error everywhere.</p>
+
+    <p><strong>Prefix sum.</strong> Precompute a running total over bucket counts. <code>prefix_sum[i]</code> = total players with score above bucket i's lower bound. Approximate rank = single array index read. O(1), served from application memory.</p>
+
+    <p><strong>Update path.</strong> When a player's score changes buckets, two atomic increments: <code>DECR old_bucket</code>, <code>INCR new_bucket</code>. The prefix sum is recomputed by a background job every few seconds and published atomically as a versioned config to Redis. Application servers cache it locally with a short TTL.</p>
+
+    <p><strong>Boundary recomputation.</strong> When bucket boundaries need to change (score distribution has shifted), don't migrate existing counts. Use <code>ZCOUNT</code> to recompute counts for each new boundary range directly from the sorted set — O(B × log N) total where B is the number of buckets. At 200 buckets and 100M players, that's 200 × log(100M) ≈ 5,400 operations. Then atomic-swap the new config.</p>
+
+    <div class="callout">
+      <div class="callout-label">What prefix sum solves</div>
+      Rank reads (millions/min) are served from application memory — zero Redis calls. Redis only sees writes and top-k reads. This is valuable even on a single node because rank reads vastly outnumber writes.
+    </div>
+
+    <p><strong>Interpolation within a bucket.</strong> If two players are in the same bucket, prefix sum gives them identical ranks. Interpolation fixes this: assume uniform distribution within the bucket and estimate position mathematically. Breaks when players cluster at specific score values (common in games — round numbers, level thresholds). Fine granularity reduces reliance on interpolation.</p>
+
+    <!-- ── Section 9 ── -->
+    <h2 id="sharding">Sharding the global leaderboard <span class="tag tag-advanced">advanced</span></h2>
+
+    <p>Range-based sharding by score is the natural fit for leaderboards. Each shard owns a score range and is an independent Redis sorted set on its own node.</p>
+
+    <pre><code>shard 1: leaderboard:score:0-2500     → redis-shard-1:6379
+shard 2: leaderboard:score:2501-5000  → redis-shard-2:6379
+shard 3: leaderboard:score:5001-7500  → redis-shard-3:6379
+shard 4: leaderboard:score:7501-10000 → redis-shard-4:6379</code></pre>
+
+    <p><strong>Global rank computation.</strong> Global rank = sum of ZCARD for all shards above yours + ZREVRANK within your shard. ZCARD is O(1). ZREVRANK is O(log N/shards) on a much smaller dataset. Combined with the prefix sum (which makes this O(1) from memory), this gives exact global rank cheaply.</p>
+
+    <p><strong>Shard boundaries alignment.</strong> Align shard boundaries with bucket boundaries. This keeps every ZCOUNT query local to one shard, lets background jobs run independently per shard in parallel, and means the global prefix sum is just the concatenation of per-shard bucket arrays in score order.</p>
+
+    <p><strong>Cross-boundary score updates.</strong> When a player's score crosses a shard boundary (e.g. 2400 → 2600): ZREM from shard 1, ZADD to shard 2. These are two operations on different nodes — wrapped in a Kafka event so both are applied eventually, without requiring distributed transactions.</p>
+
+    <p><strong>Routing.</strong> The application maintains a routing table mapping score ranges to shard addresses. Routing a score to a shard is a binary search over this table — effectively O(1) for a small number of shards. The routing table is cached in application memory with a long TTL since shard boundaries rarely change.</p>
+
+    <p><strong>K-neighbor under sharding.</strong> Most queries hit one shard. Edge case: player is within 5 rank positions of a shard boundary. Query the adjacent shard for the shortfall and merge in the application layer. This edge case is rare — millions of players per shard means very few are near the boundary.</p>
+
+    <div class="diagram">
+      <div class="diagram-label">Figure 1 — Score-range sharding and global rank computation</div>
+      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="padding:20px">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+          </marker>
+        </defs>
+        <!-- Shards -->
+        <rect x="20" y="40" width="130" height="56" rx="6" fill="#f0f5ff" stroke="#93c5fd" stroke-width="1"/>
+        <text x="85" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="500" fill="#1e40af">Shard 1</text>
+        <text x="85" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#3b82f6">score 0–2500</text>
+        <text x="85" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#6b7280">25M players</text>
+
+        <rect x="175" y="40" width="130" height="56" rx="6" fill="#f0f5ff" stroke="#93c5fd" stroke-width="1"/>
+        <text x="240" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="500" fill="#1e40af">Shard 2</text>
+        <text x="240" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#3b82f6">score 2501–5000</text>
+        <text x="240" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#6b7280">25M players</text>
+
+        <rect x="330" y="40" width="130" height="56" rx="6" fill="#f0f5ff" stroke="#93c5fd" stroke-width="1"/>
+        <text x="395" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="500" fill="#1e40af">Shard 3</text>
+        <text x="395" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#3b82f6">score 5001–7500</text>
+        <text x="395" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#6b7280">25M players</text>
+
+        <rect x="485" y="40" width="130" height="56" rx="6" fill="#f0f5ff" stroke="#93c5fd" stroke-width="1"/>
+        <text x="550" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="500" fill="#1e40af">Shard 4</text>
+        <text x="550" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#3b82f6">score 7501–10000</text>
+        <text x="550" y="92" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#6b7280">25M players</text>
+
+        <!-- Player marker -->
+        <rect x="20" y="140" width="130" height="44" rx="6" fill="#fef3ee" stroke="#fed7aa" stroke-width="1"/>
+        <text x="85" y="158" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#92400e">Player (score 1450)</text>
+        <text x="85" y="172" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#c2410c">ZREVRANK → local R</text>
+
+        <!-- ZCARD boxes -->
+        <rect x="175" y="140" width="130" height="44" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+        <text x="240" y="162" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#166534">ZCARD → 25M</text>
+
+        <rect x="330" y="140" width="130" height="44" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+        <text x="395" y="162" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#166534">ZCARD → 25M</text>
+
+        <rect x="485" y="140" width="130" height="44" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+        <text x="550" y="162" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#166534">ZCARD → 25M</text>
+
+        <!-- Arrows -->
+        <line x1="85" y1="96" x2="85" y2="140" stroke="#d1d5db" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="240" y1="96" x2="240" y2="140" stroke="#d1d5db" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="395" y1="96" x2="395" y2="140" stroke="#d1d5db" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="550" y1="96" x2="550" y2="140" stroke="#d1d5db" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- Formula -->
+        <text x="340" y="208" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#6b7280">global rank = local R + ZCARD(shard2) + ZCARD(shard3) + ZCARD(shard4)</text>
+      </svg>
+    </div>
+
+    <!-- ── Section 10 ── -->
+    <h2 id="write">Write path end-to-end <span class="tag tag-advanced">advanced</span></h2>
+
+    <p>The write path has two layers: a synchronous Score Service that handles business logic, and asynchronous Kafka consumers that update Redis.</p>
+
+    <pre><code>1. Client POST /scores {player_id, new_score}
+2. API Gateway → auth, rate limiting
+3. Score Service:
+   a. HGET player:scores player_id → current personal best
+   b. if new_score ≤ personal_best: return 200, done
+   c. snapshot rank_before from prefix_sum[old_bucket]
+   d. UPDATE PostgreSQL SET personal_best = new_score   ← source of truth first
+   e. publish ScoreUpdated{player_id, old, new} to Kafka
+   f. snapshot rank_after from prefix_sum[new_bucket]
+   g. return {rank_before, rank_after, delta} to client
+
+4. Kafka consumers (async):
+   GlobalLeaderboardConsumer:
+     ZREM shard_old player_id   (if score crossed shard boundary)
+     ZADD shard_new new_score player_id
+     DECR buckets:old_bucket
+     INCR buckets:new_bucket
+     HSET player:scores player_id new_score
+
+   RegionalLeaderboardConsumer:
+     ZADD leaderboard:region:{id} new_score player_id
+
+   FriendLeaderboardConsumer:
+     for each friend (below fan-out threshold):
+       ZADD user:{friend_id}:friend_leaderboard new_score player_id</code></pre>
+
+    <p><strong>PostgreSQL before Kafka.</strong> Always write to the source of truth first. If Kafka publish fails, retry — the data is safe. If Kafka succeeded but PostgreSQL failed, you'd have Redis reflecting a score that isn't durably stored.</p>
+
+    <p><strong>Rank delta is optimistic.</strong> The delta is computed from the prefix sum before Kafka consumers finish updating Redis. It's approximate by design — prefix sum is already a periodic snapshot. The player gets an immediate response; by the time they open the full leaderboard screen, Redis is updated.</p>
+
+    <p><strong>Idempotency.</strong> ZADD overwrites existing scores — running it twice with the same score is safe. Kafka consumers use at-least-once delivery, so idempotent writes are essential.</p>
+
+    <!-- ── Section 11 ── -->
+    <h2 id="ops">Operational concerns <span class="tag tag-advanced">advanced</span></h2>
+
+    <p><strong>Cache warming (cold start).</strong> When a Redis shard loses data, bootstrap from PostgreSQL: batch SELECT scores within the shard's score range, ZADD them in pipelines of 1,000. Replay Kafka events from the last 24 hours to catch up any writes that arrived during recovery. Kafka retention policy (set to 24h+) is an operational decision that enables this.</p>
+
+    <p><strong>Reconciliation.</strong> A periodic background job samples N random players from PostgreSQL, compares their personal_best against Redis ZSCORE, and corrects any divergence. This handles the rare case where Kafka publish succeeded but a consumer crash left Redis stale.</p>
+
+    <p><strong>Out-of-order submissions.</strong> Network delays can cause an older score to arrive after a newer one. Solve with a conditional PostgreSQL update: <code>UPDATE scores SET personal_best = X WHERE player_id = Y AND personal_best &lt; X</code>. The database only updates if the incoming score beats the current best, regardless of arrival order.</p>
+
+    <p><strong>Anti-cheat.</strong> Never trust the client. The game server — not the client — should compute and submit scores. Add plausibility checks in the Score Service: reject scores above the theoretical maximum, flag statistically anomalous jumps for async review rather than synchronous rejection.</p>
+
+    <p><strong>Monitoring.</strong> The north star metric is Kafka consumer lag. If lag grows, leaderboard updates are falling behind real-time. Also track: Redis memory usage per shard (detect hot shards early), ZADD latency per shard, leaderboard read p99, prefix sum recomputation lag.</p>
+
+    <p><strong>Replication.</strong> Each shard: 1 primary (writes only) + 2 replicas (reads only), placed in different availability zones. Redis Sentinel or Redis Cluster handles primary election automatically. During failover, Kafka buffers writes — no score updates are lost.</p>
+
+    <!-- ── Section 12 ── -->
+    <h2 id="redis-ref">Redis command reference <span class="tag tag-fundamental">fundamental</span></h2>
+    <p>A quick reference of every Redis command used in this design, with input/output and interview context.</p>
+
+    <table>
+      <thead><tr><th>Command</th><th>Input → Output</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>ZADD key score member</code></td>
+          <td>score (number), member (string) → integer (1=new, 0=updated)</td>
+          <td>Adding or updating a player's score in any sorted set</td>
+        </tr>
+        <tr>
+          <td><code>ZINCRBY key delta member</code></td>
+          <td>delta (number), member → string (new score)</td>
+          <td>Guild aggregate scores — atomic increment</td>
+        </tr>
+        <tr>
+          <td><code>ZREVRANK key member</code></td>
+          <td>member → integer (0=highest) or nil</td>
+          <td>Exact rank within a shard. Breaks under cross-shard global rank.</td>
+        </tr>
+        <tr>
+          <td><code>ZRANGE key 0 99 REV WITHSCORES</code></td>
+          <td>index range → array of (member, score) pairs</td>
+          <td>Top-k reads. Cache result with short TTL.</td>
+        </tr>
+        <tr>
+          <td><code>ZRANGEBYSCORE key min max</code></td>
+          <td>score range → array of (member, score). M is unpredictable.</td>
+          <td>K-neighbor queries by score proximity</td>
+        </tr>
+        <tr>
+          <td><code>ZSCORE key member</code></td>
+          <td>member → string (score) or nil</td>
+          <td>Personal best check; batch-fetching celebrity scores</td>
+        </tr>
+        <tr>
+          <td><code>ZCARD key</code></td>
+          <td>(none) → integer</td>
+          <td>Shard cardinality for global rank computation. O(1).</td>
+        </tr>
+        <tr>
+          <td><code>ZCOUNT key min max</code></td>
+          <td>score range → integer (count only, no data)</td>
+          <td>Recomputing bucket counts after boundary changes. O(log N) not O(M).</td>
+        </tr>
+        <tr>
+          <td><code>ZREM key member</code></td>
+          <td>member → integer (1=removed, 0=not found)</td>
+          <td>Region changes, cross-shard score updates</td>
+        </tr>
+        <tr>
+          <td><code>INCR / DECR key</code></td>
+          <td>(none) → integer (new value). Atomic.</td>
+          <td>Bucket count updates on every score change</td>
+        </tr>
+        <tr>
+          <td><code>MULTI / EXEC</code></td>
+          <td>Queued commands → array of results</td>
+          <td>Atomic batch on a single node. No rollback on partial failure.</td>
+        </tr>
+        <tr>
+          <td><code>EVAL script keys args</code></td>
+          <td>Lua script → any type</td>
+          <td>Conditional atomic operations (read-then-write). Preferred over MULTI/EXEC when logic branches.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Note: Redis returns scores as <em>strings</em>, not numbers — <code>ZSCORE</code> returns <code>"1450"</code>, not <code>1450</code>. Your application layer must parse them.</p>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>Built by <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a> · Prepared with Claude</span>
+    <span><a href="index.html">← Back to guide</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
