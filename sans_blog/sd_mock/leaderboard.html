@@ -51,7 +51,7 @@
     </div>
 
     <!-- ── Section 1 ── -->
-    <h2 id="top-k">Is this just a top-k problem? <span class="tag tag-fundamental">fundamental</span></h2>
+    <h2 id="top-k">1. Is this just a top-k problem? <span class="tag tag-fundamental">fundamental</span><a href="#top-k" class="heading-anchor">#</a></h2>
 
     <p>At first glance a leaderboard looks like a top-k problem: given a large set of scores, return the top 100 players. That's one Redis call. Done.</p>
 
@@ -72,7 +72,7 @@
     <p>The distinction matters for scope sizing: friend leaderboards (50–500 players) and regional leaderboards (a few million) are essentially bounded top-k problems. The global leaderboard at 100M players is where the distributed systems complexity lives.</p>
 
     <!-- ── Section 2 ── -->
-    <h2 id="clarification">Clarification questions <span class="tag tag-fundamental">fundamental</span></h2>
+    <h2 id="clarification">2. Clarification questions <span class="tag tag-fundamental">fundamental</span><a href="#clarification" class="heading-anchor">#</a></h2>
 
     <p>Before designing anything, ask questions that place each leaderboard scope into the right complexity class. The goal isn't to delay — it's to use each answer to visibly change something in your design.</p>
 
@@ -92,7 +92,7 @@
     </div>
 
     <!-- ── Section 3 ── -->
-    <h2 id="entities">Entities and APIs <span class="tag tag-fundamental">fundamental</span></h2>
+    <h2 id="entities">3. Entities and APIs <span class="tag tag-fundamental">fundamental</span><a href="#entities" class="heading-anchor">#</a></h2>
 
     <p><strong>Core entities:</strong> <code>Player</code> (player_id, display_name, region_id), <code>Score</code> (player_id, personal_best, last_updated), <code>FriendRelation</code> (player_id, friend_id — symmetric), <code>Leaderboard</code> (scope, time_window, ordered list of player+score — always a derived view, never written to directly).</p>
 
@@ -117,7 +117,7 @@ GET /leaderboard/friend/{window}
   → returns friend leaderboard for requesting player</code></pre>
 
     <!-- ── Section 4 ── -->
-    <h2 id="foundation">Foundation: Redis sorted sets <span class="tag tag-fundamental">fundamental</span></h2>
+    <h2 id="foundation">4. Foundation: Redis sorted sets <span class="tag tag-fundamental">fundamental</span><a href="#foundation" class="heading-anchor">#</a></h2>
 
     <p>A Redis sorted set is a collection where every member has an associated score. Redis keeps members sorted by score automatically at all times. It's the right data structure for leaderboards because it gives you O(log N) writes and O(log N + K) reads for top-k, with rank queries built in.</p>
 
@@ -146,7 +146,7 @@ GET /leaderboard/friend/{window}
     </div>
 
     <!-- ── Section 5 ── -->
-    <h2 id="scopes">Leaderboard scopes <span class="tag tag-fundamental">fundamental</span></h2>
+    <h2 id="scopes">5. Leaderboard scopes <span class="tag tag-fundamental">fundamental</span><a href="#scopes" class="heading-anchor">#</a></h2>
 
     <p>Each leaderboard scope is a separate sorted set. The write path stays clean — one Kafka event per score update, different consumers handle different scopes independently.</p>
 
@@ -167,7 +167,7 @@ leaderboard:guild:{id}:aggregate
 user:{id}:friend_leaderboard     ← one per user</code></pre>
 
     <!-- ── Section 6 ── -->
-    <h2 id="friend">Friend leaderboard and fan-out <span class="tag tag-advanced">advanced</span></h2>
+    <h2 id="friend">6. Friend leaderboard and fan-out <span class="tag tag-advanced">advanced</span><a href="#friend" class="heading-anchor">#</a></h2>
 
     <p>The friend leaderboard is a personalized view — each player has their own ranked list of friends. The social graph determines which scores to include, but the scores themselves come from the global score store.</p>
 
@@ -193,7 +193,7 @@ user:{id}:friend_leaderboard     ← one per user</code></pre>
     </div>
 
     <!-- ── Section 7 ── -->
-    <h2 id="rank">The rank problem <span class="tag tag-advanced">advanced</span></h2>
+    <h2 id="rank">7. The rank problem <span class="tag tag-advanced">advanced</span><a href="#rank" class="heading-anchor">#</a></h2>
 
     <p>This is what makes a leaderboard fundamentally different from top-k. To know you're rank #4,821,033 out of 100M players, the system needs to know how many players score higher than you. <code>ZREVRANK</code> does this in O(log N) — which sounds fine, but at 100M players with millions of concurrent rank queries plus constant writes, a single sorted set becomes a hot key.</p>
 
@@ -209,7 +209,7 @@ user:{id}:friend_leaderboard     ← one per user</code></pre>
     <p>This is naturally shardable — a score range query almost always hits exactly one shard. The tradeoff is M is unpredictable in dense score regions. Fix this with an adaptive score window: estimate density from bucket counts (players per score point), compute δ dynamically so the window reliably returns ~10 results.</p>
 
     <!-- ── Section 8 ── -->
-    <h2 id="histogram">Score histogram and prefix sum <span class="tag tag-advanced">advanced</span></h2>
+    <h2 id="histogram">8. Score histogram and prefix sum <span class="tag tag-advanced">advanced</span><a href="#histogram" class="heading-anchor">#</a></h2>
 
     <p>The score histogram is a lightweight approximation layer that sits in front of the expensive exact-rank query. It answers "what is my approximate rank?" in O(1) from application memory, with zero Redis calls.</p>
 
@@ -236,7 +236,7 @@ bucket 101-150:   320,000 players
     <p><strong>Interpolation within a bucket.</strong> If two players are in the same bucket, prefix sum gives them identical ranks. Interpolation fixes this: assume uniform distribution within the bucket and estimate position mathematically. Breaks when players cluster at specific score values (common in games — round numbers, level thresholds). Fine granularity reduces reliance on interpolation.</p>
 
     <!-- ── Section 9 ── -->
-    <h2 id="sharding">Sharding the global leaderboard <span class="tag tag-advanced">advanced</span></h2>
+    <h2 id="sharding">9. Sharding the global leaderboard <span class="tag tag-advanced">advanced</span><a href="#sharding" class="heading-anchor">#</a></h2>
 
     <p>Range-based sharding by score is the natural fit for leaderboards. Each shard owns a score range and is an independent Redis sorted set on its own node.</p>
 
@@ -311,7 +311,7 @@ shard 4: leaderboard:score:7501-10000 → redis-shard-4:6379</code></pre>
     </div>
 
     <!-- ── Section 10 ── -->
-    <h2 id="write">Write path end-to-end <span class="tag tag-advanced">advanced</span></h2>
+    <h2 id="write">10. Write path end-to-end <span class="tag tag-advanced">advanced</span><a href="#write" class="heading-anchor">#</a></h2>
 
     <p>The write path has two layers: a synchronous Score Service that handles business logic, and asynchronous Kafka consumers that update Redis.</p>
 
@@ -348,7 +348,7 @@ shard 4: leaderboard:score:7501-10000 → redis-shard-4:6379</code></pre>
     <p><strong>Idempotency.</strong> ZADD overwrites existing scores — running it twice with the same score is safe. Kafka consumers use at-least-once delivery, so idempotent writes are essential.</p>
 
     <!-- ── Section 11 ── -->
-    <h2 id="ops">Operational concerns <span class="tag tag-advanced">advanced</span></h2>
+    <h2 id="ops">11. Operational concerns <span class="tag tag-advanced">advanced</span><a href="#ops" class="heading-anchor">#</a></h2>
 
     <p><strong>Cache warming (cold start).</strong> When a Redis shard loses data, bootstrap from PostgreSQL: batch SELECT scores within the shard's score range, ZADD them in pipelines of 1,000. Replay Kafka events from the last 24 hours to catch up any writes that arrived during recovery. Kafka retention policy (set to 24h+) is an operational decision that enables this.</p>
 
@@ -363,7 +363,7 @@ shard 4: leaderboard:score:7501-10000 → redis-shard-4:6379</code></pre>
     <p><strong>Replication.</strong> Each shard: 1 primary (writes only) + 2 replicas (reads only), placed in different availability zones. Redis Sentinel or Redis Cluster handles primary election automatically. During failover, Kafka buffers writes — no score updates are lost.</p>
 
     <!-- ── Section 12 ── -->
-    <h2 id="redis-ref">Redis command reference <span class="tag tag-fundamental">fundamental</span></h2>
+    <h2 id="redis-ref">12. Redis command reference <span class="tag tag-fundamental">fundamental</span><a href="#redis-ref" class="heading-anchor">#</a></h2>
     <p>A quick reference of every Redis command used in this design, with input/output and interview context.</p>
 
     <table>

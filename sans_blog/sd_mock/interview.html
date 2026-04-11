@@ -47,7 +47,7 @@
     </div>
 
     <!-- ── Section 1 ── -->
-    <h2 id="structure">Interview structure and time budget</h2>
+    <h2 id="structure">1. Interview structure and time budget<a href="#structure" class="heading-anchor">#</a></h2>
 
     <p>A 45-minute system design interview has a natural structure. The biggest mistake is spending too long on requirements and running out of time for the deep dive — which is where senior judgment is actually demonstrated.</p>
 
@@ -67,7 +67,7 @@
     <p>High level design should be a working system on the whiteboard that satisfies functional requirements — not a perfect one. Optimization and edge cases belong in the deep dive. A common failure mode: going deep on one component during high level design and running out of time before covering the full system.</p>
 
     <!-- ── Section 2 ── -->
-    <h2 id="clarification">Clarification questions as a steering tool</h2>
+    <h2 id="clarification">2. Clarification questions as a steering tool<a href="#clarification" class="heading-anchor">#</a></h2>
 
     <p>Clarification questions are not a formality before the "real" interview begins. They are a steering mechanism. Each answer should visibly change something in your design — and the interviewer should be able to see that connection.</p>
 
@@ -99,7 +99,7 @@
     <p><strong>Clarification questions as a pacing tool.</strong> If you're unsure how deep to go on a topic, a clarification question buys you thinking time and directs the conversation. "Before I go deeper on the sharding strategy — is approximate rank acceptable, or do we need exact rank?" frames the next 10 minutes of the interview.</p>
 
     <!-- ── Section 3 ── -->
-    <h2 id="scope">Scope sizing before diving deep</h2>
+    <h2 id="scope">3. Scope sizing before diving deep<a href="#scope" class="heading-anchor">#</a></h2>
 
     <p>Before asking <em>how</em> to build something, ask <em>how big</em> it is. Size determines complexity class, and complexity class determines the right design.</p>
 
@@ -116,7 +116,7 @@ Global, 100M players              → full complexity: sharding, histogram, pref
     <p><strong>The complexity class mental model.</strong> Once you've placed a problem in a complexity class, the design almost follows automatically. Small N → top-k, direct Redis call, done. Large N → you need an approximation layer and a sharding strategy. The design isn't arbitrary — it's the natural solution for that complexity class.</p>
 
     <!-- ── Section 4 ── -->
-    <h2 id="tradeoffs">Presenting tradeoffs</h2>
+    <h2 id="tradeoffs">4. Presenting tradeoffs<a href="#tradeoffs" class="heading-anchor">#</a></h2>
 
     <p>Every design decision has a cost. Naming both sides of every tradeoff is the core habit that distinguishes senior answers. Not "I'll use X" but "X gives us Y benefit at the cost of Z — that tradeoff is acceptable because..."</p>
 
@@ -131,7 +131,7 @@ Global, 100M players              → full complexity: sharding, histogram, pref
     <p><strong>Know when consistency actually matters.</strong> The flip side: be able to identify the cases where eventual consistency is <em>not</em> acceptable. PostgreSQL as the score source of truth is written synchronously before Kafka — because if that data is lost, you can't recover. Redis is eventually consistent because it's a derived view that can always be recomputed from PostgreSQL.</p>
 
     <!-- ── Section 5 ── -->
-    <h2 id="pushback">Pushing back on requirements</h2>
+    <h2 id="pushback">5. Pushing back on requirements<a href="#pushback" class="heading-anchor">#</a></h2>
 
     <p>When an interviewer changes a requirement — "actually, I need exact real-time rank for every player" — they're often probing. They want to see if you collapse immediately, refuse to budge, or negotiate with tradeoffs.</p>
 
@@ -162,7 +162,7 @@ than exact rank updated in real-time during gameplay."</code></pre>
     <p>The hybrid answer — approximate for real-time, exact async for non-real-time surfaces — is almost always the right senior answer. It reframes the question from "accurate vs approximate" to "which surface needs which level of accuracy."</p>
 
     <!-- ── Section 6 ── -->
-    <h2 id="verify">Verifying in your own words</h2>
+    <h2 id="verify">6. Verifying in your own words<a href="#verify" class="heading-anchor">#</a></h2>
 
     <p>After working through a complex topic with the interviewer, restate your understanding before moving on. This does three things: forces you to actually process what was said, surfaces misunderstandings immediately, and shows the interviewer your reasoning rather than just your conclusion.</p>
 
@@ -174,7 +174,7 @@ than exact rank updated in real-time during gameplay."</code></pre>
     <p>This habit also serves as a pacing tool. Restating before moving on signals a natural transition point and gives both you and the interviewer a moment to align before going deeper.</p>
 
     <!-- ── Section 7 ── -->
-    <h2 id="dependency">Dependency-driven topic ordering</h2>
+    <h2 id="dependency">7. Dependency-driven topic ordering<a href="#dependency" class="heading-anchor">#</a></h2>
 
     <p>Topics in system design have dependencies — you can't explain adaptive bucket boundaries without first establishing why fixed buckets exist, which requires explaining approximate rank, which requires establishing that exact rank is expensive at scale.</p>
 
@@ -206,7 +206,7 @@ Layer 6 — Operational:
     <p><strong>Why this works.</strong> It creates a conversation where complexity is revealed progressively. The interviewer sees you build up from first principles. It also protects your time budget — you only go deep on an area if the interviewer pulls on it. If they don't ask about adaptive buckets, you don't need to explain it.</p>
 
     <!-- ── Section 8 ── -->
-    <h2 id="common">Common mistakes</h2>
+    <h2 id="common">8. Common mistakes<a href="#common" class="heading-anchor">#</a></h2>
 
     <p><strong>Spending too long on requirements.</strong> Requirements should feel like a conversation, not an interrogation. 3–4 sharp questions, clean summary, move on. If requirements take more than 5 minutes, you're running out of time for the deep dive.</p>
 
