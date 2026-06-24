@@ -113,6 +113,8 @@ nav {
 }
 .nav-links a:hover { color: var(--text-primary); }
 .nav-links a.active { color: var(--text-primary); font-weight: 500; }
+.nav-links a.nav-resume { color: var(--text-primary); font-weight: 500; border: 1px solid var(--text-primary); border-radius: 16px; padding: 3px 12px; }
+.nav-links a.nav-resume:hover { background: var(--text-primary); color: var(--text-inverse); text-decoration: none; }
 
 /* ── Hero ── */
 .hero {
