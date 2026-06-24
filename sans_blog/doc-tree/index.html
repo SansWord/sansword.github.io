@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Document Tree — SansWord</title>
-  <meta name="description" content="A lazy-loaded, always-current doc structure for agentic coding — and why the agent that built your project is the wrong one to ask whether its docs are still true." />
+  <meta name="description" content="A lazy-loaded doc structure that keeps a coding agent aligned with your past decisions across sessions — automatic awareness, without bloating the context window." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -311,6 +311,23 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     article { animation: fadeUp 0.5s ease both; }
+
+    .cta-row { margin: 26px 0; }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .cta:hover { background: var(--accent-hover); color: #fff; text-decoration: none; }
+    .cta-note { font-size: 13px; color: var(--text-muted); margin-left: 12px; }
   </style>
 </head>
 <body>
@@ -333,7 +350,7 @@
 
     <h1 class="article-title">The document tree: how I keep an AI-built project on track</h1>
 
-    <p class="article-subtitle">A lazy-loaded, always-current doc structure for agentic coding — and why the agent that built your project is the wrong one to ask whether its docs are still true.</p>
+    <p class="article-subtitle">A lazy-loaded doc structure that keeps a coding agent aligned with your past decisions across sessions — automatic awareness, without bloating the context window.</p>
 
     <div class="author-bar">
       <div class="avatar">S</div>
@@ -343,19 +360,22 @@
       </div>
     </div>
 
+    <div class="cta-row">
+      <a class="cta" href="https://github.com/SansWord/sans_doc_tree" target="_blank" rel="noopener">Use this template ↗</a>
+      <span class="cta-note">a ready-to-fork starter for the structure below</span>
+    </div>
+
     <div class="body">
 
-      <h2><span class="section-tag">The problem</span>The moment it clicked</h2>
-      <p>I was about to merge a week's worth of AI-assisted work on <a href="https://github.com/guasi-tw/app" target="_blank">guasi</a>, an identity-verification product I'm building solo with a coding agent. Before merging, I asked a <em>fresh</em> agent — one with no memory of building the thing — to review my project's foundation docs for consistency.</p>
-      <p>It came back with a bombshell. Three of the "locked decisions" in the file that gets <strong>auto-loaded into every coding session</strong> were <em>contradicted by the code that had already shipped</em>:</p>
-      <ul>
-        <li>The doc said proof verification captured a screenshot + archived the post. The code stored a link to the live post and nothing else.</li>
-        <li>The doc said users could unbind an account. There was no such feature, by design.</li>
-        <li>The doc described a global uniqueness lock. The schema had a per-user constraint — the opposite.</li>
-      </ul>
-      <p>Future sessions would have read those lines as ground truth and built on a fiction.</p>
-      <p>That's the risk of agentic coding nobody puts on the box: <strong>your context doesn't fail loudly, it drifts silently.</strong> The agent is only as good as the documents it wakes up to, and those documents rot the moment the code moves and the docs don't.</p>
-      <p>This is the structure I use to fight that: a <strong>document tree</strong> — and the disciplines that keep it honest. Everything below is live in two of my projects — guasi (above) and <a href="https://github.com/SansWord/sans_cube" target="_blank">sans_cube</a>, a Bluetooth Rubik's-cube analyzer — and I'll point at the real files as I go.</p>
+      <h2><span class="section-tag">The problem</span>Awareness vs. a focused context window</h2>
+      <p>Build with a coding agent across many sessions and you accumulate decisions — product calls, architecture choices, naming conventions. You want every <em>new</em> session to honor them automatically, so its planning, brainstorming, and implementation line up with what earlier sessions already settled, instead of contradicting them or making you re-explain from scratch. Handled well, those decisions become a <strong>growing rubric</strong> the agent works against.</p>
+      <p>The obvious move is to pour everything into the one file the agent always reads. It backfires: load every doc into the context window and it turns large and unfocused — the agent carries your whole product spec, architecture, and conventions into a session that only touches one module.</p>
+      <p>That was the exact tension I hit mid-project:</p>
+      <blockquote>Loading all the docs automatically makes the context window too big and lose focus — but how do I make the agent <em>aware</em> of a decision on its own, so I don't have to remember (or re-state) it at the start of every prompt?</blockquote>
+      <p>So here's the question this structure answers:</p>
+      <blockquote><strong>How do you make a session automatically aware of the right decisions — so it aligns with past sessions and builds on a growing rubric — while loading only the documents it actually needs?</strong></blockquote>
+      <p>Concretely: if each module has its own doc, working on module A shouldn't drag module B's docs into context. Awareness when it's relevant, silence when it isn't.</p>
+      <p>The answer is a <strong>document tree</strong> — one structure that buys both automatic awareness and lazy loading. Everything below is live in two of my projects, <a href="https://github.com/guasi-tw/app" target="_blank">guasi</a> and <a href="https://github.com/SansWord/sans_cube" target="_blank">sans_cube</a> (a Bluetooth Rubik's-cube analyzer), and I'll point at the real files as I go.</p>
 
       <div class="divider">· · ·</div>
 
@@ -381,7 +401,7 @@
         <li><strong>Lazy loading.</strong> The agent pulls <code>brand-and-voice.md</code> only when it's writing copy, <code>routes.md</code> only when it's touching routing. Relevance is decided at read-time, by the task. A bigger project just grows more leaves; the root (and the per-turn cost) stays flat.</li>
       </ul>
       <p>The root's job is to be a small, trustworthy map. The moment it tries to <em>contain</em> everything, it gets too big to keep correct.</p>
-      <p>That tree isn't hypothetical — it's guasi's actual <code>CLAUDE.md</code> and <code>docs/</code>. The interesting confirmation comes from the second project: sans_cube lives in a completely different domain (3D rendering, Web Bluetooth, no backend) yet its root file has the <strong>same skeleton</strong> — a small "what this is," a "who's working on this," then a <code>docs/</code> index pointing to <code>ui-architecture.md</code>, <code>storage.md</code>, <code>time-model.md</code>, <code>devlog.md</code>, and a dozen more. Same shape, different leaves. Two repos by one author share conventions by construction, so treat this as a sign rather than proof of generality. Still, the skeleton holding up across two unrelated domains tells me the structure is doing real work.</p>
+      <p>That tree is guasi's actual <code>CLAUDE.md</code> and <code>docs/</code> — a live repo whose <a href="https://github.com/guasi-tw/app/blob/main/docs/devlog.md" target="_blank"><code>devlog.md</code></a> has tracked 35+ versions, keeping the project on track across sessions. The same skeleton shows up in a second project: sans_cube lives in a completely different domain (3D rendering, Web Bluetooth, no backend) yet its root file has the <strong>same skeleton</strong> — a small "what this is," a "who's working on this," then a <code>docs/</code> index pointing to <code>ui-architecture.md</code>, <code>storage.md</code>, <code>time-model.md</code>, <a href="https://github.com/SansWord/sans_cube/blob/main/docs/devlog.md" target="_blank"><code>devlog.md</code></a> (50+ versions of its own), and a dozen more. Same shape, different leaves. Two repos by one author share conventions by construction, so treat this as a sign rather than proof of generality. Still, the skeleton holding up across two unrelated domains tells me the structure is doing real work.</p>
 
       <div class="divider">· · ·</div>
 
@@ -404,16 +424,17 @@
       <div class="divider">· · ·</div>
 
       <h2><span class="section-tag">Disciplines</span>What keeps it honest</h2>
-      <p>A structure doesn't stay true on its own. Three habits do the real work:</p>
+      <p>A structure doesn't stay true on its own. A few habits do the real work:</p>
       <ul>
+        <li><strong>Close the loop at the end of every session.</strong> The whole structure rests on the maintained docs staying true — so keeping them current can't be a chore you remember; it has to be a step the agent runs on its own. My root file instructs every session to finish by updating the relevant <code>docs/*.md</code> and appending to <code>docs/devlog.md</code> — folding that session's new decisions and learnings back into the tree before the work counts as done. That's what turns a pile of one-off sessions into the growing rubric: each session leaves the next one a little smarter.</li>
         <li><strong>Migrate before you retire.</strong> Before demoting milestone specs to "historical," I had an agent audit them for any still-current decision that lived <em>only</em> there, and moved those into the maintained docs first. De-referencing without auditing is how you silently lose real decisions.</li>
-        <li><strong>Review with fresh eyes, not the eyes that built it.</strong> The agent that wrote the code is primed to think the docs are fine — it remembers the intent, so it reads the intent <em>into</em> the words. A fresh-context reviewer reads what's actually written. That's the agent that caught the three lies.</li>
+        <li><strong>Review with fresh eyes, not the eyes that built it.</strong> The agent that wrote the code is primed to think the docs are fine — it remembers the intent, so it reads the intent <em>into</em> the words. A fresh-context reviewer reads what's actually written — and catches the "locked decision" that quietly drifted from the shipped code while the building session wasn't looking.</li>
         <li><strong>Capture conventions so sessions inherit them.</strong> Naming, voice, the release flow, "escape user input even when you render it verbatim" — written once, every future session starts knowing them instead of relearning (or violating) them. sans_cube does this per-doc, pinning the rule to the file it governs: <em>"keep <code>docs/ui-architecture.md</code> up to date whenever you add a component, remove a component, or change which hooks a component owns."</em> And both projects share one convention word for word — <em>"when you add a new <code>docs/*.md</code>, add it to this list with a one-line description"</em> — which is the small habit that stops the index itself from rotting as the tree grows new leaves.</li>
       </ul>
 
       <h2><span class="section-tag">Tradeoffs</span>What it costs</h2>
       <p>It isn't free. You pay an upkeep tax: a change that touches a decision has to touch the doc that records it, in the same change. The two-tier split takes judgment — label something "historical" too early and you bury a decision that's still live. And this is one project's experience — a case study, not a benchmark.</p>
-      <p>But the alternative is the thing I opened with: foundation docs that quietly lie to every session, and you don't find out until something built on the fiction breaks.</p>
+      <p>But the alternative is worse: sessions that are either blind to your past decisions or drowning in all of them at once — and docs that quietly drift from the code until something built on a stale "fact" breaks.</p>
 
       <div class="divider">· · ·</div>
 
@@ -421,13 +442,20 @@
       <p>For agentic coding, your most important artifact might not be the code — it's the <strong>small set of documents your agent wakes up to.</strong> Give it a tree, not a pile: a small, trustworthy root that lazy-loads the rest; maintained docs that stay true and historical docs that stay honestly historical; every fact in exactly one place.</p>
       <p>And every so often, send in an agent that doesn't trust you — and let it tell you where your context is lying.</p>
 
-      <a class="project-link" href="../tiny-ai-bootcamp/">
-        <span class="project-link-emoji">🌱</span>
-        <div class="project-link-body">
-          <span class="project-link-title">My Tiny AI Bootcamp — how a skeptical backend engineer started building with Claude</span>
-          <span class="project-link-url">sansword.github.io/sans_blog/tiny-ai-bootcamp</span>
-        </div>
-      </a>
+      <h2><span class="section-tag">See it live</span>guasi's tree, in the open</h2>
+      <p>The cleanest example I can point you at is guasi's own tree:</p>
+      <ul>
+        <li><a href="https://github.com/guasi-tw/app/blob/main/CLAUDE.md" target="_blank"><code>CLAUDE.md</code></a> — the auto-loaded root: stable facts, the two-tier labels, and "current state is the dev log's top row."</li>
+        <li><a href="https://github.com/guasi-tw/app/tree/main/docs" target="_blank"><code>docs/</code></a> — the lazy-loaded leaves (routes, product decisions, brand &amp; voice, deployment…), each pulled in only when a task needs it.</li>
+        <li><a href="https://github.com/guasi-tw/app/blob/main/docs/devlog.md" target="_blank"><code>docs/devlog.md</code></a> — append-only history that's also always current, newest entry on top.</li>
+      </ul>
+      <p>That's the structure, running. Want it in your own repo? <a href="https://github.com/SansWord/sans_doc_tree" target="_blank" rel="noopener">sans_doc_tree</a> is a template with the skeleton <code>CLAUDE.md</code>, <code>docs/</code>, and devlog already laid out.</p>
+
+      <div class="cta-row">
+        <a class="cta" href="https://github.com/SansWord/sans_doc_tree" target="_blank" rel="noopener">Use this template ↗</a>
+      </div>
+
+      <p style="margin-top:32px;"><a href="../">← More essays &amp; notes on sans_blog</a></p>
 
       <div class="tags">
         <span class="tag">#AI</span>
