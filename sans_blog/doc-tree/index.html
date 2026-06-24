@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Document Tree — SansWord</title>
+  <meta name="description" content="A lazy-loaded, always-current doc structure for agentic coding — and why the agent that built your project is the wrong one to ask whether its docs are still true." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #999;
+      --border: #e8e6e1;
+      --accent: #1a8917;
+      --accent-hover: #0f6b0f;
+      --tag-bg: #f2f2f2;
+      --tag-text: #555;
+      --code-bg: #f2f2f2;
+      --blockquote-border: #d4d0c8;
+    }
+
+    html.dark {
+      --bg: #121212;
+      --text-primary: #e8e6e1;
+      --text-secondary: #aaa;
+      --text-muted: #666;
+      --border: #2a2a2a;
+      --accent: #4caf50;
+      --accent-hover: #66bb6a;
+      --tag-bg: #2a2a2a;
+      --tag-text: #aaa;
+      --code-bg: #1e1e1e;
+      --blockquote-border: #444;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    /* ── Dark mode toggle ── */
+    #dark-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s, color 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    #dark-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 57px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Source Serif 4', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .logo:hover { text-decoration: none; color: var(--text-primary); }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+
+    .header-right a {
+      color: var(--text-secondary);
+      transition: color 0.15s;
+    }
+    .header-right a:hover { color: var(--accent); text-decoration: none; }
+
+    /* ── Article ── */
+    article {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 100px;
+    }
+
+    .article-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 600;
+      line-height: 1.18;
+      letter-spacing: -0.4px;
+      margin-bottom: 16px;
+    }
+
+    .article-subtitle {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(17px, 2.5vw, 20px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .author-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 44px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4caf50, #1a8917);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Source Serif 4', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .author-info { display: flex; flex-direction: column; gap: 2px; }
+    .author-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+    .author-meta { font-size: 13px; color: var(--text-muted); }
+
+    /* ── Body ── */
+    .body p {
+      font-family: 'Source Serif 4', serif;
+      font-size: 19px;
+      line-height: 1.75;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+    }
+
+    .body ul, .body ol {
+      font-family: 'Source Serif 4', serif;
+      font-size: 19px;
+      line-height: 1.75;
+      color: var(--text-primary);
+      margin: 0 0 28px;
+      padding-left: 26px;
+    }
+    .body li { margin-bottom: 12px; }
+    .body li:last-child { margin-bottom: 0; }
+
+    .body h2 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      margin: 48px 0 16px;
+      color: var(--text-primary);
+    }
+
+    .body h2 .section-tag {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 48px 0;
+      color: var(--text-muted);
+      font-size: 20px;
+      letter-spacing: 12px;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--blockquote-border);
+      padding: 4px 0 4px 20px;
+      margin: 32px 0;
+      font-family: 'Source Serif 4', serif;
+      font-size: 19px;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 14px;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      margin: 28px 0;
+      line-height: 1.5;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 13.5px;
+      color: var(--text-primary);
+      white-space: pre;
+    }
+
+    .project-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px 18px;
+      margin: 24px 0;
+      transition: border-color 0.15s;
+      color: var(--text-primary);
+    }
+    .project-link:hover {
+      border-color: var(--accent);
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .project-link-emoji { font-size: 28px; flex-shrink: 0; }
+    .project-link-body { display: flex; flex-direction: column; gap: 3px; }
+    .project-link-title { font-size: 15px; font-weight: 500; }
+    .project-link-url { font-size: 13px; color: var(--accent); }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .footer-author {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .footer-author .avatar { width: 56px; height: 56px; font-size: 22px; }
+    .footer-author-body { display: flex; flex-direction: column; gap: 6px; }
+    .footer-author-name { font-weight: 600; font-size: 16px; }
+    .footer-author-bio { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+    .footer-author-links { display: flex; gap: 14px; margin-top: 4px; font-size: 13px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    article { animation: fadeUp 0.5s ease both; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a>
+    <div class="header-right">
+      <a href="../">More writing</a>
+      <a href="https://github.com/SansWord" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/sansword/" target="_blank">LinkedIn</a>
+      <button id="dark-toggle" onclick="toggleDark()">
+        <span id="toggle-icon">🌙</span>
+        <span id="toggle-label">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <article>
+
+    <h1 class="article-title">The document tree: how I keep an AI-built project on track</h1>
+
+    <p class="article-subtitle">A lazy-loaded, always-current doc structure for agentic coding — and why the agent that built your project is the wrong one to ask whether its docs are still true.</p>
+
+    <div class="author-bar">
+      <div class="avatar">S</div>
+      <div class="author-info">
+        <span class="author-name"><a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a></span>
+        <span class="author-meta">Jun 24, 2026 · A data-platform builder applying senior engineering discipline to AI-assisted software — learning by building.</span>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <h2><span class="section-tag">The problem</span>The moment it clicked</h2>
+      <p>I was about to merge a week's worth of AI-assisted work on <a href="https://github.com/guasi-tw/app" target="_blank">guasi</a>, an identity-verification product I'm building solo with a coding agent. Before merging, I asked a <em>fresh</em> agent — one with no memory of building the thing — to review my project's foundation docs for consistency.</p>
+      <p>It came back with a bombshell. Three of the "locked decisions" in the file that gets <strong>auto-loaded into every coding session</strong> were <em>contradicted by the code that had already shipped</em>:</p>
+      <ul>
+        <li>The doc said proof verification captured a screenshot + archived the post. The code stored a link to the live post and nothing else.</li>
+        <li>The doc said users could unbind an account. There was no such feature, by design.</li>
+        <li>The doc described a global uniqueness lock. The schema had a per-user constraint — the opposite.</li>
+      </ul>
+      <p>Future sessions would have read those lines as ground truth and built on a fiction.</p>
+      <p>That's the risk of agentic coding nobody puts on the box: <strong>your context doesn't fail loudly, it drifts silently.</strong> The agent is only as good as the documents it wakes up to, and those documents rot the moment the code moves and the docs don't.</p>
+      <p>This is the structure I use to fight that: a <strong>document tree</strong> — and the disciplines that keep it honest. Everything below is live in two of my projects — guasi (above) and <a href="https://github.com/SansWord/sans_cube" target="_blank">sans_cube</a>, a Bluetooth Rubik's-cube analyzer — and I'll point at the real files as I go.</p>
+
+      <div class="divider">· · ·</div>
+
+      <h2><span class="section-tag">Setup</span>The repo <em>is</em> the context</h2>
+      <p>Two facts about coding agents shape everything:</p>
+      <ol>
+        <li><strong>One root file is auto-loaded every session.</strong> (<code>CLAUDE.md</code>, <code>AGENTS.md</code> — whatever your tool calls it.) It's the one thing you can count on the model reading, so it's prime real estate.</li>
+        <li><strong>The agent can open any file on demand.</strong> It doesn't need everything pre-loaded; it follows a link or a filename and reads what the task needs, when the task needs it.</li>
+      </ol>
+      <p>So the design question is "<strong>how do I shape the documents so the agent lands on the truth, and loads only the truth it needs?</strong>"</p>
+
+      <h2><span class="section-tag">Technique</span>An index that points to a tree</h2>
+      <p>The root file is an <strong>index, not an encyclopedia.</strong> It holds the stable spine — locked decisions, conventions, the one-paragraph "what this is" — and then <em>points</em> to topic docs that live in their own files:</p>
+      <pre><code>CLAUDE.md            ← auto-loaded. Small. Stable facts + links out.
+  ├─ docs/routes.md            ← the URL/route map
+  ├─ docs/product-decisions.md ← identity &amp; policy decisions
+  ├─ docs/brand-and-voice.md   ← naming, language, copy voice
+  ├─ docs/deployment.md        ← infra &amp; CI/CD
+  └─ docs/devlog.md            ← what shipped, newest first</code></pre>
+      <p>This buys two things that matter on every single turn:</p>
+      <ul>
+        <li><strong>Context-window savings.</strong> The always-loaded root stays small. You are <em>not</em> paying tokens to carry the routing table, the brand guide, and the deploy runbook into a session that's editing one component.</li>
+        <li><strong>Lazy loading.</strong> The agent pulls <code>brand-and-voice.md</code> only when it's writing copy, <code>routes.md</code> only when it's touching routing. Relevance is decided at read-time, by the task. A bigger project just grows more leaves; the root (and the per-turn cost) stays flat.</li>
+      </ul>
+      <p>The root's job is to be a small, trustworthy map. The moment it tries to <em>contain</em> everything, it gets too big to keep correct.</p>
+      <p>That tree isn't hypothetical — it's guasi's actual <code>CLAUDE.md</code> and <code>docs/</code>. The interesting confirmation comes from the second project: sans_cube lives in a completely different domain (3D rendering, Web Bluetooth, no backend) yet its root file has the <strong>same skeleton</strong> — a small "what this is," a "who's working on this," then a <code>docs/</code> index pointing to <code>ui-architecture.md</code>, <code>storage.md</code>, <code>time-model.md</code>, <code>devlog.md</code>, and a dozen more. Same shape, different leaves. Two repos by one author share conventions by construction, so treat this as a sign rather than proof of generality. Still, the skeleton holding up across two unrelated domains tells me the structure is doing real work.</p>
+
+      <div class="divider">· · ·</div>
+
+      <h2><span class="section-tag">Two tiers</span>Keep the references current, keep the history</h2>
+      <p>Here's the part most setups miss: <strong>not every doc should be kept up to date — and that's on purpose.</strong></p>
+      <p>There are two kinds of project documents, and conflating them is what poisons the well:</p>
+      <ul>
+        <li><strong>Maintained docs</strong> (the root file + the topic docs it links): these are the <em>source of truth</em>. They must match the code. When a feature changes a decision, its doc changes in the same breath. These are what the agent is told to trust.</li>
+        <li><strong>Historical docs</strong> (per-milestone specs, plans, and the dev log): these are the <em>record of how we got here</em>. They are <strong>allowed to go stale</strong> — a spec is a snapshot of the thinking at the time, not a promise about today.</li>
+      </ul>
+      <p>You want both. The fix is to <strong>label the tiers explicitly</strong> so the agent knows which to trust — <em>the maintained docs are ground truth; the specs are a paper trail, never cited as current.</em> Throw away the history and you lose the <em>why</em> behind decisions; treat the history as current and a six-month-old brainstorm starts dictating today's build.</p>
+      <p>In guasi this split is written into the root file in so many words: the maintained <code>docs/*.md</code> are "authoritative, kept up to date during development," while everything under <code>docs/superpowers/specs/</code> and <code>.../plans/</code> is flagged "allowed to stale — a record of <em>thinking at the time</em>, <strong>not</strong> the source of truth … don't trust them where they conflict with the code or CLAUDE.md." The agent reads that label and knows which file wins a disagreement.</p>
+      <p>The dev log is the elegant resolution of the tension: it's <strong>append-only history that's also always current</strong>, because "newest entry on top" is true forever. You get the development story and today's state from the same file, without either lying.</p>
+
+      <h2><span class="section-tag">The core rule</span>One fact, one place</h2>
+      <p>The single highest-leverage habit. A fact stated in two documents is a fact that <em>will</em> eventually disagree with itself.</p>
+      <p>So the root file deliberately <strong>does not</strong> restate "what version we're on" or "what's next" — the two fastest things to drift. It says instead: <em>current state is the top row of the dev log; the roadmap is <code>todo.md</code>.</em> Each fact has exactly one home, and everything else links to it.</p>
+      <p>This is literally how guasi's <code>CLAUDE.md</code> is written. Its "Current status" section opens with a note addressed to every future session — <em>"this section does <strong>not</strong> restate the version/phase, to avoid drift"</em> — and then points at the dev log's top row for what's shipped and <code>todo.md</code> for what's next. The one place most tempting to duplicate is the one place I most refuse to.</p>
+
+      <div class="divider">· · ·</div>
+
+      <h2><span class="section-tag">Disciplines</span>What keeps it honest</h2>
+      <p>A structure doesn't stay true on its own. Three habits do the real work:</p>
+      <ul>
+        <li><strong>Migrate before you retire.</strong> Before demoting milestone specs to "historical," I had an agent audit them for any still-current decision that lived <em>only</em> there, and moved those into the maintained docs first. De-referencing without auditing is how you silently lose real decisions.</li>
+        <li><strong>Review with fresh eyes, not the eyes that built it.</strong> The agent that wrote the code is primed to think the docs are fine — it remembers the intent, so it reads the intent <em>into</em> the words. A fresh-context reviewer reads what's actually written. That's the agent that caught the three lies.</li>
+        <li><strong>Capture conventions so sessions inherit them.</strong> Naming, voice, the release flow, "escape user input even when you render it verbatim" — written once, every future session starts knowing them instead of relearning (or violating) them. sans_cube does this per-doc, pinning the rule to the file it governs: <em>"keep <code>docs/ui-architecture.md</code> up to date whenever you add a component, remove a component, or change which hooks a component owns."</em> And both projects share one convention word for word — <em>"when you add a new <code>docs/*.md</code>, add it to this list with a one-line description"</em> — which is the small habit that stops the index itself from rotting as the tree grows new leaves.</li>
+      </ul>
+
+      <h2><span class="section-tag">Tradeoffs</span>What it costs</h2>
+      <p>It isn't free. You pay an upkeep tax: a change that touches a decision has to touch the doc that records it, in the same change. The two-tier split takes judgment — label something "historical" too early and you bury a decision that's still live. And this is one project's experience — a case study, not a benchmark.</p>
+      <p>But the alternative is the thing I opened with: foundation docs that quietly lie to every session, and you don't find out until something built on the fiction breaks.</p>
+
+      <div class="divider">· · ·</div>
+
+      <h2><span class="section-tag">Takeaway</span>The most important artifact</h2>
+      <p>For agentic coding, your most important artifact might not be the code — it's the <strong>small set of documents your agent wakes up to.</strong> Give it a tree, not a pile: a small, trustworthy root that lazy-loads the rest; maintained docs that stay true and historical docs that stay honestly historical; every fact in exactly one place.</p>
+      <p>And every so often, send in an agent that doesn't trust you — and let it tell you where your context is lying.</p>
+
+      <a class="project-link" href="../tiny-ai-bootcamp/">
+        <span class="project-link-emoji">🌱</span>
+        <div class="project-link-body">
+          <span class="project-link-title">My Tiny AI Bootcamp — how a skeptical backend engineer started building with Claude</span>
+          <span class="project-link-url">sansword.github.io/sans_blog/tiny-ai-bootcamp</span>
+        </div>
+      </a>
+
+      <div class="tags">
+        <span class="tag">#AI</span>
+        <span class="tag">#AgenticCoding</span>
+        <span class="tag">#ClaudeCode</span>
+        <span class="tag">#HarnessEngineering</span>
+        <span class="tag">#BackendEngineering</span>
+        <span class="tag">#LearningInPublic</span>
+      </div>
+
+      <div class="footer-author">
+        <div class="avatar">S</div>
+        <div class="footer-author-body">
+          <span class="footer-author-name">
+            <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a>
+          </span>
+          <span class="footer-author-bio">A data-platform builder with 13+ years of experience, applying senior engineering discipline to AI-assisted software — learning by building, one project at a time.</span>
+          <div class="footer-author-links">
+            <a href="https://www.linkedin.com/in/sansword/" target="_blank">LinkedIn</a>
+            <a href="https://github.com/SansWord" target="_blank">GitHub</a>
+            <a href="https://sansword.github.io/resume/" target="_blank">Resume</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <footer>
+    © 2026 SansWord · Built with curiosity
+  </footer>
+
+  <script>
+    function toggleDark() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      document.getElementById('toggle-icon').textContent = isDark ? '☀️' : '🌙';
+      document.getElementById('toggle-label').textContent = isDark ? 'Light' : 'Dark';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    // Restore saved preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.getElementById('toggle-icon').textContent = '☀️';
+      document.getElementById('toggle-label').textContent = 'Light';
+    }
+  </script>
+</body>
+</html>
