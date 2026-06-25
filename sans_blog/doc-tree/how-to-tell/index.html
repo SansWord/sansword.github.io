@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to tell if the document tree is working — SansWord</title>
+  <meta name="description" content="Does the document-tree structure actually steer a coding agent, or is it just the model being capable? An honest look at the evidence — and copy-paste commands to check your own sessions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #999;
+      --border: #e8e6e1;
+      --accent: #1a8917;
+      --accent-hover: #0f6b0f;
+      --tag-bg: #f2f2f2;
+      --tag-text: #555;
+      --code-bg: #f2f2f2;
+      --blockquote-border: #d4d0c8;
+    }
+
+    html.dark {
+      --bg: #121212;
+      --text-primary: #e8e6e1;
+      --text-secondary: #aaa;
+      --text-muted: #666;
+      --border: #2a2a2a;
+      --accent: #4caf50;
+      --accent-hover: #66bb6a;
+      --tag-bg: #2a2a2a;
+      --tag-text: #aaa;
+      --code-bg: #1e1e1e;
+      --blockquote-border: #444;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    #dark-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s, color 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    #dark-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 57px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Source Serif 4', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .logo:hover { text-decoration: none; color: var(--text-primary); }
+
+    .header-right { display: flex; align-items: center; gap: 16px; font-size: 14px; }
+    .header-right a { color: var(--text-secondary); transition: color 0.15s; }
+    .header-right a:hover { color: var(--accent); text-decoration: none; }
+    .header-right a.resume-link { color: var(--accent); font-weight: 500; }
+    .header-right a.resume-link:hover { color: var(--accent-hover); }
+
+    article {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 100px;
+    }
+
+    .article-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 600;
+      line-height: 1.18;
+      letter-spacing: -0.4px;
+      margin-bottom: 16px;
+    }
+
+    .article-subtitle {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(17px, 2.5vw, 20px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .author-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 44px;
+    }
+
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, #4caf50, #1a8917);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Source Serif 4', serif; font-size: 17px; font-weight: 600;
+      color: white; flex-shrink: 0;
+    }
+
+    .author-info { display: flex; flex-direction: column; gap: 2px; }
+    .author-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+    .author-meta { font-size: 13px; color: var(--text-muted); }
+
+    .body p {
+      font-family: 'Source Serif 4', serif;
+      font-size: 19px; line-height: 1.75; color: var(--text-primary); margin-bottom: 28px;
+    }
+
+    .body ul, .body ol {
+      font-family: 'Source Serif 4', serif;
+      font-size: 19px; line-height: 1.75; color: var(--text-primary);
+      margin: 0 0 28px; padding-left: 26px;
+    }
+    .body li { margin-bottom: 12px; }
+    .body li:last-child { margin-bottom: 0; }
+
+    .body h2 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 24px; font-weight: 600; letter-spacing: -0.2px;
+      margin: 48px 0 16px; color: var(--text-primary);
+    }
+
+    .body h2 .section-tag {
+      display: block; font-family: 'DM Sans', sans-serif; font-size: 12px;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 6px;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--blockquote-border);
+      padding: 4px 0 4px 20px; margin: 32px 0;
+      font-family: 'Source Serif 4', serif; font-size: 19px; font-style: italic;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+
+    code {
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px;
+      background: var(--code-bg); padding: 2px 6px; border-radius: 3px; color: var(--text-primary);
+    }
+
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px;
+      padding: 16px 18px; overflow-x: auto; margin: 28px 0; line-height: 1.5;
+    }
+    pre code { background: none; padding: 0; font-size: 13px; color: var(--text-primary); white-space: pre; }
+
+    .project-link {
+      display: flex; align-items: center; gap: 14px;
+      border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; margin: 24px 0;
+      transition: border-color 0.15s; color: var(--text-primary);
+    }
+    .project-link:hover { border-color: var(--accent); text-decoration: none; color: var(--text-primary); }
+    .project-link-emoji { font-size: 28px; flex-shrink: 0; }
+    .project-link-body { display: flex; flex-direction: column; gap: 3px; }
+    .project-link-title { font-size: 15px; font-weight: 500; }
+    .project-link-url { font-size: 13px; color: var(--accent); }
+
+    .tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    }
+    .tag { background: var(--tag-bg); color: var(--tag-text); padding: 5px 14px; border-radius: 20px; font-size: 13px; }
+
+    .footer-author {
+      margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border);
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .footer-author .avatar { width: 56px; height: 56px; font-size: 22px; }
+    .footer-author-body { display: flex; flex-direction: column; gap: 6px; }
+    .footer-author-name { font-weight: 600; font-size: 16px; }
+    .footer-author-bio { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+    .footer-author-links { display: flex; gap: 14px; margin-top: 4px; font-size: 13px; }
+
+    footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; font-size: 13px; color: var(--text-muted); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    article { animation: fadeUp 0.5s ease both; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a>
+    <div class="header-right">
+      <a class="resume-link" href="https://sansword.github.io/resume/" target="_blank">Resume ↗</a>
+      <a href="../../">More writing</a>
+      <a href="https://github.com/SansWord" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/sansword/" target="_blank">LinkedIn</a>
+      <button id="dark-toggle" onclick="toggleDark()">
+        <span id="toggle-icon">🌙</span>
+        <span id="toggle-label">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <article>
+
+    <h1 class="article-title">How to tell if the document tree is actually working</h1>
+
+    <p class="article-subtitle">Does the structure really steer a coding agent — or is it just the model being capable? An honest look at the evidence, plus copy-paste commands to check your own sessions.</p>
+
+    <div class="author-bar">
+      <div class="avatar">S</div>
+      <div class="author-info">
+        <span class="author-name"><a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a></span>
+        <span class="author-meta">Jun 25, 2026 · A companion to <a href="../">The Document Tree</a>.</span>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <p>If you've read <a href="../">The Document Tree</a>, here's the question that should bother you: it <em>feels</em> like the docs keep the agent on track — but how would you know? Maybe a capable model would do fine without any of it. The honest worry:</p>
+
+      <blockquote>Is the structure actually being loaded and used — or is it just the model being powerful, and the docs are decoration?</blockquote>
+
+      <p>You can't run a clean controlled trial on your own project. But you <em>can</em> get real signal, and most of it is one habit away. Here's what I found, and how to check your own.</p>
+
+      <h2><span class="section-tag">The evidence</span>What the transcripts showed</h2>
+
+      <p>I went back through the recorded sessions of one project — a small identity-verification web app I built solo with a coding agent (~6 days, 47 sessions). Coding agents like Claude Code keep a transcript of every session as a local <code>.jsonl</code> log, so every file the agent reads and every line it writes is on the record. Three things stood out.</p>
+
+      <p><strong>1. The linked docs get read, not just written.</strong> Across five recent sessions the agent opened the devlog 9 times, the root file 6, and pulled in product-decision / deployment / route docs and historical specs on demand. The lazy-loading isn't theoretical — the leaves get opened when a task needs them.</p>
+
+      <p><strong>2. They steer the reasoning — provably.</strong> The agent repeatedly cited decisions that live <em>only</em> in the docs, not in the code:</p>
+      <ul>
+        <li>It pulled a product rule recorded only in a doc — <em>"snapshots are deferred to a later phase; for now, link to the live post"</em> — to steer how it built a feature.</li>
+        <li>It caught a proposed URL scheme that <em>contradicted the spec, citing the exact spec line numbers.</em></li>
+      </ul>
+      <p>A model can't invent "spec line 126." To produce that, it had to open the file. That's the cleanest proof: for a decision that exists only in a doc, honoring it means the doc did the work.</p>
+
+      <p><strong>3. It pushes back — even on my own prompts.</strong> The behavior I value most showed up on its own:</p>
+      <ul>
+        <li>It declined a search feature I asked for because <em>"that would violate one of your own locked decisions."</em></li>
+        <li>It refused to offer a made-up identifier because it <em>"would violate the anti-squatting invariant the design had settled (§3)."</em></li>
+        <li>Before answering open questions it would say <em>"let me check what's already decided, so my answer doesn't conflict with a locked decision"</em> — and go read the docs first.</li>
+      </ul>
+
+      <h2><span class="section-tag">Honesty</span>What this proves — and what it doesn't</h2>
+
+      <p>It <strong>does</strong> kill the "maybe the docs are never even loaded" worry: they demonstrably are, often, and they change what the agent does — including overriding me. It does <strong>not</strong> prove the counterfactual: I can't isolate how much better the outcome was than a no-docs run, because there's no A/B. The value is clearest for decisions that exist <em>only</em> in the docs (the model couldn't have known them otherwise), and smallest on a tiny project a model can hold in its head. Treat it as a case study, not a benchmark.</p>
+
+      <h2><span class="section-tag">Do it yourself</span>How to tell on your own project</h2>
+
+      <p>You don't have to take my word for it — run these on your own transcripts. Your sessions live under <code>~/.claude/projects/&lt;encoded-cwd&gt;/*.jsonl</code> (the project path with slashes turned into dashes). One caveat: Claude Code prunes transcripts after <code>cleanupPeriodDays</code> (default <strong>30</strong>) — raise it in <code>~/.claude/settings.json</code> if you want a longer window to look back on.</p>
+
+      <p><strong>Test 1 — are the docs actually read?</strong> Count the agent's reads/edits of doc files:</p>
+      <pre><code>cat ~/.claude/projects/&lt;your-project&gt;/*.jsonl \
+  | jq -rc '.message.content[]? | select(.type=="tool_use")
+            | [.name, (.input.file_path // "")] | @tsv' \
+  | grep -E 'docs/|CLAUDE\.md|devlog' | sort | uniq -c | sort -rn</code></pre>
+      <p>Lots of <code>Read</code>s on your docs = lazy loading is happening. Zero = the leaves are being ignored, and your pointers need to be more compelling.</p>
+
+      <p><strong>Test 2 — do the docs steer reasoning?</strong> Surface the moments the agent cited a doc or flagged a conflict:</p>
+      <pre><code>cat ~/.claude/projects/&lt;your-project&gt;/*.jsonl \
+  | jq -rc 'select(.type=="assistant") | .message.content[]?
+            | select(.type=="text") | .text' \
+  | grep -iE 'conflicts? with|contradicts|locked decision|per .*\.md|the spec says'</code></pre>
+      <p>Judge the hits by <em>specificity</em>: a quote naming a concrete rule or a spec line proves the doc was read; a vague "this might clash with your architecture" is the model guessing.</p>
+
+      <p><strong>Test 3 — the cold-context test (the strongest).</strong> Start a <em>fresh</em> session and ask, without letting it read the code:</p>
+      <blockquote>"From the docs only — what does this project's decision say about &lt;X&gt;?" — where <em>X</em> is a policy/product choice recorded only in a doc, not derivable from the code.</blockquote>
+      <p>If it answers correctly, the doc did the work — a no-memory session has no other way to know. (This is the same move as sending in a fresh agent to review your docs, from the main essay.)</p>
+
+      <p>And the one habit that makes all of this visible going forward: tell your root file to <strong>name the docs it consulted</strong> before planning (<em>"per <code>docs/architecture.md</code>…"</em>). Then steering — or its absence — is something you can see in every session, not just guess at.</p>
+
+      <h2><span class="section-tag">Bottom line</span></h2>
+      <p><em>Is the structure loaded, and does it change what the agent does — including overriding the user?</em> Yes, with receipts. <em>Is it strictly better than a big model with no docs?</em> Unproven, and honestly hard to prove. Run the tests on your own project and decide from your own evidence.</p>
+
+      <a class="project-link" href="../">
+        <span class="project-link-emoji">🌳</span>
+        <div class="project-link-body">
+          <span class="project-link-title">← The Document Tree (the main essay)</span>
+          <span class="project-link-url">sansword.github.io/sans_blog/doc-tree</span>
+        </div>
+      </a>
+
+      <a class="project-link" href="https://github.com/SansWord/sans_doc_tree" target="_blank" rel="noopener">
+        <span class="project-link-emoji">🧰</span>
+        <div class="project-link-body">
+          <span class="project-link-title">sans_doc_tree — the reusable template</span>
+          <span class="project-link-url">github.com/SansWord/sans_doc_tree</span>
+        </div>
+      </a>
+
+      <div class="tags">
+        <span class="tag">#AgenticCoding</span>
+        <span class="tag">#ClaudeCode</span>
+        <span class="tag">#ContextEngineering</span>
+        <span class="tag">#Measurement</span>
+      </div>
+
+      <div class="footer-author">
+        <div class="avatar">S</div>
+        <div class="footer-author-body">
+          <span class="footer-author-name">
+            <a href="https://www.linkedin.com/in/sansword/" target="_blank">SansWord</a>
+          </span>
+          <span class="footer-author-bio">A data-platform builder applying senior engineering discipline to AI-assisted software — learning by building, one project at a time.</span>
+          <div class="footer-author-links">
+            <a href="https://sansword.github.io/resume/" target="_blank">Résumé ↗</a>
+            <a href="../">The Document Tree</a>
+            <a href="https://github.com/SansWord" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <footer>
+    © 2026 SansWord · Built with curiosity
+  </footer>
+
+  <script>
+    function toggleDark() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      document.getElementById('toggle-icon').textContent = isDark ? '☀️' : '🌙';
+      document.getElementById('toggle-label').textContent = isDark ? 'Light' : 'Dark';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.getElementById('toggle-icon').textContent = '☀️';
+      document.getElementById('toggle-label').textContent = 'Light';
+    }
+  </script>
+</body>
+</html>
