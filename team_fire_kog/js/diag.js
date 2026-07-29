@@ -48,10 +48,13 @@ function bufferAhead(video) {
  * slow" from "the layer is too big to composite".
  */
 function layerSize(video) {
-  const frame = document.getElementById("frame");
-  const scale = new DOMMatrix(getComputedStyle(frame).transform).a || 1;
-  const w = Math.round(video.videoWidth * scale * devicePixelRatio);
-  const h = Math.round(video.videoHeight * scale * devicePixelRatio);
+  // Measured off the video's own box, since it is laid out rather than
+  // transformed. Still the number that matters: it is what the compositor has
+  // to hold, and it is where the focus freeze lived.
+  const box = video.getBoundingClientRect();
+  const w = Math.round(box.width * devicePixelRatio);
+  const h = Math.round(box.height * devicePixelRatio);
+  const scale = video.videoWidth ? box.width / video.videoWidth : 0;
   return `${w}x${h}  (scale ${scale.toFixed(2)}, dpr ${devicePixelRatio})`;
 }
 

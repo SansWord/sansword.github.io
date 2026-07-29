@@ -7,9 +7,17 @@
   <link rel="stylesheet" href="css/wall.css">
 </head>
 <body>
+  <!-- The video is a sibling of the transformed frame, not a child of it.
+       Scaling a <video> with a CSS transform makes the compositor rasterise
+       canvas x scale x devicePixelRatio pixels: on a 3x phone, focusing a tile
+       asked for ~340 MB of frame buffer and Safari fell over after a few
+       zooms. Sized directly instead, the media pipeline does the scaling and
+       nothing large is ever rasterised. The frame keeps the transform for the
+       tile markers, which are cheap DOM elements, and both are driven by the
+       same fitTransform result so they stay welded. -->
   <div id="stage" aria-label="Multi-angle concert wall">
+    <video id="mosaic" muted playsinline preload="auto"></video>
     <div id="frame">
-      <video id="mosaic" muted playsinline preload="auto"></video>
       <div id="tiles"></div>
     </div>
   </div>

@@ -36,10 +36,18 @@ function viewport() {
 }
 
 function applyView() {
-  const rect = focused
-    ? slotRect(focused.slot)
-    : canvasRect(manifest.mosaic.canvas);
-  frame.style.transform = transformCss(fitTransform(rect, viewport()));
+  const canvas = manifest.mosaic.canvas;
+  const rect = focused ? slotRect(focused.slot) : canvasRect(canvas);
+  const t = fitTransform(rect, viewport());
+
+  // Same transform, applied two ways. The markers ride a CSS transform because
+  // they are cheap DOM boxes; the video is laid out at the size it is actually
+  // displayed, because transforming it is what the compositor cannot afford.
+  frame.style.transform = transformCss(t);
+  video.style.left = `${t.x}px`;
+  video.style.top = `${t.y}px`;
+  video.style.width = `${canvas.width * t.scale}px`;
+  video.style.height = `${canvas.height * t.scale}px`;
 }
 
 /** Everything on the gate that names a number or the show comes from here. */
@@ -106,10 +114,10 @@ async function boot() {
   manifest = await loadManifest();
 
   const { width, height } = manifest.mosaic.canvas;
-  for (const el of [video, tilesEl]) {
-    el.style.width = `${width}px`;
-    el.style.height = `${height}px`;
-  }
+  // The markers layer stays at natural canvas size inside the transform; the
+  // video's box is set by applyView() every time the view changes.
+  tilesEl.style.width = `${width}px`;
+  tilesEl.style.height = `${height}px`;
   video.width = width;
   video.height = height;
   video.src = manifest.mosaic.file;

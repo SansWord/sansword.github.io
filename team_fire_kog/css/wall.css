@@ -41,7 +41,28 @@ html, body {
      focus. */
 }
 
-#mosaic { display: block; }
+/* Positioned and sized in pixels by applyView(), never transformed. These four
+   properties cost a layout, which is cheap for one element and is the whole
+   point: a transform would cost a rasterisation the GPU cannot afford. */
+#mosaic {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition:
+    left var(--ramp) cubic-bezier(0.22, 0.61, 0.36, 1),
+    top var(--ramp) cubic-bezier(0.22, 0.61, 0.36, 1),
+    width var(--ramp) cubic-bezier(0.22, 0.61, 0.36, 1),
+    height var(--ramp) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Touch devices get the zoom instantly. Animating it means the phone resizing
+   a video 30 times a second next to a decoder that is already working hard,
+   and a zoom that arrives is worth more than one that glides. Both the video
+   and the markers are switched together or they would drift apart mid-move. */
+@media (hover: none) {
+  #mosaic, #frame { transition: none; }
+}
 
 #tiles { position: absolute; inset: 0; }
 
