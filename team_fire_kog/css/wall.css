@@ -1,0 +1,163 @@
+:root {
+  --ink: #f2f2f0;
+  --dim: #8a8a86;
+  --edge: rgba(242, 242, 240, 0.28);
+  --live: #f2f2f0;
+  --ramp: 300ms;
+}
+
+* { box-sizing: border-box; }
+
+/* #gate and #hud set display, and an ID rule outranks the user-agent's
+   [hidden] { display: none }. Without this, el.hidden = true is silently
+   inert and the gate never lifts. */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  color: var(--ink);
+  font: 500 14px/1.4 ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#stage { position: fixed; inset: 0; overflow: hidden; }
+
+/* The mosaic renders at natural size; every view is a transform of this box,
+   so tile markers stay locked to their pixels at any scale. */
+#frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  transition: transform var(--ramp) cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+#mosaic { display: block; }
+
+#tiles { position: absolute; inset: 0; }
+
+.tile {
+  position: absolute;
+  border: 2px solid transparent;
+  /* Tiles are <button>s so they are focusable and keyboard-reachable, which
+     means they inherit the pill shape and padding further down. A tile frames
+     a rectangle of video; reset all three. */
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  cursor: default;
+  transition: border-color var(--ramp), opacity var(--ramp);
+  opacity: 0;
+}
+
+.tile.live {
+  opacity: 1;
+  border-color: var(--edge);
+  cursor: pointer;
+}
+
+.tile.live:hover,
+.tile.live:focus-visible {
+  border-color: var(--live);
+  outline: none;
+}
+
+.tile.focused { border-color: var(--live); }
+
+.tile .tile-name {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  font-size: 11px;
+  color: var(--ink);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--ramp);
+}
+
+.tile.live:hover .tile-name,
+.tile.focused .tile-name { opacity: 1; }
+
+#gate {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 2rem;
+  background: #000;
+  z-index: 20;
+}
+
+#gate h1 { margin: 0; font-size: clamp(1.5rem, 5vw, 2.75rem); font-weight: 600; }
+#gate p { margin: 0; color: var(--dim); max-width: 34ch; }
+
+/* The caption that says what you are looking at: the song, then the show. */
+#gate-song {
+  font-size: 12.5px;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  /* Wider than the 34ch measure the sub uses: venue, tour and dates on one
+     line, and it still wraps on a phone. */
+  max-width: min(54ch, 100%);
+}
+
+#gate-song span { display: block; }
+#gate-song .song-title { color: var(--ink); }
+
+button {
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--edge);
+  border-radius: 999px;
+  padding: 0.55em 1.3em;
+  cursor: pointer;
+  transition: border-color var(--ramp), background var(--ramp);
+}
+
+button:hover { border-color: var(--live); }
+button[aria-pressed="true"] { background: rgba(242, 242, 240, 0.14); }
+button:disabled { color: var(--dim); cursor: default; border-color: var(--edge); }
+
+#gate button { justify-self: center; padding: 0.7em 2.2em; }
+
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: max(0.75rem, env(safe-area-inset-top)) 1rem 0.75rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#hud > * { pointer-events: auto; }
+#live-count { margin-right: auto; color: var(--dim); font-variant-numeric: tabular-nums; }
+
+#credit {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.75rem 1rem max(0.75rem, env(safe-area-inset-bottom));
+  text-align: center;
+  z-index: 10;
+}
+
+#credit a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--edge); }
+#credit a:hover { border-bottom-color: var(--live); }
+
+@media (prefers-reduced-motion: reduce) {
+  #frame, .tile, .tile-name { transition-duration: 1ms; }
+}

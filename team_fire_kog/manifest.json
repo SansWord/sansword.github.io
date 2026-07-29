@@ -1,0 +1,486 @@
+{
+  "schema_version": 1,
+  "song": {
+    "title": "Keep on Going",
+    "artist": "Fire EX.",
+    "venue": "Taipei Arena",
+    "date": "2026/07/18-2026/07/19",
+    "tour": "2026 On Fire Day"
+  },
+  "collection_post": "https://www.threads.com/@sanswordtw/post/DbVaP6jmyon",
+  "duration_s": 140.0,
+  "mosaic": {
+    "file": "mosaic.mp4",
+    "canvas": {
+      "width": 1920,
+      "height": 1152
+    },
+    "fps": 30,
+    "hero_clip_id": "02_sanswordtw"
+  },
+  "audio": {
+    "master": "audio/master.m4a",
+    "volume": 1.0,
+    "ramp_s": 0.3
+  },
+  "clips": [
+    {
+      "id": "01_twidtidt",
+      "path_code": "1",
+      "credit": {
+        "username": "twidtidt",
+        "display_name": null,
+        "profile": "https://www.threads.com/@twidtidt",
+        "permalink": "https://www.threads.com/@twidtidt/post/DbVawyDCnOR"
+      },
+      "slot": {
+        "slot_id": "P09",
+        "shape": "portrait",
+        "x": 1344,
+        "y": 384,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 86.9184,
+      "exit_s": 105.6091
+    },
+    {
+      "id": "02_sanswordtw",
+      "path_code": "2",
+      "credit": {
+        "username": "sanswordtw",
+        "display_name": null,
+        "profile": "https://www.threads.com/@sanswordtw",
+        "permalink": "https://www.threads.com/@sanswordtw/post/DbVb4w7Dm0F"
+      },
+      "slot": {
+        "slot_id": "H00",
+        "shape": "hero",
+        "x": 768,
+        "y": 192,
+        "w": 384,
+        "h": 768
+      },
+      "enter_s": 0.0,
+      "exit_s": 140.0
+    },
+    {
+      "id": "03_y.shaun313",
+      "path_code": "3",
+      "credit": {
+        "username": "y.shaun313",
+        "display_name": null,
+        "profile": "https://www.threads.com/@y.shaun313",
+        "permalink": "https://www.threads.com/@y.shaun313/post/DbVcW9fE5rO"
+      },
+      "slot": {
+        "slot_id": "L07",
+        "shape": "landscape",
+        "x": 1536,
+        "y": 0,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 75.3458,
+      "exit_s": 108.5243
+    },
+    {
+      "id": "04_rockthe0208",
+      "path_code": "4",
+      "credit": {
+        "username": "rockthe0208",
+        "display_name": null,
+        "profile": "https://www.threads.com/@rockthe0208",
+        "permalink": "https://www.threads.com/@rockthe0208/post/DbVchgrEUeS"
+      },
+      "slot": {
+        "slot_id": "P08",
+        "shape": "portrait",
+        "x": 1152,
+        "y": 384,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 77.531,
+      "exit_s": 108.9912
+    },
+    {
+      "id": "05_cwtla_",
+      "path_code": "5",
+      "credit": {
+        "username": "cwtla_",
+        "display_name": null,
+        "profile": "https://www.threads.com/@cwtla_",
+        "permalink": "https://www.threads.com/@cwtla_/post/DbVcaBciRpN"
+      },
+      "slot": {
+        "slot_id": "P06",
+        "shape": "portrait",
+        "x": 384,
+        "y": 768,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 67.1158,
+      "exit_s": 135.2403
+    },
+    {
+      "id": "06_kuo_0508",
+      "path_code": "6",
+      "credit": {
+        "username": "kuo_0508",
+        "display_name": null,
+        "profile": "https://www.threads.com/@kuo_0508",
+        "permalink": "https://www.threads.com/@kuo_0508/post/DbVc6U1E29-"
+      },
+      "slot": {
+        "slot_id": "L08",
+        "shape": "landscape",
+        "x": 1152,
+        "y": 192,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 73.5,
+      "exit_s": 83.2727
+    },
+    {
+      "id": "07_kuo_0508",
+      "path_code": "7",
+      "credit": {
+        "username": "kuo_0508",
+        "display_name": null,
+        "profile": "https://www.threads.com/@kuo_0508",
+        "permalink": "https://www.threads.com/@kuo_0508/post/DbVc6U1E29-"
+      },
+      "slot": {
+        "slot_id": "L06",
+        "shape": "landscape",
+        "x": 1152,
+        "y": 0,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 68.3961,
+      "exit_s": 81.559
+    },
+    {
+      "id": "08_alan.1216",
+      "path_code": "8",
+      "credit": {
+        "username": "alan.1216",
+        "display_name": null,
+        "profile": "https://www.threads.com/@alan.1216",
+        "permalink": "https://www.threads.com/@alan.1216/post/DbVe-36j11H"
+      },
+      "slot": {
+        "slot_id": "L04",
+        "shape": "landscape",
+        "x": 768,
+        "y": 0,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 65.4867,
+      "exit_s": 134.54
+    },
+    {
+      "id": "09_erinyangmomo",
+      "path_code": "9",
+      "credit": {
+        "username": "erinyangmomo",
+        "display_name": null,
+        "profile": "https://www.threads.com/@erinyangmomo",
+        "permalink": "https://www.threads.com/@erinyangmomo/post/DbVgsOVEiCj"
+      },
+      "slot": {
+        "slot_id": "P02",
+        "shape": "portrait",
+        "x": 384,
+        "y": 0,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 49.8539,
+      "exit_s": 88.9534
+    },
+    {
+      "id": "10_ccyzyz",
+      "path_code": "a",
+      "credit": {
+        "username": "ccyzyz",
+        "display_name": null,
+        "profile": "https://www.threads.com/@ccyzyz",
+        "permalink": "https://www.threads.com/@ccyzyz/post/DbVh0yOk7tV"
+      },
+      "slot": {
+        "slot_id": "L01",
+        "shape": "landscape",
+        "x": 384,
+        "y": 384,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 57.0475,
+      "exit_s": 108.4536
+    },
+    {
+      "id": "11_rogersamisadrummer",
+      "path_code": "b",
+      "credit": {
+        "username": "rogersamisadrummer",
+        "display_name": null,
+        "profile": "https://www.threads.com/@rogersamisadrummer",
+        "permalink": "https://www.threads.com/@rogersamisadrummer/post/DbVjOpOEja3"
+      },
+      "slot": {
+        "slot_id": "L02",
+        "shape": "landscape",
+        "x": 0,
+        "y": 576,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 63.3815,
+      "exit_s": 120.7566
+    },
+    {
+      "id": "12_yinghui_627",
+      "path_code": "c",
+      "credit": {
+        "username": "yinghui_627",
+        "display_name": null,
+        "profile": "https://www.threads.com/@yinghui_627",
+        "permalink": "https://www.threads.com/@yinghui_627/post/DbVkGI_iHlo"
+      },
+      "slot": {
+        "slot_id": "P03",
+        "shape": "portrait",
+        "x": 576,
+        "y": 0,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 51.0747,
+      "exit_s": 107.1248
+    },
+    {
+      "id": "13_e7s3nnnnnn",
+      "path_code": "d",
+      "credit": {
+        "username": "e7s3nnnnnn",
+        "display_name": null,
+        "profile": "https://www.threads.com/@e7s3nnnnnn",
+        "permalink": "https://www.threads.com/@e7s3nnnnnn/post/DbVmupUD86U"
+      },
+      "slot": {
+        "slot_id": "L05",
+        "shape": "landscape",
+        "x": 768,
+        "y": 960,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 66.8576,
+      "exit_s": 101.406
+    },
+    {
+      "id": "14_yishyuanlin",
+      "path_code": "e",
+      "credit": {
+        "username": "yishyuanlin",
+        "display_name": null,
+        "profile": "https://www.threads.com/@yishyuanlin",
+        "permalink": "https://www.threads.com/@yishyuanlin/post/DbVmmYNEyan"
+      },
+      "slot": {
+        "slot_id": "P04",
+        "shape": "portrait",
+        "x": 0,
+        "y": 768,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 66.673,
+      "exit_s": 109.7678
+    },
+    {
+      "id": "15_ahaohank",
+      "path_code": "f",
+      "credit": {
+        "username": "ahaohank",
+        "display_name": null,
+        "profile": "https://www.threads.com/@ahaohank",
+        "permalink": "https://www.threads.com/@ahaohank/post/DbVnI7KCdio"
+      },
+      "slot": {
+        "slot_id": "L00",
+        "shape": "landscape",
+        "x": 0,
+        "y": 384,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 20.8231,
+      "exit_s": 120.0159
+    },
+    {
+      "id": "16_win_ner0707",
+      "path_code": "g",
+      "credit": {
+        "username": "win_ner0707",
+        "display_name": null,
+        "profile": "https://www.threads.com/@win_ner0707",
+        "permalink": "https://www.threads.com/@win_ner0707/post/DbVqnh_Eqkv"
+      },
+      "slot": {
+        "slot_id": "P00",
+        "shape": "portrait",
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 77.7172,
+      "exit_s": 96.8955
+    },
+    {
+      "id": "17_easy.peasy.t",
+      "path_code": "h",
+      "credit": {
+        "username": "easy.peasy.t",
+        "display_name": null,
+        "profile": "https://www.threads.com/@easy.peasy.t",
+        "permalink": "https://www.threads.com/@easy.peasy.t/post/DbVsgmwj71v"
+      },
+      "slot": {
+        "slot_id": "L03",
+        "shape": "landscape",
+        "x": 384,
+        "y": 576,
+        "w": 384,
+        "h": 192
+      },
+      "enter_s": 65.4166,
+      "exit_s": 107.4433
+    },
+    {
+      "id": "18_amisam9610319",
+      "path_code": "i",
+      "credit": {
+        "username": "amisam9610319",
+        "display_name": null,
+        "profile": "https://www.threads.com/@amisam9610319",
+        "permalink": "https://www.threads.com/@amisam9610319/post/DbVtyEWD40r"
+      },
+      "slot": {
+        "slot_id": "P07",
+        "shape": "portrait",
+        "x": 576,
+        "y": 768,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 74.4665,
+      "exit_s": 103.0953
+    },
+    {
+      "id": "19_mingyusiao",
+      "path_code": "j",
+      "credit": {
+        "username": "mingyusiao",
+        "display_name": null,
+        "profile": "https://www.threads.com/@mingyusiao",
+        "permalink": "https://www.threads.com/@mingyusiao/post/DbWbTjTkpAm"
+      },
+      "slot": {
+        "slot_id": "P05",
+        "shape": "portrait",
+        "x": 192,
+        "y": 768,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 67.0544,
+      "exit_s": 138.778
+    },
+    {
+      "id": "20_mingyusiao",
+      "path_code": "k",
+      "credit": {
+        "username": "mingyusiao",
+        "display_name": null,
+        "profile": "https://www.threads.com/@mingyusiao",
+        "permalink": "https://www.threads.com/@mingyusiao/post/DbWbTjTkpAm"
+      },
+      "slot": {
+        "slot_id": "P01",
+        "shape": "portrait",
+        "x": 192,
+        "y": 0,
+        "w": 192,
+        "h": 384
+      },
+      "enter_s": 35.8144,
+      "exit_s": 78.6059
+    }
+  ],
+  "reserved_slots": [
+    {
+      "slot_id": "L09",
+      "shape": "landscape",
+      "x": 1536,
+      "y": 192,
+      "w": 384,
+      "h": 192
+    },
+    {
+      "slot_id": "P10",
+      "shape": "portrait",
+      "x": 1536,
+      "y": 384,
+      "w": 192,
+      "h": 384
+    },
+    {
+      "slot_id": "P11",
+      "shape": "portrait",
+      "x": 1728,
+      "y": 384,
+      "w": 192,
+      "h": 384
+    },
+    {
+      "slot_id": "L10",
+      "shape": "landscape",
+      "x": 1152,
+      "y": 768,
+      "w": 384,
+      "h": 192
+    },
+    {
+      "slot_id": "L11",
+      "shape": "landscape",
+      "x": 1536,
+      "y": 768,
+      "w": 384,
+      "h": 192
+    },
+    {
+      "slot_id": "L12",
+      "shape": "landscape",
+      "x": 1152,
+      "y": 960,
+      "w": 384,
+      "h": 192
+    },
+    {
+      "slot_id": "L13",
+      "shape": "landscape",
+      "x": 1536,
+      "y": 960,
+      "w": 384,
+      "h": 192
+    }
+  ]
+}

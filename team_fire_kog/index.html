@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>One moment, every angle — Fire EX. at Taipei Arena</title>
+  <link rel="stylesheet" href="css/wall.css">
+</head>
+<body>
+  <div id="stage" aria-label="Multi-angle concert wall">
+    <div id="frame">
+      <video id="mosaic" muted playsinline preload="auto"></video>
+      <div id="tiles"></div>
+    </div>
+  </div>
+
+  <!-- The headline, the sub and the caption are all filled in from the
+       manifest at boot. What is in the markup is the fallback for a load that
+       never finishes -- true whatever the clip count turns out to be. -->
+  <div id="gate">
+    <h1 id="gate-title">One moment. Every angle.</h1>
+    <p id="gate-sub">Recorded by the people who were standing in the room.</p>
+    <p id="gate-song" hidden></p>
+    <button id="start" type="button" disabled>Play</button>
+  </div>
+
+  <header id="hud" hidden>
+    <span id="live-count" aria-live="polite"></span>
+    <button id="share" type="button">Copy my cut</button>
+    <button id="back" type="button" hidden>Back to the wall</button>
+  </header>
+
+  <footer id="credit" hidden>
+    <a id="credit-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
