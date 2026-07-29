@@ -7,18 +7,26 @@
  * a live tile gets a border, a name, and a click target; a tile that has not
  * started is invisible and not clickable.
  *
- * A tile is two controls, not one: a button covering the whole rectangle that
- * zooms it, and the recorder's name in the corner, which is a link to their
- * original post. That is why the tile itself is a <div> -- an <a> inside a
- * <button> is not valid, and the credit has to be the thing you can click.
+ * A tile carries two controls: a button covering the whole rectangle that zooms
+ * it, and the recorder's name in the corner, which links to their original post.
+ * That is why the tile itself is a <div> -- an <a> inside a <button> is not
+ * valid, and the credit has to be able to be a link.
+ *
+ * Which of the two is live depends on the view. Across the wall the name is a
+ * label and the whole rectangle zooms; on the angle being looked at, the name
+ * becomes the link. A name renders at a fixed 11px however small the tile is, so
+ * on a phone it was a large off-site target sitting on top of the zoom button --
+ * see the .tile-name rules in wall.css. The reachability half is here, in
+ * updateLiveState(), because the tab order is a property, not a style.
  */
 
 import { tileStyle, isLive, liveCount } from "./geometry.js";
 import { displayName } from "./manifest.js";
 
-// The zoom button for a tile, without hanging an expando off the element or
-// re-querying the DOM 60 times a second in updateLiveState().
+// The zoom button and the credit link for a tile, without hanging an expando off
+// the element or re-querying the DOM 60 times a second in updateLiveState().
 const hitAreas = new WeakMap();
+const nameLinks = new WeakMap();
 
 export function buildTiles(container, manifest, onFocus) {
   container.textContent = "";
@@ -54,6 +62,7 @@ export function buildTiles(container, manifest, onFocus) {
 
     el.append(hit, label);
     hitAreas.set(el, hit);
+    nameLinks.set(el, label);
     container.append(el);
     tiles.set(clip.id, el);
   }
@@ -69,6 +78,18 @@ export function updateLiveState(tiles, manifest, t, focusedId) {
     el.classList.toggle("focused", live && clip.id === focusedId);
     const hit = hitAreas.get(el);
     if (hit) hit.disabled = !live;
+
+    // The name is only reachable when it is actually a link -- on the angle
+    // being looked at. CSS takes the pointer away on the wall, but a link with
+    // pointer-events: none is still a tab stop, so Tab would walk twenty names
+    // that do nothing. This also covers a tile that has not entered yet, whose
+    // name has been invisible and tabbable all along.
+    const label = nameLinks.get(el);
+    if (label) {
+      const reachable = live && clip.id === focusedId ? 0 : -1;
+      // Compared before writing: this runs on every frame for every tile.
+      if (label.tabIndex !== reachable) label.tabIndex = reachable;
+    }
   }
   return liveCount(manifest.clips, t);
 }

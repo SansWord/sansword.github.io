@@ -147,6 +147,34 @@ html, body {
    angle you are not looking at. */
 #tiles.zoomed .tile:not(.focused) .tile-name { opacity: 0; }
 
+/* On the wall the name is a label; zoomed, it is a link.
+
+   It renders at a fixed 11px whatever the frame scale, so on a phone -- where a
+   tile is a couple of centimetres across -- the pill covers a good fraction of
+   the rectangle it names, sitting on top of the zoom button. Aiming at the tile
+   and hitting the name meant leaving the page for Threads, which is the one
+   outcome nobody wanted from a tap. Letting the click fall through to the button
+   underneath makes the whole rectangle mean the same thing.
+
+   The credit is not lost: zoom the angle and its name is a live link, and the
+   full roll is on the gate and the end card. */
+.tile .tile-name { pointer-events: none; }
+#tiles.zoomed .tile.focused .tile-name { pointer-events: auto; }
+
+/* On a phone the pill does not shrink with the tile it labels -- it is
+   counter-scaled to a fixed pixel size -- so on the smallest slots it was
+   covering 29% of the video and still truncating to "@yis...". Two points
+   smaller gives back most of that and fits more of the name before the ellipsis,
+   which is the part that actually credits anyone.
+
+   The focused angle keeps the full size: it is the one credit the viewer is
+   looking at, and the only one that is still a link, so it should not be the
+   smallest text on screen. */
+@media (max-width: 600px) {
+  .tile .tile-name { font-size: 9px; }
+  #tiles.zoomed .tile.focused .tile-name { font-size: 11px; }
+}
+
 .tile .tile-name:hover,
 .tile .tile-name:focus-visible {
   background: rgba(0, 0, 0, 0.8);
@@ -421,12 +449,14 @@ button:disabled { color: var(--dim); cursor: default; border-color: var(--edge);
    be the only route to the next angle -- miss it and the only visible way out
    of a tile is back to the wall. */
 
-#swipe-hint {
+/* Both hints are the same object in two places: a dim pill, centred, that says
+   one thing and withdraws. Shared so a change to the language of a hint is one
+   edit; only the height off the bottom differs, because what each one has to
+   clear differs. */
+.hint {
   position: fixed;
   left: 0;
   right: 0;
-  /* Clear of the 48px control row that starts at 3.4rem. */
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 7.4rem);
   width: fit-content;
   margin: 0 auto;
   z-index: 12;
@@ -437,12 +467,50 @@ button:disabled { color: var(--dim); cursor: default; border-color: var(--edge);
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.5);
   pointer-events: none;
+}
+
+/* Clear of the 48px control row that starts at 3.4rem. */
+#swipe-hint {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 7.4rem);
   animation: hint-fade 3.4s ease forwards;
+}
+
+/* On the wall there is no control row to clear -- only the collection credit in
+   the footer -- so this sits lower.
+
+   Deliberately louder than the swipe hint, and the one place the two diverge.
+   The swipe hint is a nicety for a gesture that has two visible buttons as
+   backup; this one is the only thing telling a first-time viewer that the
+   rectangles are controls at all, and it competes for attention against twenty
+   of them moving at once. Dim grey at 12px lost that competition on a phone. So:
+   full-strength ink, a hairline to give the pill an edge against bright video,
+   and nine seconds -- long enough to survive being ignored once. */
+#tap-hint {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 3.6rem);
+  font-size: 14px;
+  color: var(--ink);
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid var(--edge);
+  padding: 0.55em 1.1em;
+  animation: tap-hint-fade 9s ease forwards;
+}
+
+/* Bigger on the screen where it read smallest, and where the wall is densest. */
+@media (max-width: 600px) {
+  #tap-hint { font-size: 16px; }
 }
 
 @keyframes hint-fade {
   0% { opacity: 0; }
   12%, 62% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Same shape as hint-fade, held far longer in proportion: in quickly, up for
+   about seven of the nine seconds, then out. */
+@keyframes tap-hint-fade {
+  0% { opacity: 0; }
+  6%, 82% { opacity: 1; }
   100% { opacity: 0; }
 }
 
@@ -487,6 +555,6 @@ button:disabled { color: var(--dim); cursor: default; border-color: var(--edge);
 
 @media (prefers-reduced-motion: reduce) {
   #frame, .tile, .tile-name { transition-duration: 1ms; }
-  /* The hint is withdrawn by a timer either way -- only the fade goes. */
-  #swipe-hint { animation: none; }
+  /* The hints are withdrawn by a timer either way -- only the fade goes. */
+  .hint { animation: none; }
 }

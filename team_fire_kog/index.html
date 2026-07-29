@@ -92,7 +92,14 @@
       </svg>
     </button>
   </div>
-  <p id="swipe-hint" hidden aria-hidden="true">左右滑動切換視角</p>
+  <!-- Said on the wall, once, as it opens: the tiles do not read as buttons
+       until one has been clicked, and someone who does not know they are
+       clickable reaches for the only gesture they can think of -- a pinch --
+       and ends up nowhere. The gate says this too, but the gate is gone by the
+       time there is a wall to say it about. aria-hidden because the tiles are
+       real <button>s and a screen reader already announces them as such. -->
+  <p id="tap-hint" class="hint" hidden aria-hidden="true">點任何一格，放大那個視角</p>
+  <p id="swipe-hint" class="hint" hidden aria-hidden="true">左右滑動切換視角</p>
 
   <footer id="credit" hidden>
     <a id="credit-link" href="#" target="_blank" rel="noopener noreferrer"></a>

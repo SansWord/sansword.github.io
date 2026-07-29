@@ -28,6 +28,7 @@ const backButton = document.getElementById("back");
 const prevButton = document.getElementById("prev");
 const nextButton = document.getElementById("next");
 const swipeHint = document.getElementById("swipe-hint");
+const tapHint = document.getElementById("tap-hint");
 const endEl = document.getElementById("end");
 const replayButton = document.getElementById("replay");
 const creditEl = document.getElementById("credit");
@@ -154,6 +155,9 @@ function applyFocusChrome() {
   const zoomed = Boolean(focused);
   focusControls.hidden = !zoomed || soloLock;
   if (zoomed && !soloLock) maybeShowSwipeHint();
+  // soloLock means the spine is the only thing playing, so there is no wall
+  // behind the tile and nothing to invite a click on yet.
+  if (!zoomed && !soloLock && !finished) maybeShowTapHint();
 }
 
 /**
@@ -196,6 +200,7 @@ function step(direction) {
 }
 
 let hintShown = false;
+let tapHintShown = false;
 
 /** Say the gesture exists once, on the device where it is the only control. */
 function maybeShowSwipeHint() {
@@ -203,6 +208,26 @@ function maybeShowSwipeHint() {
   hintShown = true;
   swipeHint.hidden = false;
   setTimeout(() => { swipeHint.hidden = true; }, 3400);
+}
+
+/**
+ * Say that a tile can be clicked, once, the first time there is a wall to say
+ * it about.
+ *
+ * Not gated on (hover: none) the way the swipe hint is: a pointer does not make
+ * a tile look like a button either, and the first two people to miss this were
+ * on a phone and on a laptop. Deliberately fired from the wall rather than at
+ * play, because the page opens on the spine alone -- announcing "click any
+ * tile" over a single video, before the other nineteen arrive, describes
+ * something that is not on screen yet.
+ */
+function maybeShowTapHint() {
+  if (tapHintShown || !clock || !clock.running) return;
+  tapHintShown = true;
+  tapHint.hidden = false;
+  // Matches the tap-hint-fade duration in wall.css; the animation does the
+  // fading and this actually withdraws the element.
+  setTimeout(() => { tapHint.hidden = true; }, 9000);
 }
 
 function setFocus(clip, { record = true } = {}) {
