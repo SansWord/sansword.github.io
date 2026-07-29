@@ -158,6 +158,10 @@ function applyFocusChrome() {
   // soloLock means the spine is the only thing playing, so there is no wall
   // behind the tile and nothing to invite a click on yet.
   if (!zoomed && !soloLock && !finished) maybeShowTapHint();
+  // Zoomed by any route -- a tile click, the steppers, the arrow keys, a shared
+  // cut, or the wall collapsing back to the spine -- the hint has nothing left
+  // to point at.
+  if (zoomed) dismissTapHint();
 }
 
 /**
@@ -201,6 +205,7 @@ function step(direction) {
 
 let hintShown = false;
 let tapHintShown = false;
+let tapHintTimer = null;
 
 /** Say the gesture exists once, on the device where it is the only control. */
 function maybeShowSwipeHint() {
@@ -227,7 +232,29 @@ function maybeShowTapHint() {
   tapHint.hidden = false;
   // Matches the tap-hint-fade duration in wall.css; the animation does the
   // fading and this actually withdraws the element.
-  setTimeout(() => { tapHint.hidden = true; }, 9000);
+  tapHintTimer = setTimeout(dismissTapHint, 9000);
+}
+
+/**
+ * Take the hint away the moment it has been acted on.
+ *
+ * An angle is focused, so the wall of tiles it is talking about is not on screen
+ * and its instruction has been followed -- leaving it up for the rest of nine
+ * seconds only asks the viewer to read something they have already done. The
+ * latch stays set, so it does not come back when they return to the wall: they
+ * have demonstrated they know.
+ *
+ * Cutting it rather than fading it is deliberate. The fade is how the hint
+ * expires on its own; a hint that has been obeyed should be gone.
+ */
+function dismissTapHint() {
+  // applyFocusChrome() runs on every frame, and most of those frames are already
+  // zoomed: without this the attribute would be rewritten 60 times a second for
+  // as long as a tile is open.
+  if (tapHint.hidden) return;
+  clearTimeout(tapHintTimer);
+  tapHintTimer = null;
+  tapHint.hidden = true;
 }
 
 function setFocus(clip, { record = true } = {}) {
