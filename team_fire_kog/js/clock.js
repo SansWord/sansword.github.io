@@ -32,6 +32,7 @@ export class Clock {
     this.seeks = 0;               // read by the ?debug=1 panel
     this._timer = null;
     this._lastSeekAt = 0;
+    this._generation = 0;         // see _raf()
     this._listeners = new Set();
   }
 
@@ -93,8 +94,14 @@ export class Clock {
   }
 
   _raf() {
+    // The next frame is scheduled after the listeners run, so a listener that
+    // stops the clock -- which is how the wall now ends -- leaves one frame
+    // already pending. Restart inside that frame and the old loop would find
+    // `running` true again and keep going alongside the new one, ticking
+    // everything twice. The generation makes a restart disown the old loop.
+    const generation = ++this._generation;
     const step = () => {
-      if (!this.running) return;
+      if (!this.running || generation !== this._generation) return;
       const t = this.time;
       for (const fn of this._listeners) fn(t);
       requestAnimationFrame(step);
@@ -104,6 +111,13 @@ export class Clock {
 
   _correct() {
     if (!this.running || this.video.readyState < 2) return;
+
+    // An ended element is not a stalled one. play() on it seeks back to 0 and
+    // starts over -- which is how the wall used to loop silently once the
+    // picture ran out, since the audio buffer source does not come back with
+    // it. Whoever owns the timeline decides what happens at the end; the
+    // corrector's job stops here.
+    if (this.video.ended) return;
 
     // The tab was backgrounded, or the OS paused the video to save power. The
     // sound never stopped, so recovery is to jump the picture to where the

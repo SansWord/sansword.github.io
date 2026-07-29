@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant-TW">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>One moment, every angle — Fire EX. at Taipei Arena</title>
+  <title>同一個瞬間，每一個視角</title>
   <link rel="stylesheet" href="css/wall.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
        nothing large is ever rasterised. The frame keeps the transform for the
        tile markers, which are cheap DOM elements, and both are driven by the
        same fitTransform result so they stay welded. -->
-  <div id="stage" aria-label="Multi-angle concert wall">
+  <div id="stage" aria-label="多角度演唱會視角牆">
     <video id="mosaic" muted playsinline preload="auto"></video>
     <div id="frame">
       <div id="tiles"></div>
@@ -26,21 +26,83 @@
        manifest at boot. What is in the markup is the fallback for a load that
        never finishes -- true whatever the clip count turns out to be. -->
   <div id="gate">
-    <h1 id="gate-title">One moment. Every angle.</h1>
-    <p id="gate-sub">Recorded by the people who were standing in the room.</p>
+    <div class="sheet">
+    <h1 id="gate-title">同一個瞬間，每一個視角。</h1>
+    <p id="gate-sub">由當天站在場館裡的人拍下。</p>
     <p id="gate-song" hidden></p>
-    <button id="start" type="button" disabled>Play</button>
+    <!-- What you can do, said once before it starts. Everything here is
+         discoverable in the page, but only if you already know to look: the
+         tiles do not read as buttons until one is clicked. -->
+    <p id="gate-how">
+      <span>點任何一格，就放大那個視角。</span>
+      <span>放大後用左右箭頭按鈕、鍵盤左右方向鍵，或左右滑動，切換到別的視角。</span>
+      <span>按鍵盤向下鍵回到全部視角。</span>
+    </p>
+    <button id="start" type="button" disabled>播放</button>
+    <button id="show-credits" class="quiet" type="button">看所有拍攝者</button>
+    </div>
+  </div>
+
+  <!-- The credit roll, before you watch. Same content as the end card, reached
+       from the gate, because the people who recorded this should be findable
+       without having to sit through it first. -->
+  <div id="credits" hidden role="dialog" aria-modal="true" aria-labelledby="credits-title">
+    <div class="sheet">
+      <h2 id="credits-title" class="roll-title">謝謝大家一起站在這裡</h2>
+      <ul id="credits-roll" class="credit-roll"></ul>
+      <a id="credits-thread" class="roll-thread" href="#" target="_blank"
+         rel="noopener noreferrer">看原始討論串</a>
+      <button id="credits-close" class="solid" type="button">關閉</button>
+    </div>
   </div>
 
   <header id="hud" hidden>
     <span id="live-count" aria-live="polite"></span>
-    <button id="share" type="button">Copy my cut</button>
-    <button id="back" type="button" hidden>Back to the wall</button>
+    <!-- Sharing a cut is built and working, but hidden for now: the page is
+         being shown to people who have never seen the wall, and one control
+         (play) is the whole instruction. Unhide the button to bring it back --
+         encodePath/decodePath and the #p= fragment still work either way, so a
+         link someone already has keeps replaying. -->
+    <button id="share" type="button" hidden>複製我的剪法</button>
   </header>
+
+  <!-- Focused-view controls, kept as one group. They live outside #hud because
+       the way out has to land where a thumb already is: bottom centre, above
+       the credit, not in a top corner. Stepping sits either side of it so the
+       three things you can do to a zoomed tile are in one place, in the order
+       they read: back one, out, forward one. -->
+  <div id="focus-controls" hidden>
+    <button id="prev" class="stepper" type="button" aria-label="上一個視角">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M15 4 L7 12 L15 20" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button id="back" class="solid" type="button">回到全部視角</button>
+    <button id="next" class="stepper" type="button" aria-label="下一個視角">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M9 4 L17 12 L9 20" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <p id="swipe-hint" hidden aria-hidden="true">左右滑動切換視角</p>
 
   <footer id="credit" hidden>
     <a id="credit-link" href="#" target="_blank" rel="noopener noreferrer"></a>
   </footer>
+
+  <!-- Shown when the wall runs out. Sits over a scrim rather than a hard cut to
+       black, so the last frame is still faintly there behind the choice. -->
+  <div id="end" hidden>
+    <div class="sheet">
+      <h2 id="end-title" class="roll-title">謝謝大家一起站在這裡</h2>
+      <ul id="end-roll" class="credit-roll"></ul>
+      <a id="end-thread" class="roll-thread" href="#" target="_blank"
+         rel="noopener noreferrer">看原始討論串</a>
+      <button id="replay" class="solid" type="button">再看一次</button>
+    </div>
+  </div>
 
   <script type="module" src="js/main.js"></script>
 </body>

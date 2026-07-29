@@ -51,10 +51,41 @@ export function contributorCount(data) {
   return new Set(names).size;
 }
 
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
+/**
+ * One entry per person for the credit roll, each carrying every post they sent.
+ *
+ * Grouped by username rather than by clip, because two contributors sent two
+ * angles each and the roll is a list of people, not of files. Sorted by
+ * username so the order is the same for everyone and does not shuffle when a
+ * new clip is folded in -- an existing name never moves because of someone
+ * else's arrival. A clip with no username still gets an entry: an uncredited
+ * angle is a bug to see, not one to hide.
+ *
+ * `posts` holds distinct permalinks. Both of the two-angle contributors put
+ * their clips in one Threads reply, so their two angles share a permalink and
+ * the roll should offer one link, not the same URL twice. Someone who really
+ * does reply twice still gets both.
+ */
+export function contributors(data) {
+  const byUser = new Map();
+  for (const clip of data.clips) {
+    const credit = clip.credit || {};
+    const key = credit.username || clip.id;
+    if (!byUser.has(key)) {
+      byUser.set(key, {
+        key,
+        name: displayName(clip),
+        profile: credit.profile || null,
+        posts: [],
+      });
+    }
+    const person = byUser.get(key);
+    if (credit.permalink && !person.posts.includes(credit.permalink)) {
+      person.posts.push(credit.permalink);
+    }
+  }
+  return [...byUser.values()].sort((a, b) => a.key.localeCompare(b.key));
+}
 
 function parseYmd(text) {
   const m = /^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/.exec(text.trim());
@@ -69,13 +100,17 @@ function sameDay(a, b) {
 }
 
 function one(date) {
-  return `${date.d} ${MONTHS[date.mo - 1]} ${date.y}`;
+  return `${date.y}年${date.mo}月${date.d}日`;
 }
 
 /**
  * `song.date` is stored the way the show advertised it -- "2026/07/18-2026/07/19"
  * -- which is right for the manifest and unreadable on a title card. Anything
  * this cannot parse is passed through untouched rather than mangled.
+ *
+ * Written the way a date is written in Taiwan: 年月日, largest unit first, and
+ * a range says only the part that changes -- 2026年7月18–19日, not the whole
+ * date twice.
  */
 export function formatShowDate(raw) {
   if (typeof raw !== "string" || !raw.trim()) return "";
@@ -88,12 +123,12 @@ export function formatShowDate(raw) {
     if (from && to) {
       if (sameDay(from, to)) return one(from);
       if (from.y === to.y && from.mo === to.mo) {
-        return `${from.d}–${to.d} ${MONTHS[from.mo - 1]} ${from.y}`;
+        return `${from.y}年${from.mo}月${from.d}–${to.d}日`;
       }
       if (from.y === to.y) {
-        return `${from.d} ${MONTHS[from.mo - 1]} – ${to.d} ${MONTHS[to.mo - 1]} ${from.y}`;
+        return `${from.y}年${from.mo}月${from.d}日–${to.mo}月${to.d}日`;
       }
-      return `${one(from)} – ${one(to)}`;
+      return `${one(from)}–${one(to)}`;
     }
   }
 
