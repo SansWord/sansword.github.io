@@ -277,6 +277,22 @@ html, body {
 #gate-song span { display: block; }
 #gate-song .song-title { color: var(--ink); }
 
+/* The error detail, when there is one. Monospaced and dimmer than the sub above
+   it: this line is for reading back over a chat window, not for the room. It
+   holds a URL and a bracketed state dump, neither of which has spaces to break
+   at, so anywhere-breaking is the only way it stays inside a phone. */
+#gate-detail {
+  max-width: min(46ch, 100%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--dim);
+  opacity: 0.75;
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 /* How it works, said plainly before it starts. Set apart from the title card
    above it by a hairline rather than a box: it is instruction, not billing. */
 #gate-how {

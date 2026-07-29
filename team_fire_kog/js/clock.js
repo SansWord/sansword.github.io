@@ -39,7 +39,40 @@ export class Clock {
   async decode(url) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-    return this.ctx.decodeAudioData(await response.arrayBuffer());
+    const bytes = await response.arrayBuffer();
+    // Read before the call: WebKit detaches the buffer it was handed, so after
+    // a rejection byteLength is 0 and the one number that separates a short
+    // download from a refused decoder is gone.
+    const size = bytes.byteLength;
+    try {
+      return await this.ctx.decodeAudioData(bytes);
+    } catch (err) {
+      // WebKit rejects with EncodingError "Decoding failed" and says nothing
+      // about which of several unrelated causes applied -- a truncated body, a
+      // format it will not take, or the platform AAC decoder declining to work
+      // for a context that has never been resumed. All three read identically
+      // on a phone belonging to someone else, so the state goes in the message:
+      // a screenshot of the gate has to be enough to tell them apart.
+      const name = err && err.name ? err.name : "Error";
+      const message = err && err.message ? err.message : String(err);
+      throw new Error(
+        `${url}: ${name}: ${message} ` +
+        `[${size}B, ctx ${this.ctx.state} @ ${Math.round(this.ctx.sampleRate)}Hz]`
+      );
+    }
+  }
+
+  /**
+   * Resume the context from inside a user gesture, before a decode is retried.
+   *
+   * iOS gates Web Audio on having seen a tap: an AudioContext built at load
+   * time is suspended, and on that context decodeAudioData can reject rather
+   * than wait -- the same bytes decode once the context is running. Calling
+   * this outside a gesture is harmless and does nothing.
+   */
+  async unlock() {
+    try { await this.ctx.resume(); } catch (_) { /* still suspended; caller retries anyway */ }
+    return this.ctx.state;
   }
 
   /** Wall-relative playhead in seconds. */

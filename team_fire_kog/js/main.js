@@ -18,6 +18,7 @@ const hud = document.getElementById("hud");
 const gate = document.getElementById("gate");
 const gateTitle = document.getElementById("gate-title");
 const gateSub = document.getElementById("gate-sub");
+const gateDetail = document.getElementById("gate-detail");
 const gateSong = document.getElementById("gate-song");
 const startButton = document.getElementById("start");
 const shareButton = document.getElementById("share");
@@ -47,6 +48,7 @@ let soloLock = false;        // only one angle is live: there is nowhere to go
 let myPath = [];             // this viewer's own edit decision list
 let replayPath = [];         // a shared path being replayed, if any
 let replayIndex = 0;
+let audioError = null;       // the last master-track failure, retried on play
 
 // The wall is fitted into the band between the chrome, not the whole window.
 // The counter sits at the top and the collection credit at the bottom, and now
@@ -340,13 +342,64 @@ async function boot() {
       .catch(() => { /* diagnostics are never worth breaking the page for */ });
   }
 
-  await mixer.load(manifest.audio.master);
+  // A failed decode here is not the end of startup. iOS will refuse to decode
+  // AAC through Web Audio for a context that has never seen a user gesture --
+  // an in-app browser (a link opened inside Messenger, say) is stricter still
+  // -- and rejects with EncodingError "Decoding failed" however sound the file
+  // is. The same bytes decode after a tap, so the tap is where this is retried:
+  // arm the retry, let the button light up, and say nothing to the viewer yet.
+  // Dying here instead is what left a phone holding a gate it could not pass.
+  try {
+    await mixer.load(manifest.audio.master);
+  } catch (err) {
+    audioError = err;
+    console.warn("master track did not decode at boot; retrying on play", err);
+  }
   showCollectionCredit(creditEl, creditLink, manifest);
 
   startButton.disabled = false;
 }
 
+/**
+ * Load the master track from inside the play gesture, once boot could not.
+ *
+ * Resolves true when there is a buffer to start. The gate stays up on failure:
+ * without audio there is no clock, so there is nothing to show behind it.
+ */
+async function loadAudioOnGesture() {
+  if (mixer.buffer) return true;
+
+  startButton.disabled = true;
+  gateSub.textContent = "正在載入音軌…";
+  gateDetail.hidden = true;
+
+  await clock.unlock();
+  try {
+    await mixer.load(manifest.audio.master);
+    audioError = null;
+    return true;
+  } catch (err) {
+    audioError = err;
+    console.error("master track failed to decode on play", err);
+    gateSub.textContent = "音軌載入失敗。再按一次播放試試看，或用 Safari 直接開啟這個網址。";
+    showErrorDetail(err);
+    startButton.textContent = "再試一次";
+    startButton.disabled = false;
+    return false;
+  }
+}
+
+/** The technical line, for a screenshot sent back by someone two cities away. */
+function showErrorDetail(err) {
+  gateDetail.textContent = err && err.message ? err.message : String(err);
+  gateDetail.hidden = false;
+}
+
 startButton.addEventListener("click", async () => {
+  // Nothing moves until there is a track. The gate is only lifted once the
+  // buffer exists, so a retry that fails again has somewhere to say so.
+  if (!await loadAudioOnGesture()) return;
+
   gate.hidden = true;
   hud.hidden = false;
   startButton.disabled = true;
@@ -452,7 +505,11 @@ document.addEventListener("click", (event) => {
   event.preventDefault();
 }, true);
 
+// Whatever reaches here is fatal: the manifest, the tiles, the credit roll.
+// The audio no longer arrives by this route -- see loadAudioOnGesture().
 boot().catch((err) => {
-  gateSub.textContent = `載入失敗：${err.message}`;
+  console.error("boot failed", err);
+  gateSub.textContent = "載入失敗。請重新整理這個頁面。";
+  showErrorDetail(err);
   startButton.disabled = true;
 });
