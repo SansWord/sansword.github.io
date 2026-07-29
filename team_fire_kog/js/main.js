@@ -8,6 +8,7 @@ import { Clock } from "./clock.js";
 import { Mixer } from "./mixer.js";
 import { showCollectionCredit, renderCreditRoll } from "./credits.js";
 import { encodePath, decodePath, readFragment, writeFragment } from "./path.js";
+import { lockZoom } from "./zoomlock.js";
 
 const stage = document.getElementById("stage");
 const frame = document.getElementById("frame");
@@ -34,6 +35,10 @@ const creditLink = document.getElementById("credit-link");
 const creditsPanel = document.getElementById("credits");
 const showCreditsButton = document.getElementById("show-credits");
 const closeCreditsButton = document.getElementById("credits-close");
+
+// Armed before anything else, and never lifted: the wall has its own zoom and a
+// browser zoom on top of it hides the controls that undo it.
+lockZoom();
 
 let manifest = null;
 let tiles = null;

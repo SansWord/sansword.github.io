@@ -28,6 +28,11 @@ html, body {
   font: 500 14px/1.4 ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", sans-serif;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  /* Everything except pinch-zoom and double-tap-to-zoom. Naming the two pans
+     rather than using `none` keeps one-finger scrolling, which the gate and the
+     credit roll need. This is the only one of the four zoom locks that iOS
+     Safari respects declaratively -- see lockZoom() in js/zoomlock.js. */
+  touch-action: pan-x pan-y;
 }
 
 #stage { position: fixed; inset: 0; overflow: hidden; }
