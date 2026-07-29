@@ -293,7 +293,7 @@ function applyReplay(t) {
  * both exactly wall-length, so the video reaches its end while the clock is
  * still counting, and Clock._correct() finds a paused element and calls play()
  * -- which, on an element that has ended, seeks to 0 and starts over per spec.
- * The audio buffer source does not restart, so the wall replayed mute. The
+ * The master track did not come back with it, so the wall replayed mute. The
  * clock stopping is the fix; the guard in _correct() is the belt to its braces.
  */
 function finish() {
@@ -327,7 +327,21 @@ async function replayFromStart() {
   soloLock = false;
   setFocus(null, { record: false });
 
-  const startedAt = mixer.start(0);
+  // Replay is a gesture too, and the element rewinds rather than being rebuilt.
+  // If the sound will not come back, hand the end card back rather than leave a
+  // running wall with nothing driving it.
+  let startedAt;
+  try {
+    startedAt = await mixer.start(0);
+  } catch (err) {
+    console.error("master track failed to restart", err);
+    finished = true;
+    hud.hidden = true;
+    creditEl.hidden = true;
+    endEl.hidden = false;
+    replayButton.focus();
+    return;
+  }
   await clock.start(0, startedAt);
 }
 
@@ -399,50 +413,41 @@ async function boot() {
       .catch(() => { /* diagnostics are never worth breaking the page for */ });
   }
 
-  // A failed decode here is not the end of startup. iOS will refuse to decode
-  // AAC through Web Audio for a context that has never seen a user gesture --
-  // an in-app browser (a link opened inside Messenger, say) is stricter still
-  // -- and rejects with EncodingError "Decoding failed" however sound the file
-  // is. The same bytes decode after a tap, so the tap is where this is retried:
-  // arm the retry, let the button light up, and say nothing to the viewer yet.
-  // Dying here instead is what left a phone holding a gate it could not pass.
-  try {
-    await mixer.load(manifest.audio.master);
-  } catch (err) {
-    audioError = err;
-    console.warn("master track did not decode at boot; retrying on play", err);
-  }
+  // Attaches the track and wires it into the graph; it does not wait for a byte
+  // of it. Nothing here can fail on the network, so the button can light up
+  // immediately and the buffering happens inside the tap, where iOS allows it.
+  await mixer.load(manifest.audio.master);
   showCollectionCredit(creditEl, creditLink, manifest);
 
   startButton.disabled = false;
 }
 
 /**
- * Load the master track from inside the play gesture, once boot could not.
+ * Start the master track from inside the play gesture.
  *
- * Resolves true when there is a buffer to start. The gate stays up on failure:
- * without audio there is no clock, so there is nothing to show behind it.
+ * Resolves true when the sound is running and hands back the timestamp it began
+ * at. The gate stays up on failure: without audio there is no clock, so there is
+ * nothing to show behind it. A tap that has to wait for the first bytes says so
+ * -- on a phone that is a second or two of silence otherwise.
  */
-async function loadAudioOnGesture() {
-  if (mixer.buffer) return true;
-
+async function startAudioOnGesture(offset = 0) {
   startButton.disabled = true;
   gateSub.textContent = "正在載入音軌…";
   gateDetail.hidden = true;
 
   await clock.unlock();
   try {
-    await mixer.load(manifest.audio.master);
+    const startedAt = await mixer.start(offset);
     audioError = null;
-    return true;
+    return startedAt;
   } catch (err) {
     audioError = err;
-    console.error("master track failed to decode on play", err);
+    console.error("master track failed to start", err);
     gateSub.textContent = "音軌載入失敗。再按一次播放試試看，或用 Safari 直接開啟這個網址。";
     showErrorDetail(err);
     startButton.textContent = "再試一次";
     startButton.disabled = false;
-    return false;
+    return null;
   }
 }
 
@@ -453,18 +458,17 @@ function showErrorDetail(err) {
 }
 
 startButton.addEventListener("click", async () => {
-  // Nothing moves until there is a track. The gate is only lifted once the
-  // buffer exists, so a retry that fails again has somewhere to say so.
-  if (!await loadAudioOnGesture()) return;
+  // The audio decides when t = 0 is; the clock anchors to it and the video is
+  // corrected toward the clock. Starting the sound first and handing its
+  // timestamp over is what keeps all three describing the same instant -- and
+  // nothing moves until there is sound, so a failure has a gate to say it on.
+  const startedAt = await startAudioOnGesture(0);
+  if (startedAt === null) return;
 
   gate.hidden = true;
   hud.hidden = false;
   startButton.disabled = true;
 
-  // The audio decides when t = 0 is; the clock anchors to it and the video is
-  // corrected toward the clock. Starting the mixer first and handing its
-  // timestamp over is what keeps all three describing the same instant.
-  const startedAt = mixer.start(0);
   await clock.start(0, startedAt);
 });
 
@@ -563,7 +567,7 @@ document.addEventListener("click", (event) => {
 }, true);
 
 // Whatever reaches here is fatal: the manifest, the tiles, the credit roll.
-// The audio no longer arrives by this route -- see loadAudioOnGesture().
+// The audio no longer arrives by this route -- see startAudioOnGesture().
 boot().catch((err) => {
   console.error("boot failed", err);
   gateSub.textContent = "載入失敗。請重新整理這個頁面。";
