@@ -75,6 +75,16 @@ export class Clock {
   async start(offset = 0, when = null) {
     await this.ctx.resume();
     this.startOffset = offset;
+
+    // A non-finite anchor does not throw; it poisons every comparison made
+    // against the playhead. `t >= enter_s` is false, so no tile is ever live;
+    // the solo rule never fires; `t >= duration_s` is false, so the wall never
+    // ends. The page looks alive -- sound playing, picture moving -- and is
+    // wired to nothing. Refuse it loudly and anchor to now instead.
+    if (when !== null && !Number.isFinite(when)) {
+      console.error("clock: refused a non-finite anchor, using now instead", when);
+      when = null;
+    }
     this.startedAt = when === null ? this.ctx.currentTime : when;
 
     this.video.currentTime = offset;

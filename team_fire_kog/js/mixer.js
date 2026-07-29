@@ -40,6 +40,34 @@ function describe(el, url) {
   return `${url}: ${code}${detail} [readyState ${el.readyState}, network ${el.networkState}]`;
 }
 
+/**
+ * Resolve once the element knows its own position: metadata in, and a
+ * `currentTime` that is actually a number.
+ *
+ * Bounded, and resolves either way. A clock anchored a beat late is a few
+ * milliseconds of drift the corrector absorbs; a start that never happens is a
+ * dead page, and the caller has a fallback for the position anyway.
+ */
+function positionKnown(el, timeoutMs = 2000) {
+  const usable = () => el.readyState >= 1 && Number.isFinite(el.currentTime);
+  if (usable()) return Promise.resolve(true);
+
+  return new Promise((resolve) => {
+    const check = () => { if (usable()) finish(true); };
+    const finish = (value) => {
+      clearTimeout(timer);
+      for (const type of ["loadedmetadata", "loadeddata", "timeupdate", "playing"]) {
+        el.removeEventListener(type, check);
+      }
+      resolve(value);
+    };
+    const timer = setTimeout(() => finish(false), timeoutMs);
+    for (const type of ["loadedmetadata", "loadeddata", "timeupdate", "playing"]) {
+      el.addEventListener(type, check);
+    }
+  });
+}
+
 export class Mixer {
   constructor(clock, audioConfig) {
     this.clock = clock;
@@ -126,7 +154,17 @@ export class Mixer {
     // rejection -- so both routes have to be raced.
     await Promise.race([el.play(), failed]);
 
-    const startedAt = this.ctx.currentTime - (el.currentTime - at);
+    // The anchor is only meaningful once the element can say where it is. On
+    // iOS play() resolves while the element is still at HAVE_NOTHING, and its
+    // currentTime there is not a usable number -- which made the anchor NaN,
+    // and then the clock. Nothing throws: every comparison against a NaN
+    // playhead is simply false, so no tile was ever live, the solo rule never
+    // fired, the wall never reached its end card, and the sound played on over
+    // a still, silent-looking grid. That is what an iPhone 15 showed as
+    // "0 個視角播放中".
+    await Promise.race([positionKnown(el), failed]);
+    const position = Number.isFinite(el.currentTime) ? el.currentTime : at;
+    const startedAt = this.ctx.currentTime - (position - at);
 
     // From silence, not from full: entering a waveform mid-flight is a
     // discontinuity like any other.
