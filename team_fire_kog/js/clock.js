@@ -60,7 +60,13 @@ export class Clock {
     this.startedAt = when === null ? this.ctx.currentTime : when;
 
     this.video.currentTime = offset;
-    await this.video.play();
+    // A rejected play() must not abort startup. Chrome pauses muted,
+    // video-only media in a backgrounded tab and rejects the pending play()
+    // with AbortError; letting that throw here would skip the correction timer
+    // and the rAF loop below, so the page would come back to a dead player
+    // rather than a stalled picture. The audio is the clock and is already
+    // running -- _correct() retries the video.
+    await this.video.play().catch(() => {});
 
     this._timer = setInterval(() => this._correct(), CORRECT_INTERVAL_MS);
     this._raf();
@@ -87,6 +93,16 @@ export class Clock {
 
   _correct() {
     if (!this.running || this.video.readyState < 2) return;
+
+    // The tab was backgrounded, or the OS paused the video to save power. The
+    // sound never stopped, so recovery is to jump the picture to where the
+    // sound now is and start it again -- not to nudge it back over minutes.
+    if (this.video.paused) {
+      this.video.currentTime = this.time;
+      this.video.playbackRate = 1;
+      this.video.play().catch(() => {});
+      return;
+    }
 
     const error = this.video.currentTime - this.time;
     const magnitude = Math.abs(error);
