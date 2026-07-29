@@ -38,6 +38,23 @@ function bufferAhead(video) {
   return 0;
 }
 
+/**
+ * How large the composited video layer actually is, in device pixels.
+ *
+ * This is the number that decides whether the GPU can hold the frame: it is
+ * the canvas times the view scale times devicePixelRatio, so a 3x phone
+ * focusing a tile asks for something several times the width of the screen.
+ * Watching it next to the frame counter is what separates "the decoder is
+ * slow" from "the layer is too big to composite".
+ */
+function layerSize(video) {
+  const frame = document.getElementById("frame");
+  const scale = new DOMMatrix(getComputedStyle(frame).transform).a || 1;
+  const w = Math.round(video.videoWidth * scale * devicePixelRatio);
+  const h = Math.round(video.videoHeight * scale * devicePixelRatio);
+  return `${w}x${h}  (scale ${scale.toFixed(2)}, dpr ${devicePixelRatio})`;
+}
+
 /** Rough link speed, where the browser will say. Safari currently will not. */
 function link() {
   const c = navigator.connection;
@@ -127,6 +144,7 @@ export function attach(video, getClock) {
       `drift    ${drift.toFixed(3)}s  (peak ${peakDrift.toFixed(3)})`,
       `rate     ${video.playbackRate.toFixed(3)}${video.paused ? "  PAUSED" : ""}`,
       `seeks    ${clock ? clock.seeks : 0}`,
+      `layer    ${layerSize(video)}`,
       `1st frm  ${firstFrameMs === null ? "-" : Math.round(firstFrameMs) + "ms"}`,
       `link     ${link()}`,
       ``,

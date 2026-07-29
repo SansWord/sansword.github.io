@@ -33,7 +33,12 @@ html, body {
   left: 0;
   transform-origin: 0 0;
   transition: transform var(--ramp) cubic-bezier(0.22, 0.61, 0.36, 1);
-  will-change: transform;
+  /* No will-change here. It pins a permanently composited layer, and this one
+     contains the video: on iOS that costs the media overlay path and makes the
+     layer's rasterised size -- canvas x scale x devicePixelRatio -- something
+     the GPU has to find room for. Focused, that is five figures of pixels
+     across. Measured on an A12 iPhone as ~6 fps in grid view and a freeze on
+     focus. */
 }
 
 #mosaic { display: block; }
