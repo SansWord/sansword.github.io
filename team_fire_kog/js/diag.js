@@ -126,6 +126,7 @@ export function attach(video, getClock) {
       `buffer   ${bufferAhead(video).toFixed(1)}s ahead`,
       `drift    ${drift.toFixed(3)}s  (peak ${peakDrift.toFixed(3)})`,
       `rate     ${video.playbackRate.toFixed(3)}${video.paused ? "  PAUSED" : ""}`,
+      `seeks    ${clock ? clock.seeks : 0}`,
       `1st frm  ${firstFrameMs === null ? "-" : Math.round(firstFrameMs) + "ms"}`,
       `link     ${link()}`,
       ``,

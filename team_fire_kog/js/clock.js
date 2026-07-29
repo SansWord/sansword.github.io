@@ -13,6 +13,15 @@ const SEEK_THRESHOLD_S = 0.25;
 const MAX_RATE_TRIM = 0.05;
 const CORRECT_INTERVAL_MS = 250;
 
+// A seek is not free. It sends the decoder back to the previous keyframe and
+// makes it decode forward to the target, which on a phone already at its limit
+// costs more time than the gap being corrected -- so it falls further behind,
+// seeks again, and locks up. Measured on an A12-class iPhone: the picture ran
+// at ~5 fps and froze. The cooldown makes a struggling decoder drift instead,
+// which is what the design can afford: the audio is the clock, and a picture a
+// few frames late is worth far more than a picture that has stopped.
+const SEEK_COOLDOWN_MS = 3000;
+
 export class Clock {
   constructor(video) {
     this.video = video;
@@ -20,7 +29,9 @@ export class Clock {
     this.startedAt = null;
     this.startOffset = 0;
     this.duration = 0;
+    this.seeks = 0;               // read by the ?debug=1 panel
     this._timer = null;
+    this._lastSeekAt = 0;
     this._listeners = new Set();
   }
 
@@ -112,6 +123,13 @@ export class Clock {
       // Note this branch is the one that needs the host to answer HTTP Range:
       // `python -m http.server` does not, and a seek there silently snaps back
       // to what is already buffered, so drift never recovers locally.
+      //
+      // Rate-limited: see SEEK_COOLDOWN_MS. A decoder that cannot hold 30 fps
+      // re-earns this gap within a frame or two, and seeking every 250 ms is
+      // how the picture stops altogether.
+      if (performance.now() - this._lastSeekAt < SEEK_COOLDOWN_MS) return;
+      this._lastSeekAt = performance.now();
+      this.seeks += 1;
       this.video.currentTime = this.time;
       this.video.playbackRate = 1;
       return;
