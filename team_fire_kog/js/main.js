@@ -33,6 +33,7 @@ const swipeHint = document.getElementById("swipe-hint");
 const tapHint = document.getElementById("tap-hint");
 const endEl = document.getElementById("end");
 const replayButton = document.getElementById("replay");
+const endThread = document.getElementById("end-thread");
 const creditEl = document.getElementById("credit");
 const creditLink = document.getElementById("credit-link");
 const creditsPanel = document.getElementById("credits");
@@ -59,6 +60,13 @@ let replayPath = [];         // a shared path being replayed, if any
 let replayIndex = 0;
 let audioError = null;       // the last master-track failure, retried on play
 let selectedVariant = null;  // the mosaic variant chosen at load, for ?debug=1
+
+// The single source of truth for the closing-scene timing. preRollMs is how long
+// the clean, undarkened zoom into the hero holds before the credits appear;
+// fadeInMs is the credit fade duration, driving the CSS transition via
+// --end-fade. Retuning the close is editing these two numbers.
+const END_TIMING = { preRollMs: 1000, fadeInMs: 800 };
+let rollTimer = null;        // pending credit fade-in, cancelled on replay
 
 // The wall is fitted into the band between the chrome, not the whole window.
 // The counter sits at the top and the collection credit at the bottom, and now
@@ -291,14 +299,36 @@ function applyReplay(t) {
 }
 
 /**
- * The wall has run out. Stop the clock, park the video, offer it again.
+ * Lock or unlock the end card's controls. During the held zoom the card is
+ * revealed but invisible, so its replay button and thread link must not respond
+ * to a click or a keypress until the roll has faded in. The button is disabled
+ * outright; the link (which has no disabled attribute) is taken out of the tab
+ * order and marked aria-disabled, which the stylesheet turns into pointer-events
+ * none.
+ */
+function setEndLocked(locked) {
+  replayButton.disabled = locked;
+  endThread.tabIndex = locked ? -1 : 0;
+  endThread.setAttribute("aria-disabled", locked ? "true" : "false");
+}
+
+/**
+ * The wall has run out. Stop the clock, zoom into the spine, hold on that clean
+ * frame, then roll the credits over it.
  *
- * Without this the page looped silently: the mosaic and the master track are
- * both exactly wall-length, so the video reaches its end while the clock is
- * still counting, and Clock._correct() finds a paused element and calls play()
- * -- which, on an element that has ended, seeks to 0 and starts over per spec.
- * The master track did not come back with it, so the wall replayed mute. The
- * clock stopping is the fix; the guard in _correct() is the belt to its braces.
+ * Without stopping the clock the page looped silently: the mosaic and the master
+ * track are both exactly wall-length, so the video reaches its end while the
+ * clock is still counting, and Clock._correct() finds a paused element and calls
+ * play() -- which, on an element that has ended, seeks to 0 and starts over per
+ * spec. The clock stopping is the fix; the guard in _correct() is the belt to
+ * its braces.
+ *
+ * The close then zooms into the hero (the band on the big screen) using the
+ * unchanged tile-click focus path -- 300 ms eased on a pointer, an instant snap
+ * on touch -- and holds on that frozen, undarkened frame for preRollMs with the
+ * card's controls inert, before fading the roll in. When there is no hero (an
+ * unexpected layout) it keeps the old behaviour: zoom out to the grid and show
+ * the end card at once.
  */
 function finish() {
   if (finished) return;
@@ -306,19 +336,58 @@ function finish() {
 
   clock.stop();
   mixer.stop();
-  setFocus(null, { record: false });
+
+  const spineClip = manifest.hero;
+
+  endEl.style.setProperty("--end-fade", `${END_TIMING.fadeInMs}ms`);
+
+  if (spineClip) {
+    // Fade the tile markers/names out for a clean final frame, then zoom into
+    // the hero via the normal mechanism. setFocus is a no-op if the solo rule
+    // already parked us on the hero -- the view is already there.
+    stage.classList.add("ending");
+    setFocus(spineClip, { record: false });
+  } else {
+    setFocus(null, { record: false });
+  }
+
   hud.hidden = true;
   timecodeEl.hidden = true;
-  endEl.hidden = false;
   // The end card carries the full roll and its own thread link, so the footer
   // strip would only repeat it, smaller, underneath a list it might overlap.
   creditEl.hidden = true;
-  replayButton.focus();
+
+  endEl.hidden = false;
+  if (spineClip) {
+    // Hold on the clean, undarkened zoom with the controls locked, then add
+    // veil-in so the roll fades in and the backdrop blurs. The timer id is
+    // stored so replay can cancel a hold that has not fired yet.
+    setEndLocked(true);
+    rollTimer = setTimeout(() => {
+      endEl.classList.add("veil-in");
+      setEndLocked(false);
+      replayButton.focus();
+      rollTimer = null;
+    }, END_TIMING.preRollMs);
+  } else {
+    // No hero: the old instant end card, controls live at once.
+    endEl.classList.add("veil-in");
+    replayButton.focus();
+  }
 }
 
 async function replayFromStart() {
   if (!finished) return;
   finished = false;
+
+  // Cancel a hold that has not fired yet, unlock the controls, and reset #end to
+  // its start state so a second finish() re-holds and re-fades cleanly.
+  clearTimeout(rollTimer);
+  rollTimer = null;
+  setEndLocked(false);
+  endEl.classList.remove("veil-in");
+  stage.classList.remove("ending");
+
   endEl.hidden = true;
   hud.hidden = false;
   timecodeEl.hidden = false;
@@ -345,6 +414,10 @@ async function replayFromStart() {
     hud.hidden = true;
     timecodeEl.hidden = true;
     creditEl.hidden = true;
+    // No running wall behind it, so show the end card outright with its controls
+    // live, rather than a held frame waiting on a timer that is never set here.
+    setEndLocked(false);
+    endEl.classList.add("veil-in");
     endEl.hidden = false;
     replayButton.focus();
     return;
@@ -495,12 +568,28 @@ function showErrorDetail(err) {
   gateDetail.hidden = false;
 }
 
+/**
+ * ?at=SECONDS is a debug shortcut: start playback at an offset instead of 0, to
+ * reach the closing scene (or any moment) without playing the whole track.
+ * Missing or unparseable -> 0, a normal start. A value past the end is pulled
+ * back to just inside it, so the clock still ticks the last stretch into
+ * finish(). Replay is unaffected -- it always restarts from 0; reload the page
+ * to re-enter at the same offset.
+ */
+function startOffsetFromQuery(duration) {
+  const raw = new URLSearchParams(location.search).get("at");
+  const n = Number(raw);
+  if (raw === null || !Number.isFinite(n) || n <= 0) return 0;
+  return Math.min(n, Math.max(0, duration - 0.5));
+}
+
 startButton.addEventListener("click", async () => {
   // The audio decides when t = 0 is; the clock anchors to it and the video is
   // corrected toward the clock. Starting the sound first and handing its
   // timestamp over is what keeps all three describing the same instant -- and
   // nothing moves until there is sound, so a failure has a gate to say it on.
-  const startedAt = await startAudioOnGesture(0);
+  const offset = startOffsetFromQuery(manifest.duration_s);
+  const startedAt = await startAudioOnGesture(offset);
   if (startedAt === null) return;
 
   gate.hidden = true;
@@ -508,7 +597,7 @@ startButton.addEventListener("click", async () => {
   timecodeEl.hidden = false;
   startButton.disabled = true;
 
-  await clock.start(0, startedAt);
+  await clock.start(offset, startedAt);
 });
 
 replayButton.addEventListener("click", () => { replayFromStart(); });
@@ -548,6 +637,11 @@ document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") { event.preventDefault(); closeCredits(); }
     return;
   }
+  // The wall has ended: the closing scene owns the screen, so the arrow/Escape
+  // navigation is off -- a keypress must not steer the frozen frame out from
+  // under the credits. The end card's replay button is a native control and
+  // still answers Enter on its own.
+  if (finished) return;
   if (!focused || soloLock) return;
 
   // Down and Escape both mean out. Escape is the convention; Down is where the
@@ -575,7 +669,7 @@ let touchStart = null;
 let swiped = false;
 
 stage.addEventListener("touchstart", (event) => {
-  touchStart = focused && !soloLock && event.touches.length === 1
+  touchStart = focused && !soloLock && !finished && event.touches.length === 1
     ? { x: event.touches[0].clientX, y: event.touches[0].clientY }
     : null;
 }, { passive: true });
@@ -583,7 +677,7 @@ stage.addEventListener("touchstart", (event) => {
 stage.addEventListener("touchend", (event) => {
   const start = touchStart;
   touchStart = null;
-  if (!start || !focused || soloLock) return;
+  if (!start || !focused || soloLock || finished) return;
 
   const touch = event.changedTouches[0];
   const dx = touch.clientX - start.x;

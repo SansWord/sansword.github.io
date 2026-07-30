@@ -11,6 +11,10 @@
   --solid-bg: rgba(242, 242, 240, 0.94);
   --solid-ink: #0a0a0a;
   --scrim: rgba(0, 0, 0, 0.82);
+  /* Closing-scene timing. JS overwrites --end-fade from END_TIMING in main.js;
+     this is the fallback if it does not. The pre-roll hold is a JS setTimeout,
+     not a CSS value, so it has no property here. */
+  --end-fade: 800ms;
 }
 
 * { box-sizing: border-box; }
@@ -208,12 +212,53 @@ html, body {
 
 #gate { background: #000; }
 
-/* A scrim, not a cut to black: the frame the wall ended on stays faintly
-   behind the credits, so the end reads as a pause in the same room. */
+/* The closing scene never darkens the frame. #end holds fully transparent and
+   unblurred over the frozen hero zoom for the pre-roll hold (a JS timer, see
+   finish()), so the crisp spine is what you sit with; then `veil-in` fades the
+   roll in and blurs -- not darkens -- the backdrop just enough to keep the
+   credits legible over the busy frame. There is no scrim. */
 #end {
-  background: var(--scrim);
+  background: none;
+  -webkit-backdrop-filter: blur(0);
+  backdrop-filter: blur(0);
+  transition: -webkit-backdrop-filter var(--end-fade) ease,
+              backdrop-filter var(--end-fade) ease;
+}
+#end .sheet {
+  opacity: 0;
+  transition: opacity var(--end-fade) ease;
+}
+#end.veil-in {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+}
+#end.veil-in .sheet {
+  opacity: 1;
+}
+/* The roll sits over the untouched, often bright final frame. Rather than darken
+   the scene -- which reads best kept whole -- a dark halo behind the text lifts
+   the white credits and the instruction off it, so they stay readable over
+   highlights without a scrim. Scoped to #end: the before-playing panel does not
+   sit over video and does not need it. */
+#end .sheet {
+  text-shadow:
+    0 0 3px rgba(0, 0, 0, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.9),
+    0 0 16px rgba(0, 0, 0, 0.55);
+}
+/* During the held zoom the card is invisible; its thread link must not respond
+   until the roll has faded in. JS disables the replay button outright and marks
+   the link aria-disabled, which this rule turns into an unclickable link. */
+#end .roll-thread[aria-disabled="true"] {
+  pointer-events: none;
+}
+/* For a clean final frame, the tile markers and names fade out as the wall
+   zooms into the hero -- only the band-on-screen video is left under the roll.
+   #mosaic is a sibling of #frame and is never touched here. */
+#stage.ending .tile,
+#stage.ending .tile-name {
+  opacity: 0;
+  transition: opacity var(--end-fade) ease;
 }
 
 /* Opaque, not a scrim: this one replaces the gate rather than veiling it, and
@@ -229,6 +274,17 @@ html, body {
   font-size: clamp(1.05rem, 3.6vw, 1.4rem);
   font-weight: 600;
   line-height: 1.6;
+  color: var(--ink);
+}
+
+/* An instruction, not a footnote: every name in the roll is a link to that
+   person's post, and this line says so plainly, above the roll, in full ink. On
+   the end card it fades in with the roll and then stays -- it never fades out. */
+.roll-instruction {
+  margin: 0;
+  max-width: 32ch;
+  font-size: 0.95rem;
+  line-height: 1.5;
   color: var(--ink);
 }
 
@@ -557,6 +613,19 @@ button:disabled { color: var(--dim); cursor: default; border-color: var(--edge);
   #frame, .tile, .tile-name { transition-duration: 1ms; }
   /* The hints are withdrawn by a timer either way -- only the fade goes. */
   .hint { animation: none; }
+  /* The credits skip the fade: the moment JS adds veil-in the roll is shown and
+     the backdrop blur is on, with no transition. The pre-roll hold is a JS
+     timer, not motion, so it still applies -- the frame just holds, then the
+     credits appear. No scrim; nothing is darkened. */
+  #end,
+  #end .sheet,
+  #stage.ending .tile,
+  #stage.ending .tile-name { transition: none; }
+  #end.veil-in {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  #end.veil-in .sheet { opacity: 1; }
 }
 
 /* The timecode readout. Quiet by design: --dim ink on a light scrim, tabular
