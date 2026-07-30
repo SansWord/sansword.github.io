@@ -10,7 +10,21 @@
   "collection_post": "https://www.threads.com/@sanswordtw/post/DbVaP6jmyon",
   "duration_s": 140.0,
   "mosaic": {
-    "file": "https://pub-074cc92e7f7c4a97beab9ba20f7f476b.r2.dev/mosaic.mp4",
+    "file": "https://pub-074cc92e7f7c4a97beab9ba20f7f476b.r2.dev/team_fire_kog/mosaic.mp4",
+    "variants": [
+      {
+        "id": "base",
+        "url": "https://pub-074cc92e7f7c4a97beab9ba20f7f476b.r2.dev/team_fire_kog/mosaic.mp4",
+        "width": 1920,
+        "height": 1152
+      },
+      {
+        "id": "hi",
+        "url": "https://pub-074cc92e7f7c4a97beab9ba20f7f476b.r2.dev/team_fire_kog/mosaic.hi.mp4",
+        "width": 3840,
+        "height": 2304
+      }
+    ],
     "canvas": {
       "width": 1920,
       "height": 1152

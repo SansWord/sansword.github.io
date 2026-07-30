@@ -579,3 +579,13 @@ button:disabled { color: var(--dim); cursor: default; border-color: var(--edge);
   pointer-events: none;
 }
 #timecode[hidden] { display: none; }
+
+/* Quality tag appended to the readout (e.g. "hi"/"base"): dimmer and spaced off
+   the digits so it reads as metadata, not part of the time. Always on -- it is
+   there so a viewer's screenshot tells us which mosaic variant they streamed. */
+#timecode .tc-var {
+  margin-left: 6px;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}

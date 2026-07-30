@@ -85,7 +85,7 @@ function link() {
     .join(" ");
 }
 
-export function attach(video, getClock, getMixer) {
+export function attach(video, getClock, getMixer, getVariant) {
   const panel = document.createElement("div");
   panel.id = "diag";
   panel.style.cssText = [
@@ -169,6 +169,7 @@ export function attach(video, getClock, getMixer) {
     const mixer = getMixer ? getMixer() : null;
     const audio = mixer && mixer.el ? mixer.el : null;
     const ctx = clock ? clock.ctx : null;
+    const variant = getVariant ? getVariant() : null;
 
     if (audio && audioWired !== audio) {
       audioWired = audio;
@@ -197,6 +198,7 @@ export function attach(video, getClock, getMixer) {
       `${screen.width}x${screen.height} @${devicePixelRatio}x  vp ${innerWidth}x${innerHeight}`,
       `video ${video.videoWidth}x${video.videoHeight}  t=${video.currentTime.toFixed(1)}`,
       `source   ${source(video)}`,
+      `variant  ${variant ? `${variant.id} (${variant.reason})` : "-"}`,
       ``,
       `frames   ${f.dropped} dropped / ${f.total}  (${drop.toFixed(1)}%)`,
       `rAF      ${fps} fps`,

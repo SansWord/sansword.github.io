@@ -10,6 +10,7 @@ import { Mixer } from "./mixer.js";
 import { showCollectionCredit, renderCreditRoll } from "./credits.js";
 import { encodePath, decodePath, readFragment, writeFragment } from "./path.js";
 import { lockZoom } from "./zoomlock.js";
+import { selectVariant } from "./variant.js";
 
 const stage = document.getElementById("stage");
 const frame = document.getElementById("frame");
@@ -57,6 +58,7 @@ let myPath = [];             // this viewer's own edit decision list
 let replayPath = [];         // a shared path being replayed, if any
 let replayIndex = 0;
 let audioError = null;       // the last master-track failure, retried on play
+let selectedVariant = null;  // the mosaic variant chosen at load, for ?debug=1
 
 // The wall is fitted into the band between the chrome, not the whole window.
 // The counter sits at the top and the collection credit at the bottom, and now
@@ -358,6 +360,15 @@ function updateTimecode(t) {
   if (text !== lastTimecode) {
     lastTimecode = text;
     timecodeEl.textContent = text;
+    // A quiet quality tag (e.g. "hi"/"base") so a viewer's screenshot records
+    // which variant played. Static per load; re-appended whenever the readout
+    // is rewritten because textContent above clears it.
+    if (selectedVariant) {
+      const tag = document.createElement("span");
+      tag.className = "tc-var";
+      tag.textContent = selectedVariant.id;
+      timecodeEl.append(tag);
+    }
   }
 }
 
@@ -393,7 +404,17 @@ async function boot() {
   tilesEl.style.height = `${height}px`;
   video.width = width;
   video.height = height;
-  video.src = manifest.mosaic.file;
+  // Pick the mosaic resolution once, now, from this client's screen and network.
+  // No mid-stream switching (that fights the audio clock); the choice is frozen.
+  selectedVariant = selectVariant(manifest.mosaic.variants, {
+    viewportWidth: window.innerWidth,
+    dpr: window.devicePixelRatio || 1,
+    saveData: navigator.connection?.saveData,
+    effectiveType: navigator.connection?.effectiveType,
+    override: new URLSearchParams(location.search).get("res"),
+  });
+  // Fall back to the flat pointer for an old manifest with no `variants`.
+  video.src = (selectedVariant && selectedVariant.url) || manifest.mosaic.file;
 
   tiles = buildTiles(tilesEl, manifest, (clip) => {
     replayPath = [];                    // diverging ends the replay
@@ -426,7 +447,7 @@ async function boot() {
   // Dynamic, and only on request: a viewer never fetches this file.
   if (new URLSearchParams(window.location.search).has("debug")) {
     import("./diag.js")
-      .then((diag) => diag.attach(video, () => clock, () => mixer))
+      .then((diag) => diag.attach(video, () => clock, () => mixer, () => selectedVariant))
       .catch(() => { /* diagnostics are never worth breaking the page for */ });
   }
 
