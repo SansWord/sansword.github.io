@@ -85,7 +85,7 @@ function link() {
     .join(" ");
 }
 
-export function attach(video, getClock) {
+export function attach(video, getClock, getMixer) {
   const panel = document.createElement("div");
   panel.id = "diag";
   panel.style.cssText = [
@@ -148,8 +148,47 @@ export function attach(video, getClock) {
   let peakDrift = 0;
   let text = "";
 
+  // The audio element is the one component the panel above never watched, and
+  // the pitch bug lives in it: the master streams through a media element whose
+  // 44.1 kHz is resampled into a 48 kHz context, and nothing corrects it (only
+  // the video is). If it underruns under load it falls behind the context clock
+  // and the resampler plays the backlog faster to realign -- audible as pitch up
+  // then settle. `audio drift` (the element's own currentTime minus the clock,
+  // same units as the video drift above) is the number that catches it; `ctx`
+  // shows the sample rate the stream is being resampled into. The element is
+  // created inside mixer.load(), after attach() runs, so it is wired lazily the
+  // first sample it exists.
+  let audioStalls = 0;
+  let audioStalledMs = 0;
+  let audioStalledAt = null;
+  let audioWired = null;
+  let audioPeakDrift = 0;
+
   const sample = () => {
     const clock = getClock();
+    const mixer = getMixer ? getMixer() : null;
+    const audio = mixer && mixer.el ? mixer.el : null;
+    const ctx = clock ? clock.ctx : null;
+
+    if (audio && audioWired !== audio) {
+      audioWired = audio;
+      audio.addEventListener("waiting", () => {
+        audioStalls += 1;
+        audioStalledAt = performance.now();
+      });
+      for (const done of ["playing", "canplay"]) {
+        audio.addEventListener(done, () => {
+          if (audioStalledAt !== null) {
+            audioStalledMs += performance.now() - audioStalledAt;
+            audioStalledAt = null;
+          }
+        });
+      }
+    }
+
+    const audioDrift = audio && clock && clock.running ? audio.currentTime - clock.time : 0;
+    if (Math.abs(audioDrift) > Math.abs(audioPeakDrift)) audioPeakDrift = audioDrift;
+
     const f = frameStats(video);
     const drop = f.total ? (f.dropped / f.total) * 100 : 0;
     const drift = clock && clock.running ? video.currentTime - clock.time : 0;
@@ -166,6 +205,11 @@ export function attach(video, getClock) {
       `drift    ${drift.toFixed(3)}s  (peak ${peakDrift.toFixed(3)})`,
       `rate     ${video.playbackRate.toFixed(3)}${video.paused ? "  PAUSED" : ""}`,
       `seeks    ${clock ? clock.seeks : 0}`,
+      ``,
+      `ctx      ${ctx ? `${ctx.sampleRate}Hz ${ctx.state}` : "-"}`,
+      `audio    ${audio ? `t=${audio.currentTime.toFixed(1)}  drift ${audioDrift.toFixed(3)}s (peak ${audioPeakDrift.toFixed(3)})` : "-"}`,
+      `audioBuf ${audio ? `${bufferAhead(audio).toFixed(1)}s ahead  rs${audio.readyState}  rate ${audio.playbackRate.toFixed(3)}` : "-"}`,
+      `audioStl ${audioStalls}  (${(audioStalledMs / 1000).toFixed(1)}s waiting)`,
       `layer    ${layerSize(video)}`,
       `1st frm  ${firstFrameMs === null ? "-" : Math.round(firstFrameMs) + "ms"}`,
       `link     ${link()}`,

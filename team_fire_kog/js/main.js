@@ -426,7 +426,7 @@ async function boot() {
   // Dynamic, and only on request: a viewer never fetches this file.
   if (new URLSearchParams(window.location.search).has("debug")) {
     import("./diag.js")
-      .then((diag) => diag.attach(video, () => clock))
+      .then((diag) => diag.attach(video, () => clock, () => mixer))
       .catch(() => { /* diagnostics are never worth breaking the page for */ });
   }
 
