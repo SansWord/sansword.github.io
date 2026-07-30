@@ -92,6 +92,15 @@
       </svg>
     </button>
   </div>
+
+  <!-- Always-on position readout, e.g. 1:16/2:20. A direct child of body, not of
+       #frame, so the zoom transform never moves it: it reads the same on the full
+       grid and when focused on a tile. Decorative (aria-hidden) -- a timestamp
+       announced every second is noise; #hud carries the live announcement that
+       matters. pointer-events:none so it never eats a tap meant for a corner
+       tile. Starts hidden until the wall plays. -->
+  <div id="timecode" aria-hidden="true" hidden></div>
+
   <!-- Said on the wall, once, as it opens: the tiles do not read as buttons
        until one has been clicked, and someone who does not know they are
        clickable reaches for the only gesture they can think of -- a pinch --

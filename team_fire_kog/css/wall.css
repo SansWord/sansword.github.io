@@ -558,3 +558,24 @@ button:disabled { color: var(--dim); cursor: default; border-color: var(--edge);
   /* The hints are withdrawn by a timer either way -- only the fade goes. */
   .hint { animation: none; }
 }
+
+/* The timecode readout. Quiet by design: --dim ink on a light scrim, tabular
+   figures so the digits do not jitter as they tick. Offset by the safe-area
+   insets so it clears a phone's rounded corner and home indicator. */
+#timecode {
+  position: fixed;
+  right: calc(env(safe-area-inset-right, 0px) + 10px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+  z-index: 12;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--dim);
+  background: rgba(0, 0, 0, 0.34);
+  pointer-events: none;
+}
+#timecode[hidden] { display: none; }

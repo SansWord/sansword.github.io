@@ -5,6 +5,7 @@ import {
 } from "./geometry.js";
 import { buildTiles, updateLiveState } from "./wall.js";
 import { Clock } from "./clock.js";
+import { formatTimecode } from "./timecode.js";
 import { Mixer } from "./mixer.js";
 import { showCollectionCredit, renderCreditRoll } from "./credits.js";
 import { encodePath, decodePath, readFragment, writeFragment } from "./path.js";
@@ -34,6 +35,7 @@ const replayButton = document.getElementById("replay");
 const creditEl = document.getElementById("credit");
 const creditLink = document.getElementById("credit-link");
 const creditsPanel = document.getElementById("credits");
+const timecodeEl = document.getElementById("timecode");
 const showCreditsButton = document.getElementById("show-credits");
 const closeCreditsButton = document.getElementById("credits-close");
 
@@ -304,6 +306,7 @@ function finish() {
   mixer.stop();
   setFocus(null, { record: false });
   hud.hidden = true;
+  timecodeEl.hidden = true;
   endEl.hidden = false;
   // The end card carries the full roll and its own thread link, so the footer
   // strip would only repeat it, smaller, underneath a list it might overlap.
@@ -316,6 +319,7 @@ async function replayFromStart() {
   finished = false;
   endEl.hidden = true;
   hud.hidden = false;
+  timecodeEl.hidden = false;
   showCollectionCredit(creditEl, creditLink, manifest);
 
   // A replay is a clean run, not a continuation: whatever cut was being watched
@@ -337,6 +341,7 @@ async function replayFromStart() {
     console.error("master track failed to restart", err);
     finished = true;
     hud.hidden = true;
+    timecodeEl.hidden = true;
     creditEl.hidden = true;
     endEl.hidden = false;
     replayButton.focus();
@@ -345,7 +350,19 @@ async function replayFromStart() {
   await clock.start(0, startedAt);
 }
 
+// Written only when the visible string changes -- once a second, not every
+// frame -- so the tick loop stays free of per-frame layout work.
+let lastTimecode = "";
+function updateTimecode(t) {
+  const text = formatTimecode(t, manifest.duration_s);
+  if (text !== lastTimecode) {
+    lastTimecode = text;
+    timecodeEl.textContent = text;
+  }
+}
+
 function tick(t) {
+  updateTimecode(t);
   if (t >= manifest.duration_s) {
     finish();
     return;
@@ -467,6 +484,7 @@ startButton.addEventListener("click", async () => {
 
   gate.hidden = true;
   hud.hidden = false;
+  timecodeEl.hidden = false;
   startButton.disabled = true;
 
   await clock.start(0, startedAt);
