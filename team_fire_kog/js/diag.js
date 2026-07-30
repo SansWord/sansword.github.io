@@ -58,6 +58,24 @@ function layerSize(video) {
   return `${w}x${h}  (scale ${scale.toFixed(2)}, dpr ${devicePixelRatio})`;
 }
 
+/**
+ * Where the mosaic is actually streaming from, read off the element's resolved
+ * currentSrc rather than the manifest -- this is the URL the decoder is really
+ * pulling bytes from. On a phone it is the direct answer to "is this coming from
+ * R2 or from the page's own origin": an off-origin host is the R2 bucket.
+ */
+function source(video) {
+  const src = video.currentSrc || video.getAttribute("src") || "";
+  if (!src) return "none";
+  try {
+    const u = new URL(src, location.href);
+    const off = u.host !== location.host;
+    return `${u.host}  (${off ? "off-origin → R2" : "same-origin"})`;
+  } catch (_) {
+    return src;
+  }
+}
+
 /** Rough link speed, where the browser will say. Safari currently will not. */
 function link() {
   const c = navigator.connection;
@@ -139,6 +157,7 @@ export function attach(video, getClock) {
     text = [
       `${screen.width}x${screen.height} @${devicePixelRatio}x  vp ${innerWidth}x${innerHeight}`,
       `video ${video.videoWidth}x${video.videoHeight}  t=${video.currentTime.toFixed(1)}`,
+      `source   ${source(video)}`,
       ``,
       `frames   ${f.dropped} dropped / ${f.total}  (${drop.toFixed(1)}%)`,
       `rAF      ${fps} fps`,
