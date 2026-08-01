@@ -11,6 +11,7 @@ import { showCollectionCredit, renderCreditRoll } from "./credits.js";
 import { encodePath, decodePath, readFragment, writeFragment } from "./path.js";
 import { lockZoom } from "./zoomlock.js";
 import { selectVariant } from "./variant.js";
+import { clampStartOffset } from "./startat.js";
 
 const stage = document.getElementById("stage");
 const frame = document.getElementById("frame");
@@ -339,7 +340,11 @@ function finish() {
 
   const spineClip = manifest.hero;
 
-  endEl.style.setProperty("--end-fade", `${END_TIMING.fadeInMs}ms`);
+  // On :root, not #end -- the tile-marker fade rule lives under #stage, a
+  // sibling of #end, so a custom property set on #end would never reach it and
+  // the two fades would silently diverge the moment fadeInMs stops matching the
+  // CSS fallback. Set at the root, it reaches both subtrees.
+  document.documentElement.style.setProperty("--end-fade", `${END_TIMING.fadeInMs}ms`);
 
   if (spineClip) {
     // Fade the tile markers/names out for a clean final frame, then zoom into
@@ -569,18 +574,12 @@ function showErrorDetail(err) {
 }
 
 /**
- * ?at=SECONDS is a debug shortcut: start playback at an offset instead of 0, to
- * reach the closing scene (or any moment) without playing the whole track.
- * Missing or unparseable -> 0, a normal start. A value past the end is pulled
- * back to just inside it, so the clock still ticks the last stretch into
- * finish(). Replay is unaffected -- it always restarts from 0; reload the page
- * to re-enter at the same offset.
+ * Read ?at=SECONDS and clamp it into the track. The clamping is pure and tested
+ * in startat.js; this only supplies the query value. Replay is unaffected -- it
+ * always restarts from 0; reload the page to re-enter at the same offset.
  */
 function startOffsetFromQuery(duration) {
-  const raw = new URLSearchParams(location.search).get("at");
-  const n = Number(raw);
-  if (raw === null || !Number.isFinite(n) || n <= 0) return 0;
-  return Math.min(n, Math.max(0, duration - 0.5));
+  return clampStartOffset(new URLSearchParams(location.search).get("at"), duration);
 }
 
 startButton.addEventListener("click", async () => {
