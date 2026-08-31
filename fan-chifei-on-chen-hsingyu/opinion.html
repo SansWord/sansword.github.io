@@ -140,6 +140,21 @@
   .seg .lbl{color:var(--ink);font-size:.92rem;line-height:1.5;}
   .seg .dur{color:var(--ink-3);font-size:.82rem;margin-left:auto;white-space:nowrap;}
 
+  /* ---------- series banner ---------- */
+  .series{
+    margin:2.2rem 0 0;padding:.95rem 1.15rem;
+    background:var(--surface-2);border-left:3px solid var(--rule-2);
+    border-radius:2px;font-size:.93rem;color:var(--ink-2);
+  }
+  .series .lbl{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;
+    font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-3);display:block;margin-bottom:.4rem;
+  }
+  .series p{margin:0;line-height:1.85;}
+  .series strong{color:var(--ink);font-weight:700;}
+  .series a{font-weight:600;}
+
   /* ---------- context callout ---------- */
   .context{
     margin:2.2rem 0 0;padding:1.5rem 1.5rem;
@@ -347,15 +362,20 @@
     <p class="standfirst">這篇是我的意見，不是中性整理。但每一個判斷都標出它建立在哪一句話、哪一個時間點上，你可以自己去查。</p>
   </header>
 
+  <div class="series">
+    <span class="lbl">系列文章</span>
+    <p>這篇屬於<strong>〈范琪斐與陳幸妤：2009 年那場追訪〉</strong>系列。同一件事我做了三份頁面：陶晶瑩《女人心事》和鏡新聞《宵夜鏡來講》兩份不表立場的訪談摘要，加上這篇我的看法。三份都在系列總覽頁：<a target="_blank" rel="noopener noreferrer" href="https://sansword.github.io/fan-chifei-on-chen-hsingyu/">sansword.github.io/fan-chifei-on-chen-hsingyu</a></p>
+  </div>
+
   <section class="context">
     <h2>TL;DR</h2>
-    <p><strong>事件</strong>：2009 年，陳前總統之女陳幸妤赴美期間，遭台灣多家媒體跟訪。他的父母、丈夫、弟弟、弟媳都被起訴，<strong>但他本人從未被起訴任何罪名</strong>。范琪斐當時是 TVBS 駐紐約特派，做了其中一則跟監報導的旁白與提問，最後也拿到陳幸妤唯一一次一對一專訪。</p>
+    <p><strong>事件</strong>：2009 年，陳前總統之女陳幸妤赴美期間，遭台灣多家媒體跟訪。他的父母、丈夫、弟弟、弟媳都被起訴，<strong>但陳幸妤本人從未被起訴任何罪名</strong>。范琪斐當時是 TVBS 駐紐約特派，做了其中一則跟監報導的旁白與提問，最後也拿到陳幸妤唯一一次一對一專訪。</p>
     <p><strong>現在</strong>：2026 年這件事重新被翻出來討論，范琪斐上了兩個節目談它——1 月的鏡新聞（全片九分鐘都在談）、8 月的陶晶瑩《女人心事》（七十分鐘裡只有 7.5 分鐘）。</p>
     <p><strong>我看到的三件事</strong>：</p>
     <ul>
       <li><strong>范琪斐</strong>用「整個家族都有問題」，正當化跟訪一個<strong>從未被起訴的人</strong>。</li>
-      <li>他確實說了那個方法不好——但理由是「非常蠢」「追不到東西」，是效率問題，不是傷害問題。</li>
-      <li>十七年、五份資料裡，<strong>他沒有表達過任何歉意或遺憾</strong>。</li>
+      <li>范琪斐確實說了那個方法不好——但理由是「非常蠢」「追不到東西」，是效率問題，不是傷害問題。</li>
+      <li>十七年、五份資料裡，<strong>范琪斐沒有表達過任何歉意或遺憾</strong>。</li>
     </ul>
     <p><strong>而陳幸妤在這件事裡的位置</strong>：從 2009 到 2026，他始終是被利用的那一方。2009 年，那場專訪本身被做成一則新聞；十七年後，同一場專訪又成了范琪斐證明自己「取得諒解」的憑據。</p>
   </section>
@@ -380,7 +400,7 @@
   </div>
   <p class="method"><strong>時間碼標記：</strong>本文引用兩場訪談，用 <code>鏡</code> 和 <code>陶</code> 標示出處——<strong><code>鏡</code></strong> ＝ 鏡新聞《宵夜鏡來講》2026/01/13｜<strong><code>陶</code></strong> ＝ 陶晶瑩《女人心事》2026/08/26。例：<code>[鏡 1:52]</code> 指鏡新聞第 1 分 52 秒，點下去會跳到原片該時間點。2009 年的部落格是文字，沒有時間碼。</p>
   <p><strong>根據這兩份資料，我才有足夠的東西可以形成看法。</strong></p>
-  <p>尤其是鏡新聞那集。他在那裡講得比陶晶瑩那集<strong>多</strong>，而且是在<strong>七個月前</strong>。</p>
+  <p>尤其是鏡新聞那集。范琪斐在那裡講得比陶晶瑩那集<strong>多</strong>，而且是在<strong>七個月前</strong>。</p>
 
   <h2 class="sec">首先，也最重要的事：其他家人的行為不構成緊迫盯人的正當性</h2>
   <p>以下是范琪斐為自己辯護時說的話：</p>
@@ -388,16 +408,16 @@
     <p>「他爸爸被起訴、他媽媽被起訴、他老公被起訴、他弟弟被起訴、他弟媳被起訴，而且後來都判了有罪⋯⋯<strong>即使陳幸妤他自己本人沒有在案子裡面</strong>⋯⋯我覺得是<strong>整個家族都有問題</strong>⋯⋯<strong>所以我覺得查他是應該的</strong>。」</p>
     <div class="tcline"><a class="tc-chip" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=112">鏡 1:52</a><span class="who">范琪斐</span></div>
   </blockquote>
-  <p><strong>他主動說出了對自己最不利的事實</strong>——當事人不在案子裡。這不是網友挖出來的，是他自己講的。<strong>然後他沒有停下來</strong>，接上「整個家族都有問題」，得出「查他是應該的」。</p>
+  <p><strong>范琪斐主動說出了對自己最不利的事實</strong>——當事人不在案子裡。這不是網友挖出來的，是他自己講的。<strong>然後他沒有停下來</strong>，接上「整個家族都有問題」，得出「查他是應該的」。</p>
   <p><strong>赴美期間被跟追的陳幸妤，從頭到尾沒有被指控任何罪名。范琪斐知道。而他用親屬關係當作追訪的授權。</strong></p>
-  <p>這就是連坐。而且它不需要任何推測——證據是他本人在鏡頭前說的。</p>
-  <p>這一點之所以重要，是因為它抽掉的是整個說法的<strong>前提</strong>。他的辯護是三層：<strong>目標正當／手段是體制造成的／我沒有太多選擇</strong>——而後面兩層都要靠第一層撐著。<strong>前提一倒，剩下的就只是在解釋產業如何運作，而無法解釋「為什麼要追這個人」的正當性。</strong></p>
-  <p>這裡還有一個時間問題。他的原話是「而且<strong>後來</strong>都判了有罪」——<strong>「後來」是他自己的用詞。</strong></p>
+  <p>這就是連坐。而且它不需要任何推測——證據是范琪斐本人在鏡頭前說的。</p>
+  <p>這一點之所以重要，是因為它抽掉的是整個說法的<strong>前提</strong>。范琪斐的辯護是三層：<strong>目標正當／手段是體制造成的／我沒有太多選擇</strong>——而後面兩層都要靠第一層撐著。<strong>前提一倒，剩下的就只是在解釋產業如何運作，而無法解釋「為什麼要追這個人」的正當性。</strong></p>
+  <p>這裡還有一個時間問題。范琪斐的原話是「而且<strong>後來</strong>都判了有罪」——<strong>「後來」是他自己的用詞。</strong></p>
   <p>跟訪發生在 2009 年 2 月。那個當下，這些案子還在司法程序中，家人的身分是<strong>被起訴</strong>，不是<strong>已定讞</strong>。<strong>而被起訴的人，在法律上仍然是無罪的。</strong></p>
-  <p><strong>用後來才出現的判決，去正當化更早發生的跟監，是拿結果追認過程。</strong>就算「整個家族都有問題」這個理由本身站得住好了——<strong>在他動手的那個當下，它也還不成立。</strong></p>
-  <p>還有一層。<strong>范琪斐的身分是記者，不是調查局，也不是檢察官。</strong>一個人在紐約有沒有可疑的行動，本來就不該由記者來查證——那是檢調的職權，而檢調從頭到尾沒有起訴他。</p>
-  <p>但他那則報導的旁白，用的正好是辦案的語言：<strong>「只要一出門 TVBS 全程掌握」「的確是沒有看到任何可疑的行跡」</strong>。那是一份監控報告的結論，不是一則新聞的結論。<strong>媒體把自己放到了一個沒有人授權他們扮演的位置上，然後用一週的跟監，去證明一個未被起訴的人沒有做壞事。</strong></p>
-  <p class="note">（公平起見：未被起訴不等於沒有新聞價值。陳幸妤可能握有相關資訊，<strong>以記者身分問一次</strong>仍然說得過去。這一點打擊的是<strong>持續跟追</strong>，不是<strong>接近他</strong>。）</p>
+  <p><strong>用後來才出現的判決，去正當化更早發生的跟監，是拿結果追認過程。</strong>就算「整個家族都有問題」這個理由本身站得住好了——<strong>在范琪斐動手的那個當下，它也還不成立。</strong></p>
+  <p>還有一層。<strong>范琪斐的身分是記者，不是調查局，也不是檢察官。</strong>一個人在紐約有沒有可疑的行動，本來就不該由記者來查證——那是檢調的職權，而檢調從頭到尾沒有起訴陳幸妤。</p>
+  <p>但范琪斐那則報導的旁白，用的正好是辦案的語言：<strong>「只要一出門 TVBS 全程掌握」「的確是沒有看到任何可疑的行跡」</strong>。那是一份監控報告的結論，不是一則新聞的結論。<strong>媒體把自己放到了一個沒有人授權他們扮演的位置上，然後用一週的跟監，去證明一個未被起訴的人沒有做壞事。</strong></p>
+  <p class="note">（公平起見：未被起訴不等於沒有新聞價值。陳幸妤可能握有相關資訊，<strong>以記者身分問一次</strong>仍然說得過去。這一點打擊的是<strong>持續跟追</strong>，不是<strong>接近陳幸妤</strong>。）</p>
 
   <h2 class="sec">范琪斐在回顧追訪事件時，我在意的四個點</h2>
 
@@ -408,14 +428,14 @@
     <div class="tcline"><a class="tc-chip" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=hQciwPrXyJc&amp;t=1004">陶 16:44</a><span class="who">范琪斐</span></div>
   </blockquote>
   <p>但陳幸妤當時已經被追了很久，從台灣被追到美國。在那種處境下答應受訪，未必代表原諒，也可能只是<strong>需要一個了結</strong>，而范琪斐是當時選項裡相對沒那麼糟的一個。</p>
-  <p><strong>鏡新聞的主持人當面問了他：</strong></p>
+  <p><strong>鏡新聞的主持人當面問了范琪斐：</strong></p>
   <div class="exchange">
     <div class="turn host"><span class="spk">Gino</span><span class="said">「他是不是被你逼到，反而說『如果跟你 interview 可以讓你 shut up，來訪問我吧』？你覺得有可能嗎？」</span><a class="tm" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=258">鏡 4:18</a></div>
     <div class="turn"><span class="spk">范琪斐</span><span class="said">「<strong>你覺得有可能嗎？</strong>」<span class="cut">——這是他的完整回應。</span></span><a class="tm" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=264">鏡 4:24</a></div>
   </div>
   <p>他把問題丟回去，沒有回答。</p>
-  <p>而第二階段的安排，他自己是這樣描述的：「我可以交代，他可以過他日子⋯⋯<strong>win-win situation</strong>」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=220">鏡 3:40</a>）。</p>
-  <p>而在那場專訪裡，他自己說的是：</p>
+  <p>而第二階段的安排，范琪斐自己是這樣描述的：「我可以交代，他可以過他日子⋯⋯<strong>win-win situation</strong>」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=220">鏡 3:40</a>）。</p>
+  <p>而在那場專訪裡，陳幸妤自己說的是：</p>
   <blockquote><p>「下班就都回家，然後也不太敢帶小孩子去哪裡。」</p></blockquote>
   <p><strong>一個描述自己不敢帶小孩出門的人，很難說是在表達諒解。</strong></p>
   <p><strong>這不是雙贏。</strong>一邊的「贏」是對長官交差，是<strong>收穫</strong>；另一邊的「贏」是拿回原本就屬於陳幸妤的生活，是<strong>止血</strong>。而且有代價——講好時間、出來講、「講完以後他回去，我們也回去」。<strong>一個沒有被指控任何事的人，必須先交出一次受訪，才能換回自己的日子。</strong></p>
@@ -428,16 +448,16 @@
   <p><strong>那個印象是被剪出來、被重播出來的。</strong>把一個人的反應說成他的性格，本來就是談論女性行為時最常見的偷懶——諷刺的是，這發生在一集正在談厭女的節目裡。</p>
 
   <h3 class="cl">二、范琪斐說方法不好，理由是「沒效率」，不是「不道德」</h3>
-  <p>他確實承認了那個採訪方式不好。但看他給的理由：</p>
+  <p>范琪斐確實承認了那個採訪方式不好。但看他給的理由：</p>
   <blockquote>
     <p>「不好的原因是因為⋯⋯<strong>你可以追到什麼嗎</strong>⋯⋯我覺得是其實<strong>非常蠢</strong>」</p>
     <div class="tcline"><a class="tc-chip" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=112">鏡 1:52</a><span class="who">范琪斐</span></div>
   </blockquote>
   <p>重點是<strong>產出</strong>，不是傷害。</p>
-  <p>他也說了「而且的確是危險的」——但那個「危險」，是怕對方跑起來出意外：「請你不要跑，這樣太危險，你慢慢走就好」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=425">鏡 7:05</a>）。是交通安全等級的危險。</p>
-  <p>主持人明明把另一個框架遞到他面前——「我們幾乎是<strong>以此為樂</strong>的⋯⋯在看<strong>一個女性被逼到歇斯底里</strong>」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=18">鏡 0:18</a>）——<strong>他沒有接。</strong></p>
-  <p>注意他關心的是什麼。他沒有說那樣做<strong>不該</strong>，他說那樣做<strong>沒有用</strong>。整段批評裡沒有出現「傷害」，沒有出現「不該這樣對一個人」，只有「追不到什麼」和「很蠢」。<strong>他在意的是怎麼有效率地拿到素材，不是那個素材是從誰身上拿走的。</strong></p>
-  <p>而他要的東西，他拿到了。</p>
+  <p>范琪斐也說了「而且的確是危險的」——但那個「危險」，是怕對方跑起來出意外：「請你不要跑，這樣太危險，你慢慢走就好」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=425">鏡 7:05</a>）。是交通安全等級的危險。</p>
+  <p>鏡新聞的主持人明明把另一個框架遞到范琪斐面前——「我們幾乎是<strong>以此為樂</strong>的⋯⋯在看<strong>一個女性被逼到歇斯底里</strong>」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=18">鏡 0:18</a>）——<strong>他沒有接。</strong></p>
+  <p>注意范琪斐關心的是什麼。他沒有說那樣做<strong>不該</strong>，他說那樣做<strong>沒有用</strong>。整段批評裡沒有出現「傷害」，沒有出現「不該這樣對一個人」，只有「追不到什麼」和「很蠢」。<strong>他在意的是怎麼有效率地拿到素材，不是那個素材是從誰身上拿走的。</strong></p>
+  <p>而范琪斐要的東西，他拿到了。</p>
   <p>那次一對一專訪，TVBS 當天就做成新聞播出，標題是〈<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=BYhEfBvcb70">溝通獲首肯 陳幸妤接受TVBS專訪</a>〉（2009/02/08）。同日另有〈<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=jbnmr2lcvzk">TVBS專訪 陳幸妤：赴美純為考試</a>〉。</p>
   <p><strong>「溝通獲首肯」這五個字本身就被做成一則新聞。</strong>取得對方的同意不只是採訪的前置作業，而是可以拿出來播的成果。</p>
   <p>而同一天那則專訪報導的結尾，是這樣總結這一週的：</p>
@@ -445,15 +465,15 @@
   <p><strong>這段旁白是范琪斐本人的聲音。</strong>那則報導從旁白到提問都是他做的。</p>
   <p>這兩句要一起讀。<strong>一個沒有被起訴的人，出門被各家電視台全時跟監；跟監的結果是零——然後這個零，也被做成新聞播出去。</strong></p>
   <p class="note">（這是 TVBS 自己的報導，敘事對他們有利，不能當成中立紀錄。但也正因為如此，這兩句反而可信：<strong>沒有人會沒事承認自己跟了一週卻什麼都沒查到。</strong>）</p>
-  <p>而在那則報導裡，他當面問了四個問題：認不認識涂太太、<strong>「有兩個海外帳戶受益人，好像是你，這個你知道嗎」</strong>、爸爸媽媽知不知道、以及——</p>
+  <p>而在那則報導裡，范琪斐當面問了四個問題：認不認識涂太太、<strong>「有兩個海外帳戶受益人，好像是你，這個你知道嗎」</strong>、爸爸媽媽知不知道、以及——</p>
   <blockquote><p><strong>「可是你當時聽到的時候，你的反應是什麼？」</strong></p></blockquote>
-  <p>四題，對方四次說不知道。然後他旁白總結：全程掌握，什麼都沒查到。</p>
+  <p>四題，對方四次說不知道。然後范琪斐旁白總結：全程掌握，什麼都沒查到。</p>
   <p><strong>最後那一題要的是情緒。</strong>對照 Gino 說的「我們要的就是那十五秒鐘」，這就是那種問題。</p>
-  <p>十七年後，同一件事變成他的辯護：「就是你取得了他的信任跟諒解」。</p>
+  <p>十七年後，同一件事變成范琪斐的辯護：「就是你取得了他的信任跟諒解」。</p>
   <p>而 TVBS 當天對那場專訪的描述是：「雖然陳幸妤<strong>正襟危坐</strong>，<strong>看得出來他很緊張</strong>」，訪談中一度還被傳真機打斷。</p>
   <p><strong>一個正襟危坐、緊張的人，比較像是在完成一件必須完成的事。</strong></p>
   <p>同一則報導裡還有一句街訪現場的同期聲——記者把麥克風遞過去時說：「<strong>兩個問題就好了。</strong>」那是勸停的話術：<strong>把索求降到最低，讓對方比較難拒絕。</strong>而 TVBS 把換來的結果寫成「他願意站定回答」。</p>
-  <p>而更值得注意的是：<strong>這些讓步，他八月那一集一句都沒有再說。</strong></p>
+  <p>而更值得注意的是：<strong>這些讓步，范琪斐八月那一集一句都沒有再說。</strong></p>
   <div class="tablewrap">
     <table>
       <thead><tr><th></th><th>鏡 01/13</th><th>陶 08/26</th></tr></thead>
@@ -465,42 +485,42 @@
       </tbody>
     </table>
   </div>
-  <p>八月那一集，他被當面問「為什麼不願意為第一階段道歉」——<strong>而他七個月前才說過的那些承認，一句都沒有再提。</strong></p>
-  <p>這個模式在 2009 年那封信裡就一樣。那封信通篇自陳的受害者是<strong>他自己的專業與國族顏面</strong>：開頭「不要再讓<strong>我</strong>覺得身為一個台灣人很丟臉」，結尾「一再的讓<strong>我</strong>覺得身為台灣媒体的一員，好丟臉」。陳幸妤在那封信裡出現十七次，全部都是<strong>事件的例證</strong>，沒有一次是「他受了委屈，應該有人向他交代」。</p>
-  <p>那封信也不是道歉。它是一封<strong>業內投訴信</strong>，收件人是中天新聞部主管。而文末他寫得很清楚：<strong>「尤其有關採訪的部分，我絕不道歉。」</strong></p>
-  <p>把這些放在一起看——他說方法不好、他說危險、他寫那封信、他後來改守則——<strong>每一項講的都是效率和顏面，沒有一項是對人的關懷。</strong></p>
+  <p>八月那一集，范琪斐被當面問「為什麼不願意為第一階段道歉」——<strong>而他七個月前才說過的那些承認，一句都沒有再提。</strong></p>
+  <p>這個模式在 2009 年那封信裡就一樣。那封信通篇自陳的受害者是<strong>范琪斐自己的專業與國族顏面</strong>：開頭「不要再讓<strong>我</strong>覺得身為一個台灣人很丟臉」，結尾「一再的讓<strong>我</strong>覺得身為台灣媒体的一員，好丟臉」。陳幸妤在那封信裡出現十七次，全部都是<strong>事件的例證</strong>，沒有一次是「他受了委屈，應該有人向他交代」。</p>
+  <p>那封信也不是道歉。它是一封<strong>業內投訴信</strong>，收件人是中天新聞部主管。而文末范琪斐寫得很清楚：<strong>「尤其有關採訪的部分，我絕不道歉。」</strong></p>
+  <p>把這些放在一起看——范琪斐說方法不好、他說危險、他寫那封信、他後來改守則——<strong>每一項講的都是效率和顏面，沒有一項是對人的關懷。</strong></p>
   <p>而這正是我不願意把這些叫做「專業」的原因。<strong>如果這真的是新聞專業，保護被採訪的那個人本來就該是其中一部分。</strong>一套從頭到尾只衡量產出與顏面、從來不衡量對人的影響的標準，不該用專業兩個字來稱呼它。</p>
 
   <h3 class="cl">三、借用陳幸妤的話題性，好處留給自己</h3>
   <p>先把對他們有利的講清楚：<strong>陶晶瑩自己沒有拿陳幸妤做縮圖，也沒有用在社群貼文上。</strong>標題賣的是「三個最會被炎上的女人」。</p>
-  <p>但那個標題賣的「炎上」，這集自己就指認了是什麼——陶晶瑩說他是「我們三個裡面最嚴重的，<strong>最近</strong>吧」，范琪斐接「<strong>最近很紅啊</strong>」。對追這兩週新聞的人來說，訊號已經足夠，不需要寫出名字。</p>
+  <p>但那個標題賣的「炎上」，這集自己就指認了是什麼——陶晶瑩說范琪斐是「我們三個裡面最嚴重的，<strong>最近</strong>吧」，范琪斐接「<strong>最近很紅啊</strong>」。對追這兩週新聞的人來說，訊號已經足夠，不需要寫出名字。</p>
   <p>這裡有個思想實驗：<strong>如果這集完全不提陳幸妤，會少掉什麼？</strong></p>
   <p>答案是：<strong>幾乎什麼都不會少。</strong>美國經驗、職場性別結構、飯局妹、婚姻裡的隱形勞動、把爸爸推出去、長女病、經濟底氣——<strong>89.2% 完全不受影響。</strong>陳幸妤在這集裡沒有支撐任何一個論點，他兩次出場都是<strong>例證</strong>，而且兩次都有現成的替代品（范琪斐自己說政治類炎上是「每季一次」的常態，他自己的婚姻本來就是主要案例）。</p>
-  <p><strong>拿掉他，這集會失去的是「新聞性」，不是「內容」。</strong></p>
+  <p><strong>拿掉陳幸妤，這集會失去的是「新聞性」，不是「內容」。</strong></p>
   <p>而且要分清楚兩段：<strong>12:43 那段（范琪斐被問責）有正當理由</strong>——一個記者為自己的紀錄答辯，是合理的公共討論。<strong>但 27:08 那段沒有</strong>：那裡沒有人在被問責，那是在一個私人當事人重新成為新聞焦點的時候，討論陳幸妤的離婚、房貸、三個小孩。跟范琪斐的責任毫無關係。<strong>那一段純粹是內容。</strong></p>
   <p>至於後續——影片出來後，很多媒體把范琪斐提到陳幸妤的段落剪成 reels，有些還配上當年追訪的舊畫面。我不能說這是誰計畫的；創作者也管不了別人怎麼剪。<strong>但被剪走的，正好就是那 10.8%。</strong>把職涯、婚姻、育兒剪成 reels 沒有話題性，最有話題的內容是陳幸妤。</p>
   <p><strong>陳幸妤是流量入口，內容是別的。</strong></p>
-  <p>如果那些片段真的用了當年的畫面，那就意味著——<strong>那十五秒鐘又被播了一次。</strong>十七年後，同一批畫面再度流通，這次是拿來替一場他沒有發言權的對話做宣傳。</p>
+  <p>如果那些片段真的用了當年的畫面，那就意味著——<strong>那十五秒鐘又被播了一次。</strong>十七年後，同一批畫面再度流通，這次是拿來替一場陳幸妤沒有發言權的對話做宣傳。</p>
 
   <h3 class="cl">四、他們替自己問了性別這一題，沒有替陳幸妤問</h3>
   <p>那一集的主題本來就是性別。標題是「三個最會被炎上的女人」；凱莉提出的假設很明確——同樣資歷、同樣經歷的男性坐在那裡，<strong>不會被燒得這麼慘</strong>（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=hQciwPrXyJc&amp;t=763">陶 12:43</a>）。陶晶瑩也把「厭女」正式帶進來：我們有沒有因為厭女文化被討厭、<strong>被加倍嚴厲地對待</strong>（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=hQciwPrXyJc&amp;t=1047">陶 17:27</a>）。</p>
   <p><strong>這個問題問得對。但它只被拿來問自己。</strong></p>
-  <p>同一集裡沒有人問過：<strong>陳幸妤如果不是女性，會被那樣追嗎？</strong>如果被追到紐約的是兒子而不是女兒，那十五秒鐘會被剪成一樣的東西嗎？他的憤怒會被說成「脾氣」、被說成「暴烈剛直」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=hQciwPrXyJc&amp;t=1669">陶 27:49</a>），還是會被當成合理的反應？</p>
+  <p>同一集裡沒有人問過：<strong>陳幸妤如果不是女性，會被那樣追嗎？</strong>如果被追到紐約的是兒子而不是女兒，那十五秒鐘會被剪成一樣的東西嗎？陳幸妤的憤怒會被說成「脾氣」、被說成「暴烈剛直」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=hQciwPrXyJc&amp;t=1669">陶 27:49</a>），還是會被當成合理的反應？</p>
   <p>而這個框架並不是沒有人想得到。Gino 在鏡新聞裡講得很直接：當年台灣「幾乎是<strong>以此為樂</strong>的⋯⋯在看<strong>一個女性被逼到歇斯底里</strong>」（<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=vGGbAUNX8dQ&amp;t=18">鏡 0:18</a>）。</p>
   <p><strong>同一把尺，量自己的時候拿得很準；量陳幸妤的時候，沒有拿出來。</strong></p>
 
   <h2 class="sec">總結：從 2009 到 2026，陳幸妤一直被當成流量素材</h2>
   <p>在我看到的這些資料裡——2009 年的部落格、當年的兩則報導、2026 年的兩場訪談——<strong>范琪斐沒有一句話是對陳幸妤說的。</strong></p>
   <p>但陳幸妤在這件事裡出現了很多次。每一次都是作為炒聲量的素材。</p>
-  <p><strong>2009 年，他坐下來受訪，那場專訪本身就被做成一則新聞</strong>——標題是〈溝通獲首肯〉。取得他的同意，不是採訪的前置作業，是可以播的成果。</p>
+  <p><strong>2009 年，陳幸妤坐下來受訪，那場專訪本身就被做成一則新聞</strong>——標題是〈溝通獲首肯〉。取得他的同意，不是採訪的前置作業，是可以播的成果。</p>
   <p><strong>十七年後，同一場專訪變成范琪斐的辯詞</strong>：「就是你取得了他的信任跟諒解」。當年的產品，現在成了免罪的證明。</p>
-  <p><strong>而 2026 年 8 月，他因為別的事重新被關注</strong>，一集七十分鐘的節目因此有了新聞性。那 10.8% 被剪成片段流傳；其餘 89%，是三個人自己的故事。</p>
-  <p><strong>同一個人，同一件事，被用了三次。三次的好處都不在他身上。</strong></p>
-  <p>至於他自己說的話，我看到的資料裡只有一次。2009 年，他在街頭被一圈麥克風圍住的時候，高聲問了一句：</p>
+  <p><strong>而 2026 年 8 月，陳幸妤因為別的事重新被關注</strong>，一集七十分鐘的節目因此有了新聞性。那 10.8% 被剪成片段流傳；其餘 89%，是三個人自己的故事。</p>
+  <p><strong>同一個人，同一件事，被用了三次。三次的好處都不在陳幸妤身上。</strong></p>
+  <p>至於陳幸妤自己說的話，我看到的資料裡只有一次。2009 年，他在街頭被一圈麥克風圍住的時候，高聲問了一句：</p>
   <blockquote><p><strong>「我犯了什麼事情，需要你們這樣圍著我？」</strong></p></blockquote>
   <p>TVBS 把這句播了出去，夾在旁白「很難想像他曾經這樣當街狂飆」和「到底最後是怎麼讓他卸下心防的」中間。</p>
-  <p><strong>連這句質問，都被拿去當成他後來「變乖」的對照組。</strong></p>
-  <p>他問的是：我犯了什麼事情。而他從頭到尾沒有被起訴任何罪名。</p>
+  <p><strong>連這句質問，都被拿去當成陳幸妤後來「變乖」的對照組。</strong></p>
+  <p>陳幸妤問的是：我犯了什麼事情。而他從頭到尾沒有被起訴任何罪名。</p>
   <p>沒有人回答那個問題。那句話只是又變成了一次素材。</p>
 
   <h2 class="sec">參考資料</h2>
