@@ -69,6 +69,30 @@
     font-size:13px;color:var(--ink-faint);margin-top:10px;
   }
 
+  /* ---- tldr ---- */
+  .tldr{
+    border:1px solid var(--amber-deep);border-radius:12px;
+    background:linear-gradient(180deg,rgba(232,163,61,.10),rgba(232,163,61,.02));
+    padding:24px 26px;margin-bottom:38px;
+  }
+  .tldr .tldr-lbl{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--amber);letter-spacing:1px;margin-bottom:12px;
+  }
+  .tldr p{font-size:15.5px;color:var(--ink);line-height:1.75}
+  .tldr p strong{color:var(--amber);font-weight:700}
+  .tldr .big{
+    font-family:"IBM Plex Mono",monospace;font-weight:600;
+    color:var(--amber);white-space:nowrap;
+  }
+  .tldr .split{
+    display:flex;gap:14px;margin-top:16px;padding-top:16px;
+    border-top:1px solid rgba(232,163,61,.2);flex-wrap:wrap;
+  }
+  .tldr .split div{flex:1;min-width:200px;font-size:13.5px;line-height:1.6;color:var(--ink-dim)}
+  .tldr .split .max strong{color:var(--green)}
+  .tldr .split .pro strong{color:var(--pending)}
+
   /* ---- terminal hero ---- */
   .term{
     background:var(--panel);
@@ -215,6 +239,47 @@
   }
   .verify code{color:var(--ink);background:#151310;padding:2px 7px;border-radius:4px}
 
+  /* ---- cache cost caveat ---- */
+  .caveat-lead{font-size:14.5px;color:var(--ink);line-height:1.75;margin-bottom:20px}
+  .caveat-lead strong{color:var(--amber);font-weight:700}
+  .flow{
+    font-family:"IBM Plex Mono",monospace;font-size:13px;
+    background:var(--panel);border:1px solid var(--panel-edge);border-radius:8px;
+    padding:16px 18px;margin-bottom:22px;color:var(--ink-dim);line-height:2;
+  }
+  .flow .p{color:var(--ink)}
+  .flow .waitseg{color:var(--amber)}
+  .flow .miss{color:var(--pending)}
+  .costtable{
+    width:100%;border-collapse:collapse;margin-bottom:14px;
+    font-size:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  }
+  .costtable th,.costtable td{
+    padding:13px 16px;text-align:left;border-bottom:1px solid var(--line);
+  }
+  .costtable thead th{
+    background:#151310;font-family:"IBM Plex Mono",monospace;
+    font-size:12px;color:var(--ink-faint);font-weight:500;letter-spacing:.3px;
+  }
+  .costtable td:first-child{color:var(--ink-dim)}
+  .costtable tbody tr:last-child td{border-bottom:none}
+  .costtable .num{font-family:"IBM Plex Mono",monospace;text-align:right;color:var(--ink)}
+  .costtable .hit{color:var(--green);font-weight:600}
+  .costtable .miss-row{background:rgba(140,122,199,.06)}
+  .costtable .miss-row .num{color:var(--pending);font-weight:600}
+  .costtable .delta{color:var(--amber);font-weight:700}
+  .unit-note{
+    font-size:12.5px;color:var(--ink-faint);font-family:"IBM Plex Mono",monospace;
+    margin-bottom:16px;line-height:1.6;
+  }
+  .verdict{
+    border-left:3px solid var(--amber);
+    background:linear-gradient(90deg,rgba(232,163,61,.08),transparent);
+    padding:16px 20px;border-radius:0 8px 8px 0;margin-bottom:44px;
+    font-size:14.5px;color:var(--ink);line-height:1.7;
+  }
+  .verdict strong{color:var(--amber);font-weight:700}
+
   /* ---- takeaway ---- */
   .takeaway{
     border:1px solid var(--amber-deep);border-radius:10px;
@@ -274,6 +339,18 @@
     <h1>觸及 session 上限後，仍能繼續工作的第三條路</h1>
     <div class="kicker">Claude Code 內建指令 · AI 分享聚會速覽 · 2026</div>
   </header>
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <div class="tldr-lbl">TL;DR</div>
+    <p>
+      觸及 session 上限後，<code>/low-priority</code> 讓你<strong>不必等重置就能繼續跑</strong> —— 代價是回應會排隊等餘裕算力。但它<strong>不是免費的</strong>：隨機等待若拖過 prompt cache 的存活時間，下一個 prompt 會 <strong>cache miss</strong>，該段 input 從 10% 價格跳回全額 —— 也就是那部分 token 用量暴增 <span class="big">約 10×（重寫 cache 達 12.5×）</span>。
+    </p>
+    <div class="split">
+      <div class="max"><strong>Claude Max（TTL ≈ 60 分）</strong>：影響小，多數等待仍在快取內 —— 通常可放心用。</div>
+      <div class="pro"><strong>Claude Pro（TTL ≈ 5 分）</strong>：快取易過期，peak time 難等到 capacity 時，<strong style="color:var(--pending)">寧可等重置</strong>也別進 low-priority。</div>
+    </div>
+  </div>
 
   <!-- HERO: real CLI output -->
   <div class="term">
@@ -356,21 +433,53 @@
     </div>
   </div>
 
-  <!-- PENDING -->
-  <div class="sec-head">待確認　TO BE CONFIRMED</div>
-  <div class="pending-box">
-    <ul>
-      <li>
-        <span class="mark">[ ? ]</span>
-        <span class="t">Allowance 的大小與重置週期<span>狀態列證實低優先權有<strong>獨立的 allowance</strong>（會顯示 % 剩餘），且不同於 session 與每週額度。但總量多少、多久重置一次，官方文件尚未載明 —— 這類細節通常要等功能正式化才會公布。</span></span>
-      </li>
-      <li>
-        <span class="mark">[ ? ]</span>
-        <span class="t">是否計費<span>畫面全程未提收費 —— 但也沒明說免費。是否與 usage credits 有關,無可查證來源,勿在簡報寫死。</span></span>
-      </li>
-    </ul>
+  <!-- CACHE COST CAVEAT -->
+  <div class="sec-head">隱藏成本：prompt caching 失效　THE CACHE-MISS TRAP</div>
+  <p class="caveat-lead">
+    low-priority 每個 token 的<strong>單價不變</strong>（只是改吃 monthly limit）。真正的陷阱在別處：連續的 prompt 之間若插入<strong>隨機的等待</strong>，等待一旦超過 cache 存活時間，就會讓上一輪的 <strong>prompt cache 失效</strong>（Pro ≈ 5 分鐘、Max ≈ 60 分鐘）。cache 一旦 miss，原本只要 10% 價格的 prefix，就得重付全額。
+  </p>
+  <div class="flow">
+    prompt 1 → response 1 → <span class="waitseg">（low-priority 隨機等待 capacity）</span> → <span class="miss">⚠ cache 過期</span> → prompt 2 → response 2<br>
+    <span style="color:var(--ink-faint)"># 正常情況下 prompt 2 的 prefix 命中 cache，只付 10%；等待拖過 TTL 後變成 cache miss，付全額。</span>
   </div>
-  <p class="verify">驗證方式：啟用後觀察狀態列的 <code>allowance left</code> % 如何隨用量下降、何時回補，並比對 <code>/usage</code> 是否有任何項目被扣。</p>
+
+  <p class="caveat-lead" style="margin-bottom:14px">成本試算：假設 prompt 2 重用了 prompt 1 已算過的 <strong>10 單位</strong> input（即 prefix）。以「1 單位 = 該 prefix 未快取時的原始 input 成本」為基準：</p>
+  <table class="costtable">
+    <thead>
+      <tr><th>prompt 2 的 prefix 情境</th><th>計價方式</th><th class="num">成本</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="hit">Cache HIT</span>（無等待，TTL 內）</td>
+        <td>10 × 0.10（cache read）</td>
+        <td class="num hit">1.0 單位</td>
+      </tr>
+      <tr class="miss-row">
+        <td>Cache MISS（等待拖過 TTL）</td>
+        <td>10 × 1.0（全額 input）</td>
+        <td class="num">10 單位</td>
+      </tr>
+      <tr class="miss-row">
+        <td>Cache MISS + 重寫 cache</td>
+        <td>10 × 1.25（5-min write premium）</td>
+        <td class="num">12.5 單位</td>
+      </tr>
+      <tr>
+        <td colspan="2"><strong>差距</strong>（命中 → 未命中）</td>
+        <td class="num delta">10× ~ 12.5×</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="unit-note">
+    採相對單位而非美元 —— 訂閱制（Pro / Max）花的是 session／monthly 額度、非逐 token 帳單。<br>
+    比率依 Anthropic 官方定價：cache read = 基礎 input 的 10%，5-min cache write = 125%。
+  </p>
+  <div class="verdict">
+    <strong>結論：low-priority 不是免費的</strong> —— 隨機等待可能打斷 prompt caching、因 cache miss 推高實際成本。這個風險<strong>取決於方案的 TTL</strong>：<br>
+    <span style="display:block;margin-top:10px"><strong style="color:var(--green)">Claude Max（TTL ≈ 60 分鐘）</strong>：影響較小,多數等待都還在 cache 存活期內。</span>
+    <span style="display:block;margin-top:4px"><strong style="color:var(--pending)">Claude Pro（TTL ≈ 5 分鐘）</strong>：cache 很容易過期,一次稍長的等待就 miss,成本上升明顯。</span>
+    <span style="display:block;margin-top:10px;color:var(--ink-dim)">實務上:Pro 用戶在 peak time、難等到 capacity 時,寧可等重置也別進 low-priority。</span>
+  </div>
 
   <!-- TAKEAWAY -->
   <div class="takeaway">
@@ -387,6 +496,22 @@
     </div>
     <p class="tl">核心價值：把「硬停」變成「慢跑」。忙的時候回應會等,但這是划算的取捨 —— 反正 session 額度已經用完了。</p>
   </div>
+
+  <!-- PENDING (moved to end) -->
+  <div class="sec-head">待確認　TO BE CONFIRMED</div>
+  <div class="pending-box">
+    <ul>
+      <li>
+        <span class="mark">[ ? ]</span>
+        <span class="t">Allowance 的大小與重置週期<span>狀態列證實低優先權有<strong>獨立的 allowance</strong>（會顯示 % 剩餘），且不同於 session 與每週額度。但總量多少、多久重置一次，官方文件尚未載明 —— 這類細節通常要等功能正式化才會公布。</span></span>
+      </li>
+      <li>
+        <span class="mark">[ ? ]</span>
+        <span class="t">是否計費<span>畫面全程未提收費 —— 但也沒明說免費。是否與 usage credits 有關,無可查證來源,勿在簡報寫死。</span></span>
+      </li>
+    </ul>
+  </div>
+  <p class="verify">驗證方式：啟用後觀察狀態列的 <code>allowance left</code> % 如何隨用量下降、何時回補，並比對 <code>/usage</code> 是否有任何項目被扣。</p>
 
   <footer>
     <div>
