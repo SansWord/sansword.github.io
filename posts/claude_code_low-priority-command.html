@@ -160,6 +160,24 @@
   }
   .confirm-note::before{content:"✓ ";font-weight:600}
 
+  /* ---- rollout note ---- */
+  .rollout-note{
+    display:flex;gap:16px;align-items:flex-start;
+    border:1px solid rgba(140,122,199,.3);border-radius:10px;
+    background:rgba(140,122,199,.06);
+    padding:18px 20px;margin-bottom:40px;
+    font-size:14px;color:var(--ink-dim);line-height:1.7;
+  }
+  .rollout-note .rollout-tag{
+    flex-shrink:0;font-family:"IBM Plex Mono",monospace;font-size:12px;
+    color:var(--pending);font-weight:500;white-space:nowrap;padding-top:1px;
+  }
+  .rollout-note strong{color:var(--ink);font-weight:700}
+  .rollout-note code{
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+    color:var(--pending);background:#151310;padding:2px 7px;border-radius:4px;
+  }
+
   /* ---- fallback chain ---- */
   .chain{
     display:flex;align-items:stretch;gap:0;margin-bottom:12px;flex-wrap:wrap;
@@ -394,6 +412,11 @@
     </div>
   </div>
   <p class="confirm-note">來源：Claude Code CLI 內建說明字串，加上分享者實機測試輸出。</p>
+
+  <div class="rollout-note">
+    <span class="rollout-tag">◐ 逐步推送中</span>
+    <span>並非所有人都看得到這個指令。回報案例：v2.1.202（Pro）顯示 <code>Unknown command</code>；本文作者 v2.1.258（Pro）可用 —— <strong>同為 Pro、版本更新卻結果不同</strong>。因此它不是單純的版本閘門，比較像分批（bucket）推送：即使版本相同，也可能有人尚未拿到。若你打了顯示 Unknown command，先更新 Claude Code，再等推送輪到你。</span>
+  </div>
 
   <!-- FALLBACK CHAIN -->
   <div class="sec-head">額度用盡的順序　THE FALLBACK CHAIN</div>
