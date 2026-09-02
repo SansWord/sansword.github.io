@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>/low-priority — Claude Code 指令速覽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12100E;
+    --panel:#1B1815;
+    --panel-edge:#2C2823;
+    --ink:#EDE8E1;
+    --ink-dim:#A39C90;
+    --ink-faint:#6E675C;
+    --amber:#E8A33D;
+    --amber-deep:#B8791F;
+    --green:#7FB069;
+    --pending:#8C7AC7;
+    --line:#2C2823;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC",sans-serif;
+    line-height:1.7;
+    padding:48px 24px 64px;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232,163,61,.10), transparent 70%);
+  }
+  .wrap{max-width:940px;margin:0 auto}
+
+  /* ---- header ---- */
+  header{
+    display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+    padding-bottom:22px;margin-bottom:34px;
+    border-bottom:1px solid var(--line);
+  }
+  .exp-badge{
+    order:-1;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;
+    color:var(--pending);
+    background:rgba(140,122,199,.10);
+    border:1px solid rgba(140,122,199,.35);
+    padding:5px 12px;border-radius:5px;
+    letter-spacing:.3px;
+  }
+  .exp-wrap{flex-basis:100%;margin-bottom:4px}
+  .cmd{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:clamp(30px,5.4vw,50px);
+    font-weight:600;
+    color:var(--amber);
+    letter-spacing:-.5px;
+    line-height:1.1;
+  }
+  .cmd .slash{color:var(--amber-deep)}
+  h1{
+    font-size:15px;font-weight:500;color:var(--ink-dim);
+    align-self:center;letter-spacing:.5px;
+  }
+  .kicker{
+    flex-basis:100%;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:13px;color:var(--ink-faint);margin-top:10px;
+  }
+
+  /* ---- terminal hero ---- */
+  .term{
+    background:var(--panel);
+    border:1px solid var(--panel-edge);
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:14px;
+    box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
+  }
+  .term-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:11px 16px;
+    background:#151310;
+    border-bottom:1px solid var(--panel-edge);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;background:#39332C}
+  .term-title{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;
+    color:var(--ink-faint);margin-left:8px;
+  }
+  .term-body{
+    padding:20px 22px 24px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:15px;line-height:1.85;
+  }
+  .term-body .prompt{color:var(--amber)}
+  .term-body .typed{color:var(--ink)}
+  .term-body .desc{color:var(--ink-dim);display:block;padding-left:26px;font-size:13.5px}
+  .term-body .out{color:var(--ink-dim);display:block}
+  .term-body .warn{color:var(--pending)}
+  .term-body .wait{color:var(--amber);display:block}
+  .term-body .ok{color:var(--green)}
+  .term-body .glyph{color:var(--ink-faint)}
+  .caption{
+    font-size:13px;color:var(--ink-faint);
+    margin-bottom:40px;padding-left:4px;
+  }
+
+  /* ---- section heads ---- */
+  .sec-head{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:13px;color:var(--amber);font-weight:500;
+    margin:0 0 18px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .sec-head::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* ---- confirmed grid ---- */
+  .grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;margin-bottom:12px;
+  }
+  .cell{background:var(--panel);padding:22px 20px}
+  .cell .q{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;color:var(--ink-faint);margin-bottom:10px;
+  }
+  .cell .a{font-size:15px;color:var(--ink);font-weight:500;line-height:1.65}
+  .cell .a strong{color:var(--amber);font-weight:700}
+  .confirm-note{
+    font-size:12.5px;color:var(--green);
+    font-family:"IBM Plex Mono",monospace;
+    margin-bottom:40px;
+  }
+  .confirm-note::before{content:"✓ ";font-weight:600}
+
+  /* ---- fallback chain ---- */
+  .chain{
+    display:flex;align-items:stretch;gap:0;margin-bottom:12px;flex-wrap:wrap;
+  }
+  .rung{
+    flex:1;min-width:150px;
+    background:var(--panel);border:1px solid var(--panel-edge);
+    padding:16px 18px;position:relative;
+  }
+  .rung:not(:last-child){border-right:none}
+  .rung:first-child{border-radius:10px 0 0 10px}
+  .rung:last-child{border-radius:0 10px 10px 0}
+  .rung .step{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;
+    color:var(--ink-faint);margin-bottom:7px;
+  }
+  .rung .name{font-size:14px;color:var(--ink);font-weight:600;line-height:1.4}
+  .rung .sub{font-size:12px;color:var(--ink-dim);margin-top:4px;line-height:1.5}
+  .rung.here{
+    background:linear-gradient(180deg,rgba(232,163,61,.10),transparent);
+    border-color:var(--amber-deep);z-index:2;
+  }
+  .rung.here .name{color:var(--amber)}
+  .rung .arrow{
+    position:absolute;right:-9px;top:50%;transform:translateY(-50%);
+    color:var(--ink-faint);font-family:"IBM Plex Mono",monospace;font-size:14px;z-index:3;
+  }
+  .rung:last-child .arrow{display:none}
+  @media (max-width:720px){
+    .chain{flex-direction:column}
+    .rung:not(:last-child){border-right:1px solid var(--panel-edge);border-bottom:none}
+    .rung:first-child{border-radius:10px 10px 0 0}
+    .rung:last-child{border-radius:0 0 10px 10px}
+    .rung .arrow{right:50%;top:auto;bottom:-9px;transform:translateX(50%) rotate(90deg)}
+  }
+  .chain-note{font-size:12.5px;color:var(--ink-faint);margin-bottom:44px}
+
+  /* ---- how it fits: three-way ---- */
+  .ways{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:44px}
+  .ways.two{grid-template-columns:repeat(2,1fr);max-width:620px}
+  .way{
+    background:var(--panel);border:1px solid var(--panel-edge);
+    border-radius:10px;padding:20px;
+  }
+  .way.hl{border-color:var(--amber-deep);background:linear-gradient(180deg,rgba(232,163,61,.07),transparent)}
+  .way h3{
+    font-family:"IBM Plex Mono",monospace;font-size:14px;
+    color:var(--ink);font-weight:600;margin-bottom:6px;
+  }
+  .way.hl h3{color:var(--amber)}
+  .way .trade{font-size:13px;color:var(--ink-dim);line-height:1.6}
+  .way .tag{
+    display:inline-block;font-family:"IBM Plex Mono",monospace;
+    font-size:11px;color:var(--ink-faint);margin-top:12px;
+    padding-top:10px;border-top:1px solid var(--line);width:100%;
+  }
+
+  /* ---- pending ---- */
+  .pending-box{
+    border:1px solid var(--panel-edge);border-radius:10px;
+    background:
+      repeating-linear-gradient(135deg,transparent,transparent 12px,rgba(140,122,199,.045) 12px,rgba(140,122,199,.045) 24px),
+      var(--panel);
+    padding:26px 26px 20px;margin-bottom:12px;
+  }
+  .pending-box ul{list-style:none;display:grid;gap:16px}
+  .pending-box li{display:flex;gap:14px;align-items:flex-start}
+  .pending-box li .mark{
+    color:var(--pending);font-family:"IBM Plex Mono",monospace;
+    font-size:13px;flex-shrink:0;padding-top:2px;
+  }
+  .pending-box li .t{font-size:14.5px;color:var(--ink);font-weight:500}
+  .pending-box li .t span{color:var(--ink-dim);font-weight:400;display:block;font-size:13px;margin-top:2px}
+  .verify{
+    font-size:12.5px;color:var(--pending);
+    font-family:"IBM Plex Mono",monospace;margin-bottom:44px;
+  }
+  .verify code{color:var(--ink);background:#151310;padding:2px 7px;border-radius:4px}
+
+  /* ---- takeaway ---- */
+  .takeaway{
+    border:1px solid var(--amber-deep);border-radius:10px;
+    background:linear-gradient(180deg,rgba(232,163,61,.09),transparent);
+    padding:28px 28px 22px;margin-bottom:40px;
+  }
+  .ba{display:flex;align-items:stretch;gap:20px;margin-bottom:18px}
+  .ba .before,.ba .after{flex:1}
+  .ba .lbl{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;
+    color:var(--ink-faint);margin-bottom:8px;
+  }
+  .ba .after .lbl{color:var(--amber)}
+  .ba .txt{font-size:15px;color:var(--ink);line-height:1.65}
+  .ba .txt strong{color:var(--amber);font-weight:700}
+  .ba .before .txt strong{color:var(--ink);font-weight:700}
+  .bamark{
+    align-self:center;color:var(--amber);font-size:24px;
+    font-family:"IBM Plex Mono",monospace;flex-shrink:0;
+  }
+  .tl{
+    font-size:14px;color:var(--ink-dim);line-height:1.7;
+    padding-top:16px;border-top:1px solid var(--line);
+  }
+  @media (max-width:720px){
+    .ba{flex-direction:column;gap:14px}
+    .bamark{transform:rotate(90deg)}
+  }
+
+  /* ---- footer ---- */
+  footer{
+    border-top:1px solid var(--line);padding-top:20px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-size:12px;color:var(--ink-faint);
+    font-family:"IBM Plex Mono",monospace;
+  }
+  footer .r{text-align:right}
+  footer a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid var(--line)}
+
+  @media (max-width:720px){
+    .grid{grid-template-columns:1fr}
+    .ways{grid-template-columns:1fr}
+    body{padding:32px 16px 48px}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .term{animation:rise .6s cubic-bezier(.2,.7,.3,1) both}
+    @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="exp-wrap"><span class="exp-badge">◐ 實驗性功能　EXPERIMENTAL · 官方文件尚未收錄</span></div>
+    <div class="cmd"><span class="slash">/</span>low-priority</div>
+    <h1>觸及 session 上限後，仍能繼續工作的第三條路</h1>
+    <div class="kicker">Claude Code 內建指令 · AI 分享聚會速覽 · 2026</div>
+  </header>
+
+  <!-- HERO: real CLI output -->
+  <div class="term">
+    <div class="term-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="term-title">claude-code — 指令說明</span>
+    </div>
+    <div class="term-body">
+      <span class="prompt">❯ </span><span class="typed">/low-priority</span>
+      <span class="desc">Continue now at lower priority after reaching your session limit; run again to stop</span>
+      <br>
+      <span class="prompt">❯ </span><span class="typed">/low-priority</span><span class="glyph">   （在額度尚未用盡時執行）</span>
+      <span class="out"><span class="glyph">  ⎿  </span><span class="warn">Lower-priority mode isn't available right now.</span></span>
+      <br>
+      <span class="prompt">❯ </span><span class="typed">/low-priority</span><span class="glyph">   （已觸及 session 上限時執行）</span>
+      <span class="out"><span class="glyph">  ⎿  </span><span class="ok">Continuing now at lower priority until your limit resets at 4pm. Your weekly limit still applies, and responses may pause while waiting for spare capacity. Run /low-priority to stop.</span></span>
+      <br>
+      <span class="glyph">  # 伺服器忙碌時，工作會自己排隊重試：</span>
+      <span class="out"><span class="wait">Working at lower priority · waiting for capacity · next try in 20s · attempt 15 · esc to interrupt</span></span>
+      <br>
+      <span class="glyph">  # 狀態列會顯示剩餘 allowance 與自動結束時間：</span>
+      <span class="out"><span class="wait">Lower priority until 4pm · 62% allowance left · /low-priority to stop</span></span>
+    </div>
+  </div>
+  <p class="caption">三種狀態皆為實機輸出：指令說明、未達上限、以及已啟用。此功能上線時間晚，官方文件尚未收錄，以下區分「已驗證」與「待確認」。</p>
+
+  <!-- CONFIRMED -->
+  <div class="sec-head">已驗證　CONFIRMED</div>
+  <div class="grid">
+    <div class="cell">
+      <div class="q">何時可用 · WHEN</div>
+      <div class="a">要等到<strong>所有付費路徑都用完或關閉</strong>才會啟用 —— 只要還有 extra usage 額度且未關閉，系統會先自動用它。上方仍有額度時執行只會回覆「現在不可用」。</div>
+    </div>
+    <div class="cell">
+      <div class="q">作用 · WHAT</div>
+      <div class="a">不必停下來等重置，而是<strong>立刻繼續</strong>工作 —— 改由<strong>閒置的餘裕算力</strong>供應，因此回應可能<strong>暫停等候</strong>，直到 session 視窗重置。</div>
+    </div>
+    <div class="cell">
+      <div class="q">邊界 · LIMITS</div>
+      <div class="a">只解除 <strong>session（5 小時）</strong>那道牆 —— <strong>每週上限仍然有效</strong>。session 重置後<strong>自動結束</strong>，無需手動關;或再執行一次即停止。</div>
+    </div>
+  </div>
+  <p class="confirm-note">來源：Claude Code CLI 內建說明字串，加上分享者實機測試輸出。</p>
+
+  <!-- FALLBACK CHAIN -->
+  <div class="sec-head">額度用盡的順序　THE FALLBACK CHAIN</div>
+  <div class="chain">
+    <div class="rung">
+      <div class="step">1</div>
+      <div class="name">方案 session 額度</div>
+      <div class="sub">Pro / Max 等內含的 5 小時視窗額度。</div>
+      <span class="arrow">→</span>
+    </div>
+    <div class="rung">
+      <div class="step">2</div>
+      <div class="name">Extra usage</div>
+      <div class="sub">若已開啟且未達上限，系統會<strong>自動</strong>接手扣款。</div>
+      <span class="arrow">→</span>
+    </div>
+    <div class="rung here">
+      <div class="step">3 · 你在這裡</div>
+      <div class="name">/low-priority</div>
+      <div class="sub">前面全部用完 <strong>或關閉</strong> extra usage 後，才可手動啟用。</div>
+    </div>
+  </div>
+  <p class="chain-note">關鍵：只要 extra usage 還開著且有額度，第 3 步就不會出現 —— 想用 /low-priority，得先讓前兩步無路可走。</p>
+
+  <!-- WHERE IT FITS -->
+  <div class="sec-head">觸及上限後的兩種選擇　YOUR OPTIONS AT THE LIMIT</div>
+  <div class="ways two">
+    <div class="way">
+      <h3>停下等待</h3>
+      <div class="trade">等 session 視窗重置後再繼續。預設行為，零成本，但工作中斷 —— 長任務、跨夜跑批時最痛。</div>
+      <span class="tag">代價：時間</span>
+    </div>
+    <div class="way hl">
+      <h3>/low-priority</h3>
+      <div class="trade">不必等重置，立刻繼續，但請求以較低優先權排隊，回應可能較慢。前提是前面的付費路徑已用完或關閉。</div>
+      <span class="tag">代價：速度 / 優先權</span>
+    </div>
+  </div>
+
+  <!-- PENDING -->
+  <div class="sec-head">待確認　TO BE CONFIRMED</div>
+  <div class="pending-box">
+    <ul>
+      <li>
+        <span class="mark">[ ? ]</span>
+        <span class="t">Allowance 的大小與重置週期<span>狀態列證實低優先權有<strong>獨立的 allowance</strong>（會顯示 % 剩餘），且不同於 session 與每週額度。但總量多少、多久重置一次，官方文件尚未載明 —— 這類細節通常要等功能正式化才會公布。</span></span>
+      </li>
+      <li>
+        <span class="mark">[ ? ]</span>
+        <span class="t">是否計費<span>畫面全程未提收費 —— 但也沒明說免費。是否與 usage credits 有關,無可查證來源,勿在簡報寫死。</span></span>
+      </li>
+    </ul>
+  </div>
+  <p class="verify">驗證方式：啟用後觀察狀態列的 <code>allowance left</code> % 如何隨用量下降、何時回補，並比對 <code>/usage</code> 是否有任何項目被扣。</p>
+
+  <!-- TAKEAWAY -->
+  <div class="takeaway">
+    <div class="ba">
+      <div class="before">
+        <div class="lbl">以前</div>
+        <div class="txt">撞到 session 上限 → <strong>整個停下</strong>，等到重置才能動。任務卡在半路。</div>
+      </div>
+      <div class="bamark">→</div>
+      <div class="after">
+        <div class="lbl">現在</div>
+        <div class="txt">撞到 session 上限 → 開 <strong>/low-priority</strong>，<strong>換工作排隊、不是你排隊</strong>。伺服器有空就繼續跑。</div>
+      </div>
+    </div>
+    <p class="tl">核心價值：把「硬停」變成「慢跑」。忙的時候回應會等,但這是划算的取捨 —— 反正 session 額度已經用完了。</p>
+  </div>
+
+  <footer>
+    <div>
+      整理供 AI 分享聚會使用<br>
+      區分「CLI 已驗證」與「官方文件尚未收錄」
+    </div>
+    <div class="r">
+      對照文件　<a href="https://code.claude.com/docs/en/costs">code.claude.com/docs</a><br>
+      知識截止 2026-01 · 功能為其後上線
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
