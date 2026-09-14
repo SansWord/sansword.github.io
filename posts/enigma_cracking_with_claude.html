@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From 10²⁰ to 4.4 Seconds</title>
+<meta name="description" content="What I learned cracking Enigma with Claude: a crib, a YouTube video, and a 1995 paper took a ciphertext-only crack from impossible to seconds.">
+<link rel="alternate" hreflang="en" href="enigma_cracking_with_claude.html">
+<link rel="alternate" hreflang="zh-Hant-TW" href="enigma_cracking_with_claude_zh.html">
+<meta property="og:title" content="From 10²⁰ to 4.4 seconds">
+<meta property="og:description" content="What I learned cracking Enigma with Claude: I brought the sources, Claude wrote the code.">
+<meta property="og:type" content="article">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Martian+Mono:wdth,wght@75..112.5,300..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* surfaces: the steel-and-bakelite of the machine */
+    --bg:#0F141B;
+    --panel:#141B24;
+    --line:#233040;
+    --line-soft:#1A2330;
+    /* ink */
+    --ink:#E7ECF2;
+    --ink-dim:#9AA6B6;
+    --ink-faint:#66727F;
+    /* identity: amber = what I brought, teal = what Claude built (validated pair) */
+    --you:#C0841C;
+    --claude:#2A98B8;
+    --steel:#6E8196;
+    /* the lamp, used only on the lampboard */
+    --lamp:#FFD27A;
+
+    --sans:"Archivo","Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    --mono:"Martian Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+
+    --gutter:clamp(16px,4vw,48px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.6;
+    padding-inline:var(--gutter);
+    padding-block:0 72px;
+  }
+  a{color:inherit;text-decoration-color:var(--ink-faint);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--ink)}
+  :focus-visible{outline:2px solid var(--lamp);outline-offset:3px;border-radius:2px}
+  .wrap{max-width:1120px;margin:0 auto}
+  .zh{font-family:var(--zh);color:var(--ink-dim)}
+  sup{line-height:0}
+  .fig dd sup,.val sup{font-size:.6em;vertical-align:.55em;line-height:0;margin-left:1px}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ---------- language switch ---------- */
+  .lang{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:20px}
+  .lang .sim{border-color:var(--you);color:var(--ink)}
+  .lang .links{display:flex;flex-wrap:wrap;gap:8px 10px}
+  .lang .sim:hover{border-color:var(--lamp)}
+  .lang a{font-size:14px;color:var(--ink-dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 16px}
+  .lang a:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .lang + .hero{padding-top:36px}
+
+  /* ---------- hero ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+    gap:48px 56px;
+    align-items:center;
+    padding-block:72px 64px;
+    border-bottom:1px solid var(--line);
+  }
+  .cipher{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.08em;
+    color:var(--ink-faint);
+    line-height:1.9;
+    max-width:44ch;
+    margin-bottom:6px;
+  }
+  .cipher-note{font-size:14px;color:var(--ink-faint);margin-bottom:40px}
+  .cipher-note .zh{color:var(--ink-faint);display:block}
+  h1{
+    font-weight:800;
+    font-stretch:125%;
+    font-size:clamp(44px,8.4vw,100px);
+    line-height:.94;
+    letter-spacing:-.025em;
+  }
+  h1 span{display:block}
+  h1 sup{font-size:.5em;vertical-align:.8em;line-height:0;letter-spacing:0}
+  .h1-zh{
+    font-family:var(--zh);
+    font-weight:700;
+    font-size:clamp(22px,3.2vw,34px);
+    color:var(--ink-dim);
+    margin-top:18px;
+    letter-spacing:.04em;
+  }
+  .h1-zh sup{font-size:.55em;vertical-align:.7em;line-height:0}
+  .lede{margin-top:32px;max-width:56ch;font-size:19px;line-height:1.55}
+  .lede + .zh{margin-top:10px;max-width:40em;font-size:16px;line-height:1.75}
+  .how{margin-top:24px;max-width:56ch;border-left:3px solid var(--claude);padding:4px 0 4px 16px;font-size:16px;line-height:1.6;color:var(--ink)}
+  .how strong{font-weight:600}
+  .byline{
+    margin-top:40px;
+    display:flex;gap:6px 28px;flex-wrap:wrap;
+    font-size:14px;color:var(--ink-dim);
+  }
+  .byline strong{color:var(--ink);font-weight:600}
+
+  /* lampboard */
+  .board{
+    container-type:inline-size;
+    background:linear-gradient(180deg,#171F2A,#10161E);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:clamp(18px,3vw,30px) clamp(12px,2.4vw,26px) clamp(20px,3vw,28px);
+  }
+  .lamps{display:flex;flex-direction:column;gap:1.6cqi;align-items:center}
+  .lamp-row{display:flex;gap:1.2cqi}
+  .lamp{
+    --s:clamp(22px,8.6cqi,46px);
+    width:var(--s);height:var(--s);
+    border-radius:50%;
+    display:grid;place-items:center;
+    font-family:var(--mono);font-size:calc(var(--s) * .36);font-weight:500;
+    color:#4E5A68;
+    background:radial-gradient(circle at 50% 38%,#1E2733,#131A22 70%);
+    box-shadow:inset 0 0 0 1px #2A3544, inset 0 -3px 6px rgba(0,0,0,.45);
+    transition:background .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .lamp.on{
+    color:#2A1C05;
+    background:radial-gradient(circle at 50% 42%,#FFF1C9,var(--lamp) 45%,#D9962C 100%);
+    box-shadow:0 0 0 1px #F5C565, 0 0 22px 4px rgba(255,210,122,.45);
+  }
+  .lamp.kept{
+    color:var(--lamp);
+    background:radial-gradient(circle at 50% 40%,#3A2F1A,#1F1A12 75%);
+    box-shadow:inset 0 0 0 1px #6B5325, 0 0 12px rgba(255,210,122,.12);
+  }
+  .readout{
+    margin-top:22px;
+    display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    border-top:1px solid var(--line);padding-top:16px;
+  }
+  .readout .tape{
+    font-family:var(--mono);font-size:22px;letter-spacing:.3em;color:var(--lamp);
+    min-width:5.5ch;min-height:1.4em;
+  }
+  .readout p{font-size:14px;color:var(--ink-dim);max-width:34ch;line-height:1.5}
+  .readout p .zh{display:block;margin-top:4px}
+
+  /* ---------- sections ---------- */
+  section{padding-block:80px 8px}
+  .sec-title{
+    display:grid;grid-template-columns:auto 1fr;column-gap:20px;align-items:baseline;
+    margin-bottom:28px;
+  }
+  h2{
+    font-weight:750;font-stretch:112%;
+    font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-.015em;
+  }
+  .sec-title .zh{font-size:clamp(17px,2vw,21px);font-weight:500}
+  .intro{max-width:64ch;color:var(--ink-dim);margin-bottom:36px}
+  .intro strong{color:var(--ink);font-weight:600}
+  .intro-zh{max-width:44em;font-size:15px;line-height:1.8;margin-bottom:36px}
+
+  /* ---------- chart: time, log scale ---------- */
+  .timechart{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:28px clamp(16px,3vw,32px) 22px;
+  }
+  .tc-row{
+    display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);
+    column-gap:24px;align-items:center;
+    padding-block:12px;
+  }
+  .tc-row + .tc-row{border-top:1px solid var(--line-soft)}
+  .tc-label{font-size:15px;line-height:1.35}
+  .tc-label .zh{display:block;font-size:13px;margin-top:2px}
+  .track{
+    position:relative;height:30px;
+    background-image:
+      linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),
+      linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),
+      linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line));
+    background-size:1px 100%;
+    background-repeat:no-repeat;
+    background-position:0 0,20% 0,35.6% 0,55.6% 0,71.1% 0,91.1% 0;
+  }
+  .bar{
+    position:absolute;left:0;top:7px;height:16px;
+    width:var(--w);
+    background:var(--claude);
+    border-radius:0 4px 4px 0;
+  }
+  .bar .range{
+    position:absolute;top:0;bottom:0;left:var(--from);right:0;
+    background:repeating-linear-gradient(90deg,rgba(15,20,27,.55) 0 2px,transparent 2px 5px);
+    border-radius:0 4px 4px 0;
+  }
+  .bar.est{
+    background:repeating-linear-gradient(135deg,var(--steel) 0 2px,transparent 2px 7px);
+    box-shadow:inset 0 0 0 1px var(--steel);
+  }
+  .bar.off{
+    width:100%;border-radius:0;
+    -webkit-mask-image:linear-gradient(90deg,#000 70%,transparent);
+            mask-image:linear-gradient(90deg,#000 70%,transparent);
+  }
+  .val{
+    position:absolute;top:50%;transform:translateY(-50%);
+    left:calc(var(--w) + 12px);
+    font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink);
+  }
+  .val small{font-family:var(--sans);font-size:13px;color:var(--ink-dim);margin-left:6px}
+  .val.inside{left:12px;background:var(--panel);padding:1px 8px;border-radius:4px}
+  .axis{height:22px;margin-bottom:4px;background:none}
+  .axis span{
+    position:absolute;top:0;transform:translateX(-50%);
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);white-space:nowrap;
+  }
+  .axis span:first-child{transform:none}
+  .tc-foot{
+    display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:18px;padding-top:14px;
+    border-top:1px solid var(--line);font-size:13px;color:var(--ink-dim);
+  }
+  .key{display:inline-flex;align-items:center;gap:8px}
+  .swatch{width:22px;height:10px;border-radius:0 3px 3px 0;background:var(--claude)}
+  .swatch.est{background:repeating-linear-gradient(135deg,var(--steel) 0 2px,transparent 2px 6px);box-shadow:inset 0 0 0 1px var(--steel)}
+  .swatch.rng{background:var(--claude);position:relative;overflow:hidden}
+  .swatch.rng::after{content:"";position:absolute;inset:0 0 0 40%;background:repeating-linear-gradient(90deg,rgba(15,20,27,.55) 0 2px,transparent 2px 5px)}
+
+  /* ---------- steps ---------- */
+  .cols-head{
+    display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr) minmax(0,1.15fr);
+    column-gap:32px;padding-bottom:12px;border-bottom:1px solid var(--line);
+    font-size:14px;font-weight:600;
+  }
+  .cols-head .you-h{color:var(--ink);border-left:3px solid var(--you);padding-left:12px}
+  .cols-head .cl-h{color:var(--ink);border-left:3px solid var(--claude);padding-left:12px}
+  .cols-head .zh{font-weight:500;margin-left:8px;font-size:13px}
+  .steps{list-style:none}
+  .step{
+    display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr) minmax(0,1.15fr);
+    column-gap:32px;row-gap:14px;
+    padding-block:30px;border-bottom:1px solid var(--line);
+  }
+  .step-head .n{
+    font-family:var(--mono);font-size:13px;color:var(--ink-faint);display:block;margin-bottom:6px;
+  }
+  .step-head h3{font-size:22px;font-weight:700;font-stretch:110%;line-height:1.15}
+  .step-head .zh{display:block;font-size:15px;margin-top:4px}
+  .you{
+    align-self:start;
+    border-left:3px solid var(--you);padding-left:16px;
+    font-family:var(--mono);font-size:13.5px;line-height:1.75;color:var(--ink);
+  }
+  .you p + p{margin-top:12px}
+  .you .ctx{display:block;font-family:var(--sans);font-size:13px;color:var(--ink-faint);margin-bottom:6px}
+  .built{align-self:start;border-left:3px solid var(--claude);padding-left:16px}
+  .built p{font-size:15.5px;line-height:1.6}
+  .built p.zh{font-size:14px;line-height:1.75;margin-top:8px}
+  .figs{display:flex;flex-wrap:wrap;gap:14px 28px;margin-top:16px}
+  .fig dt{font-size:12.5px;color:var(--ink-dim);line-height:1.35}
+  .fig dd{font-family:var(--mono);font-size:19px;font-weight:500;line-height:1.3;margin-top:2px;white-space:nowrap}
+
+  /* ---------- scoring ---------- */
+  .insight{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;
+    margin-bottom:48px;
+  }
+  .insight .big{font-size:clamp(20px,2.3vw,25px);line-height:1.45;font-weight:500;max-width:36ch}
+  .insight .zh{font-size:16px;line-height:1.8;margin-top:12px}
+  .funnel{list-style:none;align-self:center;display:grid;gap:10px}
+  .funnel li{display:grid;grid-template-columns:minmax(0,8.5em) minmax(0,1fr);gap:18px;align-items:baseline;padding-block:10px;border-bottom:1px solid var(--line-soft)}
+  .funnel .fn{font-family:var(--mono);font-size:clamp(16px,1.6vw,19px);font-weight:500;text-align:right}
+  .funnel .fl{font-size:15px;line-height:1.45;color:var(--ink)}
+  .funnel .fl .zh{display:block;font-size:13.5px;margin-top:2px}
+  .pull{
+    border-left:3px solid var(--you);padding-left:18px;align-self:center;
+    font-family:var(--mono);font-size:14px;line-height:1.8;
+  }
+  .pull cite{display:block;font-family:var(--sans);font-style:normal;font-size:13px;color:var(--ink-faint);margin-top:8px}
+
+  .score-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px clamp(16px,2.6vw,28px)}
+  .panel h3{font-size:17px;font-weight:650;line-height:1.3}
+  .panel h3 + .zh{font-size:14px;margin-top:2px}
+  .panel .note{font-size:13.5px;color:var(--ink-dim);margin-top:8px;line-height:1.55}
+
+  .ioc{position:relative;height:400px;margin-top:22px}
+  .ioc-axis{position:absolute;left:44%;top:0;bottom:0;width:2px;background:var(--line)}
+  .ioc-band{
+    position:absolute;left:calc(44% - 5px);width:12px;
+    top:54.29%;height:17.14%;
+    background:repeating-linear-gradient(135deg,var(--steel) 0 2px,transparent 2px 5px);
+    box-shadow:inset 0 0 0 1px var(--steel);border-radius:3px;
+  }
+  .ioc-band-label{
+    position:absolute;right:calc(56% + 16px);top:62.86%;transform:translateY(-50%);
+    text-align:right;font-size:13px;line-height:1.4;color:var(--ink-dim);
+  }
+  .ioc-pt{position:absolute;left:44%;right:0;top:var(--y);transform:translateY(-50%);display:flex;align-items:center}
+  .ioc-pt::before{
+    content:"";width:12px;height:12px;border-radius:50%;margin-left:-5px;flex:none;
+    background:var(--bg);box-shadow:0 0 0 2px var(--ink-dim);
+  }
+  .ioc-pt.hit::before{background:var(--claude);box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--claude)}
+  .ioc-pt.thr::before{width:10px;height:0;border-radius:0;box-shadow:none;border-top:2px solid var(--ink-dim);margin-left:-4px}
+  .ioc-thr{position:absolute;left:0;right:0;top:34.29%;border-top:1px dashed var(--ink-faint)}
+  .ioc-pt span{padding-left:14px;font-size:13px;line-height:1.35;color:var(--ink-dim);position:relative;z-index:1}
+  .ioc-pt span b{font-family:var(--mono);font-weight:500;color:var(--ink);font-size:13px;display:block}
+  .ioc-pt.thr span{background:var(--panel);padding-right:6px}
+  .ioc-ends{position:absolute;left:calc(44% - 70px);font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+
+  .metrics{width:100%;border-collapse:collapse;margin-top:18px;font-size:14.5px}
+  .metrics th{text-align:left;font-weight:600;font-size:13px;color:var(--ink-dim);padding:8px 12px 8px 0;border-bottom:1px solid var(--line)}
+  .metrics td{padding:14px 12px 14px 0;border-bottom:1px solid var(--line-soft);vertical-align:top;line-height:1.45}
+  .metrics td:first-child{font-weight:650;white-space:nowrap}
+  .metrics td .zh{display:block;font-size:12.5px;font-weight:400;margin-top:2px}
+  .metrics td.n{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+  .table-scroll{overflow-x:auto}
+  .rule{margin-top:18px;font-size:15px;line-height:1.55}
+  .rule .zh{display:block;font-size:14px;margin-top:4px}
+
+  .fooled{margin-top:28px}
+  .diff{margin-top:14px;display:grid;gap:8px;font-family:var(--mono);font-size:clamp(14px,2.4vw,19px);letter-spacing:.14em}
+  .diff div{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .diff .tag{font-family:var(--sans);letter-spacing:0;font-size:13px;color:var(--ink-dim);min-width:11ch}
+  .diff mark{background:none;color:var(--ink);text-decoration:underline 2px wavy #D9687A;text-underline-offset:5px}
+
+  /* ---------- lessons ---------- */
+  .opening{
+    font-family:var(--mono);font-size:clamp(14px,1.6vw,16px);line-height:1.9;
+    border-left:3px solid var(--you);padding-left:20px;max-width:78ch;margin-bottom:44px;
+  }
+  .opening cite{display:block;font-family:var(--sans);font-style:normal;font-size:13px;color:var(--ink-faint);margin-top:8px}
+  .lessons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+  .lesson{border-top:2px solid var(--ink);padding-top:22px}
+  .lesson h3{font-size:clamp(24px,3vw,32px);font-weight:750;font-stretch:115%;line-height:1.1;letter-spacing:-.01em}
+  .lesson h3 + .zh{font-size:18px;font-weight:500;margin-top:6px}
+  .lesson q{
+    display:block;quotes:none;margin-top:18px;
+    font-family:var(--mono);font-size:13.5px;line-height:1.75;
+    border-left:3px solid var(--you);padding-left:14px;
+  }
+  .lesson p{margin-top:16px;font-size:16px;line-height:1.65;max-width:60ch}
+  .lesson p.zh{font-size:14.5px;line-height:1.8;margin-top:10px}
+  .trio{list-style:none;margin-top:16px;display:grid;gap:10px}
+  .trio li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:15px;line-height:1.5}
+  .trio .src{font-family:var(--mono);font-size:12.5px;color:var(--ink);border:1px solid var(--you);border-radius:4px;padding:1px 8px;align-self:start;white-space:nowrap}
+
+  /* ---------- cost ---------- */
+  .cost{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:28px 48px;align-items:start}
+  .cost-side .cost-total{margin-top:0;color:var(--ink);font-size:clamp(64px,10vw,112px);font-weight:800;font-stretch:125%;line-height:.9;letter-spacing:-.03em}
+  .cost-total small{font-size:18px;font-weight:500;font-stretch:100%;letter-spacing:0;color:var(--ink-dim);display:block;margin-top:12px;line-height:1.35}
+  .cost-side p{margin-top:18px;font-size:15px;color:var(--ink-dim);max-width:44ch}
+  .cost-side p.zh{font-size:14px;line-height:1.8;margin-top:10px}
+  .cost-rows li.grp{grid-template-columns:minmax(0,1fr) 3.4em;padding-top:16px;font-weight:650;border-top:1px solid var(--line)}
+  .cost-rows li.grp:first-child{padding-top:4px;border-top:0}
+  .cost-rows li:not(.grp) > span:first-child{padding-left:12px;color:var(--ink-dim)}
+  .cost-rows{list-style:none}
+  .cost-rows li{
+    display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr) 3.4em;
+    gap:14px;align-items:center;padding-block:7px;font-size:14.5px;line-height:1.3;
+  }
+  .cost-rows li + li{border-top:1px solid var(--line-soft)}
+  .cost-rows .zh{font-size:12.5px;display:block}
+  .cost-rows .ct{height:12px;position:relative}
+  .cost-rows .cb{position:absolute;left:0;top:0;bottom:0;width:calc(var(--p) / 10 * 100%);background:var(--steel);border-radius:0 4px 4px 0}
+  .cost-rows .cv{font-family:var(--mono);font-size:13px;text-align:right}
+
+  /* ---------- answer ---------- */
+  .answer{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px clamp(16px,3vw,32px)}
+  .pairs-key{display:flex;flex-wrap:wrap;gap:6px 24px;font-size:13px;color:var(--ink-dim);margin-bottom:16px}
+  .pairs-key span{display:inline-flex;align-items:center;gap:8px}
+  .pairs-key i{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .pairs{display:flex;flex-wrap:wrap;gap:16px 20px;font-family:var(--mono);font-size:clamp(15px,1.8vw,19px);letter-spacing:.12em}
+  .pair{display:grid;gap:4px}
+  .pair .c{color:var(--ink-faint)}
+  .pair .p{color:var(--lamp)}
+  .pair mark{background:none;color:inherit;text-decoration:underline 2px solid var(--you);text-underline-offset:6px}
+  .readas{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+  .readas q{display:block;quotes:none;font-size:clamp(19px,2.4vw,24px);line-height:1.45;font-weight:500;max-width:40ch}
+  .readas p{margin-top:10px;font-size:14.5px;color:var(--ink-dim);max-width:64ch;line-height:1.6}
+  .answer .figs{margin-top:24px}
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:88px;padding-top:28px;border-top:1px solid var(--line);
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;
+    font-size:14px;color:var(--ink-dim);line-height:1.7;
+  }
+  footer h4{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:6px}
+  footer ul{list-style:none}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero{grid-template-columns:minmax(0,1fr);padding-block:48px 48px}
+    .cols-head{display:none}
+    .step{grid-template-columns:minmax(0,1fr)}
+    .you::before{content:"I asked";display:block;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink-dim);margin-bottom:4px}
+    .built::before{content:"Claude built";display:block;font-size:12.5px;font-weight:600;color:var(--ink-dim);margin-bottom:4px}
+    .insight,.score-grid,.lessons,.cost,footer{grid-template-columns:minmax(0,1fr)}
+    .metrics{min-width:520px}
+  }
+  @media (max-width:640px){
+    body{font-size:16px}
+    section{padding-block:60px 8px}
+    .sec-title{grid-template-columns:1fr;row-gap:4px}
+    .tc-row{grid-template-columns:1fr;row-gap:8px}
+    .tc-row.axis-row .tc-label{display:none}
+    .val,.val.inside{position:static;transform:none;display:block;margin-top:6px;background:none;padding:0}
+    .track.has-val{height:auto;padding-top:30px;background-size:1px 30px}
+    .bar{top:7px}
+    .cost-rows li{grid-template-columns:minmax(0,1fr) 3.4em;row-gap:6px}
+    .cost-rows .ct{grid-column:1 / -1;grid-row:2}
+    .ioc-axis{left:40%}
+    .ioc-band{left:calc(40% - 5px)}
+    .ioc-band-label{right:calc(60% + 14px)}
+    .ioc-pt{left:40%}
+    .ioc-ends{left:calc(40% - 64px)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .lamp{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="lang" aria-label="Page links">
+    <div class="links">
+      <a class="sim" href="https://www.101computing.net/enigma-machine-emulator/" target="_blank" rel="noopener">Try the Enigma emulator</a>
+      <a class="sim" href="https://github.com/SansWord/sans_enigma" target="_blank" rel="noopener">Code on GitHub</a>
+    </div>
+    <a href="enigma_cracking_with_claude_zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW">中文版</a>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div>
+      <p class="cipher" aria-label="The original ciphertext">XTRMC ROXXN LGWWM PQILL WLYMP OXBOH COGSD XHEBF ZMROD XLMEP MFNZO K</p>
+      <p class="cipher-note">Where it started: 56 letters from an Enigma emulator, and no settings.</p>
+
+      <h1><span>From 10<sup>20</sup></span><span>to 4.4 seconds</span></h1>
+
+      <p class="lede">What I learned cracking Enigma with Claude. I brought the sources, a YouTube video and a 1995 research paper. Claude read them and turned each one into working code.</p>
+
+      <p class="how"><strong>Claude doesn’t decrypt anything itself.</strong> It wrote Python scripts that attack the ciphertext, and every time on this poster is those scripts running on my 14-core laptop.</p>
+
+      <div class="byline">
+        <span><strong>sansword</strong></span>
+        <a href="https://github.com/sansword">github.com/sansword</a>
+        <span>September 2026</span>
+      </div>
+    </div>
+
+    <figure class="board" aria-labelledby="board-cap">
+      <div class="lamps" id="lamps" aria-hidden="true"></div>
+      <figcaption class="readout">
+        <span class="tape" id="tape" aria-hidden="true">TEST</span>
+        <p id="board-cap">The crib. Knowing the message began with TEST cut 77 billion settings down to 1.3 million.</p>
+      </figcaption>
+    </figure>
+  </header>
+
+  <!-- ============ TIME CHART ============ -->
+  <section aria-labelledby="s-time">
+    <div class="sec-title">
+      <h2 id="s-time">How long one crack takes</h2>
+    </div>
+    <p class="intro">Time to recover the settings, on 14 CPU cores. The scale is logarithmic, so equal distances mean equal multiples: <strong>1 s to 10 s</strong> spans the same width as <strong>1 min to 10 min</strong>.</p>
+
+    <div class="timechart" role="img" aria-label="Crack time by approach, log scale. Brute force with a plugboard: 10 to the 20 settings, never attempted. Brute force without a plugboard: about 4.1 hours, estimated. Crib attack: 4.4 minutes. First ciphertext-only version, no plugboard: 4.8 minutes. The same search also trying every plugboard wiring: about 4.8 billion years, estimated. With Gillogly ring recovery: 4.3 seconds. Final pipeline with plugboard search: 4.4 to 15.8 seconds.">
+      <div class="tc-row axis-row" aria-hidden="true">
+        <div class="tc-label"></div>
+        <div class="track axis">
+          <span style="left:0">1 s</span>
+          <span style="left:20%">10 s</span>
+          <span style="left:35.6%">1 min</span>
+          <span style="left:55.6%">10 min</span>
+          <span style="left:71.1%">1 h</span>
+          <span style="left:91.1%">10 h</span>
+        </div>
+      </div>
+
+      <div class="tc-row">
+        <div class="tc-label">Brute force, plugboard in play</div>
+        <div class="track has-val"><div class="bar est off" style="--w:100%"></div><span class="val inside" style="--w:0%">10<sup>20</sup>+ settings <small>never attempted</small></span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">Brute force, no plugboard</div>
+        <div class="track has-val"><div class="bar est" style="--w:83.4%"></div><span class="val" style="--w:83.4%">~4.1 h <small>estimated</small></span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">Crib attack, knowing prefix “TEST”</div>
+        <div class="track has-val"><div class="bar" style="--w:48.4%"></div><span class="val" style="--w:48.4%">4.4 min</span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">Ciphertext only, first version (no plugboard, a 5.3×10<sup>14</sup>× smaller search)</div>
+        <div class="track has-val"><div class="bar" style="--w:49.1%"></div><span class="val" style="--w:49.1%">4.8 min</span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">First version, also trying every plugboard wiring</div>
+        <div class="track has-val"><div class="bar est off" style="--w:100%"></div><span class="val inside" style="--w:0%">~4.8 billion years <small>estimated</small></span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">+ Gillogly’s ring recovery</div>
+        <div class="track has-val"><div class="bar" style="--w:12.7%"></div><span class="val" style="--w:12.7%">4.3 s</span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">+ plugboard search, on by default</div>
+        <div class="track has-val"><div class="bar" style="--w:24.0%"><span class="range" style="--from:53.8%"></span></div><span class="val" style="--w:24.0%">4.4–15.8 s <small>0 plugs / 5 plugs</small></span></div>
+      </div>
+
+      <div class="tc-foot">
+        <span class="key"><span class="swatch"></span>Measured</span>
+        <span class="key"><span class="swatch rng"></span>Measured range, fastest to slowest run</span>
+        <span class="key"><span class="swatch est"></span>Estimated or never run</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STEPS ============ -->
+  <section aria-labelledby="s-steps">
+    <div class="sec-title">
+      <h2 id="s-steps">Four inputs, four jumps</h2>
+    </div>
+    <p class="intro">Every big improvement started with something I handed over: a fact about the message, a video, a paper, and then a second question about the same paper. The quotes are my actual prompts.</p>
+
+    <div class="cols-head" aria-hidden="true">
+      <span></span>
+      <span class="you-h">What I asked</span>
+      <span class="cl-h">What Claude built</span>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <div class="step-head">
+          <span class="n">Step 0</span>
+          <h3>The wall</h3>
+        </div>
+        <blockquote class="you">
+          <p>“I want you to guess it without correct setting. but I worry if that would be too expensive”</p>
+        </blockquote>
+        <div class="built">
+          <p>Pulled the emulator’s JavaScript to get the exact rotor wirings, checked them with a round-trip test, then sized the problem honestly.</p>
+          <dl class="figs">
+            <div class="fig"><dt>Settings without a plugboard</dt><dd>7.7×10<sup>10</sup></dd></div>
+            <div class="fig"><dt>With a plugboard</dt><dd>10<sup>20</sup>+</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">Step 1</span>
+          <h3>A crib</h3>
+        </div>
+        <blockquote class="you">
+          <p>“the first 4 plaintext is "TEST", how fast you can do it now?”</p>
+        </blockquote>
+        <div class="built">
+          <p>An exact-match filter across every rotor, reflector, ring, and start position, then a multi-core ranking of the survivors by English letter frequency. The answer was certain and unique.</p>
+          <dl class="figs">
+            <div class="fig"><dt>Survivors out of 77.2 billion</dt><dd>1,290,588</dd></div>
+            <div class="fig"><dt>Ciphertext to answer</dt><dd>4.4 min</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">Step 2</span>
+          <h3>A video</h3>
+        </div>
+        <blockquote class="you">
+          <p>“I've watched this youtube video discussing how to bracking enigma, would the strategy mentioned in the video makes it easier?”</p>
+        </blockquote>
+        <div class="built">
+          <p>Read the Computerphile transcript and built a ciphertext-only attack in stages: find rotors and start position first, then ring settings. It needs 200+ letters and no crib. Its weak spot: a correct ring search still took minutes.</p>
+          <dl class="figs">
+            <div class="fig"><dt>Stage 1 combinations</dt><dd>4,394,000</dd></div>
+            <div class="fig"><dt>Stage 1 time</dt><dd>~4 s</dd></div>
+            <div class="fig"><dt>Exhaustive ring search</dt><dd>4.7 min</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">Step 3</span>
+          <h3>The paper behind the video</h3>
+        </div>
+        <blockquote class="you">
+          <p>“the video is introducing this paper: [link] would that give you any insight to improve our script?”</p>
+        </blockquote>
+        <div class="built">
+          <p>Implemented James Gillogly’s 1995 ring recovery: move the ring setting and the start position together, 26 trials per rotor. It found the right rotors and readable English in 0.014 s, cheap enough to check every candidate. On one test, a few letters near rotor turnovers still differed from the exhaustive search.</p>
+          <dl class="figs">
+            <div class="fig"><dt>Trials, down from 308,915,776</dt><dd>52</dd></div>
+            <div class="fig"><dt>Ring recovery</dt><dd>0.014 s</dd></div>
+            <div class="fig"><dt>Full pipeline</dt><dd>286 s → 4.3 s</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">Step 4</span>
+          <h3>Same paper, new question</h3>
+        </div>
+        <blockquote class="you">
+          <p>“can you implement the plugboard upgrade from the paper?”</p>
+          <p>“can you make it the default behavior that assume it'll have plugboard pair and we don't know how many (could be 0)”</p>
+        </blockquote>
+        <div class="built">
+          <p>A second, narrower read found a detail the first one skipped: score plugboard guesses with English trigrams. A greedy search then finds every plug and stops on its own when no swap helps, so it runs on every message.</p>
+          <dl class="figs">
+            <div class="fig"><dt>Plugs found in ~1.3 s</dt><dd>5 of 5</dd></div>
+            <div class="fig"><dt>Trials, vs 1.5×10<sup>14</sup> for 10 plugs</dt><dd>~1,295</dd></div>
+            <div class="fig"><dt>End to end</dt><dd>4.4–15.8 s</dd></div>
+          </dl>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ SCORING ============ -->
+  <section aria-labelledby="s-score">
+    <div class="sec-title">
+      <h2 id="s-score">Scoring “almost English”</h2>
+    </div>
+
+    <div class="insight">
+      <div>
+        <p class="big">Enigma leaks. A decryption with only some settings right already looks measurably more like English than one with everything wrong. With a score for that, one impossible search becomes three small ones: rotors, then rings, then the plugboard.</p>
+      </div>
+      <ol class="funnel" aria-label="Three stages, each ranked by a score">
+        <li><span class="fn">4,394,000</span><span class="fl">rotor orders × start positions, ranked by IoC</span></li>
+        <li><span class="fn">52</span><span class="fl">ring trials per candidate, ranked by IoC</span></li>
+        <li><span class="fn">~1,295</span><span class="fl">plugboard swaps, ranked by trigrams</span></li>
+      </ol>
+    </div>
+
+    <div class="score-grid">
+      <figure class="panel">
+        <h3>Where candidates land on Index of Coincidence</h3>
+        <p class="note">How likely two random letters in the text are to match. Higher looks more like English. The two decryptions are from a 269-letter test message.</p>
+        <div class="ioc" role="img" aria-label="Index of Coincidence scale from 0.035 to 0.070. Random text about 0.038. Wrong rotor orders top out between 0.045 and 0.051. The first garbled ring search scored 0.0507. The confidence threshold is 0.058. The correct decryption scored 0.0618. Typical English is about 0.067.">
+          <div class="ioc-axis"></div>
+          <span class="ioc-ends" style="top:-4px">0.070</span>
+          <span class="ioc-ends" style="bottom:-4px">0.035</span>
+          <div class="ioc-thr"></div>
+          <div class="ioc-band"></div>
+          <div class="ioc-band-label">Wrong rotor<br>orders<br><span class="num">0.045–0.051</span></div>
+          <div class="ioc-pt" style="--y:8.57%"><span><b>≈0.067</b>Typical English</span></div>
+          <div class="ioc-pt hit" style="--y:23.43%"><span><b>0.0618</b>Correct decryption</span></div>
+          <div class="ioc-pt thr" style="--y:34.29%"><span><b>0.058</b>Confirmed above this</span></div>
+          <div class="ioc-pt" style="--y:55.14%"><span><b>0.0507</b>First ring search, garbled</span></div>
+          <div class="ioc-pt" style="--y:91.43%"><span><b>≈0.038</b>Random letters</span></div>
+        </div>
+      </figure>
+
+      <div class="panel">
+        <h3>Three scores, each where it pays off</h3>
+        <div class="table-scroll">
+          <table class="metrics">
+            <thead><tr><th scope="col">Score</th><th scope="col">What it notices</th><th scope="col">Used to rank</th><th scope="col">Candidates</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Chi-squared</td>
+                <td>Which letters are common (E, T, A…)</td>
+                <td>Crib survivors</td>
+                <td class="n">1.29 M</td>
+              </tr>
+              <tr>
+                <td>IoC</td>
+                <td>How uneven the letter counts are, whichever letters they are</td>
+                <td>Rotors + start, then the ring sweep</td>
+                <td class="n">4.4 M, then 52</td>
+              </tr>
+              <tr>
+                <td>Trigrams</td>
+                <td>Real 3-letter sequences like THE, ING, ION</td>
+                <td>Plugboard swaps</td>
+                <td class="n">~1,295</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="rule">Cheap scores for millions of candidates, the sharper and slower score for the last handful.</p>
+
+        <div class="fooled">
+          <h3>When IoC gets fooled</h3>
+          <p class="note">On a message with no plugboard at all, IoC scoring added two fake plugs because they nudged the score up from 0.0618 to 0.0638. Trigram scoring correctly found zero.</p>
+          <div class="diff" aria-label="Correct text INCRYPTOGRAPHYA became INCQYPTOGQAPLYA after two fake plugs">
+            <div><span class="tag">Correct</span><span>INCRYPTOGRAPHYA</span></div>
+            <div><span class="tag">Fake plugs</span><span>INC<mark>Q</mark>YPTOG<mark>Q</mark>AP<mark>L</mark>YA</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LESSONS ============ -->
+  <section aria-labelledby="s-lessons">
+    <div class="sec-title">
+      <h2 id="s-lessons">Two lessons</h2>
+    </div>
+
+    <blockquote class="opening">
+      “This journey started with my interest in and curiosity about Enigma after watching the video. It taught me more about the Enigma machine itself. More importantly, it taught me how to guide Claude to implement what I learned, using Claude to quickly turn the information I found into working code.”
+      <cite>Me, looking back on the project</cite>
+    </blockquote>
+
+    <div class="lessons">
+      <article class="lesson">
+        <h3>Curate the knowledge, let Claude implement it</h3>
+        <q>“provide what I learn from YT, paper so claude can use it to implement it”</q>
+        <ul class="trio">
+          <li><span class="src">video</span><span>became the staged, ciphertext-only attack</span></li>
+          <li><span class="src">paper</span><span>became 52-trial ring recovery, the biggest speedup</span></li>
+          <li><span class="src">paper, again</span><span>fixed the plugboard stage and a real scoring bug</span></li>
+        </ul>
+        <p>My part was judgment: which source was worth reading, and when a source deserved a second, narrower look. A source is rarely used up after one read. A new question can pull something new out of it.</p>
+      </article>
+
+      <article class="lesson">
+        <h3>Partial correctness has a score</h3>
+        <q>“from brute force to partially solve the code. and using a proper scoring system to rank the partial result.”</q>
+        <p>More hardware would never have covered 10<sup>20</sup> settings. What broke the wall was a score that rewards getting some settings right, which let each stage be solved and ranked on its own. Picking the right score for each stage mattered as much as the search itself.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ COST ============ -->
+  <section aria-labelledby="s-cost">
+    <div class="sec-title">
+      <h2 id="s-cost">What it cost</h2>
+    </div>
+
+    <div class="cost">
+      <div class="cost-side">
+        <p class="cost-total">~58%<small>(of a 5-hr session limit of Claude Pro, for the whole development)</small></p>
+        <p>Measured from the development transcript: each API call’s tokens, weighted by price, then scaled against a stretch where Claude Pro’s usage meter read 35%. Anthropic doesn’t publish exactly how the limit counts each token type, so this is still an estimate.</p>
+        <p>Built with Claude Sonnet 5.</p>
+      </div>
+
+      <figure class="panel" aria-labelledby="cost-cap">
+        <h3 id="cost-cap">Share of the limit, by step</h3>
+        <ol class="cost-rows" style="margin-top:14px">
+          <li class="grp"><span>Steps 0–1: the wall and a crib</span><span class="cv">9.5%</span></li>
+          <li><span>Sizing the problem, emulator wiring</span><span class="ct"><span class="cb" style="--p:3.7"></span></span><span class="cv">3.7%</span></li>
+          <li><span>Crib search, multi-core ranking</span><span class="ct"><span class="cb" style="--p:1.5"></span></span><span class="cv">1.5%</span></li>
+          <li><span>Crib script, docs, pruning fix</span><span class="ct"><span class="cb" style="--p:4.3"></span></span><span class="cv">4.3%</span></li>
+          <li class="grp"><span>Step 2: a video</span><span class="cv">12.5%</span></li>
+          <li><span>Reading the YouTube video</span><span class="ct"><span class="cb" style="--p:2.3"></span></span><span class="cv">2.3%</span></li>
+          <li><span>Staged attack + simulator</span><span class="ct"><span class="cb" style="--p:5.1"></span></span><span class="cv">5.1%</span></li>
+          <li><span>Exhaustive ring search</span><span class="ct"><span class="cb" style="--p:3.1"></span></span><span class="cv">3.1%</span></li>
+          <li><span>Checking candidates in order</span><span class="ct"><span class="cb" style="--p:2.0"></span></span><span class="cv">2.0%</span></li>
+          <li class="grp"><span>Step 3: the paper behind the video</span><span class="cv">6.4%</span></li>
+          <li><span>Reading + implementing the paper</span><span class="ct"><span class="cb" style="--p:5.4"></span></span><span class="cv">5.4%</span></li>
+          <li><span>First progress doc</span><span class="ct"><span class="cb" style="--p:1.0"></span></span><span class="cv">1.0%</span></li>
+          <li class="grp"><span>Step 4: same paper, new question</span><span class="cv">14.6%</span></li>
+          <li><span>Plugboard audit, discussion only</span><span class="ct"><span class="cb" style="--p:0.2"></span></span><span class="cv">0.2%</span></li>
+          <li><span>Trigram plugboard search</span><span class="ct"><span class="cb" style="--p:9.1"></span></span><span class="cv">9.1%</span></li>
+          <li><span>Plugboard on by default</span><span class="ct"><span class="cb" style="--p:3.4"></span></span><span class="cv">3.4%</span></li>
+          <li><span>Progress doc update</span><span class="ct"><span class="cb" style="--p:1.9"></span></span><span class="cv">1.9%</span></li>
+          <li class="grp"><span>Docs and reflection</span><span class="cv">15.2%</span></li>
+          <li><span>Development journal + token estimate</span><span class="ct"><span class="cb" style="--p:2.9"></span></span><span class="cv">2.9%</span></li>
+          <li><span>Scoring doc + lessons</span><span class="ct"><span class="cb" style="--p:6.7"></span></span><span class="cv">6.7%</span></li>
+          <li><span>Opus review of the journal</span><span class="ct"><span class="cb" style="--p:5.6"></span></span><span class="cv">5.6%</span></li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ ANSWER ============ -->
+  <section aria-labelledby="s-answer">
+    <div class="sec-title">
+      <h2 id="s-answer">The answer</h2>
+    </div>
+    <p class="intro">The 56 letters from the top of the page, decrypted. The first four are the crib I gave Claude.</p>
+
+    <div class="answer">
+      <div class="pairs-key" aria-hidden="true">
+        <span><i style="background:var(--ink-faint)"></i>Ciphertext</span>
+        <span><i style="background:var(--lamp)"></i>Plaintext</span>
+        <span><i style="background:var(--you)"></i>Crib</span>
+      </div>
+      <p class="sr">Ciphertext XTRMC ROXXN LGWWM PQILL WLYMP OXBOH COGSD XHEBF ZMROD XLMEP MFNZO K decrypts to TESTI FCLAU DECAN DECRY PTANE NIGMA MACHI NEAND HOWFA STITC ANDOI T.</p>
+      <div class="pairs" aria-hidden="true">
+          <span class="pair"><span class="c">XTRMC</span><span class="p"><mark>TEST</mark>I</span></span>
+          <span class="pair"><span class="c">ROXXN</span><span class="p">FCLAU</span></span>
+          <span class="pair"><span class="c">LGWWM</span><span class="p">DECAN</span></span>
+          <span class="pair"><span class="c">PQILL</span><span class="p">DECRY</span></span>
+          <span class="pair"><span class="c">WLYMP</span><span class="p">PTANE</span></span>
+          <span class="pair"><span class="c">OXBOH</span><span class="p">NIGMA</span></span>
+          <span class="pair"><span class="c">COGSD</span><span class="p">MACHI</span></span>
+          <span class="pair"><span class="c">XHEBF</span><span class="p">NEAND</span></span>
+          <span class="pair"><span class="c">ZMROD</span><span class="p">HOWFA</span></span>
+          <span class="pair"><span class="c">XLMEP</span><span class="p">STITC</span></span>
+          <span class="pair"><span class="c">MFNZO</span><span class="p">ANDOI</span></span>
+          <span class="pair"><span class="c">K</span><span class="p">T</span></span>
+      </div>
+
+      <div class="readas">
+        <q>“Test if Claude can decrypt an Enigma machine and how fast it can do it”</q>
+        <p>Recovered by the crib attack in 4 min 22 s on 14 cores. The correct decryption scored a chi-squared of 21.6, far ahead of the next best at 76.2.</p>
+      </div>
+
+      <dl class="figs">
+        <div class="fig"><dt>Rotors</dt><dd>III, V, I</dd></div>
+        <div class="fig"><dt>Reflector</dt><dd>UKW-C</dd></div>
+        <div class="fig"><dt>Ring</dt><dd>AAO</dd></div>
+        <div class="fig"><dt>Start</dt><dd>EDH</dd></div>
+        <div class="fig"><dt>Plugboard</dt><dd>none</dd></div>
+      </dl>
+      <p class="note" style="font-size:13px;color:var(--ink-faint);margin-top:12px">Other ring and start pairs produce the same text on a message this short. This is one of them.</p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div>
+      <h4>Sources</h4>
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=RzWB5jL5RX0">Computerphile, “Cracking Enigma in 2021”</a> with Mike Pound</li>
+        <li><a href="https://web.archive.org/web/20060720040135/http://members.fortunecity.com/jpeschel/gillog1.htm">James Gillogly, “Ciphertext-Only Cryptanalysis of Enigma”</a>, <i>Cryptologia</i>, 1995</li>
+        <li><a href="https://www.101computing.net/enigma-machine-emulator/">101computing.net Enigma M3 emulator</a></li>
+        <li>English trigram table from <a href="http://practicalcryptography.com/">practicalcryptography.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>About</h4>
+      <p>Made by sansword, <a href="https://github.com/sansword">github.com/sansword</a>. Scripts and docs: <a href="https://github.com/SansWord/sans_enigma">github.com/SansWord/sans_enigma</a>. Every script, doc, and number here came out of one project built with Claude Sonnet 5 in Claude Code. Timings are from real runs on 14 cores unless marked as estimates.</p>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var rows = ["QWERTZUIO","ASDFGHJK","PYXCVBNML"]; // Enigma lampboard layout
+  var box = document.getElementById("lamps");
+  var tape = document.getElementById("tape");
+  var lamps = {};
+  rows.forEach(function(r){
+    var row = document.createElement("div");
+    row.className = "lamp-row";
+    r.split("").forEach(function(ch){
+      var l = document.createElement("span");
+      l.className = "lamp";
+      l.textContent = ch;
+      lamps[ch] = l;
+      row.appendChild(l);
+    });
+    box.appendChild(row);
+  });
+
+  var word = "TEST";
+  function settle(){
+    word.split("").forEach(function(ch){ lamps[ch].classList.add("kept"); });
+    tape.textContent = word;
+  }
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { settle(); return; }
+
+  tape.textContent = "";
+  var i = 0;
+  function next(){
+    if (i >= word.length) { setTimeout(settle, 250); return; }
+    var ch = word[i];
+    lamps[ch].classList.remove("kept");
+    lamps[ch].classList.add("on");
+    tape.textContent = word.slice(0, i + 1);
+    setTimeout(function(){
+      lamps[ch].classList.remove("on");
+      i++;
+      setTimeout(next, 220);
+    }, 520);
+  }
+  setTimeout(next, 700);
+})();
+</script>
+</body>
+</html>

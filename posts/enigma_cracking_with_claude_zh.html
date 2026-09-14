@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>從 10²⁰ 到 4.4 秒</title>
+<meta name="description" content="我和 Claude 一起破解 Enigma 學到的事：一段已知明文、一支 YouTube 影片和一篇 1995 年的論文，讓只靠密文的破解從不可能變成幾秒鐘。">
+<link rel="alternate" hreflang="en" href="enigma_cracking_with_claude.html">
+<link rel="alternate" hreflang="zh-Hant-TW" href="enigma_cracking_with_claude_zh.html">
+<meta property="og:title" content="從 10²⁰ 到 4.4 秒">
+<meta property="og:description" content="和 Claude 一起破解 Enigma：資料我來找，程式 Claude 來寫。">
+<meta property="og:type" content="article">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Martian+Mono:wdth,wght@75..112.5,300..700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* surfaces: the steel-and-bakelite of the machine */
+    --bg:#0F141B;
+    --panel:#141B24;
+    --line:#233040;
+    --line-soft:#1A2330;
+    /* ink */
+    --ink:#E7ECF2;
+    --ink-dim:#9AA6B6;
+    --ink-faint:#66727F;
+    /* identity: amber = what I brought, teal = what Claude built (validated pair) */
+    --you:#C0841C;
+    --claude:#2A98B8;
+    --steel:#6E8196;
+    /* the lamp, used only on the lampboard */
+    --lamp:#FFD27A;
+
+    --sans:"Archivo","Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    --mono:"Martian Mono","Noto Sans TC",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+
+    --gutter:clamp(16px,4vw,48px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.6;
+    padding-inline:var(--gutter);
+    padding-block:0 72px;
+  }
+  a{color:inherit;text-decoration-color:var(--ink-faint);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--ink)}
+  :focus-visible{outline:2px solid var(--lamp);outline-offset:3px;border-radius:2px}
+  .wrap{max-width:1120px;margin:0 auto}
+  .zh{font-family:var(--zh);color:var(--ink-dim)}
+  sup{line-height:0}
+  .fig dd sup,.val sup{font-size:.6em;vertical-align:.55em;line-height:0;margin-left:1px}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ---------- language switch ---------- */
+  .lang{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:20px}
+  .lang .sim{border-color:var(--you);color:var(--ink)}
+  .lang .links{display:flex;flex-wrap:wrap;gap:8px 10px}
+  .lang .sim:hover{border-color:var(--lamp)}
+  .lang a{font-size:14px;color:var(--ink-dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 16px}
+  .lang a:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .lang + .hero{padding-top:36px}
+
+  /* ---------- hero ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+    gap:48px 56px;
+    align-items:center;
+    padding-block:72px 64px;
+    border-bottom:1px solid var(--line);
+  }
+  .cipher{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.08em;
+    color:var(--ink-faint);
+    line-height:1.9;
+    max-width:44ch;
+    margin-bottom:6px;
+  }
+  .cipher-note{font-size:14px;color:var(--ink-faint);margin-bottom:40px}
+  .cipher-note .zh{color:var(--ink-faint);display:block}
+  h1{
+    font-weight:800;
+    font-stretch:125%;
+    font-size:clamp(44px,8.4vw,100px);
+    line-height:.94;
+    letter-spacing:-.025em;
+  }
+  h1 span{display:block}
+  h1 sup{font-size:.5em;vertical-align:.8em;line-height:0;letter-spacing:0}
+  .h1-zh{
+    font-family:var(--zh);
+    font-weight:700;
+    font-size:clamp(22px,3.2vw,34px);
+    color:var(--ink-dim);
+    margin-top:18px;
+    letter-spacing:.04em;
+  }
+  .h1-zh sup{font-size:.55em;vertical-align:.7em;line-height:0}
+  .lede{margin-top:32px;max-width:56ch;font-size:19px;line-height:1.55}
+  .lede + .zh{margin-top:10px;max-width:40em;font-size:16px;line-height:1.75}
+  .how{margin-top:24px;max-width:56ch;border-left:3px solid var(--claude);padding:4px 0 4px 16px;font-size:16px;line-height:1.6;color:var(--ink)}
+  .how strong{font-weight:600}
+  .byline{
+    margin-top:40px;
+    display:flex;gap:6px 28px;flex-wrap:wrap;
+    font-size:14px;color:var(--ink-dim);
+  }
+  .byline strong{color:var(--ink);font-weight:600}
+
+  /* lampboard */
+  .board{
+    container-type:inline-size;
+    background:linear-gradient(180deg,#171F2A,#10161E);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:clamp(18px,3vw,30px) clamp(12px,2.4vw,26px) clamp(20px,3vw,28px);
+  }
+  .lamps{display:flex;flex-direction:column;gap:1.6cqi;align-items:center}
+  .lamp-row{display:flex;gap:1.2cqi}
+  .lamp{
+    --s:clamp(22px,8.6cqi,46px);
+    width:var(--s);height:var(--s);
+    border-radius:50%;
+    display:grid;place-items:center;
+    font-family:var(--mono);font-size:calc(var(--s) * .36);font-weight:500;
+    color:#4E5A68;
+    background:radial-gradient(circle at 50% 38%,#1E2733,#131A22 70%);
+    box-shadow:inset 0 0 0 1px #2A3544, inset 0 -3px 6px rgba(0,0,0,.45);
+    transition:background .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .lamp.on{
+    color:#2A1C05;
+    background:radial-gradient(circle at 50% 42%,#FFF1C9,var(--lamp) 45%,#D9962C 100%);
+    box-shadow:0 0 0 1px #F5C565, 0 0 22px 4px rgba(255,210,122,.45);
+  }
+  .lamp.kept{
+    color:var(--lamp);
+    background:radial-gradient(circle at 50% 40%,#3A2F1A,#1F1A12 75%);
+    box-shadow:inset 0 0 0 1px #6B5325, 0 0 12px rgba(255,210,122,.12);
+  }
+  .readout{
+    margin-top:22px;
+    display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    border-top:1px solid var(--line);padding-top:16px;
+  }
+  .readout .tape{
+    font-family:var(--mono);font-size:22px;letter-spacing:.3em;color:var(--lamp);
+    min-width:5.5ch;min-height:1.4em;
+  }
+  .readout p{font-size:14px;color:var(--ink-dim);max-width:34ch;line-height:1.5}
+  .readout p .zh{display:block;margin-top:4px}
+
+  /* ---------- sections ---------- */
+  section{padding-block:80px 8px}
+  .sec-title{
+    display:grid;grid-template-columns:auto 1fr;column-gap:20px;align-items:baseline;
+    margin-bottom:28px;
+  }
+  h2{
+    font-weight:750;font-stretch:112%;
+    font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-.015em;
+  }
+  .sec-title .zh{font-size:clamp(17px,2vw,21px);font-weight:500}
+  .intro{max-width:64ch;color:var(--ink-dim);margin-bottom:36px}
+  .intro strong{color:var(--ink);font-weight:600}
+  .intro-zh{max-width:44em;font-size:15px;line-height:1.8;margin-bottom:36px}
+
+  /* ---------- chart: time, log scale ---------- */
+  .timechart{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:28px clamp(16px,3vw,32px) 22px;
+  }
+  .tc-row{
+    display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);
+    column-gap:24px;align-items:center;
+    padding-block:12px;
+  }
+  .tc-row + .tc-row{border-top:1px solid var(--line-soft)}
+  .tc-label{font-size:15px;line-height:1.35}
+  .tc-label .zh{display:block;font-size:13px;margin-top:2px}
+  .track{
+    position:relative;height:30px;
+    background-image:
+      linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),
+      linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),
+      linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line));
+    background-size:1px 100%;
+    background-repeat:no-repeat;
+    background-position:0 0,20% 0,35.6% 0,55.6% 0,71.1% 0,91.1% 0;
+  }
+  .bar{
+    position:absolute;left:0;top:7px;height:16px;
+    width:var(--w);
+    background:var(--claude);
+    border-radius:0 4px 4px 0;
+  }
+  .bar .range{
+    position:absolute;top:0;bottom:0;left:var(--from);right:0;
+    background:repeating-linear-gradient(90deg,rgba(15,20,27,.55) 0 2px,transparent 2px 5px);
+    border-radius:0 4px 4px 0;
+  }
+  .bar.est{
+    background:repeating-linear-gradient(135deg,var(--steel) 0 2px,transparent 2px 7px);
+    box-shadow:inset 0 0 0 1px var(--steel);
+  }
+  .bar.off{
+    width:100%;border-radius:0;
+    -webkit-mask-image:linear-gradient(90deg,#000 70%,transparent);
+            mask-image:linear-gradient(90deg,#000 70%,transparent);
+  }
+  .val{
+    position:absolute;top:50%;transform:translateY(-50%);
+    left:calc(var(--w) + 12px);
+    font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink);
+  }
+  .val small{font-family:var(--sans);font-size:13px;color:var(--ink-dim);margin-left:6px}
+  .val.inside{left:12px;background:var(--panel);padding:1px 8px;border-radius:4px}
+  .axis{height:22px;margin-bottom:4px;background:none}
+  .axis span{
+    position:absolute;top:0;transform:translateX(-50%);
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);white-space:nowrap;
+  }
+  .axis span:first-child{transform:none}
+  .tc-foot{
+    display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:18px;padding-top:14px;
+    border-top:1px solid var(--line);font-size:13px;color:var(--ink-dim);
+  }
+  .key{display:inline-flex;align-items:center;gap:8px}
+  .swatch{width:22px;height:10px;border-radius:0 3px 3px 0;background:var(--claude)}
+  .swatch.est{background:repeating-linear-gradient(135deg,var(--steel) 0 2px,transparent 2px 6px);box-shadow:inset 0 0 0 1px var(--steel)}
+  .swatch.rng{background:var(--claude);position:relative;overflow:hidden}
+  .swatch.rng::after{content:"";position:absolute;inset:0 0 0 40%;background:repeating-linear-gradient(90deg,rgba(15,20,27,.55) 0 2px,transparent 2px 5px)}
+
+  /* ---------- steps ---------- */
+  .cols-head{
+    display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr) minmax(0,1.15fr);
+    column-gap:32px;padding-bottom:12px;border-bottom:1px solid var(--line);
+    font-size:14px;font-weight:600;
+  }
+  .cols-head .you-h{color:var(--ink);border-left:3px solid var(--you);padding-left:12px}
+  .cols-head .cl-h{color:var(--ink);border-left:3px solid var(--claude);padding-left:12px}
+  .cols-head .zh{font-weight:500;margin-left:8px;font-size:13px}
+  .steps{list-style:none}
+  .step{
+    display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr) minmax(0,1.15fr);
+    column-gap:32px;row-gap:14px;
+    padding-block:30px;border-bottom:1px solid var(--line);
+  }
+  .step-head .n{
+    font-family:var(--mono);font-size:13px;color:var(--ink-faint);display:block;margin-bottom:6px;
+  }
+  .step-head h3{font-size:22px;font-weight:700;font-stretch:110%;line-height:1.15}
+  .step-head .zh{display:block;font-size:15px;margin-top:4px}
+  .you{
+    align-self:start;
+    border-left:3px solid var(--you);padding-left:16px;
+    font-family:var(--mono);font-size:13.5px;line-height:1.75;color:var(--ink);
+  }
+  .you p + p{margin-top:12px}
+  .you .ctx{display:block;font-family:var(--sans);font-size:13px;color:var(--ink-faint);margin-bottom:6px}
+  .built{align-self:start;border-left:3px solid var(--claude);padding-left:16px}
+  .built p{font-size:15.5px;line-height:1.6}
+  .built p.zh{font-size:14px;line-height:1.75;margin-top:8px}
+  .figs{display:flex;flex-wrap:wrap;gap:14px 28px;margin-top:16px}
+  .fig dt{font-size:12.5px;color:var(--ink-dim);line-height:1.35}
+  .fig dd{font-family:var(--mono);font-size:19px;font-weight:500;line-height:1.3;margin-top:2px;white-space:nowrap}
+
+  /* ---------- scoring ---------- */
+  .insight{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;
+    margin-bottom:48px;
+  }
+  .insight .big{font-size:clamp(20px,2.3vw,25px);line-height:1.45;font-weight:500;max-width:36ch}
+  .insight .zh{font-size:16px;line-height:1.8;margin-top:12px}
+  .funnel{list-style:none;align-self:center;display:grid;gap:10px}
+  .funnel li{display:grid;grid-template-columns:minmax(0,8.5em) minmax(0,1fr);gap:18px;align-items:baseline;padding-block:10px;border-bottom:1px solid var(--line-soft)}
+  .funnel .fn{font-family:var(--mono);font-size:clamp(16px,1.6vw,19px);font-weight:500;text-align:right}
+  .funnel .fl{font-size:15px;line-height:1.45;color:var(--ink)}
+  .funnel .fl .zh{display:block;font-size:13.5px;margin-top:2px}
+  .pull{
+    border-left:3px solid var(--you);padding-left:18px;align-self:center;
+    font-family:var(--mono);font-size:14px;line-height:1.8;
+  }
+  .pull cite{display:block;font-family:var(--sans);font-style:normal;font-size:13px;color:var(--ink-faint);margin-top:8px}
+
+  .score-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px clamp(16px,2.6vw,28px)}
+  .panel h3{font-size:17px;font-weight:650;line-height:1.3}
+  .panel h3 + .zh{font-size:14px;margin-top:2px}
+  .panel .note{font-size:13.5px;color:var(--ink-dim);margin-top:8px;line-height:1.55}
+
+  .ioc{position:relative;height:400px;margin-top:22px}
+  .ioc-axis{position:absolute;left:44%;top:0;bottom:0;width:2px;background:var(--line)}
+  .ioc-band{
+    position:absolute;left:calc(44% - 5px);width:12px;
+    top:54.29%;height:17.14%;
+    background:repeating-linear-gradient(135deg,var(--steel) 0 2px,transparent 2px 5px);
+    box-shadow:inset 0 0 0 1px var(--steel);border-radius:3px;
+  }
+  .ioc-band-label{
+    position:absolute;right:calc(56% + 16px);top:62.86%;transform:translateY(-50%);
+    text-align:right;font-size:13px;line-height:1.4;color:var(--ink-dim);
+  }
+  .ioc-pt{position:absolute;left:44%;right:0;top:var(--y);transform:translateY(-50%);display:flex;align-items:center}
+  .ioc-pt::before{
+    content:"";width:12px;height:12px;border-radius:50%;margin-left:-5px;flex:none;
+    background:var(--bg);box-shadow:0 0 0 2px var(--ink-dim);
+  }
+  .ioc-pt.hit::before{background:var(--claude);box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--claude)}
+  .ioc-pt.thr::before{width:10px;height:0;border-radius:0;box-shadow:none;border-top:2px solid var(--ink-dim);margin-left:-4px}
+  .ioc-thr{position:absolute;left:0;right:0;top:34.29%;border-top:1px dashed var(--ink-faint)}
+  .ioc-pt span{padding-left:14px;font-size:13px;line-height:1.35;color:var(--ink-dim);position:relative;z-index:1}
+  .ioc-pt span b{font-family:var(--mono);font-weight:500;color:var(--ink);font-size:13px;display:block}
+  .ioc-pt.thr span{background:var(--panel);padding-right:6px}
+  .ioc-ends{position:absolute;left:calc(44% - 70px);font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+
+  .metrics{width:100%;border-collapse:collapse;margin-top:18px;font-size:14.5px}
+  .metrics th{text-align:left;font-weight:600;font-size:13px;color:var(--ink-dim);padding:8px 12px 8px 0;border-bottom:1px solid var(--line)}
+  .metrics td{padding:14px 12px 14px 0;border-bottom:1px solid var(--line-soft);vertical-align:top;line-height:1.45}
+  .metrics td:first-child{font-weight:650;white-space:nowrap}
+  .metrics td .zh{display:block;font-size:12.5px;font-weight:400;margin-top:2px}
+  .metrics td.n{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+  .table-scroll{overflow-x:auto}
+  .rule{margin-top:18px;font-size:15px;line-height:1.55}
+  .rule .zh{display:block;font-size:14px;margin-top:4px}
+
+  .fooled{margin-top:28px}
+  .diff{margin-top:14px;display:grid;gap:8px;font-family:var(--mono);font-size:clamp(14px,2.4vw,19px);letter-spacing:.14em}
+  .diff div{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .diff .tag{font-family:var(--sans);letter-spacing:0;font-size:13px;color:var(--ink-dim);min-width:11ch}
+  .diff mark{background:none;color:var(--ink);text-decoration:underline 2px wavy #D9687A;text-underline-offset:5px}
+
+  /* ---------- lessons ---------- */
+  .opening{
+    font-family:var(--mono);font-size:clamp(14px,1.6vw,16px);line-height:1.9;
+    border-left:3px solid var(--you);padding-left:20px;max-width:78ch;margin-bottom:44px;
+  }
+  .opening cite{display:block;font-family:var(--sans);font-style:normal;font-size:13px;color:var(--ink-faint);margin-top:8px}
+  .lessons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+  .lesson{border-top:2px solid var(--ink);padding-top:22px}
+  .lesson h3{font-size:clamp(24px,3vw,32px);font-weight:750;font-stretch:115%;line-height:1.1;letter-spacing:-.01em}
+  .lesson h3 + .zh{font-size:18px;font-weight:500;margin-top:6px}
+  .lesson q{
+    display:block;quotes:none;margin-top:18px;
+    font-family:var(--mono);font-size:13.5px;line-height:1.75;
+    border-left:3px solid var(--you);padding-left:14px;
+  }
+  .lesson p{margin-top:16px;font-size:16px;line-height:1.65;max-width:60ch}
+  .lesson p.zh{font-size:14.5px;line-height:1.8;margin-top:10px}
+  .trio{list-style:none;margin-top:16px;display:grid;gap:10px}
+  .trio li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:15px;line-height:1.5}
+  .trio .src{font-family:var(--mono);font-size:12.5px;color:var(--ink);border:1px solid var(--you);border-radius:4px;padding:1px 8px;align-self:start;white-space:nowrap}
+
+  /* ---------- cost ---------- */
+  .cost{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:28px 48px;align-items:start}
+  .cost-side .cost-total{margin-top:0;color:var(--ink);font-size:clamp(64px,10vw,112px);font-weight:800;font-stretch:125%;line-height:.9;letter-spacing:-.03em}
+  .cost-total small{font-size:18px;font-weight:500;font-stretch:100%;letter-spacing:0;color:var(--ink-dim);display:block;margin-top:12px;line-height:1.35}
+  .cost-side p{margin-top:18px;font-size:15px;color:var(--ink-dim);max-width:44ch}
+  .cost-side p.zh{font-size:14px;line-height:1.8;margin-top:10px}
+  .cost-rows li.grp{grid-template-columns:minmax(0,1fr) 3.4em;padding-top:16px;font-weight:650;border-top:1px solid var(--line)}
+  .cost-rows li.grp:first-child{padding-top:4px;border-top:0}
+  .cost-rows li:not(.grp) > span:first-child{padding-left:12px;color:var(--ink-dim)}
+  .cost-rows{list-style:none}
+  .cost-rows li{
+    display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr) 3.4em;
+    gap:14px;align-items:center;padding-block:7px;font-size:14.5px;line-height:1.3;
+  }
+  .cost-rows li + li{border-top:1px solid var(--line-soft)}
+  .cost-rows .zh{font-size:12.5px;display:block}
+  .cost-rows .ct{height:12px;position:relative}
+  .cost-rows .cb{position:absolute;left:0;top:0;bottom:0;width:calc(var(--p) / 10 * 100%);background:var(--steel);border-radius:0 4px 4px 0}
+  .cost-rows .cv{font-family:var(--mono);font-size:13px;text-align:right}
+
+  /* ---------- answer ---------- */
+  .answer{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px clamp(16px,3vw,32px)}
+  .pairs-key{display:flex;flex-wrap:wrap;gap:6px 24px;font-size:13px;color:var(--ink-dim);margin-bottom:16px}
+  .pairs-key span{display:inline-flex;align-items:center;gap:8px}
+  .pairs-key i{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .pairs{display:flex;flex-wrap:wrap;gap:16px 20px;font-family:var(--mono);font-size:clamp(15px,1.8vw,19px);letter-spacing:.12em}
+  .pair{display:grid;gap:4px}
+  .pair .c{color:var(--ink-faint)}
+  .pair .p{color:var(--lamp)}
+  .pair mark{background:none;color:inherit;text-decoration:underline 2px solid var(--you);text-underline-offset:6px}
+  .readas{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+  .readas q{display:block;quotes:none;font-size:clamp(19px,2.4vw,24px);line-height:1.45;font-weight:500;max-width:40ch}
+  .readas p{margin-top:10px;font-size:14.5px;color:var(--ink-dim);max-width:64ch;line-height:1.6}
+  .answer .figs{margin-top:24px}
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:88px;padding-top:28px;border-top:1px solid var(--line);
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;
+    font-size:14px;color:var(--ink-dim);line-height:1.7;
+  }
+  footer h4{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:6px}
+  footer ul{list-style:none}
+
+  /* ---------- responsive ---------- */
+
+  /* ---------- 繁體中文 typography ---------- */
+  body{line-height:1.75}
+  h1{letter-spacing:.01em;line-height:1.08;font-weight:900}
+  h1 sup{font-weight:800}
+  h2{letter-spacing:.02em;font-weight:700}
+  .lede{max-width:30em;line-height:1.8}
+  .intro{max-width:40em;line-height:1.85}
+  .step-head h3,.lesson h3{letter-spacing:.02em;font-weight:700;line-height:1.3}
+  .you{font-family:var(--sans);font-size:15.5px;line-height:1.75}
+  .orig{font-family:var(--mono);font-size:12px;line-height:1.65;color:var(--ink-faint);margin-top:6px}
+  .you p + p.orig{margin-top:6px}
+  .you p.orig + p{margin-top:16px}
+  .built p{line-height:1.8}
+  .insight .big{max-width:24em;line-height:1.7}
+  .funnel .fl{line-height:1.6}
+  .opening{font-family:var(--sans);font-size:clamp(16px,1.8vw,19px);line-height:1.85;max-width:40em}
+  .opening .orig{font-size:12.5px;margin-top:10px}
+  .lesson q{font-family:var(--sans);font-size:16px}
+  .lesson p.orig{font-size:12px;line-height:1.65;margin-top:6px;padding-left:17px;color:var(--ink-faint)}
+  .lesson p{line-height:1.85;max-width:34em}
+  .trio .src{font-family:var(--sans);font-size:13px}
+  .metrics td:first-child{white-space:normal;min-width:5.5em}
+  .cost-total small{line-height:1.5}
+  .cost-side p{line-height:1.8}
+  .diff .tag{min-width:4.5em}
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:minmax(0,1fr);padding-block:48px 48px}
+    .cols-head{display:none}
+    .step{grid-template-columns:minmax(0,1fr)}
+    .you::before{content:"我的提問";display:block;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink-dim);margin-bottom:4px}
+    .built::before{content:"Claude 的實作";display:block;font-size:12.5px;font-weight:600;color:var(--ink-dim);margin-bottom:4px}
+    .insight,.score-grid,.lessons,.cost,footer{grid-template-columns:minmax(0,1fr)}
+    .metrics{min-width:520px}
+  }
+  @media (max-width:640px){
+    body{font-size:16px}
+    section{padding-block:60px 8px}
+    .sec-title{grid-template-columns:1fr;row-gap:4px}
+    .tc-row{grid-template-columns:1fr;row-gap:8px}
+    .tc-row.axis-row .tc-label{display:none}
+    .val,.val.inside{position:static;transform:none;display:block;margin-top:6px;background:none;padding:0}
+    .track.has-val{height:auto;padding-top:30px;background-size:1px 30px}
+    .bar{top:7px}
+    .cost-rows li{grid-template-columns:minmax(0,1fr) 3.4em;row-gap:6px}
+    .cost-rows .ct{grid-column:1 / -1;grid-row:2}
+    .ioc-axis{left:40%}
+    .ioc-band{left:calc(40% - 5px)}
+    .ioc-band-label{right:calc(60% + 14px)}
+    .ioc-pt{left:40%}
+    .ioc-ends{left:calc(40% - 64px)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .lamp{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="lang" aria-label="頁面連結">
+    <div class="links">
+      <a class="sim" href="https://www.101computing.net/enigma-machine-emulator/" target="_blank" rel="noopener">試玩 Enigma 模擬器</a>
+      <a class="sim" href="https://github.com/SansWord/sans_enigma" target="_blank" rel="noopener">GitHub 原始碼</a>
+    </div>
+    <a href="enigma_cracking_with_claude.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div>
+      <p class="cipher" aria-label="原始密文">XTRMC ROXXN LGWWM PQILL WLYMP OXBOH COGSD XHEBF ZMROD XLMEP MFNZO K</p>
+      <p class="cipher-note">起點：Enigma 模擬器產生的 56 個字母，沒有任何設定。</p>
+
+      <h1><span>從 10<sup>20</sup></span><span>到 4.4 秒</span></h1>
+
+      <p class="lede">我和 Claude 一起破解 Enigma 學到的事。資料是我找的：一支 YouTube 影片、一篇 1995 年的研究論文。Claude 讀懂它們，再把每一份都寫成能跑的程式。</p>
+
+      <p class="how"><strong>Claude 本身沒有解密任何東西。</strong>它寫的是攻擊密文的 Python 腳本，海報上的每一個時間，都是這些腳本在我 14 核心筆電上實際執行的結果。</p>
+
+      <div class="byline">
+        <span><strong>sansword</strong></span>
+        <a href="https://github.com/sansword">github.com/sansword</a>
+        <span>2026 年 9 月</span>
+      </div>
+    </div>
+
+    <figure class="board" aria-labelledby="board-cap">
+      <div class="lamps" id="lamps" aria-hidden="true"></div>
+      <figcaption class="readout">
+        <span class="tape" id="tape" aria-hidden="true">TEST</span>
+        <p id="board-cap">已知明文：光是知道訊息開頭是 TEST，就把 772 億種設定縮小到 129 萬種。</p>
+      </figcaption>
+    </figure>
+  </header>
+
+  <!-- ============ TIME CHART ============ -->
+  <section aria-labelledby="s-time">
+    <div class="sec-title">
+      <h2 id="s-time">破解一次要多久</h2>
+    </div>
+    <p class="intro">在 14 核心 CPU 上找回設定所需的時間。橫軸是對數刻度，同樣的距離代表同樣的倍數：<strong>1 秒到 10 秒</strong>和<strong>1 分鐘到 10 分鐘</strong>一樣寬。</p>
+
+    <div class="timechart" role="img" aria-label="各方法的破解時間，對數刻度。含接線板的暴力破解：10 的 20 次方種設定，從未嘗試。不含接線板的暴力破解：約 4.1 小時，估計值。已知明文攻擊：4.4 分鐘。只靠密文的第一版，不含接線板：4.8 分鐘。同樣的搜尋若連接線板也全部試過：約 48 億年，估計值。加上 Gillogly 環設定還原：4.3 秒。加上接線板搜尋的最終流程：4.4 到 15.8 秒。">
+      <div class="tc-row axis-row" aria-hidden="true">
+        <div class="tc-label"></div>
+        <div class="track axis">
+          <span style="left:0">1 秒</span>
+          <span style="left:20%">10 秒</span>
+          <span style="left:35.6%">1 分</span>
+          <span style="left:55.6%">10 分</span>
+          <span style="left:71.1%">1 小時</span>
+          <span style="left:91.1%">10 小時</span>
+        </div>
+      </div>
+
+      <div class="tc-row">
+        <div class="tc-label">暴力破解，含接線板</div>
+        <div class="track has-val"><div class="bar est off" style="--w:100%"></div><span class="val inside" style="--w:0%">10<sup>20</sup>+ 種設定 <small>從未嘗試</small></span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">暴力破解，不含接線板</div>
+        <div class="track has-val"><div class="bar est" style="--w:83.4%"></div><span class="val" style="--w:83.4%">約 4.1 小時 <small>估計值</small></span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">已知明文攻擊，知道開頭為「TEST」</div>
+        <div class="track has-val"><div class="bar" style="--w:48.4%"></div><span class="val" style="--w:48.4%">4.4 分鐘</span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">只靠密文，第一版（不含接線板，搜尋空間少了 5.3×10<sup>14</sup> 倍）</div>
+        <div class="track has-val"><div class="bar" style="--w:49.1%"></div><span class="val" style="--w:49.1%">4.8 分鐘</span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">第一版，若連接線板也全部試過</div>
+        <div class="track has-val"><div class="bar est off" style="--w:100%"></div><span class="val inside" style="--w:0%">約 48 億年 <small>估計值</small></span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">加上 Gillogly 環設定還原</div>
+        <div class="track has-val"><div class="bar" style="--w:12.7%"></div><span class="val" style="--w:12.7%">4.3 秒</span></div>
+      </div>
+      <div class="tc-row">
+        <div class="tc-label">再加上接線板搜尋，預設開啟</div>
+        <div class="track has-val"><div class="bar" style="--w:24.0%"><span class="range" style="--from:53.8%"></span></div><span class="val" style="--w:24.0%">4.4–15.8 秒 <small>0 對 / 5 對接線</small></span></div>
+      </div>
+
+      <div class="tc-foot">
+        <span class="key"><span class="swatch"></span>實測</span>
+        <span class="key"><span class="swatch rng"></span>實測範圍，最快到最慢</span>
+        <span class="key"><span class="swatch est"></span>估計值或從未執行</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STEPS ============ -->
+  <section aria-labelledby="s-steps">
+    <div class="sec-title">
+      <h2 id="s-steps">四次輸入，四次進步</h2>
+    </div>
+    <p class="intro">每一次大幅進步，都從我交給 Claude 的一樣東西開始：一個關於訊息的已知事實、一支影片、一篇論文，以及針對同一篇論文的第二個問題。引號內是我當時實際輸入的提示，原文是英文，下方附上原句。</p>
+
+    <div class="cols-head" aria-hidden="true">
+      <span></span>
+      <span class="you-h">我的提問</span>
+      <span class="cl-h">Claude 的實作</span>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <div class="step-head">
+          <span class="n">第 0 步</span>
+          <h3>高牆</h3>
+        </div>
+        <blockquote class="you">
+          <p>「我想請你在不知道正確設定的情況下猜出來，但我擔心這樣會不會太花成本。」</p>
+          <p class="orig" lang="en">“I want you to guess it without correct setting. but I worry if that would be too expensive”</p>
+        </blockquote>
+        <div class="built">
+          <p>從模擬器的 JavaScript 取出確切的轉子接線，用「加密再解密」的來回測試驗證，再老實算出問題到底有多大。</p>
+          <dl class="figs">
+            <div class="fig"><dt>不含接線板的設定數</dt><dd>7.7×10<sup>10</sup></dd></div>
+            <div class="fig"><dt>含接線板</dt><dd>10<sup>20</sup>+</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">第 1 步</span>
+          <h3>一段已知明文</h3>
+        </div>
+        <blockquote class="you">
+          <p>「前 4 個明文字母是『TEST』，現在你能多快解出來？」</p>
+          <p class="orig" lang="en">“the first 4 plaintext is "TEST", how fast you can do it now?”</p>
+        </blockquote>
+        <div class="built">
+          <p>對所有轉子、反射器、環設定與起始位置做精確比對篩選，再用多核心依英文字母頻率替留下的候選排序。得到的答案確定而且唯一。</p>
+          <dl class="figs">
+            <div class="fig"><dt>772 億種中留下的候選</dt><dd>1,290,588</dd></div>
+            <div class="fig"><dt>從密文到答案</dt><dd>4.4 分鐘</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">第 2 步</span>
+          <h3>一支影片</h3>
+        </div>
+        <blockquote class="you">
+          <p>「我看了這支講怎麼破解 Enigma 的 YouTube 影片，影片裡提到的策略會讓破解變得比較容易嗎？」</p>
+          <p class="orig" lang="en">“I've watched this youtube video discussing how to bracking enigma, would the strategy mentioned in the video makes it easier?”</p>
+        </blockquote>
+        <div class="built">
+          <p>讀了 Computerphile 影片的逐字稿，做出分階段、只靠密文的攻擊：先找轉子與起始位置，再找環設定。需要 200 個以上的字母，但不需要已知明文。弱點是要正確找出環設定，仍得花好幾分鐘。</p>
+          <dl class="figs">
+            <div class="fig"><dt>第一階段組合數</dt><dd>4,394,000</dd></div>
+            <div class="fig"><dt>第一階段耗時</dt><dd>約 4 秒</dd></div>
+            <div class="fig"><dt>環設定暴力搜尋</dt><dd>4.7 分鐘</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">第 3 步</span>
+          <h3>影片背後的論文</h3>
+        </div>
+        <blockquote class="you">
+          <p>「影片介紹的是這篇論文：[連結]　它能不能給你一些改進我們腳本的想法？」</p>
+          <p class="orig" lang="en">“the video is introducing this paper: [link] would that give you any insight to improve our script?”</p>
+        </blockquote>
+        <div class="built">
+          <p>實作 James Gillogly 1995 年的環設定還原法：讓環設定和起始位置一起移動，每個轉子只試 26 次。0.014 秒就找出正確的轉子和可讀的英文，便宜到可以檢查每一個候選。不過在一次測試中，轉子進位附近仍有幾個字母和暴力搜尋的結果不同。</p>
+          <dl class="figs">
+            <div class="fig"><dt>嘗試次數，原本要 308,915,776 次</dt><dd>52</dd></div>
+            <div class="fig"><dt>環設定還原</dt><dd>0.014 秒</dd></div>
+            <div class="fig"><dt>完整流程</dt><dd>286 秒 → 4.3 秒</dd></div>
+          </dl>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head">
+          <span class="n">第 4 步</span>
+          <h3>同一篇論文，換個問題</h3>
+        </div>
+        <blockquote class="you">
+          <p>「你可以實作論文裡提到的接線板改進嗎？」</p>
+          <p class="orig" lang="en">“can you implement the plugboard upgrade from the paper?”</p>
+          <p>「可以把預設行為改成：假設一定有接線板配對，但我們不知道有幾對（也可能是 0）嗎？」</p>
+          <p class="orig" lang="en">“can you make it the default behavior that assume it'll have plugboard pair and we don't know how many (could be 0)”</p>
+        </blockquote>
+        <div class="built">
+          <p>帶著更具體的問題重讀，找到第一次漏看的細節：用英文三字母組（trigram）替接線板的猜測評分。接著用貪婪搜尋找出每一對接線，沒有任何交換能再改善時就自動停下，所以每則訊息都能直接跑。</p>
+          <dl class="figs">
+            <div class="fig"><dt>約 1.3 秒內找到的接線</dt><dd>全部 5 對</dd></div>
+            <div class="fig"><dt>嘗試次數，10 對接線共 1.5×10<sup>14</sup> 種</dt><dd>~1,295</dd></div>
+            <div class="fig"><dt>全程</dt><dd>4.4–15.8 秒</dd></div>
+          </dl>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ SCORING ============ -->
+  <section aria-labelledby="s-score">
+    <div class="sec-title">
+      <h2 id="s-score">替「接近英文」打分數</h2>
+    </div>
+
+    <div class="insight">
+      <div>
+        <p class="big">Enigma 會洩漏線索。只猜對部分設定時，解出來的文字就已經比全部猜錯時明顯更像英文。只要能替這件事打分數，一個不可能的搜尋就變成三個小搜尋：先轉子，再環設定，最後是接線板。</p>
+      </div>
+      <ol class="funnel" aria-label="三個階段，各自用一種分數排序">
+        <li><span class="fn">4,394,000</span><span class="fl">轉子順序 × 起始位置，用 IoC 排序</span></li>
+        <li><span class="fn">52</span><span class="fl">每個候選的環設定嘗試，用 IoC 排序</span></li>
+        <li><span class="fn">~1,295</span><span class="fl">接線板交換，用三字母組排序</span></li>
+      </ol>
+    </div>
+
+    <div class="score-grid">
+      <figure class="panel">
+        <h3>候選解落在重合指數（IoC）的哪裡</h3>
+        <p class="note">從文字中隨機挑兩個字母，兩者相同的機率。數值越高越像英文。圖中兩個解密結果來自一則 269 個字母的測試訊息。</p>
+        <div class="ioc" role="img" aria-label="重合指數刻度，從 0.035 到 0.070。隨機字母約 0.038。錯誤的轉子順序最高只到 0.045 至 0.051。第一版環設定搜尋的錯亂結果為 0.0507。確認門檻為 0.058。正確解密為 0.0618。一般英文約 0.067。">
+          <div class="ioc-axis"></div>
+          <span class="ioc-ends" style="top:-4px">0.070</span>
+          <span class="ioc-ends" style="bottom:-4px">0.035</span>
+          <div class="ioc-thr"></div>
+          <div class="ioc-band"></div>
+          <div class="ioc-band-label">錯誤的<br>轉子順序<br><span class="num">0.045–0.051</span></div>
+          <div class="ioc-pt" style="--y:8.57%"><span><b>≈0.067</b>一般英文</span></div>
+          <div class="ioc-pt hit" style="--y:23.43%"><span><b>0.0618</b>正確解密</span></div>
+          <div class="ioc-pt thr" style="--y:34.29%"><span><b>0.058</b>高於此值即確認</span></div>
+          <div class="ioc-pt" style="--y:55.14%"><span><b>0.0507</b>第一版環設定搜尋，文字錯亂</span></div>
+          <div class="ioc-pt" style="--y:91.43%"><span><b>≈0.038</b>隨機字母</span></div>
+        </div>
+      </figure>
+
+      <div class="panel">
+        <h3>三種分數，各用在划算的地方</h3>
+        <div class="table-scroll">
+          <table class="metrics">
+            <thead><tr><th scope="col">評分方式</th><th scope="col">看的是什麼</th><th scope="col">用來排序</th><th scope="col">候選數量</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>卡方檢定</td>
+                <td>哪些字母常見（E、T、A…）</td>
+                <td>已知明文篩選後的候選</td>
+                <td class="n">129 萬</td>
+              </tr>
+              <tr>
+                <td>重合指數 IoC</td>
+                <td>字母出現次數有多不平均，不管是哪些字母</td>
+                <td>轉子與起始位置，接著是環設定掃描</td>
+                <td class="n">439 萬，再來 52</td>
+              </tr>
+              <tr>
+                <td>三字母組</td>
+                <td>真實的三字母序列，例如 THE、ING、ION</td>
+                <td>接線板交換</td>
+                <td class="n">~1,295</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="rule">候選數以百萬計時，用便宜的分數；只剩少數候選時，才換上更準也更慢的分數。</p>
+
+        <div class="fooled">
+          <h3>IoC 被騙的時候</h3>
+          <p class="note">在一則完全沒有接線板的訊息上，IoC 評分卻加了兩對假接線，只因為它們讓分數從 0.0618 微升到 0.0638。三字母組評分則正確判斷出 0 對。</p>
+          <div class="diff" aria-label="正確文字 INCRYPTOGRAPHYA 在加上兩對假接線後變成 INCQYPTOGQAPLYA">
+            <div><span class="tag">正確</span><span>INCRYPTOGRAPHYA</span></div>
+            <div><span class="tag">假接線</span><span>INC<mark>Q</mark>YPTOG<mark>Q</mark>AP<mark>L</mark>YA</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LESSONS ============ -->
+  <section aria-labelledby="s-lessons">
+    <div class="sec-title">
+      <h2 id="s-lessons">兩個收穫</h2>
+    </div>
+
+    <blockquote class="opening">
+      <p>「這趟旅程起於我看完影片後，對 Enigma 的興趣與好奇。我因此對 Enigma 機器本身有更多了解，但更重要的是，我也因此學會怎麼引導 Claude 實作我學到的東西，透過 Claude 快速實作我找到的資訊。」</p>
+      <cite>我自己，回顧這個專案</cite>
+    </blockquote>
+
+    <div class="lessons">
+      <article class="lesson">
+        <h3>我整理知識，Claude 負責實作</h3>
+        <q>「把我從 YouTube 和論文學到的東西交給 Claude，讓它拿去實作。」</q>
+        <p class="orig" lang="en">“provide what I learn from YT, paper so claude can use it to implement it”</p>
+        <ul class="trio">
+          <li><span class="src">影片</span><span>變成分階段、只靠密文的攻擊</span></li>
+          <li><span class="src">論文</span><span>變成只要 52 次嘗試的環設定還原，整個專案最大的加速</span></li>
+          <li><span class="src">再讀論文</span><span>修好接線板階段，也修掉一個真實存在的評分 bug</span></li>
+        </ul>
+        <p>我負責判斷：哪份資料值得讀，以及什麼時候該帶著更具體的問題再看一次。一份資料很少讀一次就用完，換個新問題，常常能再挖出新東西。</p>
+      </article>
+
+      <article class="lesson">
+        <h3>部分正確，也能打分數</h3>
+        <q>「從暴力破解，走到部分解開密碼，再用合適的評分系統替部分結果排序。」</q>
+        <p class="orig" lang="en">“from brute force to partially solve the code. and using a proper scoring system to rank the partial result.”</p>
+        <p>再多硬體也跑不完 10<sup>20</sup> 種設定。真正打破高牆的，是一個「猜對一部分就加分」的評分方式，讓每個階段都能各自求解、各自排序。替每個階段選對分數，和搜尋本身一樣重要。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ COST ============ -->
+  <section aria-labelledby="s-cost">
+    <div class="sec-title">
+      <h2 id="s-cost">花了多少 token 額度</h2>
+    </div>
+
+    <div class="cost">
+      <div class="cost-side">
+        <p class="cost-total">~58%<small>（Claude Pro 的 5-hr session，整個開發過程）</small></p>
+        <p>數字來自開發過程的對話紀錄：把每一次 API 呼叫的 token 依價格加權，再以 Claude Pro 用量表顯示 35% 的那一段為基準換算。Anthropic 沒有公開用量上限如何計算各種 token，所以這仍是估計值。</p>
+        <p>使用 Claude Sonnet 5 打造。</p>
+      </div>
+
+      <figure class="panel" aria-labelledby="cost-cap">
+        <h3 id="cost-cap">各步驟用掉的比例</h3>
+        <ol class="cost-rows" style="margin-top:14px">
+          <li class="grp"><span>第 0–1 步：高牆與已知明文</span><span class="cv">9.5%</span></li>
+          <li><span>估算問題規模、取得模擬器接線</span><span class="ct"><span class="cb" style="--p:3.7"></span></span><span class="cv">3.7%</span></li>
+          <li><span>已知明文搜尋、多核心排序</span><span class="ct"><span class="cb" style="--p:1.5"></span></span><span class="cv">1.5%</span></li>
+          <li><span>已知明文腳本、文件與剪枝修正</span><span class="ct"><span class="cb" style="--p:4.3"></span></span><span class="cv">4.3%</span></li>
+          <li class="grp"><span>第 2 步：一支影片</span><span class="cv">12.5%</span></li>
+          <li><span>讀 YouTube 影片</span><span class="ct"><span class="cb" style="--p:2.3"></span></span><span class="cv">2.3%</span></li>
+          <li><span>分階段攻擊與模擬器</span><span class="ct"><span class="cb" style="--p:5.1"></span></span><span class="cv">5.1%</span></li>
+          <li><span>環設定暴力搜尋</span><span class="ct"><span class="cb" style="--p:3.1"></span></span><span class="cv">3.1%</span></li>
+          <li><span>依序驗證候選</span><span class="ct"><span class="cb" style="--p:2.0"></span></span><span class="cv">2.0%</span></li>
+          <li class="grp"><span>第 3 步：影片背後的論文</span><span class="cv">6.4%</span></li>
+          <li><span>讀論文並實作</span><span class="ct"><span class="cb" style="--p:5.4"></span></span><span class="cv">5.4%</span></li>
+          <li><span>第一份進度文件</span><span class="ct"><span class="cb" style="--p:1.0"></span></span><span class="cv">1.0%</span></li>
+          <li class="grp"><span>第 4 步：同一篇論文，換個問題</span><span class="cv">14.6%</span></li>
+          <li><span>接線板支援檢查，純討論</span><span class="ct"><span class="cb" style="--p:0.2"></span></span><span class="cv">0.2%</span></li>
+          <li><span>三字母組接線板搜尋</span><span class="ct"><span class="cb" style="--p:9.1"></span></span><span class="cv">9.1%</span></li>
+          <li><span>接線板搜尋改為預設</span><span class="ct"><span class="cb" style="--p:3.4"></span></span><span class="cv">3.4%</span></li>
+          <li><span>更新進度文件</span><span class="ct"><span class="cb" style="--p:1.9"></span></span><span class="cv">1.9%</span></li>
+          <li class="grp"><span>文件與回顧</span><span class="cv">15.2%</span></li>
+          <li><span>開發日誌與 token 估算</span><span class="ct"><span class="cb" style="--p:2.9"></span></span><span class="cv">2.9%</span></li>
+          <li><span>評分方法文件與收穫整理</span><span class="ct"><span class="cb" style="--p:6.7"></span></span><span class="cv">6.7%</span></li>
+          <li><span>用 Opus 審閱開發日誌</span><span class="ct"><span class="cb" style="--p:5.6"></span></span><span class="cv">5.6%</span></li>
+        </ol>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ ANSWER ============ -->
+  <section aria-labelledby="s-answer">
+    <div class="sec-title">
+      <h2 id="s-answer">解出來的答案</h2>
+    </div>
+    <p class="intro">頁首那 56 個字母解密後的結果。前四個字母，就是我提供給 Claude 的已知明文。</p>
+
+    <div class="answer">
+      <div class="pairs-key" aria-hidden="true">
+        <span><i style="background:var(--ink-faint)"></i>密文</span>
+        <span><i style="background:var(--lamp)"></i>明文</span>
+        <span><i style="background:var(--you)"></i>已知明文</span>
+      </div>
+      <p class="sr">密文 XTRMC ROXXN LGWWM PQILL WLYMP OXBOH COGSD XHEBF ZMROD XLMEP MFNZO K 解密為 TESTI FCLAU DECAN DECRY PTANE NIGMA MACHI NEAND HOWFA STITC ANDOI T。</p>
+      <div class="pairs" aria-hidden="true">
+          <span class="pair"><span class="c">XTRMC</span><span class="p"><mark>TEST</mark>I</span></span>
+          <span class="pair"><span class="c">ROXXN</span><span class="p">FCLAU</span></span>
+          <span class="pair"><span class="c">LGWWM</span><span class="p">DECAN</span></span>
+          <span class="pair"><span class="c">PQILL</span><span class="p">DECRY</span></span>
+          <span class="pair"><span class="c">WLYMP</span><span class="p">PTANE</span></span>
+          <span class="pair"><span class="c">OXBOH</span><span class="p">NIGMA</span></span>
+          <span class="pair"><span class="c">COGSD</span><span class="p">MACHI</span></span>
+          <span class="pair"><span class="c">XHEBF</span><span class="p">NEAND</span></span>
+          <span class="pair"><span class="c">ZMROD</span><span class="p">HOWFA</span></span>
+          <span class="pair"><span class="c">XLMEP</span><span class="p">STITC</span></span>
+          <span class="pair"><span class="c">MFNZO</span><span class="p">ANDOI</span></span>
+          <span class="pair"><span class="c">K</span><span class="p">T</span></span>
+      </div>
+
+      <div class="readas">
+        <q lang="en">“Test if Claude can decrypt an Enigma machine and how fast it can do it”</q>
+        <p>意思是：「測試 Claude 能不能解開 Enigma 機器，以及它能多快做到。」已知明文攻擊在 14 核心上花了 4 分 22 秒解出。正確解密的卡方值是 21.6，遠遠領先第二名的 76.2。</p>
+      </div>
+
+      <dl class="figs">
+        <div class="fig"><dt>轉子</dt><dd>III, V, I</dd></div>
+        <div class="fig"><dt>反射器</dt><dd>UKW-C</dd></div>
+        <div class="fig"><dt>環設定</dt><dd>AAO</dd></div>
+        <div class="fig"><dt>起始位置</dt><dd>EDH</dd></div>
+        <div class="fig"><dt>接線板</dt><dd>無</dd></div>
+      </dl>
+      <p class="note" style="font-size:13px;color:var(--ink-faint);margin-top:12px">訊息這麼短時，其他環設定與起始位置的組合也會解出同樣的文字，這只是其中一組。</p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div>
+      <h4>資料來源</h4>
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=RzWB5jL5RX0">Computerphile〈Cracking Enigma in 2021〉</a>，主講人 Mike Pound</li>
+        <li><a href="https://web.archive.org/web/20060720040135/http://members.fortunecity.com/jpeschel/gillog1.htm">James Gillogly〈Ciphertext-Only Cryptanalysis of Enigma〉</a>，《Cryptologia》，1995 年</li>
+        <li><a href="https://www.101computing.net/enigma-machine-emulator/">101computing.net Enigma M3 模擬器</a></li>
+        <li>英文三字母組頻率表來自 <a href="http://practicalcryptography.com/">practicalcryptography.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>關於</h4>
+      <p>作者 sansword，<a href="https://github.com/sansword">github.com/sansword</a>。程式與文件：<a href="https://github.com/SansWord/sans_enigma">github.com/SansWord/sans_enigma</a>。這裡所有的程式、文件與數字，都來自同一個在 Claude Code 中用 Claude Sonnet 5 完成的專案。除了標示為估計值的項目，時間都是在 14 核心上實際執行的結果。</p>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var rows = ["QWERTZUIO","ASDFGHJK","PYXCVBNML"]; // Enigma lampboard layout
+  var box = document.getElementById("lamps");
+  var tape = document.getElementById("tape");
+  var lamps = {};
+  rows.forEach(function(r){
+    var row = document.createElement("div");
+    row.className = "lamp-row";
+    r.split("").forEach(function(ch){
+      var l = document.createElement("span");
+      l.className = "lamp";
+      l.textContent = ch;
+      lamps[ch] = l;
+      row.appendChild(l);
+    });
+    box.appendChild(row);
+  });
+
+  var word = "TEST";
+  function settle(){
+    word.split("").forEach(function(ch){ lamps[ch].classList.add("kept"); });
+    tape.textContent = word;
+  }
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { settle(); return; }
+
+  tape.textContent = "";
+  var i = 0;
+  function next(){
+    if (i >= word.length) { setTimeout(settle, 250); return; }
+    var ch = word[i];
+    lamps[ch].classList.remove("kept");
+    lamps[ch].classList.add("on");
+    tape.textContent = word.slice(0, i + 1);
+    setTimeout(function(){
+      lamps[ch].classList.remove("on");
+      i++;
+      setTimeout(next, 220);
+    }, 520);
+  }
+  setTimeout(next, 700);
+})();
+</script>
+</body>
+</html>
