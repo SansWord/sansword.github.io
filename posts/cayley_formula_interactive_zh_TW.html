@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cayley 公式 — Prüfer 序列互動式解說</title>
+<style>
+:root{--bg:#f7f7f4;--card:#fff;--ink:#202124;--muted:#667085;--line:#d9ddd7;--accent:#315b4a;--soft:#e9f1ed;--warn:#8a5a18}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+main{max-width:980px;margin:auto;padding:42px 20px 70px} h1{font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;margin:.15em 0}.sub{font-size:1.15rem;color:var(--muted);max-width:760px}
+.formula{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.6rem);text-align:center;padding:30px;margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0}
+h2{margin-top:42px} h3{margin-top:0}.pill{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--accent);font-weight:650;font-size:.88rem}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.math{font-family:Georgia,serif;font-style:italic}
+button,input{font:inherit} button{border:0;border-radius:10px;background:var(--accent);color:white;padding:10px 15px;cursor:pointer} button.secondary{background:#e8eae6;color:var(--ink)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}.seq input{width:48px;text-align:center;padding:8px;border:1px solid var(--line);border-radius:8px}
+#graph{width:100%;height:340px;background:#fbfcfa;border:1px solid var(--line);border-radius:14px}
+.edge{stroke:#606a65;stroke-width:3}.node{fill:white;stroke:var(--accent);stroke-width:3}.removed{fill:#eceeeb;stroke:#a5aaa7}.label{font-weight:700;text-anchor:middle;dominant-baseline:central}
+.stepbox{min-height:84px;padding:14px;border-left:4px solid var(--accent);background:var(--soft);border-radius:6px}
+table{border-collapse:collapse;width:100%}td,th{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left}
+.good{color:var(--accent);font-weight:700}.note{color:var(--muted);font-size:.94rem}
+@media(max-width:600px){main{padding:25px 14px}#graph{height:300px}}
+
+.lang-switch{display:flex;justify-content:flex-end;gap:8px;margin-bottom:18px;font-size:.92rem}
+.lang-switch a{color:var(--accent);text-decoration:none;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card)}
+.lang-switch a[aria-current="page"]{font-weight:700;background:var(--soft);pointer-events:none}
+</style>
+<link rel="alternate" hreflang="en" href="cayley_formula_interactive.html">
+<link rel="alternate" hreflang="zh-Hant-TW" href="cayley_formula_interactive_zh_TW.html">
+</head>
+<body>
+<main>
+<nav class="lang-switch" aria-label="語言">
+<a href="cayley_formula_interactive.html" hreflang="en" lang="en">English</a>
+<a href="cayley_formula_interactive_zh_TW.html" aria-current="page">繁體中文</a>
+</nav>
+<span class="pill">互動式證明</span>
+<h1>Cayley 公式</h1>
+<p class="sub">使用 <strong>n 個有標號的頂點</strong>，可以組成多少棵不同的樹？只要用 Prüfer 序列表示每一棵樹，這個答案就會變得很直觀。</p>
+<div class="formula">T<sub>n</sub> = n<sup>n−2</sup></div>
+
+<div class="grid">
+<section class="card"><h3>1. 用序列編碼</h3>
+<p>使用一個序列 <span class="math">(a₁,…,aₙ₋₂)</span>，其中每個元素都是 <span class="math">{1,…,n}</span> 中的一個頂點標號。</p>
+<p>There are <strong>n</strong> choices for each of <strong>n−2</strong> positions, hence <strong>n<sup>n−2</sup></strong> sequences.</p></section>
+<section class="card"><h3>2. 證明一一對應</h3>
+<p>只有在「每個序列都對應到一棵樹，而且每棵樹也只對應到一個序列」時，我們才能用序列的數量來計算樹的數量。</p>
+<p class="good">Prüfer 序列 ↔ 有標號的樹</p></section>
+</div>
+
+<h2>互動式解碼器</h2>
+<section class="card">
+<p>選擇 <strong>n</strong>，並輸入一個長度為 <strong>n−2</strong> 的 Prüfer 序列。按下「建立／重設」，再逐步查看樹是如何被建構出來的。</p>
+<div class="controls">
+<label>n = <input id="n" type="number" min="2" max="10" value="4" style="width:70px;padding:8px"></label>
+<button id="build">建立／重設</button><button class="secondary" id="next">下一步</button>
+</div>
+<div id="inputs" class="seq"></div>
+<div id="status" class="stepbox"></div>
+<svg id="graph" viewBox="0 0 700 340" aria-label="樹的視覺化"></svg>
+</section>
+
+<h2>為什麼每個序列都一定能解碼？</h2>
+<section class="card">
+<h3>引理 1 — 一定找得到可以當葉節點的頂點</h3>
+<p>如果目前還剩下 <strong>k</strong> 個頂點，那麼剩下的 Prüfer 序列長度就是 <strong>k−2</strong>。因此，這個序列最多只能包含 <strong>k−2</strong> 個不同的頂點標號。也就是說，在剩下的 <strong>k</strong> 個頂點中，至少有兩個不會出現在序列裡。</p>
+<p>所以，我們一定可以找到「沒有出現在剩餘序列中」的頂點，選其中標號最小的那一個，並把它連到序列的第一個元素。</p>
+</section>
+
+<section class="card">
+<h3>引理 2 — 建構出來的圖一定是一棵樹</h3>
+<p>每一步，我們都用一條邊把一個頂點接到仍然保留的頂點上，接著不再考慮這個被移除的頂點。這種接法不可能產生環。做完 <strong>n−2</strong> 步後會剩下兩個頂點，再把它們連起來。</p>
+<p>最後得到的圖有 <strong>n 個頂點</strong>、<strong>n−1 條邊</strong>，而且<strong>沒有環</strong>，因此它是一棵樹。</p>
+</section>
+
+<h2>為什麼兩個不同的序列一定對應到不同的樹？</h2>
+<section class="card">
+<h3>引理 3 — 可以從樹唯一還原出原本的序列</h3>
+<p>給定最後建構完成的樹，重複找出<strong>標號最小的葉節點</strong>，記錄它唯一相鄰的頂點，然後移除這個葉節點。直到只剩兩個頂點時停止。</p>
+<p>這個過程的每一步都是唯一決定的，因此一棵樹只會產生一個 Prüfer 序列。</p>
+<p>因此，如果序列 <span class="math">A=(a₁,…,aₙ₋₂)</span> 和 <span class="math">B=(b₁,…,bₙ₋₂)</span> 在任何一個位置不同，它們就不可能建構出同一棵樹：</p>
+<div class="formula" style="font-size:1.7rem">A ≠ B &nbsp;⇒&nbsp; T<sub>A</sub> ≠ T<sub>B</sub></div>
+</section>
+
+<h2>最後計數</h2>
+<section class="card">
+<table><tr><th>n</th><th>序列長度</th><th>樹的數量</th></tr>
+<tr><td>2</td><td>0</td><td>1</td></tr><tr><td>3</td><td>1</td><td>3</td></tr>
+<tr><td>4</td><td>2</td><td>16</td></tr><tr><td>5</td><td>3</td><td>125</td></tr>
+<tr><td>6</td><td>4</td><td>1296</td></tr></table>
+<p>因為 Prüfer 序列與有標號的樹之間是一一對應，而序列的 <strong>n−2</strong> 個位置中，每個位置都有 <strong>n</strong> 種選擇：</p>
+<div class="formula">n × ··· × n = n<sup>n−2</sup></div>
+</section>
+</main>
+<script>
+const nEl=document.querySelector('#n'), inputs=document.querySelector('#inputs'), svg=document.querySelector('#graph'), status=document.querySelector('#status');
+let state=null;
+function makeInputs(){
+ let n=+nEl.value; inputs.innerHTML='<strong>序列：</strong>';
+ for(let i=0;i<Math.max(0,n-2);i++){let x=document.createElement('input');x.type='number';x.min=1;x.max=n;x.value=(n===4?2:Math.min(n,i+1));x.className='p';inputs.appendChild(x)}
+}
+function setup(){
+ let n=Math.max(2,Math.min(10,+nEl.value||4));nEl.value=n;
+ let seq=[...document.querySelectorAll('.p')].map(x=>+x.value);
+ if(seq.length!==n-2||seq.some(x=>x<1||x>n)){status.textContent=`序列中的每個數字都必須介於 1 到 ${n} 之間。`;return}
+ state={n,seq,remaining:Array.from({length:n},(_,i)=>i+1),edges:[],step:0,done:false}; draw();
+ status.innerHTML=`準備完成。剩餘序列： <span class="mono">(${seq.join(', ')})</span>.`;
+}
+function next(){
+ if(!state||state.done)return;
+ let {seq,remaining}=state;
+ if(seq.length){
+   let first=seq[0], absent=remaining.filter(v=>!seq.includes(v)), leaf=Math.min(...absent);
+   state.edges.push([leaf,first]); state.remaining=remaining.filter(v=>v!==leaf); state.seq=seq.slice(1); state.step++;
+   status.innerHTML=`第 ${state.step} 步：<strong>${leaf}</strong> 是目前剩餘頂點中，沒有出現在 <span class="mono">(${seq.join(', ')})</span> 裡的最小標號。連接 <strong>${leaf}—${first}</strong>，接著移除頂點 ${leaf}，並刪除序列的第一個元素。`;
+ } else if(remaining.length===2){
+   state.edges.push([remaining[0],remaining[1]]); state.done=true;
+   status.innerHTML=`最後一步：連接最後兩個頂點 <strong>${remaining[0]}—${remaining[1]}</strong>。現在共有 ${state.n-1} 條邊，因此得到一棵樹。`;
+ }
+ draw();
+}
+function draw(){
+ svg.innerHTML=''; if(!state)return;
+ let n=state.n,cx=350,cy=170,r=125,pos={};
+ for(let i=1;i<=n;i++){let a=-Math.PI/2+2*Math.PI*(i-1)/n;pos[i]=[cx+r*Math.cos(a),cy+r*Math.sin(a)]}
+ for(let [a,b] of state.edges){let l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',pos[a][0]);l.setAttribute('y1',pos[a][1]);l.setAttribute('x2',pos[b][0]);l.setAttribute('y2',pos[b][1]);l.setAttribute('class','edge');svg.appendChild(l)}
+ for(let i=1;i<=n;i++){let c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',pos[i][0]);c.setAttribute('cy',pos[i][1]);c.setAttribute('r',23);c.setAttribute('class','node');svg.appendChild(c);let t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',pos[i][0]);t.setAttribute('y',pos[i][1]);t.setAttribute('class','label');t.textContent=i;svg.appendChild(t)}
+}
+nEl.addEventListener('change',makeInputs);document.querySelector('#build').onclick=setup;document.querySelector('#next').onclick=next;
+makeInputs();setup();
+</script>
+</body></html>

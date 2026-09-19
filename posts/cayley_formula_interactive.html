@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cayley's Formula — Interactive Prüfer Sequence Explanation</title>
+<style>
+:root{--bg:#f7f7f4;--card:#fff;--ink:#202124;--muted:#667085;--line:#d9ddd7;--accent:#315b4a;--soft:#e9f1ed;--warn:#8a5a18}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+main{max-width:980px;margin:auto;padding:42px 20px 70px} h1{font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;margin:.15em 0}.sub{font-size:1.15rem;color:var(--muted);max-width:760px}
+.formula{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.6rem);text-align:center;padding:30px;margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0}
+h2{margin-top:42px} h3{margin-top:0}.pill{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--accent);font-weight:650;font-size:.88rem}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.math{font-family:Georgia,serif;font-style:italic}
+button,input{font:inherit} button{border:0;border-radius:10px;background:var(--accent);color:white;padding:10px 15px;cursor:pointer} button.secondary{background:#e8eae6;color:var(--ink)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}.seq input{width:48px;text-align:center;padding:8px;border:1px solid var(--line);border-radius:8px}
+#graph{width:100%;height:340px;background:#fbfcfa;border:1px solid var(--line);border-radius:14px}
+.edge{stroke:#606a65;stroke-width:3}.node{fill:white;stroke:var(--accent);stroke-width:3}.removed{fill:#eceeeb;stroke:#a5aaa7}.label{font-weight:700;text-anchor:middle;dominant-baseline:central}
+.stepbox{min-height:84px;padding:14px;border-left:4px solid var(--accent);background:var(--soft);border-radius:6px}
+table{border-collapse:collapse;width:100%}td,th{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left}
+.good{color:var(--accent);font-weight:700}.note{color:var(--muted);font-size:.94rem}
+@media(max-width:600px){main{padding:25px 14px}#graph{height:300px}}
+
+.lang-switch{display:flex;justify-content:flex-end;gap:8px;margin-bottom:18px;font-size:.92rem}
+.lang-switch a{color:var(--accent);text-decoration:none;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card)}
+.lang-switch a[aria-current="page"]{font-weight:700;background:var(--soft);pointer-events:none}
+</style>
+<link rel="alternate" hreflang="en" href="cayley_formula_interactive.html">
+<link rel="alternate" hreflang="zh-Hant-TW" href="cayley_formula_interactive_zh_TW.html">
+</head>
+<body>
+<main>
+<nav class="lang-switch" aria-label="Language">
+<a href="cayley_formula_interactive.html" aria-current="page">English</a>
+<a href="cayley_formula_interactive_zh_TW.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW">繁體中文</a>
+</nav>
+<span class="pill">Interactive proof</span>
+<h1>Cayley’s Formula</h1>
+<p class="sub">How many different trees can be built from <strong>n labeled vertices</strong>? The answer becomes intuitive once every tree is represented by a Prüfer sequence.</p>
+<div class="formula">T<sub>n</sub> = n<sup>n−2</sup></div>
+
+<div class="grid">
+<section class="card"><h3>1. Encode with a sequence</h3>
+<p>Use a sequence <span class="math">(a₁,…,aₙ₋₂)</span>, where every entry is one of the labels <span class="math">{1,…,n}</span>.</p>
+<p>There are <strong>n</strong> choices for each of <strong>n−2</strong> positions, hence <strong>n<sup>n−2</sup></strong> sequences.</p></section>
+<section class="card"><h3>2. Show a bijection</h3>
+<p>Counting sequences only works if each sequence gives one tree and each tree gives one sequence.</p>
+<p class="good">Prüfer sequences ↔ labeled trees</p></section>
+</div>
+
+<h2>Interactive decoder</h2>
+<section class="card">
+<p>Choose <strong>n</strong> and a Prüfer sequence of length <strong>n−2</strong>. Press <em>Build / Reset</em>, then step through the construction.</p>
+<div class="controls">
+<label>n = <input id="n" type="number" min="2" max="10" value="4" style="width:70px;padding:8px"></label>
+<button id="build">Build / Reset</button><button class="secondary" id="next">Next step</button>
+</div>
+<div id="inputs" class="seq"></div>
+<div id="status" class="stepbox"></div>
+<svg id="graph" viewBox="0 0 700 340" aria-label="Tree visualization"></svg>
+</section>
+
+<h2>Why can every sequence be decoded?</h2>
+<section class="card">
+<h3>Lemma 1 — a leaf candidate always exists</h3>
+<p>If <strong>k</strong> vertices remain, the remaining Prüfer sequence has length <strong>k−2</strong>. It can therefore contain at most <strong>k−2</strong> distinct labels. At least two of the <strong>k</strong> remaining vertices do not appear in it.</p>
+<p>So we can always choose the smallest remaining vertex absent from the sequence and attach it to the sequence’s first element.</p>
+</section>
+
+<section class="card">
+<h3>Lemma 2 — the construction is a tree</h3>
+<p>At each step we attach a vertex by one edge and then remove that vertex from further consideration. That attachment cannot create a cycle. After <strong>n−2</strong> such steps, two vertices remain; connect them.</p>
+<p>The result has <strong>n vertices</strong>, <strong>n−1 edges</strong>, and <strong>no cycle</strong>, so it is a tree.</p>
+</section>
+
+<h2>Why are two different sequences different trees?</h2>
+<section class="card">
+<h3>Lemma 3 — the sequence can be recovered uniquely</h3>
+<p>Given the finished tree, repeatedly find the <strong>smallest leaf</strong>, record its unique neighbor, and remove the leaf. Stop when two vertices remain.</p>
+<p>This procedure is deterministic, so a tree produces exactly one Prüfer sequence.</p>
+<p>Therefore, if sequences <span class="math">A=(a₁,…,aₙ₋₂)</span> and <span class="math">B=(b₁,…,bₙ₋₂)</span> differ at any position, they cannot construct the same tree:</p>
+<div class="formula" style="font-size:1.7rem">A ≠ B &nbsp;⇒&nbsp; T<sub>A</sub> ≠ T<sub>B</sub></div>
+</section>
+
+<h2>The count</h2>
+<section class="card">
+<table><tr><th>n</th><th>Sequence length</th><th>Number of trees</th></tr>
+<tr><td>2</td><td>0</td><td>1</td></tr><tr><td>3</td><td>1</td><td>3</td></tr>
+<tr><td>4</td><td>2</td><td>16</td></tr><tr><td>5</td><td>3</td><td>125</td></tr>
+<tr><td>6</td><td>4</td><td>1296</td></tr></table>
+<p>Since the correspondence is one-to-one and there are <strong>n</strong> choices in each of <strong>n−2</strong> sequence positions:</p>
+<div class="formula">n × ··· × n = n<sup>n−2</sup></div>
+</section>
+</main>
+<script>
+const nEl=document.querySelector('#n'), inputs=document.querySelector('#inputs'), svg=document.querySelector('#graph'), status=document.querySelector('#status');
+let state=null;
+function makeInputs(){
+ let n=+nEl.value; inputs.innerHTML='<strong>Sequence: </strong>';
+ for(let i=0;i<Math.max(0,n-2);i++){let x=document.createElement('input');x.type='number';x.min=1;x.max=n;x.value=(n===4?2:Math.min(n,i+1));x.className='p';inputs.appendChild(x)}
+}
+function setup(){
+ let n=Math.max(2,Math.min(10,+nEl.value||4));nEl.value=n;
+ let seq=[...document.querySelectorAll('.p')].map(x=>+x.value);
+ if(seq.length!==n-2||seq.some(x=>x<1||x>n)){status.textContent=`Every sequence entry must be between 1 and ${n}.`;return}
+ state={n,seq,remaining:Array.from({length:n},(_,i)=>i+1),edges:[],step:0,done:false}; draw();
+ status.innerHTML=`Ready. Remaining sequence: <span class="mono">(${seq.join(', ')})</span>.`;
+}
+function next(){
+ if(!state||state.done)return;
+ let {seq,remaining}=state;
+ if(seq.length){
+   let first=seq[0], absent=remaining.filter(v=>!seq.includes(v)), leaf=Math.min(...absent);
+   state.edges.push([leaf,first]); state.remaining=remaining.filter(v=>v!==leaf); state.seq=seq.slice(1); state.step++;
+   status.innerHTML=`Step ${state.step}: <strong>${leaf}</strong> is the smallest remaining label absent from <span class="mono">(${seq.join(', ')})</span>. Connect <strong>${leaf}—${first}</strong>, then remove ${leaf} and the first sequence entry.`;
+ } else if(remaining.length===2){
+   state.edges.push([remaining[0],remaining[1]]); state.done=true;
+   status.innerHTML=`Final step: connect the last two vertices, <strong>${remaining[0]}—${remaining[1]}</strong>. We now have ${state.n-1} edges: a tree.`;
+ }
+ draw();
+}
+function draw(){
+ svg.innerHTML=''; if(!state)return;
+ let n=state.n,cx=350,cy=170,r=125,pos={};
+ for(let i=1;i<=n;i++){let a=-Math.PI/2+2*Math.PI*(i-1)/n;pos[i]=[cx+r*Math.cos(a),cy+r*Math.sin(a)]}
+ for(let [a,b] of state.edges){let l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',pos[a][0]);l.setAttribute('y1',pos[a][1]);l.setAttribute('x2',pos[b][0]);l.setAttribute('y2',pos[b][1]);l.setAttribute('class','edge');svg.appendChild(l)}
+ for(let i=1;i<=n;i++){let c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',pos[i][0]);c.setAttribute('cy',pos[i][1]);c.setAttribute('r',23);c.setAttribute('class','node');svg.appendChild(c);let t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',pos[i][0]);t.setAttribute('y',pos[i][1]);t.setAttribute('class','label');t.textContent=i;svg.appendChild(t)}
+}
+nEl.addEventListener('change',makeInputs);document.querySelector('#build').onclick=setup;document.querySelector('#next').onclick=next;
+makeInputs();setup();
+</script>
+</body></html>
