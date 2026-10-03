@@ -1,4 +1,4 @@
-"""Build 1.png, 2.png and 3.png from the photos in pics/.
+"""Build han.png, ko.png and fu.png from the photos in pics/.
 
 Each photo is placed on a W x H canvas using the parameters in align.json:
 the photo's centre goes to (x, y), scaled by `scale` and rotated by `rotate`
@@ -18,7 +18,7 @@ SS = 4               # supersampling factor
 PAD = 60             # source edge pixels repeated outwards, so no empty corners
 
 # align.json key -> output file used by index.html
-OUTPUT = {"han": "1.png", "ko": "2.png", "huang": "3.png"}
+OUTPUT = {"han": "han.png", "ko": "ko.png", "huang": "fu.png"}
 
 
 def align(src, scale, rotate, x, y):
