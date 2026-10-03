@@ -4,52 +4,37 @@
     <meta charset="utf-8">
     <title>三巨頭拉罷</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="jquery-1.8.2.min.js"></script>
+    <script src="../jquery-1.8.2.min.js"></script>
     <script type="text/javascript">
-        // opening the page with this hash shows the three real heads
-        var SECRET_HASH = "#jackpot";
-
-        // original: show the three real heads
-        // keep: "han", "ko" or "huang" stays a real head, the other two are mixed
-        function shuffle(original, keep) {
+        function shuffle() {
             console.log("shuffle");
-            var DATA = ["han", "ko", "huang"];
+            var DATA = ["first", "second", "third"];
             var name = {
-                "han": {
+                "first": {
                     "top": "韓",
-                    "middle": "國",
-                    "bottom": "瑜"
-                },
-                "ko": {
-                    "top": "柯",
                     "middle": "文",
-                    "bottom": "哲"
+                    "bottom": "昌"  
                 },
-                "huang": {
+                "second": {
+                    "top": "柯",
+                    "middle": "國",
+                    "bottom": "瑜"   
+                },
+                "third": {
                     "top": "黃",
                     "middle": "國",
-                    "bottom": "昌"
+                    "bottom": "哲"   
                 },
             }
-            var top = DATA, middle = DATA, bottom = DATA;
-            if (keep) {
-                // roll again if the other two also came out as real heads
-                do {
-                    top = shuffleKeeping(DATA, keep);
-                    middle = shuffleKeeping(DATA, keep);
-                    bottom = shuffleKeeping(DATA, keep);
-                } while (top.join() == middle.join() && middle.join() == bottom.join());
-            } else if (!original) {
-                top = shuffleArr(DATA);
-                middle = shuffleArr(DATA);
-                bottom = shuffleArr(DATA);
-            }
+            var top = shuffleArr(DATA);
+            var middle = shuffleArr(DATA);
+            var bottom = shuffleArr(DATA);
 
             console.log(top);
             console.log(middle);
             console.log(bottom);
 
-            jQuery(".view .pic div").removeClass("han ko huang")
+            jQuery(".view .pic div").removeClass("first second third")
 
             // set pic of #firstView
             jQuery("#firstView .top").addClass(top[0]);
@@ -98,15 +83,9 @@
             // And swap it with the current element.
             [array[currentIndex], array[randomIndex]] = [
               array[randomIndex], array[currentIndex]];
-            }
             return array;
         }
-
-        // keeps `keep` in its own position and shuffles the rest around it
-        function shuffleKeeping(dataArr, keep) {
-            var rest = shuffleArr(dataArr.filter((item) => item != keep));
-            return dataArr.map((item) => item == keep ? keep : rest.pop());
-        }
+}
 
 
     </script>
@@ -116,45 +95,74 @@
             text-align: center;
         }
         .view {
-            width: 234px;
-            height: 310px;
+            width: 210px;
+            height: 250px;
             float: left;
         }
         .pic {
-            width: 216px;
-            height: 260px;
+            
+            width: 192px;
+            height: 214px;
         }
 
         .pic div {
-            width: 216px;
+            width: 192px;
         }
 
-        /* 1.png, 2.png and 3.png are aligned by align.py, so the
-           same cut lines (110px and 161px) work for every image */
-        .pic .top {
+        .pic .first.top {
             background-position: 0px 0px;
-            height: 110px;
+            height: 66px;
         }
 
-        .pic .middle {
-            background-position: 0px -110px;
-            height: 51px;
+        .pic .first.middle {
+            background-position: 0px -66px;
+            height: 66px;
         }
 
-        .pic .bottom {
-            background-position: 0px -161px;
-            height: 99px;
+        .pic .first.bottom {
+            background-position: 0px -132px;
+            height: 66px;
         }
 
-        .pic div.han {
+        .pic .second.top {
+            background-position: 0px 0px;
+            height: 73px;
+        }
+
+        .pic .second.middle {
+            background-position: 0px -73px;
+            height: 64px;
+        }
+
+        .pic .second.bottom {
+            background-position: 0px -137px;
+            height: 66px;
+        }
+
+        .pic .third.top {
+            background-position: 0px 0px;
+            height: 80px;
+        }
+
+        .pic .third.middle {
+            background-position: 0px -80px;
+            height: 46px;
+        }
+
+        .pic .third.bottom {
+            background-position: 0px -126px;
+            height: 66px;
+        }
+
+        .pic div.first {
             background-image: url(1.png);
         }
 
-        .pic div.ko {
+        .pic div.second {
             background-image: url(2.png);
         }
 
-        .pic div.huang {
+        .pic div.third {
             background-image: url(3.png);
         }
 
@@ -163,43 +171,35 @@
 <body >
     <div id="control" >
         <button onclick="shuffle();">洗牌</button>
-        <button onclick="shuffle(false, 'han');">找到韓國瑜</button>
-        <button onclick="shuffle(false, 'ko');">找到柯文哲</button>
-        <button onclick="shuffle(false, 'huang');">找到黃國昌</button>
     </div>
     <div id="view">
         <div id="firstView" class="view">
-                        <div class="name">韓國瑜</div>
+                        <div class="name">韓文昌</div>
                         <div class="pic">
-                            <div class="top han"></div>
-                            <div class="middle han"></div>
-                            <div class="bottom han"></div>
+                            <div class="top first"></div>
+                            <div class="middle first"></div>
+                            <div class="bottom first"></div>
                         </div>
                     </div>
                     <div id="secondView" class="view">
-                        <div class="name">柯文哲</div>
+                        <div class="name">柯國瑜</div>
                         <div class="pic">
-                            <div class="top ko"></div>
-                            <div class="middle ko"></div>
-                            <div class="bottom ko"></div>
+                            <div class="top second"></div>
+                            <div class="middle second"></div>
+                            <div class="bottom second"></div>
                         </div>
                     </div>
                     <div id="thirdView" class="view">
-                        <div class="name">黃國昌</div>
+                        <div class="name">黃國哲</div>
                         <div class="pic">
-                            <div class="top huang"></div>
-                            <div class="middle huang"></div>
-                            <div class="bottom huang"></div>
+                            <div class="top third"></div>
+                            <div class="middle third"></div>
+                            <div class="bottom third"></div>
                         </div>
                     </div>
     </div>
     <script type="text/javascript">
-        shuffle(location.hash === SECRET_HASH);
-        window.addEventListener("hashchange", function () {
-            if (location.hash === SECRET_HASH) {
-                shuffle(true);
-            }
-        });
+        shuffle();
     </script>
 </body>
 </html>

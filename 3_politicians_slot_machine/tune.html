@@ -1,0 +1,505 @@
+<!DOCTYPE HTML>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8">
+    <title>三巨頭拉罷 — 對齊調整</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        body {
+            font-family: -apple-system, "PingFang TC", sans-serif;
+            margin: 16px 336px 16px 16px;   /* room for the fixed panel on the right */
+            background: #f4f4f4;
+            color: #222;
+        }
+        h1 { font-size: 20px; margin: 0 0 4px; }
+        h2 { font-size: 16px; margin: 24px 0 8px; }
+        p.hint { margin: 0 0 12px; color: #555; font-size: 13px; }
+        .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+        .card {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        .card h3 { margin: 0 0 6px; font-size: 15px; }
+        canvas { display: block; background: #999; }
+        canvas.edit { cursor: move; outline: none; }
+        canvas.edit:focus { box-shadow: 0 0 0 2px #06c; }
+        label {
+            display: grid;
+            grid-template-columns: 44px 1fr 76px;
+            gap: 6px;
+            align-items: center;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        label input[type=number] { width: 70px; }
+        #panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+            padding: 10px;
+            overflow-y: auto;
+            background: #fff;
+            border-left: 1px solid #ccc;
+            box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+        }
+        #panel h3 { margin: 14px 0 0; font-size: 15px; }
+        #panel h3:first-child { margin-top: 0; }
+        #combos, .seams { display: flex; flex-wrap: wrap; gap: 8px; }
+        #combos figure, .seams figure { margin: 0; text-align: center; font-size: 13px; }
+        .seams { margin-bottom: 12px; }
+        .seams canvas { width: 324px; height: 150px; }
+        #combos figure.real canvas { box-shadow: 0 0 0 2px #c60; }
+        textarea {
+            width: 100%;
+            max-width: 520px;
+            height: 330px;
+            font-family: Menlo, monospace;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        button { font-size: 14px; margin-right: 8px; }
+        .tools { margin: 8px 0; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <h1>對齊調整 Alignment tuner</h1>
+    <p class="hint">
+        Drag a photo to move it, scroll on it to zoom, or click it and use the arrow keys (Shift = 0.1px).
+        The sliders and number boxes in the panel on the right do the same and stay in place while you scroll. Yellow lines are the two cut lines.
+        When it looks right, copy the parameters at the bottom.
+    </p>
+
+    <div id="panel">
+        <div id="sliders"></div>
+        <h3>Cut lines</h3>
+        <label>cut 1 <input type="range" id="cut1r" min="1" max="258" step="1"><input type="number" id="cut1n" min="1" max="258" step="1"></label>
+        <label>cut 2 <input type="range" id="cut2r" min="2" max="259" step="1"><input type="number" id="cut2n" min="2" max="259" step="1"></label>
+        <div class="tools">
+            <label style="display:block"><input type="checkbox" id="guides" checked> show cut lines on the photos</label>
+            <label style="display:block">preview zoom
+                <select id="zoom"><option value="1">1×</option><option value="1.5" selected>1.5×</option><option value="2">2×</option></select>
+            </label>
+        </div>
+    </div>
+
+    <div class="row" id="editors"></div>
+
+    <h2>Overlay</h2>
+    <div class="row">
+        <div class="card">
+            <h3>All three blended</h3>
+            <canvas id="overlay"></canvas>
+        </div>
+    </div>
+
+    <h2>Seam check</h2>
+    <p class="hint">
+        Each cut line has 6 mismatched pairs (3 people above × 2 other people below), 12 in total.
+        Each picture shows 50px above and 50px below the cut. If these 12 look right, all 27 heads are right.
+    </p>
+    <h3>Cut 1: top strip over middle strip</h3>
+    <div class="seams" id="seams1"></div>
+    <h3>Cut 2: middle strip over bottom strip</h3>
+    <div class="seams" id="seams2"></div>
+
+    <h2>All 27 heads</h2>
+    <p class="hint">Ordered by top strip, then middle, then bottom. Orange outline marks the three real heads.</p>
+    <div id="combos"></div>
+
+    <h2>Parameters</h2>
+    <p class="hint">This is the content of <code>align.json</code>. Copy it and paste it back to Claude, or save it as <code>align.json</code> and run <code>python3 align.py</code>.</p>
+    <div class="tools">
+        <button id="copy">Copy</button>
+        <button id="reset">Reset to starting values</button>
+        <span id="status"></span>
+    </div>
+    <textarea id="out" readonly></textarea>
+
+    <script type="text/javascript">
+        var W = 216, H = 260;   // must match align.py and index.html
+        var STORE = "politicians-align-v1";
+
+        // starting values, same as align.json
+        var DEFAULTS = {
+            "cut1": 110,
+            "cut2": 161,
+            "photos": {
+                "han":   { "src": "pics/韓國瑜.png", "scale": 1.9972, "rotate": 3.05, "x": 99.7, "y": 184.6 },
+                "ko":    { "src": "pics/柯文哲.jpg", "scale": 0.3749, "rotate": 1.15, "x": 114.3, "y": 179.3 },
+                "huang": { "src": "pics/黃國昌_2.jpg", "scale": 0.9385, "rotate": -2.05, "x": 94.2, "y": 268.8 }
+            }
+        };
+        var NAMES = {
+            "han":   { "top": "韓", "middle": "國", "bottom": "瑜" },
+            "ko":    { "top": "柯", "middle": "文", "bottom": "哲" },
+            "huang": { "top": "黃", "middle": "國", "bottom": "昌" }
+        };
+        var KEYS = ["han", "ko", "huang"];
+        var FIELDS = [
+            // field, label, slider range relative to the starting value, step
+            ["scale", "scale", null, 0.0005],
+            ["rotate", "rotate", [-25, 25], 0.05],
+            ["x", "x", [-150, 150], 0.1],
+            ["y", "y", [-150, 150], 0.1]
+        ];
+
+        var state = load();
+        var images = {};      // key -> HTMLImageElement
+        var aligned = {};     // key -> offscreen canvas W x H, the aligned photo
+        var editors = {};     // key -> { canvas, inputs: { field: [range, number] } }
+        var comboCanvases = [];
+        var seamCanvases = [];
+        var SEAM = 50;        // px shown on each side of a cut line in the seam check
+
+        function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+        function load() {
+            try {
+                var saved = JSON.parse(localStorage.getItem(STORE));
+                if (saved && saved.photos && KEYS.every(function (k) { return saved.photos[k]; })) {
+                    // a saved entry for a photo that has since been swapped is stale
+                    KEYS.forEach(function (k) {
+                        if (saved.photos[k].src !== DEFAULTS.photos[k].src) {
+                            saved.photos[k] = clone(DEFAULTS.photos[k]);
+                        }
+                    });
+                    return saved;
+                }
+            } catch (e) {}
+            return clone(DEFAULTS);
+        }
+
+        function save() {
+            try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {}
+        }
+
+        function round(v, digits) {
+            var m = Math.pow(10, digits);
+            return Math.round(v * m) / m;
+        }
+
+        // ---- drawing ----
+
+        function drawAligned(key) {
+            var p = state.photos[key], img = images[key], c = aligned[key];
+            var ctx = c.getContext("2d");
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.fillStyle = "#999";
+            ctx.fillRect(0, 0, W, H);
+            if (!img) { return; }
+            ctx.imageSmoothingQuality = "high";
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotate * Math.PI / 180);
+            ctx.scale(p.scale, p.scale);
+            ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+        }
+
+        function cutLines(ctx) {
+            if (!document.getElementById("guides").checked) { return; }
+            ctx.fillStyle = "rgba(255, 235, 0, 0.9)";
+            ctx.fillRect(0, state.cut1, W, 1);
+            ctx.fillRect(0, state.cut2, W, 1);
+            ctx.fillStyle = "rgba(0, 255, 255, 0.7)";
+            ctx.fillRect(W / 2, 0, 1, H);
+        }
+
+        function drawEditor(key) {
+            var ctx = editors[key].canvas.getContext("2d");
+            ctx.drawImage(aligned[key], 0, 0);
+            cutLines(ctx);
+        }
+
+        function drawOverlay() {
+            var ctx = document.getElementById("overlay").getContext("2d");
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, W, H);
+            KEYS.forEach(function (k, i) {
+                ctx.globalAlpha = 1 / (i + 1);   // equal weight for every photo
+                ctx.drawImage(aligned[k], 0, 0);
+            });
+            ctx.globalAlpha = 1;
+            cutLines(ctx);
+        }
+
+        function drawCombos() {
+            var c1 = state.cut1, c2 = state.cut2;
+            comboCanvases.forEach(function (item) {
+                var ctx = item.canvas.getContext("2d");
+                ctx.drawImage(aligned[item.top], 0, 0, W, c1, 0, 0, W, c1);
+                ctx.drawImage(aligned[item.middle], 0, c1, W, c2 - c1, 0, c1, W, c2 - c1);
+                ctx.drawImage(aligned[item.bottom], 0, c2, W, H - c2, 0, c2, W, H - c2);
+            });
+        }
+
+        function drawSeams() {
+            seamCanvases.forEach(function (item) {
+                var cut = state[item.cut], ctx = item.canvas.getContext("2d");
+                ctx.fillStyle = "#999";
+                ctx.fillRect(0, 0, W, SEAM * 2);
+                ctx.drawImage(aligned[item.upper], 0, cut - SEAM, W, SEAM, 0, 0, W, SEAM);
+                ctx.drawImage(aligned[item.lower], 0, cut, W, SEAM, 0, SEAM, W, SEAM);
+            });
+        }
+
+        function output() {
+            var o = { "cut1": state.cut1, "cut2": state.cut2, "photos": {} };
+            KEYS.forEach(function (k) {
+                var p = state.photos[k];
+                o.photos[k] = {
+                    "src": p.src,
+                    "scale": round(p.scale, 4),
+                    "rotate": round(p.rotate, 2),
+                    "x": round(p.x, 1),
+                    "y": round(p.y, 1)
+                };
+            });
+            document.getElementById("out").value = JSON.stringify(o, null, 2);
+        }
+
+        function syncInputs() {
+            KEYS.forEach(function (k) {
+                FIELDS.forEach(function (f) {
+                    var pair = editors[k].inputs[f[0]];
+                    var digits = f[0] === "scale" ? 4 : (f[0] === "rotate" ? 2 : 1);
+                    var v = round(state.photos[k][f[0]], digits);
+                    pair[0].value = v;
+                    pair[1].value = v;
+                });
+            });
+            ["cut1", "cut2"].forEach(function (c) {
+                document.getElementById(c + "r").value = state[c];
+                document.getElementById(c + "n").value = state[c];
+            });
+        }
+
+        function refresh(key) {
+            (key ? [key] : KEYS).forEach(drawAligned);
+            KEYS.forEach(drawEditor);
+            drawOverlay();
+            drawCombos();
+            drawSeams();
+            syncInputs();
+            output();
+            save();
+        }
+
+        // ---- building the page ----
+
+        function makeCanvas(cls) {
+            var c = document.createElement("canvas");
+            c.width = W;
+            c.height = H;
+            if (cls) { c.className = cls; }
+            return c;
+        }
+
+        function applyZoom() {
+            var z = parseFloat(document.getElementById("zoom").value);
+            var list = document.querySelectorAll("canvas.edit, #overlay");
+            for (var i = 0; i < list.length; i++) {
+                list[i].style.width = (W * z) + "px";
+                list[i].style.height = (H * z) + "px";
+            }
+        }
+
+        function buildEditor(key) {
+            var card = document.createElement("div");
+            card.className = "card";
+            var title = document.createElement("h3");
+            title.textContent = NAMES[key].top + NAMES[key].middle + NAMES[key].bottom + " (" + key + ")";
+            card.appendChild(title);
+
+            var canvas = makeCanvas("edit");
+            canvas.tabIndex = 0;
+            card.appendChild(canvas);
+            var sliders = document.getElementById("sliders");
+            sliders.appendChild(title.cloneNode(true));
+            editors[key] = { canvas: canvas, inputs: {} };
+
+            FIELDS.forEach(function (f) {
+                var field = f[0], start = DEFAULTS.photos[key][field];
+                var label = document.createElement("label");
+                label.appendChild(document.createTextNode(f[1]));
+                var range = document.createElement("input");
+                range.type = "range";
+                var number = document.createElement("input");
+                number.type = "number";
+                if (field === "scale") {
+                    range.min = round(start / 2, 4);
+                    range.max = round(start * 2, 4);
+                    range.step = round(start / 2000, 5);
+                    number.step = round(start / 200, 4);
+                } else {
+                    range.min = round(start + f[2][0], 1);
+                    range.max = round(start + f[2][1], 1);
+                    range.step = f[3];
+                    number.step = field === "rotate" ? 0.1 : 0.5;
+                }
+                [range, number].forEach(function (input) {
+                    input.addEventListener("input", function () {
+                        var v = parseFloat(input.value);
+                        if (isNaN(v) || (field === "scale" && v <= 0)) { return; }
+                        state.photos[key][field] = v;
+                        refresh(key);
+                    });
+                });
+                label.appendChild(range);
+                label.appendChild(number);
+                sliders.appendChild(label);
+                editors[key].inputs[field] = [range, number];
+            });
+
+            // drag to move
+            var drag = null;
+            canvas.addEventListener("pointerdown", function (e) {
+                canvas.setPointerCapture(e.pointerId);
+                canvas.focus();
+                drag = { x: e.clientX, y: e.clientY, px: state.photos[key].x, py: state.photos[key].y };
+            });
+            canvas.addEventListener("pointermove", function (e) {
+                if (!drag) { return; }
+                var z = canvas.getBoundingClientRect().width / W;
+                state.photos[key].x = drag.px + (e.clientX - drag.x) / z;
+                state.photos[key].y = drag.py + (e.clientY - drag.y) / z;
+                refresh(key);
+            });
+            canvas.addEventListener("pointerup", function () { drag = null; });
+            canvas.addEventListener("pointercancel", function () { drag = null; });
+
+            // scroll to zoom around the cursor
+            canvas.addEventListener("wheel", function (e) {
+                e.preventDefault();
+                var rect = canvas.getBoundingClientRect(), z = rect.width / W;
+                var mx = (e.clientX - rect.left) / z, my = (e.clientY - rect.top) / z;
+                var p = state.photos[key], k = Math.exp(-e.deltaY * 0.0015);
+                p.scale *= k;
+                p.x = mx + (p.x - mx) * k;
+                p.y = my + (p.y - my) * k;
+                refresh(key);
+            }, { passive: false });
+
+            // arrow keys to nudge
+            canvas.addEventListener("keydown", function (e) {
+                var step = e.shiftKey ? 0.1 : 1, p = state.photos[key];
+                if (e.key === "ArrowLeft") { p.x -= step; }
+                else if (e.key === "ArrowRight") { p.x += step; }
+                else if (e.key === "ArrowUp") { p.y -= step; }
+                else if (e.key === "ArrowDown") { p.y += step; }
+                else { return; }
+                e.preventDefault();
+                refresh(key);
+            });
+
+            document.getElementById("editors").appendChild(card);
+        }
+
+        function buildCombos() {
+            var box = document.getElementById("combos");
+            KEYS.forEach(function (t) {
+                KEYS.forEach(function (m) {
+                    KEYS.forEach(function (b) {
+                        var fig = document.createElement("figure");
+                        if (t === m && m === b) { fig.className = "real"; }
+                        var c = makeCanvas();
+                        fig.appendChild(c);
+                        var cap = document.createElement("figcaption");
+                        cap.textContent = NAMES[t].top + NAMES[m].middle + NAMES[b].bottom;
+                        fig.appendChild(cap);
+                        box.appendChild(fig);
+                        comboCanvases.push({ canvas: c, top: t, middle: m, bottom: b });
+                    });
+                });
+            });
+        }
+
+        function buildSeams(cut, boxId, upperPart, lowerPart) {
+            var box = document.getElementById(boxId);
+            KEYS.forEach(function (u) {
+                KEYS.forEach(function (l) {
+                    if (u === l) { return; }
+                    var fig = document.createElement("figure");
+                    var c = document.createElement("canvas");
+                    c.width = W;
+                    c.height = SEAM * 2;
+                    fig.appendChild(c);
+                    var cap = document.createElement("figcaption");
+                    cap.textContent = NAMES[u][upperPart] + " (" + u + ") over " + NAMES[l][lowerPart] + " (" + l + ")";
+                    fig.appendChild(cap);
+                    box.appendChild(fig);
+                    seamCanvases.push({ canvas: c, cut: cut, upper: u, lower: l });
+                });
+            });
+        }
+
+        function bindCut(name) {
+            ["r", "n"].forEach(function (suffix) {
+                var input = document.getElementById(name + suffix);
+                input.addEventListener("input", function () {
+                    var v = parseInt(input.value, 10);
+                    if (isNaN(v)) { return; }
+                    state[name] = v;
+                    // keep cut1 above cut2
+                    if (state.cut1 >= state.cut2) {
+                        if (name === "cut1") { state.cut2 = Math.min(H - 1, v + 1); state.cut1 = state.cut2 - 1; }
+                        else { state.cut1 = Math.max(1, v - 1); state.cut2 = state.cut1 + 1; }
+                    }
+                    refresh();
+                });
+            });
+        }
+
+        KEYS.forEach(function (k) {
+            aligned[k] = makeCanvas();
+            buildEditor(k);
+        });
+        var ov = document.getElementById("overlay");
+        ov.width = W;
+        ov.height = H;
+        buildCombos();
+        buildSeams("cut1", "seams1", "top", "middle");
+        buildSeams("cut2", "seams2", "middle", "bottom");
+        bindCut("cut1");
+        bindCut("cut2");
+        applyZoom();
+        document.getElementById("zoom").addEventListener("change", applyZoom);
+        document.getElementById("guides").addEventListener("change", function () { refresh(); });
+
+        document.getElementById("reset").addEventListener("click", function () {
+            state = clone(DEFAULTS);
+            refresh();
+        });
+        document.getElementById("copy").addEventListener("click", function () {
+            var out = document.getElementById("out"), status = document.getElementById("status");
+            out.select();
+            var done = function () { status.textContent = "Copied"; };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(out.value).then(done, function () {
+                    document.execCommand("copy");
+                    done();
+                });
+            } else {
+                document.execCommand("copy");
+                done();
+            }
+        });
+
+        refresh();
+        KEYS.forEach(function (k) {
+            var img = new Image();
+            img.onload = function () {
+                images[k] = img;
+                refresh(k);
+            };
+            img.onerror = function () {
+                document.getElementById("status").textContent = "Could not load " + state.photos[k].src;
+            };
+            img.src = state.photos[k].src;
+        });
+    </script>
+</body>
+</html>
