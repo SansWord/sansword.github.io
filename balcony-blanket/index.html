@@ -28,6 +28,18 @@
   #hud { position: absolute; z-index: 2; top: max(10px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); text-align: center; background: #1f2228e6; padding: 8px 18px; border-radius: 14px; backdrop-filter: blur(6px); box-shadow: 0 6px 24px #0006; font-size: 15px; white-space: nowrap; }
   #hud button { padding: 6px 14px; margin-top: 6px; border-radius: 10px; }
   #hud button.go { background: #c0453b; border-color: #c0453b; color: #fff; }
+  @property --hpF { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
+  @property --hpL { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
+  #hp { position: relative; height: 8px; margin: 9px 2px 4px; border-radius: 2px; box-shadow: 0 0 0 1px #1f2228, 0 0 0 2px #ffffff66; transition: --hpF 0.15s, --hpL 0.5s ease-in 0.25s;
+    background: linear-gradient(to right, var(--hpG, #2f9e5e) var(--hpF), #e9dfd0 var(--hpF) var(--hpL), #c0453b var(--hpL)); }
+  #hp.over { --hpG: #3cc8d8; }
+  #hp.replay { transition: --hpF 0.1s, --hpL 0.25s ease-in; }
+  #hp.hit { animation: hpShake 0.3s; }
+  @keyframes hpShake { 25% { transform: translateX(-3px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }
+  #hpDelta { position: absolute; right: -8px; top: 50%; transform: translate(100%, -50%); font-weight: 700; font-size: 15px; opacity: 0; pointer-events: none; text-shadow: 0 1px 3px #000c; }
+  #hpDelta.go { animation: hpFloat 1.1s ease-out; }
+  #hpDelta.loss { color: #ff6b5b; } #hpDelta.gain { color: #4cd787; } #hpDelta.none { color: var(--muted); font-size: 13px; }
+  @keyframes hpFloat { from { opacity: 0; transform: translate(100%, -30%); } 15% { opacity: 1; } 70% { opacity: 1; } to { opacity: 0; transform: translate(100%, -130%); } }
   #dim { position: absolute; inset: 0; z-index: 3; background: rgba(10, 12, 16, 0.3); display: none; animation: fade 0.25s ease-out; }
   @keyframes fade { from { opacity: 0; } }
   @keyframes pop { from { opacity: 0; transform: translateX(-50%) scale(0.8); } 70% { transform: translateX(-50%) scale(1.04); } }
@@ -130,6 +142,7 @@
 </div>
 <div id="hud" style="display:none">
   <b id="gStatus"></b> <span class="muted" id="gGrip"></span>
+  <div id="hp"><span id="hpDelta"></span></div>
   <div><button id="gAuto" class="go" style="display:none">自動完成</button></div>
 </div>
 <div id="ver"></div>
@@ -175,7 +188,7 @@
 <script>const MODEL = {"units": "shelf depth = 1", "panels": {"tiled wall": [[-3.4573474529930546, -6.131390371509298, 0], [0, -6.131390371509298, 0], [0, 2.0, 0], [-3.4573474529930546, 2.0, 0]], "brick wall": [[0, -6.131390371509298, 0], [0, -6.131390371509298, 5.819273773032827], [0, 2.0, 5.819273773032827], [0, 2.0, 0]], "shelf top": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -0.19744447424806616, 5.819273773032827], [0, 0, 5.819273773032827]], "cage front": [[-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827]], "cage bottom": [[0.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827]], "cage side": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [0.0, -1.5546877931476362, 0.3528517337232067], [0, -1.5546877931476362, 0.3528517337232067]], "window grill bottom": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [0, 1.5288228462737465, 5.819273773032827]], "window grill front": [[-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827]], "window grill side": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [0, 3.083510639421383, 0.6190854656051468]], "window grill top": [[0, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "window grill end": [[0, 1.5288228462737465, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "lower shelf top": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [0, -4.036587215910913, 5.819273773032827]], "lower shelf front": [[-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827]], "lower shelf bottom": [[0, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "lower shelf side": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [0, -5.591275009058549, 0.08936327713881974]], "lower shelf end": [[0, -4.036587215910913, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "cage end": [[0, 0, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827], [0, -1.5546877931476362, 5.819273773032827]]}, "stripes": [[[-3.4573474529930546, 0.0834075259675885, 0], [0, 0.0834075259675885, 0]], [[-3.4573474529930546, -0.15926488730384458, 0], [0, -0.15926488730384458, 0]], [[-3.4573474529930546, -3.166934160631353, 0], [0, -3.166934160631353, 0]], [[-3.4573474529930546, -3.4178596819025113, 0], [0, -3.4178596819025113, 0]]], "tiles": {"pitch": 0.1251614296913404, "base": -3.417422816646296, "stripes": [[0.087097214711235, 0.21225864440257539], [-0.16322564467144574, -0.03806421498010534], [-3.1670999572636154, -3.041938527572275], [-3.417422816646296, -3.2922613869549555]], "fit": [-0.003689688743646488, 0.003960757367601153, 0.00016579663226234942, -0.0004368652562152242]}, "floors": {"height": 3.2541971719748504, "levels": [-9.550332871521976, -6.296135699547126, -3.041938527572275, 0.21225864440257558, 3.466455816377426, 6.720652988352277]}, "cage_post": [[-1.0, -0.19744447424806616, 4.51964696395023], [-1.0, -1.5546877931476362, 4.51964696395023]], "points": {"point_1": [-0.06815006589404175, -0.013455853930420139, 0.4728716980308348], "point_2": [-0.06815006589404175, -0.013455853930420139, 1.0396087165902814], "point_3": [-1.0018076813476873, -0.1978013909413683, 2.1334721171114586]}, "guides": {"cage bottom level at brick wall": [[0, -1.5546877931476362, 0], [0, -1.5546877931476362, 5.819273773032827]]}, "measurements": {"yf": -0.19744447424806616, "y_cage": -1.5546877931476362, "z_post": 4.51964696395023, "s1": 0.0834075259675885, "s2": -0.15926488730384458, "s3": -3.166934160631353, "s4": -3.4178596819025113, "x12": -0.06815006589404175, "z1": 0.4728716980308348, "z2": 1.0396087165902814, "x3": -1.0018076813476873, "z3": 2.1334721171114586, "z_slat": 3.369499353854658, "x_g": -0.7496369159300176, "z_g": 0.6190854656051468, "g_back": 1.5288228462737465, "g_front": 1.5127790163709456, "z_mid": 0.3528517337232067, "x_l": -0.8847462189288654, "z_l": 0.08936327713881974, "l_back": -4.036587215910913}, "roof_slope_deg": -11.16907426402621, "cameras": {"Day 1": {"center": [-2.5763902424813807, 1.8485481115884668, 7.480000418376799], "R": [[0.9678969244908487, 0.030032064951085586, 0.24954682653948826], [-0.06859502767522094, -0.9235863169825995, 0.3772042381267117], [0.2418062566175477, -0.38221249346049785, -0.8918763053828247]], "f_px": 2261.0088796691516, "image": [1440, 1920]}, "Day 189": {"center": [-3.5582223799683477, 1.8324280503581372, 7.612198135614894], "R": [[0.9358564085164711, 0.022360387969925025, 0.3516714314363431], [-0.1038266688189778, -0.9361843480523512, 0.3358256829126512], [0.33673848232806186, -0.35079749074306205, -0.8738125170811899]], "f_px": 2194.932560259106, "image": [1440, 1920]}}, "fit_px": {"Day 1": {"point_1": 0.9887886333426447, "point_2": 1.7264496185290532, "point_3": 7.14562915172034, "shelf_back": 3.4384179676648197, "shelf_front": 11.844323006130528, "cage_bottom": 12.55918300684493, "wall_corner": 2.5100142332881084, "tile_vertical": 2.106940384485275, "stripe_1": 4.192962072560722, "stripe_2": 2.710436133038165, "stripe_3": 1.9390894287237819, "stripe_4": 1.656020611511733, "cage_post": 5.645671705311196, "box_corner": 0.5007117842603408, "grill_back": 3.1098141272041637, "grill_front": 1.4372123767723186, "cage_top_left": 1.1164990606838758, "lower_back": 2.620815313671605, "lower_front": 3.252742702884892, "lower_top_left": 3.84486510104268, "slat": 5.452513487194732}, "Day 189": {"point_1": 1.2306705815705334, "point_2": 2.176784613225029, "point_3": 7.228472584903843, "shelf_back": 5.3538490560462835, "shelf_front": 8.026824328055795, "cage_bottom": 10.029425753830143, "wall_corner": 2.2114350412003305, "tile_vertical": 1.0914710113648947, "stripe_1": 1.4981777920548534, "stripe_2": 0.3837978321787298, "stripe_3": 3.2926728729008343, "stripe_4": 2.7412516909896, "cage_post": 5.026196858192163, "box_corner": 0.5435323324289093, "grill_back": 3.5550210021148696, "grill_front": 1.7717190304777877, "cage_top_left": 2.662866445615572, "lower_back": 2.004687646849801, "lower_front": 2.6464799275829396, "lower_top_left": 3.8651708969272933, "slat": 5.487491786240904}}};
 const PAGE = {"mode": "game", "photos": null};
 const PHOTOS = {"size": [1080, 1440], "group2": 189, "upside_down": [380], "easter_eggs": {}, "H": {}};
-const VERSION = "7ee2163";
+const VERSION = "85fc0b1+";
 document.getElementById("ver").textContent = VERSION;
 const COLORS = { "ground": 0x7b7872, "tiled wall": 0xd9d4cc, "brick wall": 0xf2f2f2, "shelf top": 0x8c8f94, "cage front": 0x5d636b, "cage bottom": 0x4a4f56, "cage side": 0x54595f,
   "window grill bottom": 0x6d7f91, "window grill front": 0x7f93a6, "window grill side": 0x75889b, "window grill top": 0x8a9cae, "window grill end": 0x75889b, "cage end": 0x54595f, "lower shelf end": 0x868a90,
@@ -555,7 +568,7 @@ const BL = {
   DROP_Y: 1.2,
   SLIP_START: 0.06, SLIP_FULL: 0.15, DRAGS_PER_DAY: 3,
   SLIP_CAP_CHANCES: { 2: 7, 3: 13, 4: 18, 5: 21, 6: 18, 7: 13, 8: 7, 9: 2, 10: 1 },
-  EASE_AFTER: 60, EASE_STEP: 0.01,
+  EASE_AFTER: 20, EASE_STEP: 0.01,
   RELEASE_EDGE: 0.02,
 };
 const blanketClipped = i => BL.pinned[i] === 1;
@@ -933,11 +946,12 @@ function startGame() {
   setMode("Day 1");
   blanketDrop();
   game = { drags: 0, over: false, overStep: Infinity, off: 0, start: BL.clips.map(() => null), final: null,
-    rec: { init: blanketState(), step: 0, events: [], marks: [], motion: [], snaps: [], end: null, last: null } };
+    rec: { init: blanketState(), step: 0, events: [], marks: [], motion: [], hp: [], hits: [], snaps: [], end: null, last: null } };
   recordSnap(true);
   title.on = false; sway = null; document.getElementById("title").style.display = "none";
   document.getElementById("dim").style.display = "none";
   showHud(true);
+  hpSet(1, 1);
   document.getElementById("tip").style.display = "block";
 }
 function endGame() {
@@ -991,6 +1005,7 @@ function recordSnap(force) {
 function recordMotion() {
   const r = game && game.rec;
   if (!r || r.end != null) return;
+  r.hp.push(hpValue());
   let m = 0;
   for (let i = 0; i < BL.pos.length; i += 3) m += Math.hypot(BL.pos[i] - BL.prev[i], BL.pos[i + 1] - BL.prev[i + 1], BL.pos[i + 2] - BL.prev[i + 2]);
   r.motion.push(m);
@@ -1105,7 +1120,42 @@ function gameRelease() {
   if (!game || game.over || !BL.grab.from) return;
   const counted = BL.grab.target.distanceTo(BL.grab.from) >= 0.05, g = BL.grab;
   if (counted) { game.drags++; game.rec.marks.push([game.rec.step, game.drags]); }
-  if (!game.sim) logDrag(g, counted);
+  if (!game.sim) { logDrag(g, counted); if (counted) hpDrag(g); }
+}
+function hpValue() {
+  if (game.over) return 0;
+  return BL.clips.reduce((sum, ids, k) => {
+    if (game.start[k] == null) return sum + 1;
+    const e = clipEdge(ids);
+    return sum + (e == null ? 0 : Math.max(0, (e - BL.RELEASE_EDGE) / (game.start[k] - BL.RELEASE_EDGE)));
+  }, 0) / BL.clips.length;
+}
+function hpDrag(g) {
+  const now = hpValue(), d = (now - (game.hpShown ?? 1)) * 100;
+  game.hpShown = now;
+  const moved = (g.slipped || []).some(x => x > 0) && d !== 0;
+  const hit = [(moved && d > 0 ? "+" : "−") + (moved ? Math.max(1, Math.round(Math.abs(d))) : 0), !moved ? "none" : d > 0 ? "gain" : "loss"];
+  game.rec.hits[game.drags] = hit;
+  hpHit(hit, now);
+}
+function hpHit([text, cls], now) {
+  hpBar("--hpL", now);
+  const el = document.getElementById("hpDelta"), bar = document.getElementById("hp");
+  el.textContent = text; el.className = cls;
+  void el.offsetWidth; el.classList.add("go");
+  bar.classList.remove("hit");
+  if (cls === "loss") { void bar.offsetWidth; bar.classList.add("hit"); }
+}
+const hpBar = (part, v) => {
+  const el = document.getElementById("hp");
+  el.style.setProperty(part, Math.min(1, v) * 100 + "%");
+  if (part === "--hpF") el.classList.toggle("over", v > 1.005);
+};
+function hpSet(fill, loss) {
+  const el = document.getElementById("hp");
+  el.style.transition = "none"; hpBar("--hpF", fill); hpBar("--hpL", loss);
+  void el.offsetWidth; el.style.transition = "";
+  document.getElementById("hpDelta").className = "";
 }
 function logDrag(g, counted) {
   const u = g.i % BL.NU, v = (g.i / BL.NU) | 0, du = BL.LU / (BL.NU - 1), dv = BL.LV / (BL.NV - 1);
@@ -1144,9 +1194,10 @@ function showFellTotal() {
     el.textContent = `全世界已經有 ${n} 條小被被掉下去了`;
   }
 }
-fetch(`${GC}/counter/fell.json`).then(r => r.ok || r.status === 404 ? r.json() : null).then(j => {
-  if (j) { fell.total = +String(j.count).replace(/\D/g, ""); showFellTotal(); }
-}).catch(() => {});
+if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname))
+  fetch(`${GC}/counter/fell.json`).then(r => r.ok || r.status === 404 ? r.json() : null).then(j => {
+    if (j) { fell.total = +String(j.count).replace(/\D/g, ""); showFellTotal(); }
+  }).catch(() => {});
 const HIST_KEY = "blanket.history.v1", HIST_MAX = 200, RECENT = 3;
 const loadHist = () => { try { return JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch (_) { return []; } };
 const saveHist = h => { try { localStorage.setItem(HIST_KEY, JSON.stringify(h.slice(0, HIST_MAX))); } catch (_) {} };
@@ -1186,7 +1237,8 @@ async function encodeReplay(frames) {
     }
   });
   return { n, m, packed: typeof CompressionStream !== "undefined", data: await squeeze(bytes),
-    drags: Uint16Array.from(keep, f => f.drags), fell: keep.findIndex(f => f.fell) };
+    drags: Uint16Array.from(keep, f => f.drags), fell: keep.findIndex(f => f.fell),
+    hp: Uint16Array.from(keep, f => Math.round(f.hp * 200)), hits: frames.hits || [] };
 }
 async function decodeReplay(r) {
   const bytes = r.packed ? await squeeze(r.data, true) : r.data, { n, m } = r, prev = new Int32Array(m), frames = [];
@@ -1196,8 +1248,9 @@ async function decodeReplay(r) {
       const at = k * m + j, z = bytes[at] | (bytes[n * m + at] << 8), d = (z >>> 1) ^ -(z & 1);
       prev[j] += d; pos[j] = prev[j] / STORE_SCALE;
     }
-    frames.push({ pos, drags: r.drags[k], fell: r.fell >= 0 && k >= r.fell });
+    frames.push({ pos, drags: r.drags[k], fell: r.fell >= 0 && k >= r.fell, hp: r.hp ? r.hp[k] / 200 : null });
   }
+  frames.hits = r.hits || [];
   return frames;
 }
 async function saveReplay(id, frames) {
@@ -1281,7 +1334,8 @@ function resultUI() {
   document.getElementById("hud").style.display = replaying || (game && !game.over) ? "block" : "none";
   const ab = document.getElementById("gAuto");
   ab.style.display = game && !game.over && (game.drags >= AUTO_AFTER || game.auto) ? "" : "none";
-  ab.disabled = !!(game && game.auto); ab.textContent = game && game.auto ? "自動完成中…" : "自動完成";
+  const label = game && game.auto ? "自動完成中…" : "自動完成";
+  if (ab.textContent !== label) { ab.disabled = !!(game && game.auto); ab.textContent = label; }
   if (!show) return;
   document.getElementById("rTitle").textContent = `第 ${game.fellDay} 天，被被掉下去了！`;
   document.getElementById("rText").textContent = `共拉了 ${game.drags} 次` + (game.auto ? " · 自動完成（不列入最佳紀錄）" : game.isBest ? " · 新紀錄！" : "");
@@ -1292,8 +1346,13 @@ function gameUI() {
   resultUI();
   if (!game || BL.paused || (game.over && !game.frames)) return;
   const st = document.getElementById("gStatus"), grip = document.getElementById("gGrip");
-  if (game.over) { st.textContent = `第 ${game.fellDay} 天掉下去了（共拉 ${game.drags} 次）`; grip.textContent = ""; return; }
+  if (game.over) {
+    st.textContent = `第 ${game.fellDay} 天掉下去了（共拉 ${game.drags} 次）`; grip.textContent = "";
+    hpBar("--hpF", 0); hpBar("--hpL", 0);
+    return;
+  }
   st.textContent = `第 ${dayOf(game.drags)} 天 · 今天拉了 ${game.drags % BL.DRAGS_PER_DAY}/${BL.DRAGS_PER_DAY} 次`;
+  hpBar("--hpF", hpValue());
   grip.style.display = DEBUG ? "" : "none";
   grip.textContent = "夾子抓力 " + BL.clips.map((ids, k) => {
     const a = clipAnchor(ids);
@@ -1360,8 +1419,9 @@ function prepareReplay() {
     const pos = new Float32Array(a.q.length);
     for (let k = 0; k < pos.length; k++) pos[k] = (a.q[k] + (b.q[k] - a.q[k]) * t) / SNAP_SCALE;
     while (mk < r.marks.length && r.marks[mk][0] <= st) drags = r.marks[mk++][1];
-    frames.push({ pos, drags, fell: st >= game.overStep });
+    frames.push({ pos, drags, fell: st >= game.overStep, hp: r.hp[Math.min(st, r.hp.length - 1)] ?? 1 });
   }
+  frames.hits = r.hits.slice();
   game.frames = frames;
 }
 function replay() { if (game && game.frames) playFrames(game.frames, game.fellDay); }
@@ -1371,6 +1431,10 @@ function playFrames(frames, fellDay, done) {
   sway = { pivot: new THREE.Vector3(-0.9, -0.5, BL.Z0 + BL.LV / 2), quat: camera.quaternion.clone(), a: 0 };
   sway.offset = camera.position.clone().sub(sway.pivot);
   BL.paused = true;
+  const hp = document.getElementById("hp");
+  hp.style.visibility = frames[0].hp == null ? "hidden" : ""; hp.classList.add("replay");
+  hpSet(frames[0].hp ?? 1, frames[0].hp ?? 1);
+  let drags = frames[0].drags;
   const t0 = performance.now();
   (function tick() {
     const t = Math.min(REPLAY_S, (performance.now() - t0) / 1000), x = t / REPLAY_S * (frames.length - 1);
@@ -1380,9 +1444,17 @@ function playFrames(frames, fellDay, done) {
     const wv = Math.sin(2 * Math.PI * t / REPLAY_S);
     sway.a = -SWAY_DEG * Math.PI / 180 * wv * (wv > 0 ? 1 : 0.5);
     st.textContent = a.fell ? `重播 · 第 ${fellDay} 天掉下去了` : `重播 · 第 ${dayOf(a.drags)} 天`;
+    if (a.hp != null) {
+      hpBar("--hpF", a.hp + (b.hp - a.hp) * f);
+      if (a.drags > drags && frames.hits[a.drags]) hpHit(frames.hits[a.drags], a.hp);
+      if (a.fell) hpBar("--hpL", 0);
+    }
+    drags = a.drags;
     if (t < REPLAY_S) return requestAnimationFrame(tick);
     camera.position.copy(sway.pivot).add(sway.offset); camera.quaternion.copy(sway.quat); sway = null;
     setBlanketState(live); BL.paused = false;
+    hp.style.visibility = ""; hp.classList.remove("replay");
+    if (game) hpSet(hpValue(), game.over ? 0 : game.hpShown ?? 1);
     if (done) done();
   })();
 }
