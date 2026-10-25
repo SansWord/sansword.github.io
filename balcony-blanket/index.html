@@ -1,0 +1,1448 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>陽台上的小被被</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f3eee4'/%3E%3Crect x='6' width='5' height='32' fill='%23c0392b' opacity='.7'/%3E%3Crect y='6' width='32' height='5' fill='%23c0392b' opacity='.7'/%3E%3Crect x='20' width='3' height='32' fill='%232e5e9e' opacity='.7'/%3E%3Crect y='20' width='32' height='3' fill='%232e5e9e' opacity='.7'/%3E%3C/svg%3E">
+<style>  :root { --bg: #16181c; --panel: #1f2228cc; --text: #e6e6e6; --muted: #9aa0aa; --accent: #4f8cff; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 14px/1.45 -apple-system, system-ui, sans-serif; overflow: hidden; }
+  #wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  html, body { touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  textarea { -webkit-user-select: text; user-select: text; }
+  #stage { position: relative; width: 100%; height: 100%; overflow: hidden; touch-action: none; }
+  canvas { display: block; position: relative; }
+  #photo { position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none; display: none; }
+  #dragUI { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; pointer-events: none; display: none; overflow: visible; }
+  #hud { position: absolute; z-index: 2; top: max(10px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); text-align: center; background: #1f2228e6; padding: 8px 18px; border-radius: 14px; backdrop-filter: blur(6px); box-shadow: 0 6px 24px #0006; font-size: 15px; white-space: nowrap; }
+  #hud button { padding: 6px 14px; margin-top: 6px; border-radius: 10px; }
+  #hud button.go { background: #c0453b; border-color: #c0453b; color: #fff; }
+  #dim { position: absolute; inset: 0; z-index: 3; background: rgba(10, 12, 16, 0.3); display: none; animation: fade 0.25s ease-out; }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes pop { from { opacity: 0; transform: translateX(-50%) scale(0.8); } 70% { transform: translateX(-50%) scale(1.04); } }
+  .card { animation: pop 0.35s ease-out; }
+  .card { position: absolute; z-index: 4; left: 50%; transform: translateX(-50%); text-align: center; background: rgba(28, 31, 37, 0.6); border-radius: 18px; padding: 22px 26px; backdrop-filter: blur(1.5px); box-shadow: 0 10px 40px #0006; text-shadow: 0 1px 3px #000c; width: min(400px, calc(100% - 24px)); box-sizing: border-box; }
+  .card h1 { font-size: 34px; margin: 0 0 4px; letter-spacing: 2px; }
+  .card h2 { font-size: 24px; margin: 0 0 6px; }
+  .card p { margin: 6px 0 14px; color: var(--muted); }
+  .card button { font-size: 17px; padding: 11px 22px; border-radius: 12px; margin: 4px; min-height: 44px; white-space: nowrap; }
+  .card button.play { background: #2f9e5e; border-color: #2f9e5e; color: #fff; font-size: 20px; font-weight: 700; padding: 13px 34px; }
+  .card button.play.wide { padding: 13px 0; width: calc(100% - 8px); }
+  .card .name { font-size: 15px; font-weight: 600; letter-spacing: 2px; color: var(--muted); margin-bottom: 6px; }
+  .card button.go { background: #c0453b; border-color: #c0453b; color: #fff; font-weight: 600; }
+  .card button:disabled { opacity: 0.5; }
+  .card button.link { background: none; border: none; color: var(--muted); font-size: 12px; padding: 4px 8px; min-height: 0; text-decoration: underline; }
+  .records { margin: 18px 0 0; font-size: 14px; text-align: left; }
+  .records .bestbox { background: linear-gradient(135deg, #ffcf6e26, #ffcf6e0d); border: 1px solid #ffcf6e55; border-radius: 14px; padding: 10px 12px 6px; }
+  .records .bh { color: #ffcf6e; font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+  .records .bh small { color: var(--muted); font-size: 12px; font-weight: 400; letter-spacing: 0; margin-left: 6px; }
+  .records .rh { color: var(--text); font-size: 15px; font-weight: 700; margin: 18px 0 2px; padding-bottom: 6px; border-bottom: 1px solid #ffffff26; }
+  .records ol { margin: 0; padding: 0; list-style: none; }
+  .records li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #ffffff0f; }
+  .records li:last-child { border-bottom: none; }
+  .records .rday { color: var(--muted); font-size: 13px; font-weight: 600; margin: 10px 0 0; }
+  .records .date { color: #c3c8d0; font-size: 14px; width: 4.9em; flex: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .records .date small { display: block; font-size: 12px; color: var(--muted); }
+  .records li.best .date { width: 6.2em; }
+  .records .score { flex: 1; white-space: nowrap; }
+  .records .score b { font-size: 22px; font-variant-numeric: tabular-nums; margin-right: 2px; }
+  .records .score i { font-style: normal; color: var(--muted); font-size: 14px; margin: 0 7px 0 0; }
+  .records li.best .score b { font-size: 30px; color: #ffcf6e; }
+  .records li.now .date { color: #ffcf6e; font-weight: 600; }
+  .records .score i.auto { font-size: 11px; border: 1px solid #ffffff33; border-radius: 6px; padding: 0 5px; margin-left: 4px; }
+  .records button { font-size: 14px; padding: 7px 13px; min-height: 0; margin: 0; flex: none; }
+  .card textarea { width: 100%; height: 140px; margin-top: 8px; font: 11px/1.3 ui-monospace, monospace; background: #111; color: #ddd; border: 1px solid #333; border-radius: 6px; }
+  @media (max-width: 420px) { .card { padding: 20px 14px; } .records .score b { font-size: 20px; } .records li.best .score b { font-size: 26px; } }
+  #title { top: max(6%, env(safe-area-inset-top)); }
+  #result { top: max(8%, env(safe-area-inset-top)); }
+  .card.flipOut { animation: flipOut 0.18s ease-in forwards; }
+  .card.flipIn { animation: flipIn 0.22s ease-out; }
+  .card.still { animation: none; }
+  @keyframes flipOut { to { transform: translateX(-50%) perspective(900px) rotateY(90deg); opacity: 0.6; } }
+  @keyframes flipIn { from { transform: translateX(-50%) perspective(900px) rotateY(-90deg); opacity: 0.6; } }
+  #history { top: max(6%, env(safe-area-inset-top)); height: calc(100% - max(6%, env(safe-area-inset-top)) - 16px); flex-direction: column; padding: 14px 14px 8px; }
+  #history .hbar { display: flex; align-items: center; justify-content: space-between; font-size: 17px; padding-bottom: 8px; border-bottom: 1px solid #ffffff26; }
+  #history .hbar button, #history .hbar span { width: 5em; text-align: left; font-size: 15px; text-decoration: none; color: var(--text); padding: 4px 0; }
+  #hList { flex: 1; overflow-y: auto; overscroll-behavior: contain; margin-top: 10px; padding-right: 2px; }
+  #history { background: rgba(28, 31, 37, 0.85); }
+  #hList .rday { position: sticky; top: 0; background: #2a2d33; z-index: 1; padding: 6px 0 4px; margin-top: 6px; }
+  .records .more { display: block; margin: 8px auto 0; font-size: 14px; }
+  button[data-replay], #gReplay { background: #c0453b; border-color: #c0453b; color: #fff; }
+  #title, #result { max-height: calc(100% - max(6%, env(safe-area-inset-top)) - 16px); overflow-y: auto; overscroll-behavior: contain; }
+  #tip { position: absolute; z-index: 3; left: 50%; top: 22%; transform: translateX(-50%); background: var(--panel); padding: 12px 16px; border-radius: 12px; text-align: center; font-size: 15px; pointer-events: none; backdrop-filter: blur(4px); max-width: calc(100% - 40px); }
+  #ui { position: absolute; top: 12px; left: 12px; background: var(--panel); padding: 12px 14px; border-radius: 10px; max-width: 360px; backdrop-filter: blur(4px); }
+  #ui h1 { font-size: 15px; margin: 0 0 6px; }
+  button { background: #2a2e36; color: var(--text); border: 1px solid #3a3f48; border-radius: 6px; padding: 5px 9px; font: inherit; cursor: pointer; margin: 2px 2px 2px 0; }
+  button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:disabled, input:disabled { opacity: 0.4; cursor: not-allowed; }
+  .muted { color: var(--muted); font-size: 12px; }
+  .lg { display: inline-block; padding: 1px 5px; margin: 1px 0; border-radius: 4px; cursor: default; white-space: nowrap; }
+  .lg:hover { background: #ffd54f33; outline: 1px solid #ffd54f; }
+  .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  table { border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+  td { padding: 1px 8px 1px 0; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 140px; vertical-align: middle; }
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage"><img id="photo" alt="">
+  <svg id="dragUI">
+    <line id="dragBand" stroke="#ffb300" stroke-width="2" stroke-dasharray="5 4" />
+    <circle id="dragMouse" r="6" fill="none" stroke="#ffb300" stroke-width="2" />
+    <g id="dragPin"><circle r="7" fill="#fff" stroke="#ffb300" stroke-width="2.5" /><circle r="2.5" fill="#ffb300" /></g>
+  </svg>
+</div></div>
+<div id="tip" style="display:none">按住畫面任一處拖曳，就能拉動小被被<br><span class="muted">不用剛好點在被子上</span></div>
+<div id="dim"></div>
+<div id="title" class="card" style="display:none">
+  <h1>陽台上的小被被</h1>
+  <p>看棉被哪時候掉下去<br>每拉三次算一天，看你第幾天能把被被拉下陽台</p>
+  <button id="tStart" class="play">開始遊戲</button>
+  <div id="tBest" class="records"></div>
+</div>
+<div id="result" class="card" style="display:none">
+  <div class="name">陽台上的小被被</div>
+  <h2 id="rTitle"></h2>
+  <p id="rText"></p>
+  <div><button id="gNew" class="play wide">再玩一次</button></div>
+  <div><button id="gReplay">重播</button><button id="gHome">回標題</button></div>
+  <div id="rBest" class="records"></div>
+  <div id="rDebug" style="display:none"><button id="rLog" class="link">拉動紀錄</button><textarea id="rLogText" readonly style="display:none"></textarea></div>
+</div>
+<div id="history" class="card" style="display:none">
+  <div class="hbar"><button id="hBack" class="link">‹ 返回</button><b>紀錄</b><span></span></div>
+  <div id="hList" class="records"></div>
+</div>
+<div id="hud" style="display:none">
+  <b id="gStatus"></b> <span class="muted" id="gGrip"></span>
+  <div><button id="gAuto" class="go" style="display:none">自動完成</button></div>
+</div>
+<div id="ui">
+  <h1>紙模型</h1>
+  <div>
+    <button id="vFree" class="on">自由視角</button>
+    <button id="vDay1">第 1 天相機</button>
+    <button id="vDay189">第 189 天相機</button>
+  </div>
+  <div id="photoRow" style="display:none;margin-top:4px">
+    <span id="photoOpRow"><span class="muted">背景照片</span> <input id="photoOp" type="range" min="0" max="100" value="0"></span>
+    <div><span class="muted">拉遠</span> <input id="camZoom" type="range" min="100" max="400" value="100"></div>
+    <div><span class="muted">拖曳時</span> <button id="dLook" class="on">環顧</button><button id="dMove">移動</button></div>
+  </div>
+  <div style="margin-top:8px">
+    <button id="pOn">照片投影</button>
+    <span id="pCtl" style="display:none">
+      <button id="pPrev">&#9664;</button><input id="pDay" type="range" min="0" value="0"><button id="pNext">&#9654;</button>
+      <button id="pPlay">播放</button>
+      <button id="pFollow">跟隨相機</button>
+      <div><b id="pLabel"></b> <span class="muted" id="pNote"></span></div>
+    </span>
+    <div style="margin-top:6px">
+      <button id="bOn">陽台上的小被被</button><button id="bReset" style="display:none">重新擺好</button><button id="bClip" style="display:none">鬆開夾子</button><button id="bDrop" style="display:none">再丟一條被被</button><button id="gStart" style="display:none">新遊戲</button>
+      <span class="muted" id="bHint" style="display:none">用滑鼠或手指拉動</span>
+    </div>
+    <div id="pPick" class="muted" style="display:none;margin-top:4px">
+      <span id="pWhy"></span> 選擇 <code>photos</code> 資料夾：
+      <input id="pDir" type="file" webkitdirectory>
+    </div>
+  </div>
+  <div style="margin-top:8px"><button id="refOn">參考標記</button><button id="clipVizOn">顯示夾子</button></div>
+  <div style="margin-top:4px" id="legend"></div>
+  <table id="cams"></table>
+  <p class="muted">拖曳旋轉、滾輪縮放、右鍵拖曳平移。單位：陽台深度。
+    在相機視角中，模型應該貼合照片；滾輪可拉遠看周圍，拖曳可從相機的位置環顧
+    （選「移動」則改用自由視角，從那個角度繼續轉）。再按一次自由視角回到總覽。</p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>const MODEL = {"units": "shelf depth = 1", "panels": {"tiled wall": [[-3.4573474529930546, -6.131390371509298, 0], [0, -6.131390371509298, 0], [0, 2.0, 0], [-3.4573474529930546, 2.0, 0]], "brick wall": [[0, -6.131390371509298, 0], [0, -6.131390371509298, 5.819273773032827], [0, 2.0, 5.819273773032827], [0, 2.0, 0]], "shelf top": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -0.19744447424806616, 5.819273773032827], [0, 0, 5.819273773032827]], "cage front": [[-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827]], "cage bottom": [[0.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827]], "cage side": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [0.0, -1.5546877931476362, 0.3528517337232067], [0, -1.5546877931476362, 0.3528517337232067]], "window grill bottom": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [0, 1.5288228462737465, 5.819273773032827]], "window grill front": [[-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827]], "window grill side": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [0, 3.083510639421383, 0.6190854656051468]], "window grill top": [[0, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "window grill end": [[0, 1.5288228462737465, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "lower shelf top": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [0, -4.036587215910913, 5.819273773032827]], "lower shelf front": [[-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827]], "lower shelf bottom": [[0, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "lower shelf side": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [0, -5.591275009058549, 0.08936327713881974]], "lower shelf end": [[0, -4.036587215910913, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "cage end": [[0, 0, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827], [0, -1.5546877931476362, 5.819273773032827]]}, "stripes": [[[-3.4573474529930546, 0.0834075259675885, 0], [0, 0.0834075259675885, 0]], [[-3.4573474529930546, -0.15926488730384458, 0], [0, -0.15926488730384458, 0]], [[-3.4573474529930546, -3.166934160631353, 0], [0, -3.166934160631353, 0]], [[-3.4573474529930546, -3.4178596819025113, 0], [0, -3.4178596819025113, 0]]], "tiles": {"pitch": 0.1251614296913404, "base": -3.417422816646296, "stripes": [[0.087097214711235, 0.21225864440257539], [-0.16322564467144574, -0.03806421498010534], [-3.1670999572636154, -3.041938527572275], [-3.417422816646296, -3.2922613869549555]], "fit": [-0.003689688743646488, 0.003960757367601153, 0.00016579663226234942, -0.0004368652562152242]}, "floors": {"height": 3.2541971719748504, "levels": [-9.550332871521976, -6.296135699547126, -3.041938527572275, 0.21225864440257558, 3.466455816377426, 6.720652988352277]}, "cage_post": [[-1.0, -0.19744447424806616, 4.51964696395023], [-1.0, -1.5546877931476362, 4.51964696395023]], "points": {"point_1": [-0.06815006589404175, -0.013455853930420139, 0.4728716980308348], "point_2": [-0.06815006589404175, -0.013455853930420139, 1.0396087165902814], "point_3": [-1.0018076813476873, -0.1978013909413683, 2.1334721171114586]}, "guides": {"cage bottom level at brick wall": [[0, -1.5546877931476362, 0], [0, -1.5546877931476362, 5.819273773032827]]}, "measurements": {"yf": -0.19744447424806616, "y_cage": -1.5546877931476362, "z_post": 4.51964696395023, "s1": 0.0834075259675885, "s2": -0.15926488730384458, "s3": -3.166934160631353, "s4": -3.4178596819025113, "x12": -0.06815006589404175, "z1": 0.4728716980308348, "z2": 1.0396087165902814, "x3": -1.0018076813476873, "z3": 2.1334721171114586, "z_slat": 3.369499353854658, "x_g": -0.7496369159300176, "z_g": 0.6190854656051468, "g_back": 1.5288228462737465, "g_front": 1.5127790163709456, "z_mid": 0.3528517337232067, "x_l": -0.8847462189288654, "z_l": 0.08936327713881974, "l_back": -4.036587215910913}, "roof_slope_deg": -11.16907426402621, "cameras": {"Day 1": {"center": [-2.5763902424813807, 1.8485481115884668, 7.480000418376799], "R": [[0.9678969244908487, 0.030032064951085586, 0.24954682653948826], [-0.06859502767522094, -0.9235863169825995, 0.3772042381267117], [0.2418062566175477, -0.38221249346049785, -0.8918763053828247]], "f_px": 2261.0088796691516, "image": [1440, 1920]}, "Day 189": {"center": [-3.5582223799683477, 1.8324280503581372, 7.612198135614894], "R": [[0.9358564085164711, 0.022360387969925025, 0.3516714314363431], [-0.1038266688189778, -0.9361843480523512, 0.3358256829126512], [0.33673848232806186, -0.35079749074306205, -0.8738125170811899]], "f_px": 2194.932560259106, "image": [1440, 1920]}}, "fit_px": {"Day 1": {"point_1": 0.9887886333426447, "point_2": 1.7264496185290532, "point_3": 7.14562915172034, "shelf_back": 3.4384179676648197, "shelf_front": 11.844323006130528, "cage_bottom": 12.55918300684493, "wall_corner": 2.5100142332881084, "tile_vertical": 2.106940384485275, "stripe_1": 4.192962072560722, "stripe_2": 2.710436133038165, "stripe_3": 1.9390894287237819, "stripe_4": 1.656020611511733, "cage_post": 5.645671705311196, "box_corner": 0.5007117842603408, "grill_back": 3.1098141272041637, "grill_front": 1.4372123767723186, "cage_top_left": 1.1164990606838758, "lower_back": 2.620815313671605, "lower_front": 3.252742702884892, "lower_top_left": 3.84486510104268, "slat": 5.452513487194732}, "Day 189": {"point_1": 1.2306705815705334, "point_2": 2.176784613225029, "point_3": 7.228472584903843, "shelf_back": 5.3538490560462835, "shelf_front": 8.026824328055795, "cage_bottom": 10.029425753830143, "wall_corner": 2.2114350412003305, "tile_vertical": 1.0914710113648947, "stripe_1": 1.4981777920548534, "stripe_2": 0.3837978321787298, "stripe_3": 3.2926728729008343, "stripe_4": 2.7412516909896, "cage_post": 5.026196858192163, "box_corner": 0.5435323324289093, "grill_back": 3.5550210021148696, "grill_front": 1.7717190304777877, "cage_top_left": 2.662866445615572, "lower_back": 2.004687646849801, "lower_front": 2.6464799275829396, "lower_top_left": 3.8651708969272933, "slat": 5.487491786240904}}};
+const PAGE = {"mode": "game", "photos": null};
+const PHOTOS = {"size": [1080, 1440], "group2": 189, "upside_down": [380], "easter_eggs": {}, "H": {}};
+const COLORS = { "ground": 0x7b7872, "tiled wall": 0xd9d4cc, "brick wall": 0xf2f2f2, "shelf top": 0x8c8f94, "cage front": 0x5d636b, "cage bottom": 0x4a4f56, "cage side": 0x54595f,
+  "window grill bottom": 0x6d7f91, "window grill front": 0x7f93a6, "window grill side": 0x75889b, "window grill top": 0x8a9cae, "window grill end": 0x75889b, "cage end": 0x54595f, "lower shelf end": 0x868a90,
+  "lower shelf top": 0x9a9da2, "lower shelf bottom": 0x6a6e74, "lower shelf front": 0x7c8086, "lower shelf side": 0x868a90 };
+const CAM_COLORS = { "Day 1": 0x4f8cff, "Day 189": 0xff9f43 };
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(devicePixelRatio);
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, 1, 0.01, 200);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+const sun = new THREE.DirectionalLight(0xffffff, 0.5); sun.position.set(-3, 5, 4); scene.add(sun);
+const V = a => new THREE.Vector3(a[0], a[1], a[2]);
+function lineMesh(pts, color, width = 2) {
+  const g = new THREE.BufferGeometry().setFromPoints(pts.map(V));
+  return new THREE.Line(g, new THREE.LineBasicMaterial({ color, linewidth: width }));
+}
+const groups = {};
+function track(name, color, obj, parent = scene) {
+  (groups[name] ||= { color, objs: [] }).objs.push({ obj, color: obj.material.color.getHex(), opacity: obj.material.opacity, transparent: obj.material.transparent });
+  parent.add(obj);
+}
+const refs = new THREE.Group(); refs.visible = false; scene.add(refs);
+const hex = c => "#" + c.toString(16).padStart(6, "0");
+const panelGeoms = [];
+const WALL = { x: -12, z: 14, ylo: -14, yhi: 10 };
+if (MODEL.floors) { WALL.ylo = MODEL.floors.levels[0]; WALL.yhi = MODEL.floors.levels[MODEL.floors.levels.length - 1]; }
+{
+  const tw = MODEL.panels["tiled wall"], bw = MODEL.panels["brick wall"];
+  if (tw) MODEL.panels["tiled wall"] = [[WALL.x, WALL.ylo, 0], [0, WALL.ylo, 0], [0, WALL.yhi, 0], [WALL.x, WALL.yhi, 0]];
+  if (bw) MODEL.panels["brick wall"] = [[0, WALL.ylo, 0], [0, WALL.ylo, WALL.z], [0, WALL.yhi, WALL.z], [0, WALL.yhi, 0]];
+  MODEL.panels["ground"] = [[WALL.x, WALL.ylo, 0], [0, WALL.ylo, 0], [0, WALL.ylo, WALL.z], [WALL.x, WALL.ylo, WALL.z]];
+}
+const tileTex = (() => {
+  const cv = document.createElement("canvas"); cv.width = cv.height = 64;
+  const g = cv.getContext("2d");
+  g.fillStyle = "#9e9a92"; g.fillRect(0, 0, 64, 64);
+  g.fillStyle = "#b3afa6"; g.fillRect(2, 2, 60, 60);
+  const t = new THREE.CanvasTexture(cv);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+})();
+const tileUV = (g, pts) => {
+  const T = MODEL.tiles;
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(pts.flatMap(p => [p[0] / T.pitch, (p[1] - T.base) / T.pitch]), 2));
+};
+const SOLID = new Set(["shelf top", "window grill top", "lower shelf top"]);
+for (const [name, quad] of Object.entries(MODEL.panels)) {
+  const tri = [quad[0], quad[1], quad[2], quad[0], quad[2], quad[3]];
+  const g = new THREE.BufferGeometry().setFromPoints(tri.map(V));
+  g.computeVertexNormals();
+  panelGeoms.push(g);
+  const col = COLORS[name] || 0xcccccc, tiled = name === "tiled wall" && MODEL.tiles;
+  if (tiled) tileUV(g, tri);
+  const solid = tiled || SOLID.has(name);
+  track(name, col, new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: tiled ? 0xffffff : col, map: tiled ? tileTex : null,
+    side: THREE.DoubleSide, transparent: !solid, opacity: solid ? 1 : 0.85 })));
+  const outline = lineMesh([...quad, quad[0]], 0x222222);
+  outline.material.transparent = true;
+  track(name, col, outline);
+}
+for (const st of MODEL.stripes) track("red stripes", 0xc0392b, lineMesh(st, 0xc0392b), refs);
+const tileStripes = new THREE.Group(); scene.add(tileStripes);
+for (const [b, t] of (MODEL.tiles ? MODEL.tiles.stripes : [])) {
+  const q = [[WALL.x, b, 0.002], [0, b, 0.002], [0, t, 0.002], [WALL.x, t, 0.002]], tri = [q[0], q[1], q[2], q[0], q[2], q[3]];
+  const g = new THREE.BufferGeometry().setFromPoints(tri.map(V)); g.computeVertexNormals(); tileUV(g, tri);
+  track("dark-red stripes", 0x8e2b26, new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: 0xa8433b, map: tileTex, side: THREE.DoubleSide,
+    polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -8 })), tileStripes);
+}
+if (MODEL.cage_post) track("cage post", 0x1dd1a1, lineMesh(MODEL.cage_post, 0x1dd1a1), refs);
+for (const [name, pts] of Object.entries(MODEL.guides || {})) {
+  const g = new THREE.BufferGeometry().setFromPoints(pts.map(V));
+  const ln = new THREE.Line(g, new THREE.LineDashedMaterial({ color: 0xff4081, dashSize: 0.08, gapSize: 0.05, transparent: true }));
+  ln.computeLineDistances();
+  track(name, 0xff4081, ln, refs);
+}
+for (const X of Object.values(MODEL.points)) {
+  const sp = new THREE.Mesh(new THREE.SphereGeometry(0.03, 12, 8), new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true }));
+  sp.position.copy(V(X)); track("shelf points", 0x00e5ff, sp, refs);
+}
+const LABELS = {
+  "ground": "地面", "tiled wall": "磁磚牆", "brick wall": "磚牆", "shelf top": "陽台頂", "cage front": "鐵籠正面",
+  "cage bottom": "鐵籠底部", "cage side": "鐵籠左側", "cage end": "鐵籠右側", "window grill bottom": "鐵窗底部", "window grill front": "鐵窗正面",
+  "window grill side": "鐵窗左側", "window grill top": "鐵窗頂部", "window grill end": "鐵窗右側", "lower shelf top": "下層鐵籠頂", "lower shelf front": "下層鐵籠正面",
+  "lower shelf side": "下層鐵籠左側", "lower shelf bottom": "下層鐵籠底部", "lower shelf end": "下層鐵籠右側", "red stripes": "紅條紋標記線", "dark-red stripes": "暗紅條紋",
+  "cage post": "鐵籠柱子", "cage bottom level at brick wall": "鐵籠底部延伸線", "shelf points": "陽台頂標記點",
+};
+const camName = name => name.replace(/^Day (\d+)$/, "第 $1 天");
+document.getElementById("legend").innerHTML = Object.entries(groups)
+  .map(([name, g]) => `<span class="lg" data-k="${name}"><span class="sw" style="background:${hex(g.color)}"></span>${LABELS[name] || name}</span>`).join(" ");
+const HIGHLIGHT = 0xffd54f;
+function highlight(name) {
+  proj.group.visible = proj.on && name == null;
+  if (name != null && !refs.visible && groups[name].objs.some(o => o.obj.parent === refs)) return;
+  for (const [k, g] of Object.entries(groups))
+    for (const o of g.objs) {
+      const on = k === name, m = o.obj.material;
+      if (name == null) { m.color.setHex(o.color); m.opacity = o.opacity; m.transparent = o.transparent; }
+      else if (on) { m.color.setHex(HIGHLIGHT); m.opacity = 1; }
+      else { m.opacity = Math.min(o.opacity, 0.15); m.transparent = true; }
+      m.depthTest = !(name != null && on);
+      o.obj.renderOrder = on && name != null ? 10 : 0;
+    }
+}
+for (const el of document.querySelectorAll("#legend .lg")) {
+  el.addEventListener("mouseenter", () => highlight(el.dataset.k));
+  el.addEventListener("mouseleave", () => highlight(null));
+}
+function camToWorld(cam, u, v, depth) {
+  const R = cam.R, [w, h] = cam.image, f = cam.f_px;
+  const dc = [(u - w / 2) / f * depth, (v - h / 2) / f * depth, depth];
+  const C = cam.center;
+  return [0, 1, 2].map(i => C[i] + R[0][i] * dc[0] + R[1][i] * dc[1] + R[2][i] * dc[2]);
+}
+const rows = ["<tr><td></td><td>X</td><td>Y</td><td>Z</td><td>到牆角</td></tr>"];
+for (const [name, cam] of Object.entries(MODEL.cameras)) {
+  const col = CAM_COLORS[name] || 0xffffff, [w, h] = cam.image, d = 0.35;
+  const C = cam.center, cs = [[0, 0], [w, 0], [w, h], [0, h]].map(([u, v]) => camToWorld(cam, u, v, d));
+  for (const c of cs) refs.add(lineMesh([C, c], col));
+  refs.add(lineMesh([...cs, cs[0]], col));
+  refs.add(lineMesh([C, MODEL.points.point_1], col));
+  const s = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 10), new THREE.MeshBasicMaterial({ color: col }));
+  s.position.copy(V(C)); refs.add(s);
+  const dist = Math.hypot(...C);
+  rows.push(`<tr><td><span class="sw" style="background:#${col.toString(16).padStart(6, "0")}"></span>${camName(name)}</td>` +
+    C.map(v => `<td>${v.toFixed(2)}</td>`).join("") + `<td>${dist.toFixed(2)}</td></tr>`);
+}
+const c1 = MODEL.cameras["Day 1"].center, c2 = MODEL.cameras["Day 189"].center;
+rows.push(`<tr><td>相機移動</td>${[0, 1, 2].map(i => `<td>${(c2[i] - c1[i] >= 0 ? "+" : "") + (c2[i] - c1[i]).toFixed(2)}</td>`).join("")}` +
+  `<td>${Math.hypot(c2[0] - c1[0], c2[1] - c1[1], c2[2] - c1[2]).toFixed(2)}</td></tr>`);
+document.getElementById("cams").innerHTML = rows.join("");
+refs.add(new THREE.AxesHelper(0.5));
+document.getElementById("refOn").onclick = e => { refs.visible = !refs.visible; e.target.classList.toggle("on", refs.visible); };
+let mode = "free";
+const free = { pos: null, target: new THREE.Vector3(-0.5, 0, 1) };
+function home() {
+  const mid = V(c1).add(V(c2)).multiplyScalar(0.5);
+  camera.position.copy(mid.clone().add(new THREE.Vector3(3, 2.5, 3)));
+  controls.target.copy(free.target);
+  camera.fov = 50; camera.up.set(0, 1, 0);
+}
+function poseAs(three, name) {
+  const cam = MODEL.cameras[name], R = cam.R, [w, h] = cam.image;
+  const m = new THREE.Matrix4().set(
+    R[0][0], -R[1][0], -R[2][0], 0,
+    R[0][1], -R[1][1], -R[2][1], 0,
+    R[0][2], -R[1][2], -R[2][2], 0, 0, 0, 0, 1);
+  three.position.copy(V(cam.center));
+  three.quaternion.setFromRotationMatrix(m);
+  three.fov = 2 * Math.atan(h / 2 / cam.f_px) * 180 / Math.PI;
+}
+const look = { yaw: 0, pitch: 0, base: new THREE.Quaternion(), drag: null };
+function applyLook() {
+  camera.quaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), look.yaw).multiply(look.base)
+    .multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), look.pitch));
+}
+const photoEl = document.getElementById("photo");
+function throughCamera(name) {
+  poseAs(camera, name);
+  look.base.copy(camera.quaternion); applyLook();
+  if (!PAGE.photos) return;
+  const src = `${PAGE.photos}Day_${String(name.split(" ")[1]).padStart(4, "0")}.jpg`;
+  if (!photoEl.src.endsWith(src.slice(2))) photoEl.src = src;
+}
+function placePhoto() {
+  if (mode === "free" || proj.on || sway || +document.getElementById("photoOp").value === 0) { photoEl.style.display = "none"; return; }
+  const cam = MODEL.cameras[mode], R0 = cam.R, [w, h] = cam.image, f = cam.f_px;
+  const W = stage.clientWidth, H = stage.clientHeight, F = H / 2 / Math.tan(camera.fov * Math.PI / 360);
+  const e = camera.matrixWorld.elements;
+  const Rv = [[e[0], e[1], e[2]], [-e[4], -e[5], -e[6]], [-e[8], -e[9], -e[10]]];
+  const Kv = new THREE.Matrix3().set(F, 0, W / 2, 0, F, H / 2, 0, 0, 1);
+  const Rel = new THREE.Matrix3().set(...[0, 1, 2].flatMap(i => [0, 1, 2].map(j =>
+    Rv[i][0] * R0[j][0] + Rv[i][1] * R0[j][1] + Rv[i][2] * R0[j][2])));
+  const Ki = new THREE.Matrix3().set(1 / f, 0, -w / 2 / f, 0, 1 / f, -h / 2 / f, 0, 0, 1);
+  const Hm = Kv.multiply(Rel).multiply(Ki).transpose().elements;
+  const wz = (x, y) => Hm[6] * x + Hm[7] * y + Hm[8];
+  if ([[0, 0], [w, 0], [0, h], [w, h]].some(([x, y]) => wz(x, y) <= 0)) { photoEl.style.display = "none"; return; }
+  photoEl.style.display = "block"; photoEl.style.width = w + "px"; photoEl.style.height = h + "px";
+  photoEl.style.transform = `matrix3d(${[Hm[0], Hm[3], 0, Hm[6], Hm[1], Hm[4], 0, Hm[7], 0, 0, 1, 0, Hm[2], Hm[5], 0, Hm[8]].join(",")})`;
+}
+function setMode(m, keepPose = false) {
+  mode = m;
+  for (const [id, k] of [["vFree", "free"], ["vDay1", "Day 1"], ["vDay189", "Day 189"]]) document.getElementById(id).classList.toggle("on", k === m);
+  document.getElementById("photoRow").style.display = m === "free" ? "none" : "block";
+  if (m === "free") { if (!keepPose) home(); } else throughCamera(m);
+  applyOpacity(); resize();
+}
+document.getElementById("vFree").onclick = () => { setFollow(false); setMode("free", mode !== "free"); };
+document.getElementById("vDay1").onclick = () => { setFollow(false); look.yaw = look.pitch = 0; setMode("Day 1"); };
+document.getElementById("vDay189").onclick = () => { setFollow(false); look.yaw = look.pitch = 0; setMode("Day 189"); };
+const applyOpacity = () => {
+  document.getElementById("photoOpRow").style.display = proj.on ? "none" : "inline";
+  renderer.domElement.style.opacity = mode === "free" || proj.on ? 1 : 1 - document.getElementById("photoOp").value / 100 * 0.6;
+};
+document.getElementById("photoOp").oninput = applyOpacity;
+let camZoom = 1;
+function setZoom(z) {
+  camZoom = Math.max(1, Math.min(4, z));
+  document.getElementById("camZoom").value = camZoom * 100;
+  resize();
+}
+document.getElementById("camZoom").oninput = e => setZoom(e.target.value / 100);
+stage.addEventListener("wheel", e => {
+  if (viewLocked()) { e.preventDefault(); e.stopPropagation(); return; }
+  if (mode === "free") return;
+  e.preventDefault(); e.stopPropagation();
+  setZoom(camZoom * Math.exp(e.deltaY * 0.002));
+}, { capture: true, passive: false });
+let dragLook = true;
+for (const [id, on] of [["dLook", true], ["dMove", false]]) document.getElementById(id).onclick = () => {
+  dragLook = on;
+  document.getElementById("dLook").classList.toggle("on", on); document.getElementById("dMove").classList.toggle("on", !on);
+};
+stage.addEventListener("pointerdown", e => {
+  if (mode === "free" || !dragLook || e.button !== 0 || viewLocked()) return;
+  e.stopPropagation(); try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+  look.drag = { x: e.clientX, y: e.clientY };
+}, { capture: true });
+stage.addEventListener("pointermove", e => {
+  if (!look.drag) return;
+  const k = camera.fov * Math.PI / 180 / stage.clientHeight;
+  look.yaw += (e.clientX - look.drag.x) * k;
+  look.pitch = Math.max(-1.5, Math.min(1.5, look.pitch + (e.clientY - look.drag.y) * k));
+  look.drag = { x: e.clientX, y: e.clientY };
+  applyLook();
+});
+stage.addEventListener("pointerup", () => { look.drag = null; });
+controls.addEventListener("start", () => {
+  if (mode === "free") return;
+  const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+  controls.target.copy(camera.position).addScaledVector(fwd, V(MODEL.points.point_1).sub(camera.position).dot(fwd));
+  setFollow(false); setMode("free", true);
+});
+const proj = { on: false, group: new THREE.Group(), days: Object.keys(PHOTOS.H).map(Number).sort((a, b) => a - b),
+  i: 0, files: null, playing: false, follow: false, token: 0, cams: {} };
+const projMat = new THREE.ShaderMaterial({
+  uniforms: { photo: { value: null }, depthMap: { value: null }, projVP: { value: new THREE.Matrix4() },
+    M: { value: new THREE.Matrix3() }, size: { value: new THREE.Vector2(...PHOTOS.size) }, flip: { value: 0 } },
+  vertexShader: `varying vec4 vWorld;
+    void main() { vWorld = modelMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * viewMatrix * vWorld; }`,
+  fragmentShader: `precision highp float;
+    uniform sampler2D photo, depthMap; uniform mat4 projVP; uniform mat3 M; uniform vec2 size; uniform float flip;
+    varying vec4 vWorld;
+    void main() {
+      vec4 c = projVP * vWorld;
+      if (c.w <= 0.0) discard;
+      vec3 n = c.xyz / c.w;
+      if (abs(n.x) > 1.0 || abs(n.y) > 1.0) discard;
+      vec2 uc = n.xy * 0.5 + 0.5;
+      if (n.z * 0.5 + 0.5 > texture2D(depthMap, uc).r + 0.0002) discard;
+      vec3 p = M * vec3(uc.x * size.x, (1.0 - uc.y) * size.y, 1.0);
+      vec2 q = p.xy / p.z / size;
+      if (flip > 0.5) q = 1.0 - q;
+      if (q.x < 0.0 || q.y < 0.0 || q.x > 1.0 || q.y > 1.0) discard;
+      gl_FragColor = vec4(texture2D(photo, vec2(q.x, 1.0 - q.y)).rgb, 1.0);
+    }`,
+  polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -4, side: THREE.DoubleSide,
+});
+for (const g of panelGeoms) proj.group.add(new THREE.Mesh(g, projMat));
+function hideWallsInTheWay() {
+  const names = Object.keys(MODEL.panels);
+  const behind = { "tiled wall": camera.position.z < 0, "brick wall": camera.position.x > 0, "ground": camera.position.y < WALL.ylo };
+  for (const [name, hide] of Object.entries(behind)) {
+    for (const o of (groups[name] || { objs: [] }).objs) o.obj.visible = !hide;
+    const k = names.indexOf(name);
+    if (k >= 0) proj.group.children[k].visible = !hide;
+  }
+  tileStripes.visible = !proj.group.visible && !behind["tiled wall"];
+}
+proj.group.visible = false;
+scene.add(proj.group);
+const depthScene = new THREE.Scene();
+for (const g of panelGeoms) depthScene.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({ side: THREE.DoubleSide })));
+function projector(name) {
+  if (proj.cams[name]) return proj.cams[name];
+  const [w, h] = MODEL.cameras[name].image;
+  const cam = new THREE.PerspectiveCamera(50, w / h, 0.5, 40);
+  poseAs(cam, name); cam.updateProjectionMatrix(); cam.updateMatrixWorld();
+  const depthTexture = new THREE.DepthTexture(w, h); depthTexture.type = THREE.UnsignedIntType;
+  const rt = new THREE.WebGLRenderTarget(w, h, { depthTexture });
+  renderer.setRenderTarget(rt); renderer.render(depthScene, cam); renderer.setRenderTarget(null);
+  return proj.cams[name] = { vp: new THREE.Matrix4().multiplyMatrices(cam.projectionMatrix, cam.matrixWorldInverse), depth: depthTexture };
+}
+const mat3 = a => new THREE.Matrix3().set(...a);
+const photoUrl = day => {
+  const f = `Day_${String(day).padStart(4, "0")}.jpg`;
+  return proj.files ? (proj.files[f] && URL.createObjectURL(proj.files[f])) : PAGE.photos ? `${PAGE.photos}${f}` : null;
+};
+function needPhotos(why) {
+  proj.playing = false; document.getElementById("pPlay").textContent = "播放";
+  document.getElementById("pWhy").textContent = why;
+  document.getElementById("pPick").style.display = "block";
+}
+const EGGS_ZH = {
+  365: "一週年", 380: "故意倒著貼（圖說的 Day380 也倒著寫）", 404: "被子排成「404 Not Found」", 463: "棒球：4-6-3 雙殺",
+  643: "棒球：6-4-3 雙殺", 731: "二週年", 745: "被子畫成時鐘，指著 7:45",
+};
+function showDay(i) {
+  proj.i = i = Math.max(0, Math.min(proj.days.length - 1, i));
+  const day = proj.days[i], token = ++proj.token, egg = PHOTOS.easter_eggs[day];
+  const group = groupOf(day);
+  document.getElementById("pDay").value = i;
+  document.getElementById("pLabel").textContent = `第 ${day} 天`;
+  document.getElementById("pNote").textContent = (egg ? (EGGS_ZH[day] || egg) + "。" : "") + `以${camName(group)}的相機投影。`;
+  const url = photoUrl(day);
+  if (!url) return needPhotos(`選擇的資料夾裡沒有第 ${day} 天的照片。`);
+  const img = new Image();
+  img.onerror = () => token === proj.token && needPhotos("找不到照片（應放在這個頁面旁的 photos 資料夾）。");
+  img.onload = () => {
+    if (token !== proj.token) return;
+    try { const c = document.createElement("canvas").getContext("2d"); c.drawImage(img, 0, 0, 1, 1); c.getImageData(0, 0, 1, 1); }
+    catch (e) { return needPhotos("從 file:// 開啟的頁面，瀏覽器不讓 WebGL 讀取照片。"); }
+    if (proj.files) URL.revokeObjectURL(url);
+    const tex = new THREE.Texture(img);
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy(); tex.needsUpdate = true;
+    const u = projMat.uniforms, p = projector(group);
+    if (u.photo.value) u.photo.value.dispose();
+    u.photo.value = tex; u.depthMap.value = p.depth; u.projVP.value.copy(p.vp);
+    u.M.value.multiplyMatrices(mat3(PHOTOS.H[day]).invert(), mat3(PHOTOS.H[day >= PHOTOS.group2 ? PHOTOS.group2 : 1]));
+    u.flip.value = PHOTOS.upside_down.includes(day) ? 1 : 0;
+    proj.group.visible = proj.on;
+    if (proj.follow && mode !== group) setMode(group);
+    if (proj.playing) setTimeout(() => proj.playing && (proj.i < proj.days.length - 1 ? showDay(proj.i + 1) : togglePlay()), 80);
+  };
+  img.src = url;
+}
+const groupOf = day => day >= PHOTOS.group2 ? `Day ${PHOTOS.group2}` : "Day 1";
+function setFollow(on) {
+  proj.follow = on;
+  document.getElementById("pFollow").classList.toggle("on", on);
+  if (on) {
+    if (camZoom === 1) camZoom = 1.6;
+    setMode(groupOf(proj.days[proj.i]));
+    setZoom(camZoom);
+  }
+}
+function togglePlay() {
+  proj.playing = !proj.playing;
+  document.getElementById("pPlay").textContent = proj.playing ? "暫停" : "播放";
+  if (proj.playing) showDay(proj.i >= proj.days.length - 1 ? 0 : proj.i + 1);
+}
+document.getElementById("pDay").max = proj.days.length - 1;
+document.getElementById("pOn").onclick = e => {
+  proj.on = !proj.on; e.target.classList.toggle("on", proj.on);
+  document.getElementById("pCtl").style.display = proj.on ? "inline" : "none";
+  if (!proj.on) { proj.group.visible = false; proj.playing = false; document.getElementById("pPlay").textContent = "播放"; setFollow(false); }
+  else showDay(proj.i);
+  setMode(mode, true);
+};
+document.getElementById("pFollow").onclick = () => setFollow(!proj.follow);
+document.getElementById("pDay").oninput = e => showDay(+e.target.value);
+document.getElementById("pPrev").onclick = () => showDay(proj.i - 1);
+document.getElementById("pNext").onclick = () => showDay(proj.i + 1);
+document.getElementById("pPlay").onclick = togglePlay;
+addEventListener("keydown", e => {
+  if (!proj.on || e.target.tagName === "INPUT" && e.target.type !== "range") return;
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); showDay(proj.i + (e.key === "ArrowLeft" ? -1 : 1)); }
+});
+document.getElementById("pDir").onchange = e => {
+  proj.files = {};
+  for (const f of e.target.files) proj.files[f.name] = f;
+  document.getElementById("pPick").style.display = "none";
+  showDay(proj.i);
+};
+const BL = {
+  on: false, NU: 34, NV: 22, LU: 2.3, LV: 1.4,
+  Z0: 0.5,
+  R: 0.025,
+  G: -18,
+  ITER: 12, SUB: 2, DAMP: 0.995, MU_S: 0.9, MU_K: 0.6,
+  SELF: 0.055, SELF_EVERY: 3,
+  GRAB_STEP: 0.15, VMAX: 0.06,
+  grab: null,
+  CLIP_U: [4, 5], CLIP_V: [[4, 7], [14, 17]], CLIP_K: 0.1, CLIP_MAX: 0.3, MU_CLIPPED: 0.15,
+  DROP_Y: 1.2,
+  SLIP_START: 0.06, SLIP_FULL: 0.15, DRAGS_PER_DAY: 3,
+  SLIP_CAP_CHANCES: { 2: 7, 3: 13, 4: 18, 5: 21, 6: 18, 7: 13, 8: 7, 9: 2, 10: 1 },
+  EASE_AFTER: 60, EASE_STEP: 0.01,
+  RELEASE_EDGE: 0.02,
+};
+const blanketClipped = i => BL.pinned[i] === 1;
+BL.solids = (() => {
+  const planesOf = names => {
+    const quads = names.map(n => MODEL.panels[n]).filter(Boolean);
+    if (!quads.length) return null;
+    const pts = quads.flat().map(V), mid = pts.reduce((a, b) => a.add(b), new THREE.Vector3()).multiplyScalar(1 / pts.length);
+    return quads.map(q => {
+      const [a, b, c] = q.map(V), n = b.clone().sub(a).cross(c.clone().sub(a)).normalize();
+      if (n.dot(mid.clone().sub(a)) > 0) n.negate();
+      return { n, d: n.dot(a) };
+    });
+  };
+  const ybot = Math.min(...MODEL.panels["tiled wall"].map(p => p[1]));
+  return [
+    planesOf(["shelf top", "cage front", "cage bottom", "cage side", "cage end"]),
+    planesOf(["window grill bottom", "window grill front", "window grill side", "window grill top", "window grill end"]),
+    planesOf(["lower shelf top", "lower shelf front", "lower shelf side", "lower shelf bottom", "lower shelf end"]),
+    [{ n: new THREE.Vector3(-1, 0, 0), d: 0 }],
+    [{ n: new THREE.Vector3(0, 0, 1), d: 0 }],
+    [{ n: new THREE.Vector3(0, 1, 0), d: ybot }],
+  ].filter(Boolean);
+})();
+{
+  const { NU, NV } = BL, n = NU * NV;
+  BL.pos = new Float32Array(n * 3); BL.prev = new Float32Array(n * 3); BL.w = new Float32Array(n).fill(1);
+  BL.pinned = new Uint8Array(n);
+  BL.anchor = new Float32Array(n * 3);
+  BL.pending = new Uint8Array(n);
+  BL.clips = BL.CLIP_V.map(([v0, v1]) => {
+    const ids = [];
+    for (let v = v0; v <= v1; v++) for (const u of BL.CLIP_U) ids.push(v * NU + u);
+    return ids;
+  });
+  const cons = [], add = (a, b, k) => cons.push([a, b, k]), id = (u, v) => v * NU + u;
+  for (let v = 0; v < NV; v++) for (let u = 0; u < NU; u++) {
+    if (u + 1 < NU) add(id(u, v), id(u + 1, v), 1);
+    if (v + 1 < NV) add(id(u, v), id(u, v + 1), 1);
+    if (u + 1 < NU && v + 1 < NV) { add(id(u, v), id(u + 1, v + 1), 1); add(id(u + 1, v), id(u, v + 1), 1); }
+    if (u + 2 < NU) add(id(u, v), id(u + 2, v), 0.15);
+    if (v + 2 < NV) add(id(u, v), id(u, v + 2), 0.15);
+  }
+  BL.cA = Int32Array.from(cons, c => c[0]); BL.cB = Int32Array.from(cons, c => c[1]);
+  BL.cK = Float32Array.from(cons, c => c[2]); BL.cL = new Float32Array(cons.length);
+  const du = BL.LU / (NU - 1), dv = BL.LV / (NV - 1);
+  for (let c = 0; c < cons.length; c++) {
+    const a = BL.cA[c], b = BL.cB[c], ua = a % NU, va = (a / NU) | 0, ub = b % NU, vb = (b / NU) | 0;
+    BL.cL[c] = Math.hypot((ub - ua) * du, (vb - va) * dv);
+  }
+  const geo = new THREE.BufferGeometry(), uv = [], idx = [];
+  for (let v = 0; v < NV; v++) for (let u = 0; u < NU; u++) uv.push(u / (NU - 1) * 1.6, v / (NV - 1));
+  for (let v = 0; v + 1 < NV; v++) for (let u = 0; u + 1 < NU; u++) {
+    const a = id(u, v), b = id(u + 1, v), c = id(u + 1, v + 1), d = id(u, v + 1);
+    idx.push(a, b, d, b, c, d);
+  }
+  BL.drawPos = new Float32Array(BL.pos.length);
+  geo.setAttribute("position", new THREE.BufferAttribute(BL.drawPos, 3));
+  geo.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  geo.setIndex(idx);
+  const cv = document.createElement("canvas"); cv.width = cv.height = 256;
+  const g = cv.getContext("2d");
+  g.fillStyle = "#f3eee4"; g.fillRect(0, 0, 256, 256);
+  for (const [c, x, w] of [["#c0392b", 40, 26], ["#2e5e9e", 150, 14], ["#c0392b", 200, 6]]) {
+    g.globalAlpha = 0.55; g.fillStyle = c; g.fillRect(x, 0, w, 256); g.fillRect(0, x, 256, w);
+  }
+  const tex = new THREE.CanvasTexture(cv); tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  BL.mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ map: tex, side: THREE.DoubleSide }));
+  BL.mesh.visible = false; BL.mesh.frustumCulled = false;
+  scene.add(BL.mesh);
+}
+function pin(i) {
+  BL.pinned[i] = 1;
+  for (let k = 0; k < 3; k++) BL.anchor[i * 3 + k] = BL.prev[i * 3 + k] = BL.pos[i * 3 + k];
+}
+function setPins(fn) {
+  for (let i = 0; i < BL.w.length; i++) { BL.pinned[i] = 0; if (fn(i)) pin(i); }
+  syncClipButton();
+}
+function syncClipButton() {
+  BL.clipped = BL.pinned.includes(1);
+  document.getElementById("bClip").textContent = BL.pinned.includes(1) || BL.pending.includes(1) ? "鬆開夾子" : "夾回陽台";
+}
+function blanketReset() {
+  const { NU, NV, pos } = BL, yf = MODEL.measurements.yf, L = Math.hypot(1, yf);
+  const d = [-1 / L, yf / L], n = [yf / L, 1 / L];
+  for (let v = 0; v < NV; v++) for (let u = 0; u < NU; u++) {
+    const i = (v * NU + u) * 3, t = 0.05 + u / (NU - 1) * BL.LU, z = BL.Z0 + v / (NV - 1) * BL.LV;
+    if (t < L) { pos[i] = d[0] * t + n[0] * BL.R * 1.5; pos[i + 1] = d[1] * t + n[1] * BL.R * 1.5; }
+    else { pos[i] = -1 - BL.R * 1.5; pos[i + 1] = yf - (t - L); }
+    pos[i + 2] = z;
+  }
+  BL.prev.set(pos); BL.grab = null; BL.pending.fill(0);
+  BL.w.fill(1); setPins(i => BL.clips.some(c => c.includes(i)));
+}
+function blanketDrop() {
+  const { NU, NV, pos } = BL, x0 = -0.05 - Math.random() * 0.25, z0 = BL.Z0 - 0.1 + Math.random() * 0.8;
+  for (let v = 0; v < NV; v++) for (let u = 0; u < NU; u++) {
+    const i = (v * NU + u) * 3;
+    pos[i] = x0 - u / (NU - 1) * BL.LU; pos[i + 1] = BL.DROP_Y + (Math.random() - 0.5) * 0.01; pos[i + 2] = z0 + v / (NV - 1) * BL.LV;
+  }
+  BL.prev.set(pos); BL.grab = null;
+  BL.w.fill(1); setPins(() => false);
+  BL.pending.fill(0); BL.clips.forEach((c, k) => { for (const i of c) BL.pending[i] = k + 1; });
+  syncClipButton();
+}
+function blanketCollide(i) {
+  const p = BL.pos, q = BL.prev, o = i * 3;
+  for (const planes of BL.solids) {
+    let best = -Infinity, bn = null, bd = 0;
+    for (const { n, d } of planes) {
+      const sd = n.x * p[o] + n.y * p[o + 1] + n.z * p[o + 2] - d;
+      if (sd > best) { best = sd; bn = n; bd = d; }
+      if (sd >= BL.R) break;
+    }
+    if (best < BL.R) {
+      const k = BL.R - best;
+      p[o] += bn.x * k; p[o + 1] += bn.y * k; p[o + 2] += bn.z * k;
+      let tx = p[o] - q[o], ty = p[o + 1] - q[o + 1], tz = p[o + 2] - q[o + 2];
+      const tn = tx * bn.x + ty * bn.y + tz * bn.z;
+      tx -= tn * bn.x; ty -= tn * bn.y; tz -= tn * bn.z;
+      const ms = BL.clipped ? BL.MU_CLIPPED : BL.MU_S, mk = BL.clipped ? BL.MU_CLIPPED : BL.MU_K;
+      const t = Math.hypot(tx, ty, tz), f = BL.pinned[i] ? 0 : t < ms * k ? 1 : Math.min(mk * k / (t || 1), 1);
+      p[o] -= tx * f; p[o + 1] -= ty * f; p[o + 2] -= tz * f;
+      if (BL.pending[i] && planes === BL.solids[0] && bn.y > 0.5) {
+        for (const j of BL.clips[BL.pending[i] - 1]) { BL.pending[j] = 0; pin(j); }
+        syncClipButton();
+      }
+    }
+  }
+}
+const SH = { size: 4096, head: new Int32Array(4096), next: new Int32Array(BL.w.length) };
+const shKey = (x, y, z) => ((x * 73856093) ^ (y * 19349663) ^ (z * 83492791)) & (SH.size - 1);
+function blanketSelfCollide() {
+  const p = BL.pos, w = BL.w, NU = BL.NU, D = BL.SELF, n = w.length;
+  SH.head.fill(-1);
+  for (let i = 0; i < n; i++) {
+    const k = shKey(Math.floor(p[i * 3] / D), Math.floor(p[i * 3 + 1] / D), Math.floor(p[i * 3 + 2] / D));
+    SH.next[i] = SH.head[k]; SH.head[k] = i;
+  }
+  for (let i = 0; i < n; i++) {
+    const o = i * 3, cx = Math.floor(p[o] / D), cy = Math.floor(p[o + 1] / D), cz = Math.floor(p[o + 2] / D);
+    const ui = i % NU, vi = (i / NU) | 0;
+    for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) for (let c = -1; c <= 1; c++) {
+      for (let j = SH.head[shKey(cx + a, cy + b, cz + c)]; j >= 0; j = SH.next[j]) {
+        if (j <= i) continue;
+        const uj = j % NU, vj = (j / NU) | 0;
+        if (Math.abs(ui - uj) <= 1 && Math.abs(vi - vj) <= 1) continue;
+        const q = j * 3, dx = p[q] - p[o], dy = p[q + 1] - p[o + 1], dz = p[q + 2] - p[o + 2], d2 = dx * dx + dy * dy + dz * dz;
+        if (d2 >= D * D || d2 === 0) continue;
+        const ws = w[i] + w[j];
+        if (!ws) continue;
+        const d = Math.sqrt(d2), f = (D - d) / d / ws;
+        p[o] -= dx * f * w[i]; p[o + 1] -= dy * f * w[i]; p[o + 2] -= dz * f * w[i];
+        p[q] += dx * f * w[j]; p[q + 1] += dy * f * w[j]; p[q + 2] += dz * f * w[j];
+      }
+    }
+  }
+}
+function blanketStep(dt) {
+  const { pos: p, prev: q, w, cA, cB, cK, cL } = BL, n = w.length, g = BL.G * dt * dt;
+  let hop = null;
+  if (BL.grab) {
+    const o = BL.grab.i * 3, T = BL.grab.target;
+    const dx = T.x - p[o], dy = T.y - p[o + 1], dz = T.z - p[o + 2], d = Math.hypot(dx, dy, dz);
+    const f = (d > BL.GRAB_STEP ? BL.GRAB_STEP / d : 1) / BL.ITER;
+    q[o] = p[o]; q[o + 1] = p[o + 1]; q[o + 2] = p[o + 2];
+    hop = [o, dx * f, dy * f, dz * f];
+  }
+  for (let i = 0; i < n; i++) {
+    if (!w[i]) continue;
+    const o = i * 3;
+    let vx = (p[o] - q[o]) * BL.DAMP, vy = (p[o + 1] - q[o + 1]) * BL.DAMP, vz = (p[o + 2] - q[o + 2]) * BL.DAMP;
+    const v = Math.hypot(vx, vy, vz);
+    if (v > BL.VMAX) { const f = BL.VMAX / v; vx *= f; vy *= f; vz *= f; }
+    q[o] = p[o]; q[o + 1] = p[o + 1]; q[o + 2] = p[o + 2];
+    p[o] += vx; p[o + 1] += vy + g; p[o + 2] += vz;
+  }
+  for (let it = 0; it < BL.ITER; it++) {
+    if (hop) { p[hop[0]] += hop[1]; p[hop[0] + 1] += hop[2]; p[hop[0] + 2] += hop[3]; }
+    for (let c = 0; c < cA.length; c++) {
+      const a = cA[c] * 3, b = cB[c] * 3, wa = w[cA[c]], wb = w[cB[c]], ws = wa + wb;
+      if (!ws) continue;
+      const dx = p[b] - p[a], dy = p[b + 1] - p[a + 1], dz = p[b + 2] - p[a + 2], len = Math.hypot(dx, dy, dz) || 1e-9;
+      const f = (len - cL[c]) / len * cK[c] / ws;
+      p[a] += dx * f * wa; p[a + 1] += dy * f * wa; p[a + 2] += dz * f * wa;
+      p[b] -= dx * f * wb; p[b + 1] -= dy * f * wb; p[b + 2] -= dz * f * wb;
+    }
+    for (let i = 0; i < n; i++) {
+      if (!BL.pinned[i] || !w[i]) continue;
+      const o = i * 3, A = BL.anchor;
+      for (let k = 0; k < 3; k++) p[o + k] += (A[o + k] - p[o + k]) * BL.CLIP_K;
+      const dx = p[o] - A[o], dy = p[o + 1] - A[o + 1], dz = p[o + 2] - A[o + 2], d = Math.hypot(dx, dy, dz);
+      if (d > BL.CLIP_MAX) { const f = BL.CLIP_MAX / d; p[o] = A[o] + dx * f; p[o + 1] = A[o + 1] + dy * f; p[o + 2] = A[o + 2] + dz * f; }
+    }
+    if (it % BL.SELF_EVERY === BL.SELF_EVERY - 1) blanketSelfCollide();
+    for (let i = 0; i < n; i++) if (w[i]) blanketCollide(i);
+  }
+}
+let blanketClock = performance.now(), blanketAcc = 0;
+function blanketFrame() {
+  const now = performance.now();
+  blanketAcc = Math.min(blanketAcc + (now - blanketClock) / 1000, 0.05); blanketClock = now;
+  const dt = 1 / 60 / BL.SUB;
+  if (BL.paused) blanketAcc = 0;
+  while (blanketAcc >= dt) { recordStep(); blanketStep(dt); recordMotion(); recordSnap(); gameStep(); blanketAcc -= dt; }
+  gameUI();
+  blanketDrawPositions();
+  BL.mesh.geometry.attributes.position.needsUpdate = true;
+  BL.mesh.geometry.computeVertexNormals();
+}
+const DRAW_R = 0.05;
+function blanketDrawPositions() {
+  const p = BL.pos, q = BL.drawPos;
+  q.set(p);
+  for (let o = 0; o < q.length; o += 3) {
+    for (const planes of BL.solids) {
+      let best = -Infinity, bn = null;
+      for (const { n, d } of planes) {
+        const sd = n.x * q[o] + n.y * q[o + 1] + n.z * q[o + 2] - d;
+        if (sd > best) { best = sd; bn = n; }
+        if (sd >= DRAW_R) break;
+      }
+      if (best < DRAW_R && best > -0.1) { const k = DRAW_R - best; q[o] += bn.x * k; q[o + 1] += bn.y * k; q[o + 2] += bn.z * k; }
+    }
+  }
+}
+const ray = new THREE.Raycaster(), wrapEl = document.getElementById("wrap");
+function rayAt(e) {
+  const r = renderer.domElement.getBoundingClientRect();
+  ray.setFromCamera(new THREE.Vector2((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1), camera);
+  return ray;
+}
+function blanketHit(e) {
+  if (!BL.on) return null;
+  BL.mesh.geometry.computeBoundingSphere();
+  return rayAt(e).intersectObject(BL.mesh)[0] || null;
+}
+const particleAt = i => new THREE.Vector3(BL.pos[i * 3], BL.pos[i * 3 + 1], BL.pos[i * 3 + 2]);
+function nearestOnScreen(e) {
+  const r = renderer.domElement.getBoundingClientRect();
+  let best = -1, bd = Infinity;
+  for (let i = 0; i < BL.w.length; i++) {
+    if (blanketClipped(i)) continue;
+    const v = particleAt(i).project(camera);
+    if (v.z > 1) continue;
+    const d = Math.hypot(r.left + (v.x + 1) / 2 * r.width - e.clientX, r.top + (1 - v.y) / 2 * r.height - e.clientY);
+    if (d < bd) { bd = d; best = i; }
+  }
+  return best;
+}
+wrapEl.addEventListener("pointerdown", e => {
+  if (e.button !== 0 || BL.paused || !BL.on || title.on || (game && game.auto)) return;
+  const hit = blanketHit(e);
+  let best = -1;
+  if (hit) {
+    let bd = Infinity;
+    for (let i = 0; i < BL.w.length; i++) {
+      if (blanketClipped(i)) continue;
+      const d = hit.point.distanceToSquared(particleAt(i));
+      if (d < bd) { bd = d; best = i; }
+    }
+  } else if (viewLocked()) best = nearestOnScreen(e);
+  if (best < 0) return;
+  e.stopPropagation(); try { wrapEl.setPointerCapture(e.pointerId); } catch (_) {}
+  const at = particleAt(best), fwd = new THREE.Vector3(); camera.getWorldDirection(fwd);
+  const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(fwd, at);
+  const press = rayAt(e).ray.intersectPlane(plane, new THREE.Vector3()) || at.clone();
+  BL.grab = { i: best, plane, offset: at.clone().sub(press), target: at.clone(), raw: at.clone(), from: at.clone(), cap: slipCap(),
+    step0: game ? game.rec.step : 0 };
+  BL.w[best] = 0; wrapEl.style.cursor = "none";
+}, { capture: true });
+wrapEl.addEventListener("wheel", e => {
+  if (BL.grab) { e.preventDefault(); e.stopPropagation(); }
+}, { capture: true, passive: false });
+wrapEl.addEventListener("pointermove", e => {
+  if (!BL.grab || BL.grab.auto) { wrapEl.style.cursor = BL.grab ? "" : blanketHit(e) ? "grab" : ""; return; }
+  const t = rayAt(e).ray.intersectPlane(BL.grab.plane, new THREE.Vector3());
+  if (!t) return;
+  t.add(BL.grab.offset);
+  BL.grab.raw = t.clone();
+  BL.grab.target.copy(clampGrabTarget(t));
+});
+function clampGrabTarget(t) {
+  const g = BL.grab.i, du = BL.LU / (BL.NU - 1), dv = BL.LV / (BL.NV - 1);
+  let a = -1, reach = Infinity;
+  for (let j = 0; j < BL.w.length; j++) if (BL.pinned[j]) {
+    const r = Math.hypot((g % BL.NU - j % BL.NU) * du, (((g / BL.NU) | 0) - ((j / BL.NU) | 0)) * dv);
+    if (r < reach) { reach = r; a = j * 3; }
+  }
+  if (a >= 0) {
+    reach += BL.CLIP_MAX;
+    const anchor = new THREE.Vector3(BL.anchor[a], BL.anchor[a + 1], BL.anchor[a + 2]);
+    if (t.distanceTo(anchor) > reach) t.sub(anchor).setLength(reach).add(anchor);
+  }
+  return t;
+}
+wrapEl.addEventListener("pointerup", () => {
+  if (!BL.grab || BL.grab.auto) return;
+  gameRelease();
+  BL.w[BL.grab.i] = 1; BL.grab = null; wrapEl.style.cursor = "";
+  document.getElementById("dragUI").style.display = "none";
+});
+const DRAG_MAX_PX = 60;
+function dragUIFrame() {
+  const ui = document.getElementById("dragUI");
+  if (!BL.grab || !BL.grab.raw) { ui.style.display = "none"; return; }
+  const scr = p => { const v = p.clone().project(camera); return [(v.x + 1) / 2 * stage.clientWidth, (1 - v.y) / 2 * stage.clientHeight]; };
+  const [hx, hy] = scr(particleAt(BL.grab.i));
+  let [mx, my] = scr(BL.grab.raw);
+  const gap = Math.hypot(mx - hx, my - hy), max = gap >= DRAG_MAX_PX, col = max ? "#e74c3c" : "#ffb300";
+  if (max) { mx = hx + (mx - hx) * DRAG_MAX_PX / gap; my = hy + (my - hy) * DRAG_MAX_PX / gap; }
+  const set = (id, a) => { const el = document.getElementById(id); for (const k in a) el.setAttribute(k, a[k]); };
+  set("dragPin", { transform: `translate(${hx},${hy})` });
+  set("dragMouse", { cx: mx, cy: my, stroke: col, fill: max ? col : "none" });
+  set("dragBand", { x1: hx, y1: hy, x2: mx, y2: my, stroke: col, "stroke-dasharray": max ? "none" : "5 4",
+    visibility: gap > 14 ? "visible" : "hidden" });
+  ui.style.display = "block";
+}
+document.getElementById("bOn").onclick = e => {
+  BL.on = !BL.on; e.target.classList.toggle("on", BL.on); BL.mesh.visible = BL.on;
+  for (const id of ["bReset", "bClip", "bDrop", "bHint"]) document.getElementById(id).style.display = BL.on ? "inline" : "none";
+  document.getElementById("gStart").style.display = BL.on ? "inline" : "none";
+  if (BL.on) { if (VIEWER) blanketDrop(); else startGame(); blanketClock = performance.now(); }
+  if (VIEWER) document.getElementById("gStart").style.display = "none";
+  else endGame();
+};
+document.getElementById("bClip").onclick = () => {
+  endGame();
+  if (BL.pinned.includes(1) || BL.pending.includes(1)) {
+    BL.pending.fill(0);
+    return setPins(() => false);
+  }
+  blanketReset();
+};
+document.getElementById("bDrop").onclick = () => { endGame(); blanketDrop(); };
+document.getElementById("bReset").onclick = () => { endGame(); blanketReset(); };
+let game = null;
+const SHELF = (() => {
+  const q = MODEL.panels["shelf top"], yf = MODEL.measurements.yf, L = Math.hypot(1, yf);
+  return { z0: q[0][2], z1: q[2][2], n: new THREE.Vector3(yf / L, 1 / L, 0), roof: x => -yf * x };
+})();
+const clipAnchor = ids => {
+  const a = new THREE.Vector3(); let k = 0;
+  for (const i of ids) if (BL.pinned[i]) { a.x += BL.anchor[i * 3]; a.y += BL.anchor[i * 3 + 1]; a.z += BL.anchor[i * 3 + 2]; k++; }
+  return k ? a.multiplyScalar(1 / k) : null;
+};
+const edgeDistance = a => Math.min(a.x + 1, a.z - SHELF.z0, SHELF.z1 - a.z);
+const clipEdge = ids => {
+  let m = Infinity;
+  for (const i of ids) if (BL.pinned[i]) m = Math.min(m, edgeDistance({ x: BL.anchor[i * 3], z: BL.anchor[i * 3 + 2] }));
+  return m === Infinity ? null : m;
+};
+const viewLocked = () => (!!game && !game.over) || title.on;
+const LOCKED_IDS = ["vFree", "vDay1", "vDay189", "camZoom", "dLook", "dMove", "pFollow"];
+function syncViewLock() {
+  const l = viewLocked();
+  for (const id of LOCKED_IDS) document.getElementById(id).disabled = l;
+}
+const dayOf = drags => Math.floor(drags / BL.DRAGS_PER_DAY) + 1;
+const blanketState = () => ({ pos: BL.pos.slice(), prev: BL.prev.slice(), anchor: BL.anchor.slice(),
+  pinned: BL.pinned.slice(), pending: BL.pending.slice(), w: BL.w.slice() });
+function setBlanketState(st) {
+  BL.pos.set(st.pos); BL.prev.set(st.prev); BL.anchor.set(st.anchor); BL.pinned.set(st.pinned); BL.pending.set(st.pending);
+  BL.w.set(st.w); BL.grab = null; syncClipButton();
+}
+const VIEWER = PAGE.mode === "viewer";
+const DEBUG = false;
+if (VIEWER) document.title = "陽台上的小被被 · 紙模型";
+const DRAG_REPORT = new URLSearchParams(location.search).has("drag_report");
+function startGame() {
+  finishRecording();
+  setFollow(false); look.yaw = look.pitch = 0; camZoom = 1; document.getElementById("camZoom").value = 100;
+  setMode("Day 1");
+  blanketDrop();
+  game = { drags: 0, over: false, overStep: Infinity, off: 0, start: BL.clips.map(() => null), final: null,
+    rec: { init: blanketState(), step: 0, events: [], marks: [], motion: [], snaps: [], end: null, last: null } };
+  recordSnap(true);
+  title.on = false; sway = null; document.getElementById("title").style.display = "none";
+  document.getElementById("dim").style.display = "none";
+  showHud(true);
+  document.getElementById("tip").style.display = "block";
+}
+function endGame() {
+  if (BL.paused) return;
+  finishRecording();
+  game = null;
+  showHud(false);
+  document.getElementById("tip").style.display = "none";
+  document.getElementById("result").style.display = "none";
+  if (!DEBUG) showTitle();
+}
+function showHud(on) {
+  document.getElementById("hud").style.display = on ? "block" : "none";
+  document.getElementById("ui").style.display = !on && DEBUG ? "" : "none";
+}
+const title = { on: false, t0: 0 };
+const TITLE_ZOOM = 1.35, TITLE_SWAY_S = 10;
+function showTitle() {
+  game = null; showHud(false);
+  BL.on = true; BL.mesh.visible = true; document.getElementById("bOn").classList.add("on");
+  blanketReset();
+  setFollow(false); look.yaw = look.pitch = 0; camZoom = TITLE_ZOOM; document.getElementById("camZoom").value = TITLE_ZOOM * 100;
+  setMode("Day 1");
+  sway = { pivot: new THREE.Vector3(-0.9, -0.5, BL.Z0 + BL.LV / 2), quat: camera.quaternion.clone(), a: 0 };
+  sway.offset = camera.position.clone().sub(sway.pivot);
+  title.on = true; title.t0 = performance.now(); document.getElementById("title").classList.remove("still");
+  showRecords(document.getElementById("tBest"), false);
+  document.getElementById("title").style.display = "block";
+  document.getElementById("dim").style.display = "block";
+}
+function titleFrame() {
+  const wv = Math.sin(2 * Math.PI * (performance.now() - title.t0) / 1000 / TITLE_SWAY_S);
+  sway.a = -SWAY_DEG * Math.PI / 180 * wv * (wv > 0 ? 1 : 0.5);
+}
+const SNAP_EVERY = 4, SNAP_IDLE = 120, SNAP_SCALE = 2000, SNAP_STILL = 0.01;
+function recordSnap(force) {
+  const r = game && game.rec;
+  if (!r || r.end != null) return;
+  const last = r.snaps[r.snaps.length - 1];
+  if (!force && last) {
+    const since = r.step - last.step;
+    if (since < SNAP_EVERY) return;
+    if (since < SNAP_IDLE) {
+      let moved = false;
+      for (let k = 0; k < BL.pos.length && !moved; k++) moved = Math.abs(BL.pos[k] * SNAP_SCALE - last.q[k]) > SNAP_STILL * SNAP_SCALE;
+      if (!moved) return;
+    }
+  }
+  r.snaps.push({ step: r.step, q: Int16Array.from(BL.pos, v => Math.round(v * SNAP_SCALE)) });
+}
+function recordMotion() {
+  const r = game && game.rec;
+  if (!r || r.end != null) return;
+  let m = 0;
+  for (let i = 0; i < BL.pos.length; i += 3) m += Math.hypot(BL.pos[i] - BL.prev[i], BL.pos[i + 1] - BL.prev[i + 1], BL.pos[i + 2] - BL.prev[i + 2]);
+  r.motion.push(m);
+}
+function recordStep() {
+  const r = game && game.rec;
+  if (!r || r.end != null) return;
+  const g = BL.grab ? [BL.grab.i, BL.grab.target.x, BL.grab.target.y, BL.grab.target.z, BL.grab.cap] : null;
+  if (String(g) !== String(r.last)) { r.events.push([r.step, g]); r.last = g; }
+  r.step++;
+}
+function slipCap() {
+  const t = Object.entries(BL.SLIP_CAP_CHANCES), total = t.reduce((a, [, w]) => a + w, 0);
+  const ease = game ? Math.max(0, game.drags + 1 - BL.EASE_AFTER) * BL.EASE_STEP : 0;
+  let r = Math.random() * total;
+  for (const [cap, w] of t) if ((r -= w) < 0) return cap / 100 + ease;
+  return t[t.length - 1][0] / 100 + ease;
+}
+function clipSlip() {
+  if (!BL.grab) return;
+  const slipped = BL.grab.slipped ||= BL.clips.map(() => 0);
+  BL.clips.forEach((ids, c) => {
+    const a = clipAnchor(ids);
+    if (!a || game.start[c] == null) return;
+    const full = BL.grab.cap * (game.start[c] - BL.RELEASE_EDGE);
+    const d = new THREE.Vector3(); let k = 0;
+    for (const i of ids) if (BL.pinned[i]) {
+      d.x += BL.pos[i * 3] - BL.anchor[i * 3]; d.y += BL.pos[i * 3 + 1] - BL.anchor[i * 3 + 1]; d.z += BL.pos[i * 3 + 2] - BL.anchor[i * 3 + 2]; k++;
+    }
+    d.multiplyScalar(1 / k).addScaledVector(SHELF.n, -d.dot(SHELF.n));
+    const m = d.length();
+    const mp = BL.grab.maxPull ||= BL.clips.map(() => 0); mp[c] = Math.max(mp[c], m);
+    const strength = Math.min(1, Math.max(0, (mp[c] - BL.SLIP_START) / (BL.SLIP_FULL - BL.SLIP_START)));
+    const move = full * strength - slipped[c];
+    if (move > 0 && m > 0) {
+      slipped[c] += move; d.multiplyScalar(move / m);
+      for (const i of ids) if (BL.pinned[i]) {
+        BL.anchor[i * 3] = Math.min(BL.anchor[i * 3] + d.x, -0.03);
+        BL.anchor[i * 3 + 1] += d.y; BL.anchor[i * 3 + 2] += d.z;
+      }
+    }
+    if (clipEdge(ids) < BL.RELEASE_EDGE) { for (const i of ids) BL.pinned[i] = 0; syncClipButton(); }
+  });
+}
+const onShelfAt = i => {
+  const x = BL.pos[i * 3], y = BL.pos[i * 3 + 1], z = BL.pos[i * 3 + 2];
+  return x > -1 && x < 0 && z > SHELF.z0 && z < SHELF.z1 && y > SHELF.roof(x) - 0.05 && y < SHELF.roof(x) + 0.5;
+};
+function onShelf() {
+  for (let i = 0; i < BL.w.length; i++) if (onShelfAt(i)) return true;
+  return false;
+}
+function clipsOffShelf() {
+  if (!BL.clipped) return;
+  if (!onShelf()) return setPins(() => false);
+  for (const ids of BL.clips) {
+    const held = ids.filter(i => BL.pinned[i]);
+    if (held.length && !held.some(onShelfAt)) { for (const i of held) BL.pinned[i] = 0; syncClipButton(); }
+  }
+}
+const LAND_STILL = 3, LAND_STEPS = 12, LAND_MAX = 180;
+function landingStep() {
+  if (!game || !game.over || game.sim || game.final) return;
+  const r = game.rec, m = r.motion[r.motion.length - 1] || 0;
+  game.still = m < LAND_STILL ? (game.still || 0) + 1 : 0;
+  if (game.still >= LAND_STEPS || r.step - game.overStep >= LAND_MAX) finishRecording();
+}
+function finishRecording() {
+  if (!game || !game.over || game.final) return;
+  recordSnap(true); game.final = BL.pos.slice(); game.rec.end = game.rec.step;
+  prepareReplay();
+  if (!game.sim && game.histId) saveReplay(game.histId, game.frames);
+}
+function gameStep() {
+  landingStep();
+  if (!game || game.over) return;
+  BL.clips.forEach((ids, k) => { const e = game.start[k] == null && clipEdge(ids); if (e) game.start[k] = e; });
+  clipSlip(); clipsOffShelf();
+  if (BL.clipped || BL.grab) { game.off = 0; return; }
+  game.off = onShelf() ? 0 : game.off + 1;
+  if (game.off > 60) {
+    game.over = true; game.overStep = game.rec.step; game.fellDay = Math.max(1, dayOf(game.drags - 1));
+    if (!game.sim) { saveResult(); showRecords(document.getElementById("rBest"), true); }
+  }
+}
+const AUTO_AFTER = 10, AUTO_MOVE_MS = 450, AUTO_HOLD_MS = 300, AUTO_REST_MS = 250;
+async function autoComplete() {
+  if (!game || game.over || game.auto || BL.paused) return;
+  game.auto = true; document.getElementById("tip").style.display = "none";
+  const g0 = game, frame = () => new Promise(r => requestAnimationFrame(r)), going = () => game === g0 && !game.over;
+  const fallen = () => !BL.clipped && !onShelf();
+  while (going()) {
+    if (fallen()) { await frame(); continue; }
+    const free = []; for (let i = 0; i < BL.w.length; i++) if (!BL.pinned[i]) free.push(i);
+    const i = free[Math.floor(Math.random() * free.length)], at = particleAt(i);
+    const dir = new THREE.Vector3(-1, -0.5, 0).normalize().add(new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).multiplyScalar(1.6)).normalize();
+    const goal = at.clone().addScaledVector(dir, 0.8 + Math.random() * 0.6);
+    BL.grab = { i, auto: true, target: at.clone(), raw: at.clone(), from: at.clone(), offset: new THREE.Vector3(), cap: slipCap(), step0: game.rec.step };
+    BL.w[i] = 0;
+    const t0 = performance.now();
+    const mine = () => BL.grab && BL.grab.auto && BL.grab.i === i;
+    while (going() && !fallen() && mine() && performance.now() - t0 < AUTO_MOVE_MS + AUTO_HOLD_MS) {
+      const raw = at.clone().lerp(goal, Math.min(1, (performance.now() - t0) / AUTO_MOVE_MS));
+      BL.grab.raw = raw.clone(); BL.grab.target.copy(clampGrabTarget(raw));
+      await frame();
+    }
+    if (BL.grab && BL.grab.i === i) { if (going()) gameRelease(); BL.w[i] = 1; BL.grab = null; }
+    const t1 = performance.now(); while (going() && performance.now() - t1 < AUTO_REST_MS) await frame();
+  }
+}
+function gameRelease() {
+  if (!game || game.over || !BL.grab.from) return;
+  const counted = BL.grab.target.distanceTo(BL.grab.from) >= 0.05, g = BL.grab;
+  if (counted) { game.drags++; game.rec.marks.push([game.rec.step, game.drags]); }
+  if (!game.sim) logDrag(g, counted);
+}
+function logDrag(g, counted) {
+  const u = g.i % BL.NU, v = (g.i / BL.NU) | 0, du = BL.LU / (BL.NU - 1), dv = BL.LV / (BL.NV - 1);
+  const fromClip = BL.clips.map(ids => Math.min(...ids.map(j => Math.hypot((u - j % BL.NU) * du, (v - ((j / BL.NU) | 0)) * dv))));
+  const span = k => game.start[k] == null ? null : game.start[k] - BL.RELEASE_EDGE;
+  (game.dragLog ||= []).push({
+    n: counted ? game.drags : null, day: dayOf(Math.max(0, game.drags - (counted ? 1 : 0))),
+    at_s: +(((g.step0 ?? game.rec.step) / 120)).toFixed(2),
+    held_s: +(((game.rec.step - (g.step0 ?? game.rec.step)) / 120)).toFixed(2), point: `${u},${v}`,
+    from_clips: fromClip.map(d => +d.toFixed(2)).join(" / "), cap_pct: Math.round(g.cap * 100),
+    pull: (g.maxPull || [0, 0]).map(m => +m.toFixed(3)).join(" / "),
+    loosened_pct: (g.slipped || [0, 0]).map((x, k) => span(k) ? +(x / span(k) * 100).toFixed(1) : 0).join(" / "),
+    clips: BL.clips.map(ids => ids.some(i => BL.pinned[i]) ? "held" : "loose").join(" / "),
+  });
+}
+const dragReport = () => console.table(game && game.dragLog);
+const dragExport = () => JSON.stringify({ drags: game && game.drags, fellDay: game && game.fellDay, slip: { start: BL.SLIP_START, full: BL.SLIP_FULL },
+  log: game && game.dragLog });
+Object.assign(window, { dragReport, dragExport });
+const HIST_KEY = "blanket.history.v1", HIST_MAX = 200, RECENT = 3;
+const loadHist = () => { try { return JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch (_) { return []; } };
+const saveHist = h => { try { localStorage.setItem(HIST_KEY, JSON.stringify(h.slice(0, HIST_MAX))); } catch (_) {} };
+const bestOf = h => h.reduce((b, x) => x.auto ? b : !b || x.drags < b.drags ? x : b, null);
+function saveResult() {
+  const h = loadHist(), best = bestOf(h);
+  game.isBest = !game.auto && (!best || game.drags < best.drags);
+  game.histId = Date.now();
+  h.unshift({ id: game.histId, t: game.histId, day: game.fellDay, drags: game.drags, auto: !!game.auto, replay: false });
+  saveHist(h);
+}
+const KEEP_BEST = 3, KEEP_LAST = 50, STORE_EVERY = 2, STORE_SCALE = 500;
+let idbOpen = null;
+const idb = () => idbOpen ||= new Promise((ok, fail) => {
+  try {
+    const q = indexedDB.open("blanket", 1);
+    q.onupgradeneeded = () => q.result.createObjectStore("replays", { keyPath: "id" });
+    q.onsuccess = () => ok(q.result); q.onerror = () => fail(q.error);
+  } catch (e) { fail(e); }
+});
+const idbDo = async (mode, fn) => {
+  const db = await idb();
+  return new Promise((ok, fail) => {
+    const tx = db.transaction("replays", mode), r = fn(tx.objectStore("replays"));
+    tx.oncomplete = () => ok(r && r.result); tx.onerror = () => fail(tx.error);
+  });
+};
+const squeeze = async (u8, back) => typeof CompressionStream === "undefined" ? u8 :
+  new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(back ? new DecompressionStream("deflate-raw") : new CompressionStream("deflate-raw"))).arrayBuffer());
+async function encodeReplay(frames) {
+  const keep = frames.filter((_, k) => k % STORE_EVERY === 0), n = keep.length, m = keep[0].pos.length;
+  const bytes = new Uint8Array(2 * n * m), prev = new Int32Array(m);
+  keep.forEach((f, k) => {
+    for (let j = 0; j < m; j++) {
+      const q = Math.round(f.pos[j] * STORE_SCALE), d = q - prev[j], z = (d << 1) ^ (d >> 31), at = k * m + j;
+      bytes[at] = z & 255; bytes[n * m + at] = (z >> 8) & 255; prev[j] = q;
+    }
+  });
+  return { n, m, packed: typeof CompressionStream !== "undefined", data: await squeeze(bytes),
+    drags: Uint16Array.from(keep, f => f.drags), fell: keep.findIndex(f => f.fell) };
+}
+async function decodeReplay(r) {
+  const bytes = r.packed ? await squeeze(r.data, true) : r.data, { n, m } = r, prev = new Int32Array(m), frames = [];
+  for (let k = 0; k < n; k++) {
+    const pos = new Float32Array(m);
+    for (let j = 0; j < m; j++) {
+      const at = k * m + j, z = bytes[at] | (bytes[n * m + at] << 8), d = (z >>> 1) ^ -(z & 1);
+      prev[j] += d; pos[j] = prev[j] / STORE_SCALE;
+    }
+    frames.push({ pos, drags: r.drags[k], fell: r.fell >= 0 && k >= r.fell });
+  }
+  return frames;
+}
+async function saveReplay(id, frames) {
+  try {
+    const r = await encodeReplay(frames);
+    await idbDo("readwrite", st => st.put({ id, ...r }));
+    const h = loadHist(), top = h.filter(x => !x.auto).sort((a, b) => a.drags - b.drags || a.t - b.t).slice(0, KEEP_BEST);
+    const keep = new Set([...top, ...h.slice(0, KEEP_LAST)].map(x => x.id));
+    const ids = await idbDo("readonly", st => st.getAllKeys());
+    for (const k of ids) if (!keep.has(k)) await idbDo("readwrite", st => st.delete(k));
+    const stored = new Set(ids.filter(k => keep.has(k)));
+    for (const x of h) x.replay = stored.has(x.id);
+    saveHist(h);
+    refreshRecords();
+  } catch (e) { console.warn("replay not saved", e); }
+}
+function showRecords(el, markNewest, all) {
+  const h = loadHist(), best = bestOf(h), n = all ? h.length : RECENT;
+  el.style.display = h.length ? "block" : "none";
+  el.dataset.mark = markNewest ? "1" : "";
+  if (!h.length) return;
+  const now = new Date(), dayKey = d => d.toDateString();
+  const dayLabel = t => {
+    const d = new Date(t), y = new Date(now); y.setDate(now.getDate() - 1);
+    if (dayKey(d) === dayKey(now)) return "今天";
+    if (dayKey(d) === dayKey(y)) return "昨天";
+    return (d.getFullYear() === now.getFullYear() ? "" : `${d.getFullYear()}年`) + `${d.getMonth() + 1}月${d.getDate()}日`;
+  };
+  const clock = t => { const d = new Date(t), h = d.getHours(); return `${h < 12 ? "上午" : "下午"} ${h % 12 || 12}:${String(d.getMinutes()).padStart(2, "0")}`; };
+  const row = (x, cls, label) => `<li class="${cls}"><span class="date">${label}</span>` +
+    `<span class="score"><b>${x.day}</b><i>天</i><b>${x.drags}</b><i>次</i>${x.auto ? `<i class="auto">自動</i>` : ""}</span>` +
+    (x.replay ? `<button data-replay="${x.id}">重播</button>` : "") + `</li>`;
+  let recent = "", last = null;
+  h.slice(0, n).forEach((x, k) => {
+    const day = dayLabel(x.t);
+    if (day !== last) { recent += `${last ? "</ol>" : ""}<div class="rday">${day}</div><ol>`; last = day; }
+    recent += row(x, markNewest && k === 0 ? "now" : "", markNewest && k === 0 ? "這次" : clock(x.t));
+  });
+  const shortDay = t => {
+    const label = dayLabel(t), d = new Date(t);
+    return label.length <= 2 ? label : (d.getFullYear() === now.getFullYear() ? "" : `${d.getFullYear()}/`) + `${d.getMonth() + 1}/${d.getDate()}`;
+  };
+  el.innerHTML = (best ? `<div class="bestbox"><div class="bh">最佳紀錄<small>只在本機</small></div>` +
+    `<ol>${row(best, "best", `${shortDay(best.t)}<small>${clock(best.t)}</small>`)}</ol></div>` : "") +
+    `<div class="rh"${best ? "" : ' style="margin-top:0"'}>${all ? "全部紀錄" : "最近紀錄"}</div>${recent}</ol>` +
+    (!all && h.length > RECENT ? `<button class="link more" data-all="1">全部紀錄（${h.length}）›</button>` : "");
+}
+function refreshRecords() {
+  for (const id of ["tBest", "rBest"]) { const el = document.getElementById(id); if (el.offsetParent) showRecords(el, !!el.dataset.mark); }
+  if (hist.open) { const l = document.getElementById("hList"), y = l.scrollTop; showRecords(l, hist.from === "result", true); l.scrollTop = y; }
+}
+const hist = { open: false, from: null };
+const frontCard = () => document.getElementById(hist.from === "title" ? "title" : "result");
+function flip(out, inn, show, swap) {
+  out.classList.remove("flipIn", "still"); out.classList.add("flipOut");
+  setTimeout(() => {
+    if (swap) swap();
+    out.style.display = "none"; out.classList.remove("flipOut");
+    inn.classList.remove("still"); inn.style.display = show; inn.classList.add("flipIn");
+    setTimeout(() => { inn.classList.add("still"); inn.classList.remove("flipIn"); }, 260);
+  }, 180);
+}
+function openHistory(from) {
+  if (hist.open) return;
+  hist.from = from;
+  showRecords(document.getElementById("hList"), from === "result", true);
+  document.getElementById("hList").scrollTop = 0;
+  flip(frontCard(), document.getElementById("history"), "flex", () => { hist.open = true; });
+}
+function closeHistory() {
+  if (hist.from === "title") showRecords(document.getElementById("tBest"), false);
+  flip(document.getElementById("history"), frontCard(), "block", () => { hist.open = false; });
+}
+function resultUI() {
+  const show = !!game && game.over && !sway && !hist.open, rc = document.getElementById("result");
+  if (show && rc.style.display !== "block" && !rc.classList.contains("flipIn")) rc.classList.remove("still");
+  rc.style.display = show ? "block" : "none";
+  document.getElementById("dim").style.display = show || title.on || (hist.open && !sway) ? "block" : "none";
+  if (show) document.getElementById("tip").style.display = "none";
+  const replaying = !!sway && !title.on;
+  document.getElementById("hud").style.display = replaying || (game && !game.over) ? "block" : "none";
+  const ab = document.getElementById("gAuto");
+  ab.style.display = game && !game.over && (game.drags >= AUTO_AFTER || game.auto) ? "" : "none";
+  ab.disabled = !!(game && game.auto); ab.textContent = game && game.auto ? "自動完成中…" : "自動完成";
+  if (!show) return;
+  document.getElementById("rTitle").textContent = `第 ${game.fellDay} 天，被被掉下去了！`;
+  document.getElementById("rText").textContent = `共拉了 ${game.drags} 次` + (game.auto ? " · 自動完成（不列入最佳紀錄）" : game.isBest ? " · 新紀錄！" : "");
+  const rb = document.getElementById("gReplay");
+  rb.disabled = BL.paused;
+}
+function gameUI() {
+  resultUI();
+  if (!game || BL.paused || (game.over && !game.frames)) return;
+  const st = document.getElementById("gStatus"), grip = document.getElementById("gGrip");
+  if (game.over) { st.textContent = `第 ${game.fellDay} 天掉下去了（共拉 ${game.drags} 次）`; grip.textContent = ""; return; }
+  st.textContent = `第 ${dayOf(game.drags)} 天 · 今天拉了 ${game.drags % BL.DRAGS_PER_DAY}/${BL.DRAGS_PER_DAY} 次`;
+  grip.style.display = DEBUG ? "" : "none";
+  grip.textContent = "夾子抓力 " + BL.clips.map((ids, k) => {
+    const a = clipAnchor(ids);
+    return a ? Math.max(0, Math.round((clipEdge(ids) - BL.RELEASE_EDGE) / (game.start[k] - BL.RELEASE_EDGE) * 100)) + "%"
+      : game.start[k] == null ? "落下中" : "鬆脫";
+  }).join(" · ");
+}
+const REPLAY_S = 10;
+const REPLAY_IN = 0.5;
+const REPLAY_OUT = 1;
+const SWAY_DEG = 25;
+let sway = null;
+function swayFrame() {
+  const q = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), sway.a);
+  camera.position.copy(sway.pivot).add(sway.offset.clone().applyQuaternion(q));
+  camera.quaternion.copy(q).multiply(sway.quat);
+}
+const REPLAY_MIN_FRAMES = 16, REPLAY_QUIET = 0.05;
+function replaySchedule(r) {
+  const n = REPLAY_S * 60, end = r.end, motion = r.motion;
+  const inEnd = Math.min(60, end), outStart = Math.max(inEnd, Math.min(game.overStep - 120, end));
+  const mid = Math.round((REPLAY_S - REPLAY_IN - REPLAY_OUT) * 60);
+  const owner = new Int32Array(end + 1).fill(-1), wins = [];
+  r.events.forEach(([s0, g], k) => {
+    if (!g || (k && r.events[k - 1][1])) return;
+    const up = r.events.slice(k + 1).find(e => !e[1]), a = Math.max(inEnd, s0 - 20), b = Math.min(outStart - 1, (up ? up[0] : end) + 90);
+    const w = { steps: [], imp: 0 };
+    for (let j = a; j <= b; j++) if (owner[j] < 0) { owner[j] = wins.length; w.steps.push(j); w.imp += motion[j] || 0; }
+    if (w.steps.length) wins.push(w);
+  });
+  const kept = wins.slice().sort((x, y) => y.imp - x.imp).slice(0, Math.max(1, Math.floor(mid / REPLAY_MIN_FRAMES)));
+  const impSum = kept.reduce((t, w) => t + w.imp, 0) || 1, weight = new Float64Array(end + 1);
+  for (const w of kept) {
+    const share = (1 - REPLAY_QUIET) * mid * (0.5 / kept.length + 0.5 * w.imp / impSum);
+    const eps = 0.2 * w.imp / w.steps.length + 1e-9, tot = w.imp + eps * w.steps.length;
+    for (const j of w.steps) weight[j] = share * ((motion[j] || 0) + eps) / tot;
+  }
+  let rest = 0;
+  for (let j = inEnd; j < outStart; j++) if (!weight[j]) rest += (motion[j] || 0) + 1e-6;
+  for (let j = inEnd; j < outStart; j++) if (!weight[j]) weight[j] = REPLAY_QUIET * mid * ((motion[j] || 0) + 1e-6) / (rest || 1);
+  const cum = [0];
+  for (let j = inEnd; j < outStart; j++) cum.push(cum[cum.length - 1] + weight[j]);
+  const total = cum[cum.length - 1] || 1, steps = [];
+  let j = 0;
+  for (let f = 0; f < n; f++) {
+    const t = f / (n - 1) * REPLAY_S;
+    if (t <= REPLAY_IN) steps.push(Math.round(inEnd * t / REPLAY_IN));
+    else if (t >= REPLAY_S - REPLAY_OUT) steps.push(Math.round(outStart + (end - outStart) * (t - REPLAY_S + REPLAY_OUT) / REPLAY_OUT));
+    else {
+      const u = (t - REPLAY_IN) / (REPLAY_S - REPLAY_IN - REPLAY_OUT) * total;
+      while (j < cum.length - 1 && cum[j + 1] < u) j++;
+      steps.push(inEnd + j);
+    }
+  }
+  return steps;
+}
+function prepareReplay() {
+  const r = game.rec, steps = replaySchedule(r), snaps = r.snaps, frames = [];
+  let j = 0, mk = 0, drags = 0;
+  for (const st of steps) {
+    while (j < snaps.length - 2 && snaps[j + 1].step <= st) j++;
+    const a = snaps[j], b = snaps[Math.min(j + 1, snaps.length - 1)];
+    const t = b.step > a.step ? Math.min(1, Math.max(0, (st - a.step) / (b.step - a.step))) : 0;
+    const pos = new Float32Array(a.q.length);
+    for (let k = 0; k < pos.length; k++) pos[k] = (a.q[k] + (b.q[k] - a.q[k]) * t) / SNAP_SCALE;
+    while (mk < r.marks.length && r.marks[mk][0] <= st) drags = r.marks[mk++][1];
+    frames.push({ pos, drags, fell: st >= game.overStep });
+  }
+  game.frames = frames;
+}
+function replay() { if (game && game.frames) playFrames(game.frames, game.fellDay); }
+function playFrames(frames, fellDay, done) {
+  if (BL.paused) return;
+  const live = blanketState(), st = document.getElementById("gStatus");
+  sway = { pivot: new THREE.Vector3(-0.9, -0.5, BL.Z0 + BL.LV / 2), quat: camera.quaternion.clone(), a: 0 };
+  sway.offset = camera.position.clone().sub(sway.pivot);
+  BL.paused = true;
+  const t0 = performance.now();
+  (function tick() {
+    const t = Math.min(REPLAY_S, (performance.now() - t0) / 1000), x = t / REPLAY_S * (frames.length - 1);
+    const a = frames[Math.floor(x)], b = frames[Math.min(frames.length - 1, Math.floor(x) + 1)], f = x - Math.floor(x);
+    for (let k = 0; k < BL.pos.length; k++) BL.pos[k] = a.pos[k] + (b.pos[k] - a.pos[k]) * f;
+    BL.mesh.geometry.attributes.position.needsUpdate = true;
+    const wv = Math.sin(2 * Math.PI * t / REPLAY_S);
+    sway.a = -SWAY_DEG * Math.PI / 180 * wv * (wv > 0 ? 1 : 0.5);
+    st.textContent = a.fell ? `重播 · 第 ${fellDay} 天掉下去了` : `重播 · 第 ${dayOf(a.drags)} 天`;
+    if (t < REPLAY_S) return requestAnimationFrame(tick);
+    camera.position.copy(sway.pivot).add(sway.offset); camera.quaternion.copy(sway.quat); sway = null;
+    setBlanketState(live); BL.paused = false;
+    if (done) done();
+  })();
+}
+async function playStored(id) {
+  if (BL.paused) return;
+  const x = loadHist().find(r => r.id === id);
+  let rec; try { rec = await idbDo("readonly", st => st.get(id)); } catch (_) {}
+  if (!x || !rec) return;
+  const frames = await decodeReplay(rec), fromTitle = title.on, fromHist = hist.open, list = document.getElementById("hList"), y = list.scrollTop;
+  if (fromHist) { hist.open = false; document.getElementById("history").style.display = "none"; }
+  if (fromTitle) {
+    title.on = false; sway = null; document.getElementById("title").style.display = "none";
+    look.yaw = look.pitch = 0; camZoom = 1; setMode("Day 1");
+  }
+  document.getElementById("dim").style.display = "none";
+  playFrames(frames, x.day, () => {
+    if (fromTitle) showTitle();
+    if (fromHist) {
+      hist.open = true; document.getElementById("title").style.display = "none";
+      document.getElementById("history").style.display = "flex"; list.scrollTop = y;
+    }
+  });
+}
+const clipViz = new THREE.Group(); clipViz.visible = false; scene.add(clipViz);
+{
+  const R = SHELF, y = x => R.roof(x) + 0.006, e = BL.RELEASE_EDGE, xs = -1 + e;
+  const zone = [[xs, R.z0 + e], [xs, R.z1 - e], [0, R.z0 + e], [xs, R.z0 + e], [0, R.z1 - e], [xs, R.z1 - e]]
+    .map(([x, z]) => new THREE.Vector3(x, y(x), z));
+  clipViz.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(zone), new THREE.LineBasicMaterial({ color: 0xe74c3c, transparent: true })));
+  clipViz.userData.clips = BL.clips.map(() => {
+    const anchor = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.03, 0.12), new THREE.MeshBasicMaterial({ color: 0x222222, depthTest: false, transparent: true }));
+    const spring = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+      new THREE.LineBasicMaterial({ color: 0x2ecc71, depthTest: false, transparent: true, linewidth: 2 }));
+    const dots = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ color: 0xffd54f, size: 7, sizeAttenuation: false, depthTest: false, transparent: true }));
+    for (const o of [anchor, spring, dots]) { o.renderOrder = 20; o.frustumCulled = false; clipViz.add(o); }
+    return { anchor, spring, dots };
+  });
+}
+function clipVizFrame() {
+  if (!clipViz.visible) return;
+  BL.clips.forEach((ids, k) => {
+    const v = clipViz.userData.clips[k], held = ids.filter(i => BL.pinned[i]), on = BL.on && held.length > 0;
+    for (const o of [v.anchor, v.spring, v.dots]) o.visible = on;
+    if (!on) return;
+    const a = new THREE.Vector3(), p = new THREE.Vector3(), pts = [];
+    for (const i of held) {
+      a.x += BL.anchor[i * 3]; a.y += BL.anchor[i * 3 + 1]; a.z += BL.anchor[i * 3 + 2];
+      const q = new THREE.Vector3(BL.pos[i * 3], BL.pos[i * 3 + 1], BL.pos[i * 3 + 2]); p.add(q); pts.push(q);
+    }
+    a.multiplyScalar(1 / held.length); p.multiplyScalar(1 / held.length);
+    v.anchor.position.copy(a); v.anchor.rotation.z = Math.atan(-MODEL.measurements.yf);
+    v.spring.geometry.setFromPoints([a, p]);
+    v.dots.geometry.setFromPoints(pts);
+    const start = game && game.start[k], left = start ? (clipEdge(ids) - BL.RELEASE_EDGE) / (start - BL.RELEASE_EDGE) : 1;
+    v.spring.material.color.setHex(left < 0.2 ? 0xe74c3c : 0x2ecc71);
+  });
+}
+document.getElementById("clipVizOn").onclick = e => { clipViz.visible = !clipViz.visible; e.target.classList.toggle("on", clipViz.visible); };
+document.getElementById("gStart").onclick = startGame;
+document.getElementById("gNew").onclick = startGame;
+document.getElementById("gHome").onclick = endGame;
+document.getElementById("rDebug").style.display = DRAG_REPORT ? "block" : "none";
+document.getElementById("rLog").onclick = () => {
+  const t = document.getElementById("rLogText"); t.value = dragExport(); t.style.display = "block"; t.select();
+};
+document.getElementById("tStart").onclick = startGame;
+document.getElementById("gAuto").onclick = autoComplete;
+addEventListener("pointerdown", () => { document.getElementById("tip").style.display = "none"; }, { capture: true });
+for (const ev of ["gesturestart", "gesturechange", "dblclick"]) document.addEventListener(ev, e => e.preventDefault(), { passive: false });
+document.getElementById("gReplay").onclick = () => { finishRecording(); replay(); };
+for (const id of ["tBest", "rBest", "hList"]) document.getElementById(id).addEventListener("click", e => {
+  const b = e.target.closest("button[data-replay]");
+  if (b) { finishRecording(); playStored(+b.dataset.replay); }
+  if (e.target.closest("button[data-all]")) openHistory(id === "tBest" ? "title" : "result");
+});
+document.getElementById("hBack").onclick = closeHistory;
+function resize() {
+  const W = innerWidth, H = innerHeight;
+  if (mode !== "free") {
+    const cam = MODEL.cameras[mode], [w, h] = cam.image, k = Math.min(W / w, H / h) / camZoom;
+    camera.fov = 2 * Math.atan(H / k / 2 / cam.f_px) * 180 / Math.PI;
+  }
+  stage.style.width = W + "px"; stage.style.height = H + "px";
+  renderer.setSize(W, H); camera.aspect = W / H; camera.updateProjectionMatrix();
+}
+addEventListener("resize", resize);
+setMode("Day 1");
+if (DEBUG) document.getElementById("ui").style.display = ""; else { document.getElementById("ui").style.display = "none"; showTitle(); }
+(function loop() {
+  requestAnimationFrame(loop);
+  controls.enabled = !BL.grab && !viewLocked();
+  if (title.on) titleFrame();
+  if (sway) swayFrame(); else if (mode === "free") controls.update();
+  hideWallsInTheWay();
+  syncViewLock();
+  if (BL.on) blanketFrame();
+  renderer.render(scene, camera);
+  placePhoto();
+  dragUIFrame();
+  clipVizFrame();
+})();
+</script>
+</body>
+</html>
