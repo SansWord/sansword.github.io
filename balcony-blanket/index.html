@@ -30,6 +30,8 @@
   #hud { position: absolute; z-index: 2; top: max(10px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); text-align: center; background: #1f2228e6; padding: 8px 18px; border-radius: 14px; backdrop-filter: blur(6px); box-shadow: 0 6px 24px #0006; font-size: 15px; white-space: nowrap; }
   #hud button { padding: 6px 14px; margin-top: 6px; border-radius: 10px; }
   #hud button.go { background: #c0453b; border-color: #c0453b; color: #fff; }
+  #gSaverMode { margin-left: 6px; font-size: 11px; color: var(--muted); opacity: 0.6; }
+  #gSaverExit, #tSaver { background: #db6a41; border-color: #db6a41; color: #fff; font-weight: 600; }
   @property --hpF { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
   @property --hpL { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
   #hp { position: relative; height: 8px; margin: 9px 2px 4px; border-radius: 2px; box-shadow: 0 0 0 1px #1f2228, 0 0 0 2px #ffffff66; transition: --hpF 0.15s, --hpL 0.5s ease-in 0.25s;
@@ -53,6 +55,7 @@
   .card button { font-size: 17px; padding: 11px 22px; border-radius: 12px; margin: 4px; min-height: 44px; white-space: nowrap; }
   .card button.play { background: #2f9e5e; border-color: #2f9e5e; color: #fff; font-size: 20px; font-weight: 700; padding: 13px 34px; }
   .card button.play.wide { padding: 13px 0; width: calc(100% - 8px); }
+  #sText { color: var(--text); font-size: 17px; line-height: 1.7; } #sText b { font-size: 26px; color: #ffcf6e; margin: 0 3px; }
   .card .name { font-size: 15px; font-weight: 600; letter-spacing: 2px; color: var(--muted); margin-bottom: 6px; }
   .card button.go { background: #c0453b; border-color: #c0453b; color: #fff; font-weight: 600; }
   .card button:disabled { opacity: 0.5; }
@@ -143,6 +146,7 @@
   <p>看棉被哪時候掉下去<br>每拉三次算一天，看你第幾天能把被被拉下陽台</p>
   <p class="total" style="display:none"></p>
   <button id="tStart" class="play">開始遊戲</button>
+  <div><button id="tSaver" class="small">螢幕保護模式</button></div>
   <div id="tBest" class="records"></div>
 </div>
 <div id="result" class="card" style="display:none">
@@ -164,6 +168,13 @@
   <b id="gStatus"></b> <span class="muted" id="gGrip"></span>
   <div id="hp"><span id="hpDelta"></span></div>
   <div><button id="gAuto" class="go" style="display:none">自動完成</button></div>
+  <div id="gSaver" style="display:none"><span class="muted" id="gSaverN"></span><span id="gSaverMode"></span><br><button id="gSaverExit">離開螢幕保護模式</button></div>
+</div>
+<div id="saverEnd" class="card" style="display:none">
+  <div class="name">陽台上的小被被</div>
+  <h2>螢幕保護模式結束</h2>
+  <p id="sText"></p>
+  <div><button id="sHome" class="play wide">回標題</button></div>
 </div>
 <div id="ver"></div>
 <div id="ui" style="display:none">
@@ -208,7 +219,7 @@
 <script>const MODEL = {"units": "shelf depth = 1", "panels": {"tiled wall": [[-3.4573474529930546, -6.131390371509298, 0], [0, -6.131390371509298, 0], [0, 2.0, 0], [-3.4573474529930546, 2.0, 0]], "brick wall": [[0, -6.131390371509298, 0], [0, -6.131390371509298, 5.819273773032827], [0, 2.0, 5.819273773032827], [0, 2.0, 0]], "shelf top": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -0.19744447424806616, 5.819273773032827], [0, 0, 5.819273773032827]], "cage front": [[-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827]], "cage bottom": [[0.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827]], "cage side": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [0.0, -1.5546877931476362, 0.3528517337232067], [0, -1.5546877931476362, 0.3528517337232067]], "window grill bottom": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [0, 1.5288228462737465, 5.819273773032827]], "window grill front": [[-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827]], "window grill side": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [0, 3.083510639421383, 0.6190854656051468]], "window grill top": [[0, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "window grill end": [[0, 1.5288228462737465, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "lower shelf top": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [0, -4.036587215910913, 5.819273773032827]], "lower shelf front": [[-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827]], "lower shelf bottom": [[0, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "lower shelf side": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [0, -5.591275009058549, 0.08936327713881974]], "lower shelf end": [[0, -4.036587215910913, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "cage end": [[0, 0, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827], [0, -1.5546877931476362, 5.819273773032827]]}, "stripes": [[[-3.4573474529930546, 0.0834075259675885, 0], [0, 0.0834075259675885, 0]], [[-3.4573474529930546, -0.15926488730384458, 0], [0, -0.15926488730384458, 0]], [[-3.4573474529930546, -3.166934160631353, 0], [0, -3.166934160631353, 0]], [[-3.4573474529930546, -3.4178596819025113, 0], [0, -3.4178596819025113, 0]]], "tiles": {"pitch": 0.1251614296913404, "base": -3.417422816646296, "stripes": [[0.087097214711235, 0.21225864440257539], [-0.16322564467144574, -0.03806421498010534], [-3.1670999572636154, -3.041938527572275], [-3.417422816646296, -3.2922613869549555]], "fit": [-0.003689688743646488, 0.003960757367601153, 0.00016579663226234942, -0.0004368652562152242]}, "floors": {"height": 3.2541971719748504, "levels": [-9.550332871521976, -6.296135699547126, -3.041938527572275, 0.21225864440257558, 3.466455816377426, 6.720652988352277]}, "cage_post": [[-1.0, -0.19744447424806616, 4.51964696395023], [-1.0, -1.5546877931476362, 4.51964696395023]], "points": {"point_1": [-0.06815006589404175, -0.013455853930420139, 0.4728716980308348], "point_2": [-0.06815006589404175, -0.013455853930420139, 1.0396087165902814], "point_3": [-1.0018076813476873, -0.1978013909413683, 2.1334721171114586]}, "guides": {"cage bottom level at brick wall": [[0, -1.5546877931476362, 0], [0, -1.5546877931476362, 5.819273773032827]]}, "measurements": {"yf": -0.19744447424806616, "y_cage": -1.5546877931476362, "z_post": 4.51964696395023, "s1": 0.0834075259675885, "s2": -0.15926488730384458, "s3": -3.166934160631353, "s4": -3.4178596819025113, "x12": -0.06815006589404175, "z1": 0.4728716980308348, "z2": 1.0396087165902814, "x3": -1.0018076813476873, "z3": 2.1334721171114586, "z_slat": 3.369499353854658, "x_g": -0.7496369159300176, "z_g": 0.6190854656051468, "g_back": 1.5288228462737465, "g_front": 1.5127790163709456, "z_mid": 0.3528517337232067, "x_l": -0.8847462189288654, "z_l": 0.08936327713881974, "l_back": -4.036587215910913}, "roof_slope_deg": -11.16907426402621, "cameras": {"Day 1": {"center": [-2.5763902424813807, 1.8485481115884668, 7.480000418376799], "R": [[0.9678969244908487, 0.030032064951085586, 0.24954682653948826], [-0.06859502767522094, -0.9235863169825995, 0.3772042381267117], [0.2418062566175477, -0.38221249346049785, -0.8918763053828247]], "f_px": 2261.0088796691516, "image": [1440, 1920]}, "Day 189": {"center": [-3.5582223799683477, 1.8324280503581372, 7.612198135614894], "R": [[0.9358564085164711, 0.022360387969925025, 0.3516714314363431], [-0.1038266688189778, -0.9361843480523512, 0.3358256829126512], [0.33673848232806186, -0.35079749074306205, -0.8738125170811899]], "f_px": 2194.932560259106, "image": [1440, 1920]}}, "fit_px": {"Day 1": {"point_1": 0.9887886333426447, "point_2": 1.7264496185290532, "point_3": 7.14562915172034, "shelf_back": 3.4384179676648197, "shelf_front": 11.844323006130528, "cage_bottom": 12.55918300684493, "wall_corner": 2.5100142332881084, "tile_vertical": 2.106940384485275, "stripe_1": 4.192962072560722, "stripe_2": 2.710436133038165, "stripe_3": 1.9390894287237819, "stripe_4": 1.656020611511733, "cage_post": 5.645671705311196, "box_corner": 0.5007117842603408, "grill_back": 3.1098141272041637, "grill_front": 1.4372123767723186, "cage_top_left": 1.1164990606838758, "lower_back": 2.620815313671605, "lower_front": 3.252742702884892, "lower_top_left": 3.84486510104268, "slat": 5.452513487194732}, "Day 189": {"point_1": 1.2306705815705334, "point_2": 2.176784613225029, "point_3": 7.228472584903843, "shelf_back": 5.3538490560462835, "shelf_front": 8.026824328055795, "cage_bottom": 10.029425753830143, "wall_corner": 2.2114350412003305, "tile_vertical": 1.0914710113648947, "stripe_1": 1.4981777920548534, "stripe_2": 0.3837978321787298, "stripe_3": 3.2926728729008343, "stripe_4": 2.7412516909896, "cage_post": 5.026196858192163, "box_corner": 0.5435323324289093, "grill_back": 3.5550210021148696, "grill_front": 1.7717190304777877, "cage_top_left": 2.662866445615572, "lower_back": 2.004687646849801, "lower_front": 2.6464799275829396, "lower_top_left": 3.8651708969272933, "slat": 5.487491786240904}}};
 const PAGE = {"mode": "game", "photos": null};
 const PHOTOS = {"size": [1080, 1440], "group2": 189, "upside_down": [380], "easter_eggs": {}, "H": {}};
-const VERSION = "3865f7f";
+const VERSION = "63a7581";
 function uaCode(ua = navigator.userAgent) {
   const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/.test(ua);
   const app = /Barcelona/.test(ua) ? "t" : /Instagram/.test(ua) ? "g" : /FBAN|FBAV|FB_IAB/.test(ua) ? "f" : /\bLine\//.test(ua) ? "l"
@@ -251,15 +262,16 @@ if (MODEL.floors) { WALL.ylo = MODEL.floors.levels[0]; WALL.yhi = MODEL.floors.l
   if (bw) MODEL.panels["brick wall"] = [[0, WALL.ylo, 0], [0, WALL.ylo, WALL.z], [0, WALL.yhi, WALL.z], [0, WALL.yhi, 0]];
   MODEL.panels["ground"] = [[WALL.x, WALL.ylo, 0], [0, WALL.ylo, 0], [0, WALL.ylo, WALL.z], [WALL.x, WALL.ylo, WALL.z]];
 }
-const tileTex = (() => {
+const tileTexture = (grout, tile) => {
   const cv = document.createElement("canvas"); cv.width = cv.height = 64;
   const g = cv.getContext("2d");
-  g.fillStyle = "#9e9a92"; g.fillRect(0, 0, 64, 64);
-  g.fillStyle = "#b3afa6"; g.fillRect(2, 2, 60, 60);
+  g.fillStyle = grout; g.fillRect(0, 0, 64, 64);
+  g.fillStyle = tile; g.fillRect(2, 2, 60, 60);
   const t = new THREE.CanvasTexture(cv);
   t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
   return t;
-})();
+};
+const tileTex = tileTexture("#9e9a92", "#b3afa6");
 const tileUV = (g, pts) => {
   const T = MODEL.tiles;
   g.setAttribute("uv", new THREE.Float32BufferAttribute(pts.flatMap(p => [p[0] / T.pitch, (p[1] - T.base) / T.pitch]), 2));
@@ -281,10 +293,11 @@ for (const [name, quad] of Object.entries(MODEL.panels)) {
 }
 for (const st of MODEL.stripes) track("red stripes", 0xc0392b, lineMesh(st, 0xc0392b), refs);
 const tileStripes = new THREE.Group(); scene.add(tileStripes);
+const stripeTex = tileTexture("#c25a36", "#db6a41");
 for (const [b, t] of (MODEL.tiles ? MODEL.tiles.stripes : [])) {
   const q = [[WALL.x, b, 0.002], [0, b, 0.002], [0, t, 0.002], [WALL.x, t, 0.002]], tri = [q[0], q[1], q[2], q[0], q[2], q[3]];
   const g = new THREE.BufferGeometry().setFromPoints(tri.map(V)); g.computeVertexNormals(); tileUV(g, tri);
-  track("dark-red stripes", 0x8e2b26, new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: 0xa8433b, map: tileTex, side: THREE.DoubleSide,
+  track("orange stripes", 0xdb6a41, new THREE.Mesh(g, new THREE.MeshLambertMaterial({ map: stripeTex, side: THREE.DoubleSide,
     polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -8 })), tileStripes);
 }
 if (MODEL.cage_post) track("cage post", 0x1dd1a1, lineMesh(MODEL.cage_post, 0x1dd1a1), refs);
@@ -302,7 +315,7 @@ const LABELS = {
   "ground": "地面", "tiled wall": "磁磚牆", "brick wall": "磚牆", "shelf top": "陽台頂", "cage front": "鐵籠正面",
   "cage bottom": "鐵籠底部", "cage side": "鐵籠左側", "cage end": "鐵籠右側", "window grill bottom": "鐵窗底部", "window grill front": "鐵窗正面",
   "window grill side": "鐵窗左側", "window grill top": "鐵窗頂部", "window grill end": "鐵窗右側", "lower shelf top": "下層鐵籠頂", "lower shelf front": "下層鐵籠正面",
-  "lower shelf side": "下層鐵籠左側", "lower shelf bottom": "下層鐵籠底部", "lower shelf end": "下層鐵籠右側", "red stripes": "紅條紋標記線", "dark-red stripes": "暗紅條紋",
+  "lower shelf side": "下層鐵籠左側", "lower shelf bottom": "下層鐵籠底部", "lower shelf end": "下層鐵籠右側", "red stripes": "紅條紋標記線", "orange stripes": "橘色條紋",
   "cage post": "鐵籠柱子", "cage bottom level at brick wall": "鐵籠底部延伸線", "shelf points": "陽台頂標記點",
 };
 const camName = name => name.replace(/^Day (\d+)$/, "第 $1 天");
@@ -1072,7 +1085,10 @@ function idleScene(keep) {
   if (!keep) blanketReset();
   setFollow(false); look.yaw = look.pitch = 0; camZoom = TITLE_ZOOM; document.getElementById("camZoom").value = TITLE_ZOOM * 100;
   setMode("Day 1");
-  sway = { pivot: new THREE.Vector3(-0.9, -0.5, BL.Z0 + BL.LV / 2), quat: camera.quaternion.clone(), a: 0, idle: true, t0: performance.now() };
+  idleSway(performance.now());
+}
+function idleSway(t0) {
+  sway = { pivot: new THREE.Vector3(-0.9, -0.5, BL.Z0 + BL.LV / 2), quat: camera.quaternion.clone(), a: 0, idle: true, t0 };
   sway.offset = camera.position.clone().sub(sway.pivot);
 }
 function showTitle() {
@@ -1090,7 +1106,7 @@ function titleFrame() {
 const SNAP_EVERY = 4, SNAP_IDLE = 120, SNAP_SCALE = 2000, SNAP_STILL = 0.01;
 function recordSnap(force) {
   const r = game && game.rec;
-  if (!r || r.end != null) return;
+  if (!r || r.end != null || game.saver) return;
   const last = r.snaps[r.snaps.length - 1];
   if (!force && last) {
     const since = r.step - last.step;
@@ -1169,14 +1185,18 @@ function clipsOffShelf() {
 }
 const LAND_STILL = 3, LAND_STEPS = 12, LAND_MAX = 180;
 function landingStep() {
-  if (!game || !game.over || game.sim || game.final) return;
+  if (!game || !game.over || game.sim || game.final || game.saver) return;
   const r = game.rec, m = r.motion[r.motion.length - 1] || 0;
   game.still = m < LAND_STILL ? (game.still || 0) + 1 : 0;
-  if (game.still >= LAND_STEPS || r.step - game.overStep >= LAND_MAX) { finishRecording(); if (!BL.paused && !DEBUG) idleScene(); }
+  if (game.still >= LAND_STEPS || r.step - game.overStep >= LAND_MAX) {
+    finishRecording();
+    if (!BL.paused && !DEBUG) idleScene();
+  }
 }
 function finishRecording() {
   if (!game || !game.over || game.final) return;
   recordSnap(true); game.final = BL.pos.slice(); game.rec.end = game.rec.step;
+  if (game.saver) return;
   prepareReplay();
   if (!game.sim && game.histId) saveReplay(game.histId, game.frames);
 }
@@ -1190,20 +1210,27 @@ function gameStep() {
   if (game.off > 60) {
     game.over = true; game.overStep = game.rec.step; game.freeStep = game.rec.step - game.off;
     game.fellDay = Math.max(1, dayOf(game.drags - 1));
-    if (!game.sim) { saveResult(); showRecords(document.getElementById("rBest"), true); countFall(); }
+    if (game.saver) { saver.falls++; saver.days += game.fellDay; saverFell(); }
+    else if (!game.sim) { saveResult(); showRecords(document.getElementById("rBest"), true); }
+    if (!game.sim) countFall();
   }
 }
 const AUTO_AFTER = 10, AUTO_MOVE_MS = 250, AUTO_HOLD_MS = 100, AUTO_REST_MS = 150;
 const AUTO_FORCE_MIN = 30, AUTO_FORCE_MAX = 50, AUTO_FORCE_MOVE_MS = 500;
+const AUTO_PACE = { dist: [0.8, 1.4], move: [AUTO_MOVE_MS, AUTO_MOVE_MS], hold: AUTO_HOLD_MS, ease: 0, rest: AUTO_REST_MS, force: AUTO_FORCE_MOVE_MS };
 async function autoComplete() {
   if (!game || game.over || game.auto || BL.paused) return;
   releaseGrab();
   game.auto = true; document.getElementById("tip").style.display = "none";
-  const g0 = game, frame = () => new Promise(r => requestAnimationFrame(r)), going = () => game === g0 && !game.over;
-  const fallen = () => !BL.clipped && !onShelf();
+  await autoDrive(() => new THREE.Vector3(-1, -0.5, 0).normalize().add(new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).multiplyScalar(1.6)).normalize());
+}
+const frame = () => new Promise(r => requestAnimationFrame(r));
+const autoFallen = () => !BL.clipped && !onShelf();
+async function autoDrive(dir, pace = AUTO_PACE) {
+  const g0 = game, going = () => game === g0 && !game.over;
   const forceAt = AUTO_FORCE_MIN + Math.floor(Math.random() * (AUTO_FORCE_MAX - AUTO_FORCE_MIN + 1));
-  for (let n = 0; going(); n++) {
-    if (fallen()) { await frame(); continue; }
+  for (let n = 0; going();) {
+    if (autoFallen()) { await frame(); continue; }
     const force = n >= forceAt;
     let i, goal, over = null;
     if (force) {
@@ -1215,23 +1242,103 @@ async function autoComplete() {
     } else {
       const free = []; for (let j = 0; j < BL.w.length; j++) if (!BL.pinned[j]) free.push(j);
       i = free[Math.floor(Math.random() * free.length)];
-      const dir = new THREE.Vector3(-1, -0.5, 0).normalize().add(new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).multiplyScalar(1.6)).normalize();
-      goal = particleAt(i).addScaledVector(dir, 0.8 + Math.random() * 0.6);
+      goal = particleAt(i).addScaledVector(dir(), pace.dist[0] + Math.random() * (pace.dist[1] - pace.dist[0]));
     }
-    const at = particleAt(i), moveMs = force ? AUTO_FORCE_MOVE_MS : AUTO_MOVE_MS;
-    BL.grab = { i, auto: true, target: at.clone(), raw: at.clone(), from: at.clone(), offset: new THREE.Vector3(), cap: slipCap(), step0: game.rec.step };
-    BL.w.fill(1); BL.w[i] = 0;
-    const t0 = performance.now();
-    const mine = () => BL.grab && BL.grab.auto && BL.grab.i === i;
-    while (going() && !fallen() && mine() && performance.now() - t0 < moveMs + AUTO_HOLD_MS) {
-      const u = Math.min(1, (performance.now() - t0) / moveMs);
-      const raw = !over ? at.clone().lerp(goal, u) : u < 0.5 ? at.clone().lerp(over, u * 2) : over.clone().lerp(goal, u * 2 - 1);
-      BL.grab.raw = raw.clone(); BL.grab.target.copy(clampGrabTarget(raw));
-      await frame();
-    }
-    if (BL.grab && BL.grab.i === i) { if (going()) gameRelease(); BL.w[i] = 1; BL.grab = null; }
-    const t1 = performance.now(); while (going() && performance.now() - t1 < AUTO_REST_MS) await frame();
+    const ms = force ? pace.force : pace.move[0] + Math.random() * (pace.move[1] - pace.move[0]);
+    await autoDrag(g0, i, goal, over, ms, true, pace); n++;
   }
+}
+async function autoDrag(g0, i, goal, over, moveMs, untilFree, pace = AUTO_PACE) {
+  const going = () => game === g0 && !game.over;
+  const at = particleAt(i);
+  BL.grab = { i, auto: true, target: at.clone(), raw: at.clone(), from: at.clone(), offset: new THREE.Vector3(), cap: slipCap(), step0: game.rec.step };
+  BL.w.fill(1); BL.w[i] = 0;
+  const t0 = performance.now();
+  const mine = () => BL.grab && BL.grab.auto && BL.grab.i === i;
+  while (going() && !(untilFree && autoFallen()) && mine() && performance.now() - t0 < moveMs + pace.hold) {
+    let u = Math.min(1, (performance.now() - t0) / moveMs);
+    if (pace.ease) u = u * u * (3 - 2 * u);
+    const raw = !over ? at.clone().lerp(goal, u) : u < 0.5 ? at.clone().lerp(over, u * 2) : over.clone().lerp(goal, u * 2 - 1);
+    BL.grab.raw = raw.clone(); BL.grab.target.copy(clampGrabTarget(raw));
+    await frame();
+  }
+  const t2 = performance.now(), from = BL.grab && BL.grab.raw.clone(), back = at.clone().lerp(goal, 0.3);
+  while (pace.ease && !over && going() && !(untilFree && autoFallen()) && mine() && performance.now() - t2 < pace.ease) {
+    const u = (performance.now() - t2) / pace.ease, raw = from.clone().lerp(back, u * u * (3 - 2 * u));
+    BL.grab.raw = raw.clone(); BL.grab.target.copy(clampGrabTarget(raw));
+    await frame();
+  }
+  if (BL.grab && BL.grab.i === i) { if (going()) gameRelease(); BL.w[i] = 1; BL.grab = null; }
+  const t1 = performance.now(); while (going() && performance.now() - t1 < pace.rest) await frame();
+}
+const SAVER_STRATEGIES = { random: 4, "random-fast": 2, wall: 3, "wall-fast": 1, pull: 1 };
+const SAVER_PACE = { dist: [0.4, 0.9], move: [350, 550], hold: 150, ease: 300, rest: 500, force: 900 };
+const SAVER_FAST_PACE = { ...AUTO_PACE, dist: SAVER_PACE.dist };
+const SAVER_STILL_STEPS = 30, SAVER_SETTLE_MAX = 600;
+const SAVER_WALL = 0.3, SAVER_NEXT_MS = 1500, SAVER_PULL_AT = 14, SAVER_PULL_MS = 200;
+const saver = { on: false, only: null, falls: 0, days: 0, wake: null, bag: [] };
+const saverBucket = n => n === 0 ? "0" : n <= 5 ? "1-5" : n <= 10 ? "6-10" : n <= 20 ? "11-20" : n <= 50 ? "21-50" : n <= 100 ? "51-100" : "101+";
+const randomDir = () => {
+  const z = Math.random() * 2 - 1, a = Math.random() * 2 * Math.PI, r = Math.sqrt(1 - z * z);
+  return new THREE.Vector3(r * Math.cos(a), z, r * Math.sin(a));
+};
+const wallDir = () => Math.random() < SAVER_WALL ?
+  new THREE.Vector3(1, 0, 0).add(new THREE.Vector3(0, Math.random() - 0.5, Math.random() - 0.5)).normalize() : randomDir();
+function saverStrategy() {
+  if (saver.only) return saver.only;
+  if (!saver.bag.length) {
+    const b = saver.bag = Object.entries(SAVER_STRATEGIES).flatMap(([k, n]) => Array(n).fill(k));
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+  }
+  return saver.bag.pop();
+}
+async function saverGame() {
+  startGame();
+  idleSway(saver.swayT0);
+  const g0 = game; game.saver = saverStrategy(); game.auto = true;
+  document.getElementById("tip").style.display = "none";
+  if (game.saver === "pull") {
+    while (game === g0 && game.rec.step < SAVER_PULL_AT) await frame();
+    if (game !== g0) return;
+    const i = (BL.NV - 1) * BL.NU + 17;
+    await autoDrag(g0, i, particleAt(i).add(new THREE.Vector3(-3.7, -0.2, -0.7)), null, SAVER_PULL_MS, false);
+  }
+  await saverSettle(g0);
+  await autoDrive(game.saver.startsWith("wall") ? wallDir : randomDir, game.saver.endsWith("-fast") ? SAVER_FAST_PACE : SAVER_PACE);
+}
+async function saverSettle(g0) {
+  const r = game.rec;
+  while (game === g0 && !game.over && r.step < SAVER_SETTLE_MAX) {
+    const caught = BL.clipped && !BL.pending.some(Boolean), recent = r.motion.slice(-SAVER_STILL_STEPS);
+    if (caught && recent.length === SAVER_STILL_STEPS && recent.every(m => m < LAND_STILL)) return;
+    await frame();
+  }
+}
+function saverFell() {
+  const g0 = game;
+  setTimeout(() => { if (saver.on && game === g0) saverGame(); }, SAVER_NEXT_MS);
+}
+async function saverWake() {
+  if (!saver.on || !navigator.wakeLock || document.visibilityState !== "visible") return;
+  try { saver.wake = await navigator.wakeLock.request("screen"); } catch (_) {}
+}
+document.addEventListener("visibilitychange", saverWake);
+function startSaver() {
+  saver.on = true; saver.falls = saver.days = 0; saver.swayT0 = performance.now();
+  gcEvent("saver-start", "螢幕保護模式開始");
+  saverWake();
+  saverGame();
+}
+function exitSaver() {
+  if (!saver.on) return;
+  saver.on = false;
+  gcEvent(`saver-falls-${saverBucket(saver.falls)}`, `螢幕保護模式掉了 ${saver.falls} 條`);
+  if (saver.wake) { saver.wake.release().catch(() => {}); saver.wake = null; }
+  showTitle();
+  document.getElementById("title").style.display = "none";
+  document.getElementById("sText").innerHTML = saver.falls ?
+    `掉了<b>${saver.falls}</b>條小被被<br>平均第<b>${Math.floor(saver.days / saver.falls)}</b>天掉下去` : "還沒有小被被掉下去";
+  document.getElementById("saverEnd").style.display = "block";
 }
 function gameRelease() {
   if (!game || game.over || !BL.grab.from) return;
@@ -1312,8 +1419,11 @@ function gcEvent(path, title) {
 }
 function countFall() {
   gcEvent("fell", "小被被掉下去了");
-  gcEvent(game.auto ? "fell-auto" : "fell-manual", game.auto ? "小被被掉下去了（自動完成）" : "小被被掉下去了（自己拉）");
-  gcEvent(`${game.auto ? "auto-" : ""}drags-${dragBucket(game.drags)}`, `拉了 ${game.drags} 次`);
+  if (game.saver) gcEvent("fell-saver", "小被被掉下去了（螢幕保護模式）");
+  else {
+    gcEvent(game.auto ? "fell-auto" : "fell-manual", game.auto ? "小被被掉下去了（自動完成）" : "小被被掉下去了（自己拉）");
+    gcEvent(`${game.auto ? "auto-" : ""}drags-${dragBucket(game.drags)}`, `拉了 ${game.drags} 次`);
+  }
   const st = fellLoad();
   st.pending = [...(st.pending || []), Date.now()].slice(-FELL_MAX);
   if (fell.total != null) st.shown = Math.max(st.shown || 0, ++fell.total);
@@ -1490,15 +1600,18 @@ function closeHistory() {
 }
 function resultUI() {
   const replaying = !!sway && !sway.idle && !title.on;
-  const show = !!game && game.over && !replaying && !hist.open, rc = document.getElementById("result");
+  const show = !!game && game.over && !game.saver && !replaying && !hist.open, rc = document.getElementById("result");
   if (show && rc.style.display !== "block" && !rc.classList.contains("flipIn")) rc.classList.remove("still");
   rc.style.display = show ? "block" : "none";
   document.getElementById("dim").style.display = show || title.on || (hist.open && !replaying) ? "block" : "none";
   if (show) document.getElementById("tip").style.display = "none";
-  document.getElementById("hud").style.display = replaying || (game && !game.over) ? "block" : "none";
+  document.getElementById("hud").style.display = replaying || (game && !game.over) || saver.on ? "block" : "none";
+  document.getElementById("gSaver").style.display = saver.on ? "" : "none";
+  document.getElementById("gSaverMode").textContent = saver.on && game && game.saver ? Object.keys(SAVER_STRATEGIES).indexOf(game.saver) + 1 : "";
+  document.getElementById("gSaverN").textContent = saver.falls ? `螢幕保護模式 · 已經掉了 ${saver.falls} 條` : "螢幕保護模式";
   holdDrags(!!game && !game.over);
   const ab = document.getElementById("gAuto");
-  ab.style.display = game && !game.over && (game.drags >= AUTO_AFTER || game.auto) ? "" : "none";
+  ab.style.display = game && !game.over && !game.saver && (game.drags >= AUTO_AFTER || game.auto) ? "" : "none";
   const label = game && game.auto ? "自動完成中…" : "自動完成";
   if (ab.textContent !== label) { ab.disabled = !!(game && game.auto); ab.textContent = label; }
   if (!show) return;
@@ -1510,7 +1623,7 @@ function resultUI() {
 }
 function gameUI() {
   resultUI();
-  if (!game || BL.paused || (game.over && !game.frames)) return;
+  if (!game || BL.paused || (game.over && !game.frames && !game.saver)) return;
   const st = document.getElementById("gStatus"), grip = document.getElementById("gGrip");
   if (game.over) {
     st.textContent = `第 ${game.fellDay} 天掉下去了（共拉 ${game.drags} 次）`; grip.textContent = "";
@@ -1707,6 +1820,13 @@ document.getElementById("rLog").onclick = () => {
 };
 document.getElementById("tStart").onclick = startGame;
 document.getElementById("gAuto").onclick = autoComplete;
+document.getElementById("tSaver").onclick = startSaver;
+document.getElementById("gSaverExit").onclick = exitSaver;
+document.getElementById("sHome").onclick = () => {
+  document.getElementById("saverEnd").style.display = "none";
+  document.getElementById("title").style.display = "block";
+};
+addEventListener("keydown", e => { if (e.key === "Escape") exitSaver(); });
 addEventListener("pointerdown", () => { document.getElementById("tip").style.display = "none"; }, { capture: true });
 for (const ev of ["gesturestart", "gesturechange", "dblclick"]) document.addEventListener(ev, e => e.preventDefault(), { passive: false });
 function offEdge() { return document.documentElement.classList.contains("offEdge"); }
