@@ -109,16 +109,80 @@
   .card.still { animation: none; }
   @keyframes flipOut { to { transform: translateX(-50%) perspective(900px) rotateY(90deg); opacity: 0.6; } }
   @keyframes flipIn { from { transform: translateX(-50%) perspective(900px) rotateY(-90deg); opacity: 0.6; } }
-  #history { top: max(6%, calc(env(safe-area-inset-top) + 8px)); height: calc(100% - max(6%, calc(env(safe-area-inset-top) + 8px)) - 16px); flex-direction: column; padding: 14px 14px 8px; }
-  #history .hbar { display: flex; align-items: center; justify-content: space-between; font-size: 17px; padding-bottom: 8px; border-bottom: 1px solid #ffffff26; }
-  #history .hbar span { width: 5.5em; }
-  #history .hbar button { width: 5.5em; margin: 0; }
+  #history, #ach { top: max(6%, calc(env(safe-area-inset-top) + 8px)); height: calc(100% - max(6%, calc(env(safe-area-inset-top) + 8px)) - 16px); flex-direction: column; padding: 14px 14px 8px; }
+  #history .hbar, #ach .hbar { display: flex; align-items: center; justify-content: space-between; font-size: 17px; padding-bottom: 8px; border-bottom: 1px solid #ffffff26; }
+  #history .hbar span, #ach .hbar span { width: 5.5em; }
+  #history .hbar button, #ach .hbar button { width: 5.5em; margin: 0; }
+  #hBack, #aBack { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
   #hList { flex: 1; overflow-y: auto; overscroll-behavior: contain; margin-top: 10px; padding-right: 2px; }
-  #history { background: rgba(28, 31, 37, 0.85); }
+  #history, #ach { background: rgba(28, 31, 37, 0.85); }
   #hClear { flex: none; margin: 8px auto 2px; }
   #hClear.armed { background: #c0453b; border-color: #c0453b; color: #fff; font-weight: 700; }
   #hList .rday { position: sticky; top: 0; background: #2a2d33; z-index: 1; padding: 6px 0 4px; margin-top: 6px; }
   .records .more { display: block; margin: 8px auto 0; font-size: 14px; }
+  .medal { display: inline-block; width: 16px; height: 16px; border-radius: 50%; flex: none; background: radial-gradient(circle at 35% 30%, #8a8f98, #4a4f56); box-shadow: inset 0 0 0 1.5px #ffffff33; }
+  .medal.bronze { background: radial-gradient(circle at 35% 30%, #f6cfa5, #c27a3e 45%, #7a4520); box-shadow: 0 0 6px #c27a3e88; }
+  .medal.gold { background: radial-gradient(circle at 35% 30%, #fff3c4, #ffcf6e 45%, #b8862b); box-shadow: 0 0 6px #ffcf6e88; }
+  .medal.platinum { background: radial-gradient(circle at 35% 30%, #fff, #d6edf5 45%, #7fa3b8); box-shadow: 0 0 8px #bfeaffaa; }
+  .card button.achHub { position: absolute; left: 8px; top: 8px; margin: 0; padding: 5px 5px 3px; min-height: 0; min-width: 34px; border-radius: 10px;
+    font-size: 10px; line-height: 1.1; display: flex; flex-direction: column; align-items: center; gap: 3px; background: #2a2e36b3; border: 1px solid #ffffff1f;
+    color: var(--muted); font-variant-numeric: tabular-nums; text-shadow: none; }
+  .card button.achHub.new::after { content: ""; position: absolute; right: -3px; top: -3px; width: 9px; height: 9px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 2px #1f2228; }
+  #aList .achIc { position: relative; }
+  #aList li.new .achIc::after { content: ""; position: absolute; right: -3px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 2px #23262c; }
+  #ach .hbar span { text-align: right; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+  #aList { flex: 1; overflow-y: auto; overscroll-behavior: contain; margin-top: 10px; padding-right: 2px; text-align: left; }
+  #aList .achTop { display: flex; align-items: center; gap: 12px; margin: 2px 0 8px; }
+  #aList .achTop .medal { width: 40px; height: 40px; }
+  #aList .achTop b { display: block; font-size: 17px; } #aList .achTop small { color: var(--muted); font-size: 13px; }
+  #aList .achTop b small.took { display: inline; font-size: 12px; font-weight: 400; color: #ffcf6e; margin-left: 8px; }
+  #aList .achBar { position: relative; height: 6px; border-radius: 3px; background: #ffffff1a; margin: 0 0 12px; }
+  #aList .achBar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: #ffcf6e; }
+  #aList .achBar s { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: #ffcf6e; opacity: 0.6; }
+  #aList .achHint { margin: 0 0 8px; padding: 5px 9px; border-radius: 10px; background: #db6a4122; border: 1px solid #db6a4166; color: var(--text); font-size: 11.5px; line-height: 1.45; }
+  #aList .achGrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px 2px; }
+  #aList .achGrid li { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 1px 3px; border-radius: 10px; cursor: pointer; }
+  #aList .achGrid li.sel { background: #ffffff14; box-shadow: inset 0 0 0 1px #ffcf6e88; }
+  #aList .achGrid .achIc { width: 44px; height: 44px; } #aList .achGrid .achIc svg { width: 34px; height: 34px; }
+  #aList .achGrid i { font-style: normal; font-size: 10.5px; line-height: 1.2; text-align: center; height: 2.4em; overflow: hidden; color: var(--text); overflow-wrap: anywhere; }
+  #aList .achGrid li.no i { color: var(--muted); }
+  #aList .achDetail { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 9px 10px; border-radius: 12px; background: #ffffff0d; min-height: 46px; }
+  #aList .achDetail.none { color: var(--muted); font-size: 13px; justify-content: center; }
+  @media (max-height: 700px) {
+    #aList .achGrid .achIc { width: 36px; height: 36px; border-radius: 10px; } #aList .achGrid .achIc svg { width: 28px; height: 28px; }
+    #aList .achGrid li { padding: 2px 1px; gap: 2px; }
+    #aList .achTop { margin: 0 0 6px; } #aList .achTop .medal { width: 30px; height: 30px; } #aList .achTop b { font-size: 15px; }
+    #aList .achBar { margin: 0 0 8px; } #aList .achDetail { margin-top: 6px; padding: 6px 8px; }
+    #aList .achDetail .achIc { width: 36px; height: 36px; } #aList .achDetail .achIc svg { width: 28px; height: 28px; }
+    #ach .hbar { padding-bottom: 4px; } #aList { margin-top: 6px; }
+  }
+  @media (max-height: 600px) {
+    #ach { top: max(8px, env(safe-area-inset-top)); height: calc(100% - max(8px, env(safe-area-inset-top)) - 8px); }
+    #aList .achHint { font-size: 10.5px; padding: 4px 8px; margin-bottom: 6px; }
+  }
+  .achIc { width: 42px; height: 42px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #ffcf6e22; border: 1px solid #ffcf6e55; text-shadow: none; }
+  #aList .no .achIc { background: #ffffff0d; border-color: #ffffff1f; filter: grayscale(1); opacity: 0.4; }
+  #aList .secret .achIc { filter: none; opacity: 1; }
+  .achIc svg { width: 32px; height: 32px; }
+  #aList .tx { flex: 1; min-width: 0; }
+  #aList .tx b { display: block; font-size: 15px; } #aList .no .tx b { color: var(--muted); }
+  #aList .tx small { display: block; color: var(--muted); font-size: 12.5px; }
+  #aList .tx small.when { color: #ffcf6e; font-size: 11px; margin-top: 1px; }
+  #aList button { font-size: 13px; padding: 6px 11px; min-height: 0; margin: 0; flex: none; }
+  #achToast { position: absolute; z-index: 7; left: 50%; top: max(10px, calc(env(safe-area-inset-top) + 8px)); transform: translate(-50%, -160%); opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.25s; display: flex; align-items: center; gap: 12px; background: #1f2228f0;
+    border: 1px solid #ffcf6e66; border-radius: 14px; padding: 9px 18px 9px 9px; box-shadow: 0 8px 28px #0008; max-width: calc(100% - 32px); box-sizing: border-box;
+    cursor: pointer; pointer-events: none; white-space: nowrap; }
+  #achToast.on { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+  #achToast small { display: block; color: #ffcf6e; font-size: 12px; letter-spacing: 1px; } #achToast b { display: block; font-size: 16px; overflow: hidden; text-overflow: ellipsis; }
+  #achToast .achMany { list-style: none; margin: 2px 0 0; padding: 0 0 0 2px; }
+  #achToast .achMany li { display: flex; align-items: center; gap: 9px; margin-top: 5px; }
+  #achToast .achMany .achIc { width: 28px; height: 28px; border-radius: 8px; } #achToast .achMany .achIc svg { width: 22px; height: 22px; }
+  #achToast .achMany b { font-size: 14px; }
+  #medalDim { position: absolute; inset: 0; z-index: 8; background: rgba(10, 12, 16, 0.55); display: none; animation: fade 0.25s ease-out; }
+  #medalCard { z-index: 9; top: 20%; background: rgba(28, 31, 37, 0.92); }
+  #medalCard .medal { display: block; width: 96px; height: 96px; margin: 6px auto 16px; animation: medalIn 0.7s ease-out; }
+  @keyframes medalIn { from { transform: scale(0.3) rotateY(180deg); opacity: 0; } 70% { transform: scale(1.1); } }
   button[data-replay], #gReplay { background: #c0453b; border-color: #c0453b; color: #fff; }
   #title, #result { max-height: calc(100% - max(6%, calc(env(safe-area-inset-top) + 8px)) - 16px); overflow-y: auto; overscroll-behavior: contain; }
   #tip { position: absolute; z-index: 3; left: 50%; top: 22%; transform: translateX(-50%); background: var(--panel); padding: 12px 16px; border-radius: 12px; text-align: center; font-size: 15px; pointer-events: none; backdrop-filter: blur(4px); max-width: calc(100% - 40px); }
@@ -150,6 +214,7 @@
 <div id="tStop"></div>
 <div id="dim"></div>
 <div id="title" class="card" style="display:none">
+  <button class="achHub" data-from="title" aria-label="成就"></button>
   <h1>陽台上的小被被</h1>
   <p>看棉被哪時候掉下去<br>每拉<span class="vote">3</span>次算一天，看你第幾天能把被被拉下陽台</p>
   <p class="total" style="display:none"></p>
@@ -158,6 +223,7 @@
   <div id="tBest" class="records"></div>
 </div>
 <div id="result" class="card" style="display:none">
+  <button class="achHub" data-from="result" aria-label="成就"></button>
   <div class="name">陽台上的小被被</div>
   <h2 id="rTitle"></h2>
   <p id="rText"></p>
@@ -172,6 +238,13 @@
   <div id="hList" class="records"></div>
   <button id="hClear" class="small">清除所有紀錄</button>
 </div>
+<div id="ach" class="card" style="display:none">
+  <div class="hbar"><button id="aBack" class="small">‹ 返回</button><b>成就</b><span id="aCount"></span></div>
+  <div id="aList"></div>
+</div>
+<div id="achToast"></div>
+<div id="medalDim"></div>
+<div id="medalCard" class="card" style="display:none"><i class="medal"></i><h2></h2><p></p><button class="play wide">太好了</button></div>
 <div id="hud" style="display:none">
   <b id="gStatus"></b> <span class="muted" id="gGrip"></span>
   <div id="hp"><span id="hpDelta"></span></div>
@@ -227,7 +300,7 @@
 <script>const MODEL = {"units": "shelf depth = 1", "panels": {"tiled wall": [[-3.4573474529930546, -6.131390371509298, 0], [0, -6.131390371509298, 0], [0, 2.0, 0], [-3.4573474529930546, 2.0, 0]], "brick wall": [[0, -6.131390371509298, 0], [0, -6.131390371509298, 5.819273773032827], [0, 2.0, 5.819273773032827], [0, 2.0, 0]], "shelf top": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -0.19744447424806616, 5.819273773032827], [0, 0, 5.819273773032827]], "cage front": [[-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827]], "cage bottom": [[0.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827]], "cage side": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [0.0, -1.5546877931476362, 0.3528517337232067], [0, -1.5546877931476362, 0.3528517337232067]], "window grill bottom": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [0, 1.5288228462737465, 5.819273773032827]], "window grill front": [[-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827]], "window grill side": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [0, 3.083510639421383, 0.6190854656051468]], "window grill top": [[0, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "window grill end": [[0, 1.5288228462737465, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "lower shelf top": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [0, -4.036587215910913, 5.819273773032827]], "lower shelf front": [[-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827]], "lower shelf bottom": [[0, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "lower shelf side": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [0, -5.591275009058549, 0.08936327713881974]], "lower shelf end": [[0, -4.036587215910913, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "cage end": [[0, 0, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827], [0, -1.5546877931476362, 5.819273773032827]]}, "stripes": [[[-3.4573474529930546, 0.0834075259675885, 0], [0, 0.0834075259675885, 0]], [[-3.4573474529930546, -0.15926488730384458, 0], [0, -0.15926488730384458, 0]], [[-3.4573474529930546, -3.166934160631353, 0], [0, -3.166934160631353, 0]], [[-3.4573474529930546, -3.4178596819025113, 0], [0, -3.4178596819025113, 0]]], "tiles": {"pitch": 0.1251614296913404, "base": -3.417422816646296, "stripes": [[0.3374200740939157, 0.4625815037852561], [0.087097214711235, 0.21225864440257539], [-0.16322564467144574, -0.03806421498010534], [-3.1670999572636154, -3.041938527572275], [-3.417422816646296, -3.2922613869549555], [-3.667745676028977, -3.5425842463376362]], "fit": [-0.003689688743646488, 0.003960757367601153, 0.00016579663226234942, -0.0004368652562152242]}, "floors": {"height": 3.2541971719748504, "levels": [-9.550332871521976, -6.296135699547126, -3.041938527572275, 0.21225864440257558, 3.466455816377426, 6.720652988352277]}, "cage_post": [[-1.0, -0.19744447424806616, 4.51964696395023], [-1.0, -1.5546877931476362, 4.51964696395023]], "points": {"point_1": [-0.06815006589404175, -0.013455853930420139, 0.4728716980308348], "point_2": [-0.06815006589404175, -0.013455853930420139, 1.0396087165902814], "point_3": [-1.0018076813476873, -0.1978013909413683, 2.1334721171114586]}, "guides": {"cage bottom level at brick wall": [[0, -1.5546877931476362, 0], [0, -1.5546877931476362, 5.819273773032827]]}, "measurements": {"yf": -0.19744447424806616, "y_cage": -1.5546877931476362, "z_post": 4.51964696395023, "s1": 0.0834075259675885, "s2": -0.15926488730384458, "s3": -3.166934160631353, "s4": -3.4178596819025113, "x12": -0.06815006589404175, "z1": 0.4728716980308348, "z2": 1.0396087165902814, "x3": -1.0018076813476873, "z3": 2.1334721171114586, "z_slat": 3.369499353854658, "x_g": -0.7496369159300176, "z_g": 0.6190854656051468, "g_back": 1.5288228462737465, "g_front": 1.5127790163709456, "z_mid": 0.3528517337232067, "x_l": -0.8847462189288654, "z_l": 0.08936327713881974, "l_back": -4.036587215910913}, "roof_slope_deg": -11.16907426402621, "cameras": {"Day 1": {"center": [-2.5763902424813807, 1.8485481115884668, 7.480000418376799], "R": [[0.9678969244908487, 0.030032064951085586, 0.24954682653948826], [-0.06859502767522094, -0.9235863169825995, 0.3772042381267117], [0.2418062566175477, -0.38221249346049785, -0.8918763053828247]], "f_px": 2261.0088796691516, "image": [1440, 1920]}, "Day 189": {"center": [-3.5582223799683477, 1.8324280503581372, 7.612198135614894], "R": [[0.9358564085164711, 0.022360387969925025, 0.3516714314363431], [-0.1038266688189778, -0.9361843480523512, 0.3358256829126512], [0.33673848232806186, -0.35079749074306205, -0.8738125170811899]], "f_px": 2194.932560259106, "image": [1440, 1920]}}, "fit_px": {"Day 1": {"point_1": 0.9887886333426447, "point_2": 1.7264496185290532, "point_3": 7.14562915172034, "shelf_back": 3.4384179676648197, "shelf_front": 11.844323006130528, "cage_bottom": 12.55918300684493, "wall_corner": 2.5100142332881084, "tile_vertical": 2.106940384485275, "stripe_1": 4.192962072560722, "stripe_2": 2.710436133038165, "stripe_3": 1.9390894287237819, "stripe_4": 1.656020611511733, "cage_post": 5.645671705311196, "box_corner": 0.5007117842603408, "grill_back": 3.1098141272041637, "grill_front": 1.4372123767723186, "cage_top_left": 1.1164990606838758, "lower_back": 2.620815313671605, "lower_front": 3.252742702884892, "lower_top_left": 3.84486510104268, "slat": 5.452513487194732}, "Day 189": {"point_1": 1.2306705815705334, "point_2": 2.176784613225029, "point_3": 7.228472584903843, "shelf_back": 5.3538490560462835, "shelf_front": 8.026824328055795, "cage_bottom": 10.029425753830143, "wall_corner": 2.2114350412003305, "tile_vertical": 1.0914710113648947, "stripe_1": 1.4981777920548534, "stripe_2": 0.3837978321787298, "stripe_3": 3.2926728729008343, "stripe_4": 2.7412516909896, "cage_post": 5.026196858192163, "box_corner": 0.5435323324289093, "grill_back": 3.5550210021148696, "grill_front": 1.7717190304777877, "cage_top_left": 2.662866445615572, "lower_back": 2.004687646849801, "lower_front": 2.6464799275829396, "lower_top_left": 3.8651708969272933, "slat": 5.487491786240904}}};
 const PAGE = {"mode": "game", "photos": null};
 const PHOTOS = {"size": [1080, 1440], "group2": 189, "upside_down": [380], "easter_eggs": {}, "H": {}};
-const VERSION = "c72cdf7";
+const VERSION = "3a63475";
 function uaCode(ua = navigator.userAgent) {
   const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/.test(ua);
   const app = /Barcelona/.test(ua) ? "t" : /Instagram/.test(ua) ? "g" : /FBAN|FBAV|FB_IAB/.test(ua) ? "f" : /\bLine\//.test(ua) ? "l"
@@ -1069,7 +1142,7 @@ function startGame() {
   setFollow(false); look.yaw = look.pitch = 0; camZoom = 1; document.getElementById("camZoom").value = 100;
   setMode("Day 1");
   blanketDrop();
-  game = { drags: 0, over: false, overStep: Infinity, off: 0, start: BL.clips.map(() => null), final: null,
+  game = { drags: 0, over: false, overStep: Infinity, off: 0, start: BL.clips.map(() => null), final: null, ach: { flights: 0 },
     rec: { init: blanketState(), step: 0, events: [], marks: [], motion: [], hp: [], hits: [], snaps: [], end: null, last: null } };
   recordSnap(true);
   title.on = false; sway = null; document.getElementById("title").style.display = "none";
@@ -1118,6 +1191,7 @@ function titleFrame() {
   sway.a = -SWAY_DEG * Math.PI / 180 * wv * (wv > 0 ? 1 : 0.5);
 }
 const SNAP_EVERY = 4, SNAP_IDLE = 120, SNAP_SCALE = 2000, SNAP_STILL = 0.01;
+const SNAP_MAX = 6000, SNAP_HEAD = 90, SNAP_TAIL = 1800;
 function recordSnap(force) {
   const r = game && game.rec;
   if (!r || r.end != null || game.saver) return;
@@ -1132,6 +1206,10 @@ function recordSnap(force) {
     }
   }
   r.snaps.push({ step: r.step, q: Int16Array.from(BL.pos, v => Math.round(v * SNAP_SCALE)) });
+  if (r.snaps.length > SNAP_MAX) {
+    const mid = r.snaps.slice(SNAP_HEAD, -SNAP_TAIL);
+    r.snaps = [...r.snaps.slice(0, SNAP_HEAD), ...mid.filter((_, k) => k % 2 === 0), ...r.snaps.slice(-SNAP_TAIL)];
+  }
 }
 function recordMotion() {
   const r = game && game.rec;
@@ -1181,17 +1259,17 @@ function clipSlip() {
     if (clipEdge(ids) < BL.RELEASE_EDGE) { for (const i of ids) BL.pinned[i] = 0; syncClipButton(); }
   });
 }
-const onShelfAt = i => {
-  const x = BL.pos[i * 3], y = BL.pos[i * 3 + 1], z = BL.pos[i * 3 + 2];
+const onShelfAt = (i, p = BL.pos, k = 1) => {
+  const x = p[i * 3] / k, y = p[i * 3 + 1] / k, z = p[i * 3 + 2] / k;
   return x > -1 && x < 0 && z > SHELF.z0 && z < SHELF.z1 && y > SHELF.roof(x) - 0.05 && y < SHELF.roof(x) + 0.5;
 };
 function onShelf() {
   for (let i = 0; i < BL.w.length; i++) if (onShelfAt(i)) return true;
   return false;
 }
-const onLowerAt = i => {
+const onLowerAt = (i, p = BL.pos, k = 1) => {
   if (!LOWER) return false;
-  const x = BL.pos[i * 3], y = BL.pos[i * 3 + 1], z = BL.pos[i * 3 + 2];
+  const x = p[i * 3] / k, y = p[i * 3 + 1] / k, z = p[i * 3 + 2] / k;
   return x > LOWER.x0 && x < 0 && z > LOWER.z0 && z < LOWER.z1 && y > LOWER.roof(x) - 0.05 && y < LOWER.roof(x) + 0.5;
 };
 function onLower() {
@@ -1204,7 +1282,7 @@ function clipsOffShelf() {
   if (!onShelf()) return setPins(() => false);
   for (const ids of BL.clips) {
     const held = ids.filter(i => BL.pinned[i]);
-    if (held.length && !held.some(onShelfAt)) { for (const i of held) BL.pinned[i] = 0; syncClipButton(); }
+    if (held.length && !held.some(i => onShelfAt(i))) { for (const i of held) BL.pinned[i] = 0; syncClipButton(); }
   }
 }
 const LAND_STILL = 3, LAND_STEPS = 12, LAND_MAX = 180;
@@ -1229,14 +1307,15 @@ function gameStep() {
   if (!game || game.over) return;
   BL.clips.forEach((ids, k) => { const e = game.start[k] == null && clipEdge(ids); if (e) game.start[k] = e; });
   clipSlip(); clipsOffShelf();
+  if (!game.sim && byHand(game)) achAtStep();
   if (BL.clipped || BL.grab) { game.off = 0; return; }
   game.off = upYet() ? 0 : game.off + 1;
   if (game.off > 60) {
     game.over = true; game.overStep = game.rec.step; game.freeStep = game.rec.step - game.off;
     game.fellDay = Math.max(1, dayOf(game.drags - 1));
-    if (game.saver) { saver.falls++; saver.days += game.fellDay; saverFell(); }
+    if (game.saver) { saver.falls++; saver.days += game.fellDay; if (saver.falls === 7) achEvent("saver-master"); saverFell(); }
     else if (!game.sim) { saveResult(); showRecords(document.getElementById("rBest"), true); }
-    if (!game.sim) countFall();
+    if (!game.sim) { countFall(); achAtFall(); }
   }
 }
 const AUTO_AFTER = 10, AUTO_MOVE_MS = 250, AUTO_HOLD_MS = 100, AUTO_REST_MS = 150;
@@ -1346,14 +1425,16 @@ async function saverSettle(g0) {
 async function saverTimeStop(g0) {
   const t0 = performance.now();
   saver.stop = true; BL.paused = true;
+  let seen = false;
   while (saver.stop && game === g0) {
     const ts = (performance.now() - t0) / 1000, tp = ts - SAVER_STOP_S;
     if (tp >= 0) BL.paused = false;
     stopShow(stopWords(ts, tp), tp < 0);
-    if (tp >= STOP_OUT) break;
+    if (tp >= STOP_OUT) { seen = true; break; }
     await frame();
   }
   if (saver.stop) { saver.stop = false; BL.paused = false; stopShow("", false); }
+  if (seen) achEvent("the-world-saver");
 }
 function saverFell() {
   const g0 = game;
@@ -1387,6 +1468,7 @@ function gameRelease() {
   const counted = BL.grab.target.distanceTo(BL.grab.from) >= 0.05, g = BL.grab;
   if (counted) { game.drags++; game.rec.marks.push([game.rec.step, game.drags]); }
   if (!game.sim) { logDrag(g, counted); if (counted) hpDrag(g); if (counted && game.drags === 1) gcEvent("start", "開始拉被被"); }
+  if (!game.sim && byHand(game)) achAtRelease(g);
 }
 function hpValue() {
   if (game.over) return 0;
@@ -1492,7 +1574,7 @@ const bestOf = (h, auto) => h.reduce((b, x) => x.auto && !auto ? b : !b || x.dra
 const longestOf = (h, auto) => h.reduce((b, x) => x.auto && !auto ? b : !b || x.drags >= b.drags ? x : b, null);
 function heldIds(h) {
   const mine = h.filter(x => !x.auto), auto = h.filter(x => x.auto);
-  return new Set([bestOf(mine), longestOf(mine), bestOf(auto, true), longestOf(auto, true)].filter(Boolean).map(x => x.id));
+  return new Set([...[bestOf(mine), longestOf(mine), bestOf(auto, true), longestOf(auto, true)].filter(Boolean).map(x => x.id), ...achGames()]);
 }
 const BEST_AUTO_KEY = "blanket.bestAuto.v1";
 const bestAuto = () => { try { return localStorage.getItem(BEST_AUTO_KEY) === "1"; } catch (_) { return false; } };
@@ -1504,6 +1586,376 @@ function saveResult() {
   h.unshift({ id: game.histId, t: game.histId, day: game.fellDay, drags: game.drags, auto: !!game.auto, replay: false });
   saveHist(h);
 }
+const ICON = (() => {
+  const METAL = {
+    steel: ["#9aa6b2", "#5e6b78", "#2f3841"],
+    bronze: ["#f2c08f", "#c27a3e", "#7a4520"],
+    silver: ["#ffffff", "#c3cad1", "#7c858e"],
+    gold: ["#fff1b8", "#f2b93b", "#a8721a"],
+    platinum: ["#ffffff", "#cfe6f0", "#5f8aa3"],
+  };
+  let uid = 0;
+  const SPARKLE = `<path d="M31 1.5 L32.2 5 L35.7 6.2 L32.2 7.4 L31 10.9 L29.8 7.4 L26.3 6.2 L29.8 5 Z" fill="#fff" stroke="#9fd3ea" stroke-width="0.6"/>`;
+  function stopwatch(m) {
+    const [l, c, d] = METAL[m], g = `sw${uid++}`;
+    return `<svg viewBox="0 0 40 40"><defs><linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1">` +
+      `<stop offset="0" stop-color="${l}"/><stop offset="0.55" stop-color="${c}"/><stop offset="1" stop-color="${d}"/></linearGradient></defs>` +
+      `<rect x="17" y="3" width="6" height="4" rx="1" fill="url(#${g})" stroke="${d}" stroke-width="0.8"/>` +
+      `<rect x="18.8" y="6.5" width="2.4" height="3" fill="${d}"/>` +
+      `<rect x="29.5" y="8.5" width="5" height="3.2" rx="1" transform="rotate(45 32 10)" fill="url(#${g})" stroke="${d}" stroke-width="0.8"/>` +
+      `<circle cx="20" cy="23" r="14" fill="url(#${g})" stroke="${d}" stroke-width="1"/>` +
+      `<circle cx="20" cy="23" r="10.5" fill="#f8f4ea" stroke="${d}" stroke-width="0.8"/>` +
+      [0, 90, 180, 270].map(a => `<rect x="19.4" y="13.4" width="1.2" height="2.6" fill="#555" transform="rotate(${a} 20 23)"/>`).join("") +
+      `<path d="M20 23 L20 15.5" stroke="#c0392b" stroke-width="1.6" stroke-linecap="round" transform="rotate(50 20 23)"/>` +
+      `<circle cx="20" cy="23" r="1.6" fill="#333"/>${m === "platinum" ? SPARKLE : ""}</svg>`;
+  }
+  function shield(m) {
+    const [l, c, d] = METAL[m], g = `sh${uid++}`;
+    return `<svg viewBox="0 0 40 40"><defs><linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1">` +
+      `<stop offset="0" stop-color="${l}"/><stop offset="0.55" stop-color="${c}"/><stop offset="1" stop-color="${d}"/></linearGradient></defs>` +
+      `<path d="M20 3 L34 8 V19 C34 28 27.5 34 20 37 C12.5 34 6 28 6 19 V8 Z" fill="url(#${g})" stroke="${d}" stroke-width="1.2" stroke-linejoin="round"/>` +
+      `<path d="M20 7.5 L30 11 V19 C30 25.5 25.5 30 20 32.5 C14.5 30 10 25.5 10 19 V11 Z" fill="none" stroke="${l}" stroke-width="1" opacity="0.7"/>` +
+      `<path d="M14 19.5 L18.5 24 L26.5 15" fill="none" stroke="${d}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` +
+      (m === "platinum" ? SPARKLE : "") +
+      `</svg>`;
+  }
+  function carpet() {
+    const c = `cp${uid++}`;
+    const edge = "M4 16 C10 12 15 18 21 14 C26 11 31 13 36 10 L36 23 C31 26 26 24 21 27 C15 31 10 25 4 29 Z";
+    const along = dy => `M4 ${16 + dy} C10 ${12 + dy} 15 ${18 + dy} 21 ${14 + dy} C26 ${11 + dy} 31 ${13 + dy} 36 ${10 + dy}`;
+    const star = (x, y, r) => `<path d="M${x} ${y - r} L${x + r * 0.28} ${y - r * 0.28} L${x + r} ${y} L${x + r * 0.28} ${y + r * 0.28} L${x} ${y + r} L${x - r * 0.28} ${y + r * 0.28} L${x - r} ${y} L${x - r * 0.28} ${y - r * 0.28} Z" fill="#ffcf6e"/>`;
+    const fringe = (x, y0, y1, dx) => Array.from({ length: 6 }, (_, k) => { const y = y0 + (y1 - y0) * k / 5; return `M${x} ${y} l${dx} 0.6`; }).join(" ");
+    return `<svg viewBox="0 0 40 40"><defs><clipPath id="${c}"><path d="${edge}"/></clipPath></defs>` +
+      `<path d="M9 33 C14 31 18 35 23 33 M17 37 C21 35 25 38 29 36" stroke="#ffffff59" stroke-width="1.2" fill="none" stroke-linecap="round"/>` +
+      `<g clip-path="url(#${c})"><rect width="40" height="40" fill="#f3eee4"/>` +
+      `<g fill="none" opacity="0.85"><path d="${along(4)}" stroke="#c0392b" stroke-width="2.4"/><path d="${along(7.5)}" stroke="#2e5e9e" stroke-width="1.3"/>` +
+      `<path d="${along(10.5)}" stroke="#c0392b" stroke-width="2.4"/>` +
+      `<path d="M10 8 L10 34 M28 6 L28 32" stroke="#c0392b" stroke-width="2.4"/><path d="M19 8 L19 34" stroke="#2e5e9e" stroke-width="1.3"/></g>` +
+      `<path d="M4 29 C10 25 15 31 21 27 C26 24 31 26 36 23" stroke="#b8ac98" stroke-width="2" fill="none"/></g>` +
+      `<path d="${edge}" fill="none" stroke="#7a5236" stroke-width="1" stroke-linejoin="round"/>` +
+      `<path d="${fringe(4, 16.5, 28.5, -2.4)} ${fringe(36, 10.5, 22.5, 2.4)}" stroke="#ffcf6e" stroke-width="0.9" stroke-linecap="round"/>` +
+      star(31, 4.5, 3.4) + star(11, 7, 2.2) + star(37, 30, 1.8) + `</svg>`;
+  }
+  function plaid(clip, x, y, w, h, id) {
+    const st = [];
+    for (const [f, col, sw] of [[0.22, "#c0392b", 0.16], [0.5, "#2e5e9e", 0.08], [0.78, "#c0392b", 0.16]]) {
+      st.push(`<rect x="${x + w * f - w * sw / 2}" y="${y}" width="${w * sw}" height="${h}" fill="${col}" opacity="0.75"/>`);
+      st.push(`<rect x="${x}" y="${y + h * f - h * sw / 2}" width="${w}" height="${h * sw}" fill="${col}" opacity="0.75"/>`);
+    }
+    return `<defs><clipPath id="${id}"><path d="${clip}"/></clipPath></defs><g clip-path="url(#${id})"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#f3eee4"/>${st.join("")}</g>` +
+      `<path d="${clip}" fill="none" stroke="#7a5236" stroke-width="0.9" stroke-linejoin="round"/>`;
+  }
+  const badge = (x, y, text, fill = "#ffcf6e", ink = "#5a3d00") => `<circle cx="${x}" cy="${y}" r="6" fill="${fill}" stroke="#1f2228" stroke-width="1.2"/>` +
+    `<text x="${x}" y="${y + 3}" text-anchor="middle" font-size="8.5" font-weight="800" font-family="-apple-system, system-ui, sans-serif" fill="${ink}">${text}</text>`;
+  function firstFall() {
+    const id = `ff${uid++}`;
+    return `<svg viewBox="0 0 40 40"><path d="M12 4 L12 10 M18 2 L18 9 M24 4 L24 10" stroke="#ffffff66" stroke-width="1.4" stroke-linecap="round"/>` +
+      `<g transform="rotate(-14 19 24)">${plaid("M8 14 C14 12 22 16 30 13 L31 33 C24 35 15 31 8 34 Z", 6, 11, 27, 25, id)}</g>` + badge(32, 31, "1") + `</svg>`;
+  }
+  function backHome() {
+    const id = `bh${uid++}`;
+    return `<svg viewBox="0 0 40 40"><rect x="3" y="4" width="3.5" height="33" fill="#d9d4cc"/>` +
+      `<rect x="6.5" y="19" width="21" height="4" fill="#8c8f94"/><rect x="6.5" y="23" width="21" height="13" fill="#5d636b" opacity="0.55"/>` +
+      plaid("M6.5 16 L27.5 16 C29.5 16 30 17 30 19 L30 33 C28.5 34.5 27 32.5 25.5 33.8 L25.5 19 L6.5 19 Z", 6, 15, 25, 20, id) +
+      `<rect x="10" y="13.5" width="4.5" height="2.8" rx="0.6" fill="#333"/>` +
+      `<path d="M33 5 A6 6 0 1 0 36 10" fill="none" stroke="#4cd787" stroke-width="2.2" stroke-linecap="round"/><path d="M30.5 3 L33.5 5.2 L30.6 7.8" fill="none" stroke="#4cd787" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+  function newHome(dir) {
+    const arrow = dir === "right" ? `<path d="M23 30 H36 M32 26 L36 30 L32 34" stroke="#ffcf6e" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+      : `<g stroke="#7a4a1e" stroke-width="0.8" stroke-linejoin="round">` +
+        `<path d="M27.2 14 L29.6 14 L31.4 38 L29 38 Z" fill="#d39a55"/><path d="M33.6 14 L36 14 L37.8 38 L35.4 38 Z" fill="#d39a55"/>` +
+        [18, 23, 28, 33].map(y => `<rect x="${29.6 + (y - 14) * 0.075}" y="${y}" width="4.2" height="1.8" fill="#e8b36c"/>`).join("") + `</g>`;
+    return `<svg viewBox="0 0 40 40"><path d="M4 17 L15 7 L26 17" fill="#c0392b" stroke="#7a2318" stroke-width="1" stroke-linejoin="round"/>` +
+      `<rect x="7" y="16" width="16" height="15" fill="#f3eee4" stroke="#7a5236" stroke-width="1"/>` +
+      `<rect x="7" y="20" width="16" height="2" fill="#2e5e9e" opacity="0.7"/><rect x="13" y="16" width="2.4" height="15" fill="#c0392b" opacity="0.6"/>` +
+      `<rect x="17" y="24" width="4" height="7" fill="#7a5236"/>` + arrow + `</svg>`;
+  }
+  function worldClock(x = 20, y = 20, r = 15) {
+    const k = r / 15;
+    return `<circle cx="${x}" cy="${y}" r="${r + 2.5 * k}" fill="#6b2fa0"/><circle cx="${x}" cy="${y}" r="${r}" fill="#1b1028" stroke="#fff" stroke-width="${1.6 * k}"/>` +
+      [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(a => `<rect x="${x - 0.6 * k}" y="${y - r + 1.5 * k}" width="${1.2 * k}" height="${(a % 90 ? 2 : 3.5) * k}" fill="#fff" transform="rotate(${a} ${x} ${y})"/>`).join("") +
+      `<path d="M${x} ${y} L${x} ${y - 9 * k}" stroke="#fff" stroke-width="${2 * k}" stroke-linecap="round" transform="rotate(-30 ${x} ${y})"/>` +
+      `<path d="M${x} ${y} L${x} ${y - 12 * k}" stroke="#ffcf6e" stroke-width="${1.3 * k}" stroke-linecap="round" transform="rotate(95 ${x} ${y})"/><circle cx="${x}" cy="${y}" r="${1.6 * k}" fill="#fff"/>`;
+  }
+  const theWorld = () => `<svg viewBox="0 0 40 40">${worldClock()}</svg>`;
+  const screen = inner => `<svg viewBox="0 0 40 40"><rect x="3" y="6" width="34" height="23" rx="2.5" fill="#2a2e36" stroke="#9aa0aa" stroke-width="1.4"/>` +
+    `<rect x="15" y="29" width="10" height="4" fill="#9aa0aa"/><rect x="11" y="33" width="18" height="2.4" rx="1.2" fill="#9aa0aa"/>${inner}</svg>`;
+  const theWorldSaver = () => screen(`<rect x="5" y="8" width="30" height="19" fill="#e9dff5"/>` + worldClock(20, 17.5, 7.5));
+  function saverMaster() {
+    const id = `sm${uid++}`;
+    return screen(`<rect x="5" y="8" width="30" height="19" fill="#1b2a44"/><circle cx="30" cy="12" r="2.2" fill="#ffe9a3"/>` +
+      `<g transform="rotate(12 18 18)">${plaid("M11 12 C15 11 20 13 25 11 L25 23 C20 25 15 22 11 24 Z", 10, 10, 16, 15, id)}</g>`)
+      .replace("</svg>", `<path d="M12 6 L14.5 1.5 L17.5 4.5 L20 0.8 L22.5 4.5 L25.5 1.5 L28 6 Z" fill="#ffcf6e" stroke="#a8721a" stroke-width="0.8" stroke-linejoin="round"/></svg>`);
+  }
+  const automata = () => `<svg viewBox="0 0 40 40"><path d="M7 21 C7 9 13 4 20 4 C27 4 33 9 33 21 L33 29 L29 26 L28 18 L12 18 L11 26 L7 29 Z" fill="#eef0f2"/>` +
+    `<path d="M11.5 17 C11.5 27 15 33 20 33 C25 33 28.5 27 28.5 17 Z" fill="#f6e3d4"/>` +
+    `<path d="M10.5 18 C16 16.5 24 16.5 29.5 18 L29.2 23.5 C24 22.2 16 22.2 10.8 23.5 Z" fill="#111"/>` +
+    `<path d="M9 12 C13 8 18 10 20 7 C22 10 27 8 31 12 L31 17 L9 17 Z" fill="#eef0f2"/>` +
+    `<path d="M17.5 28.5 C19 29.3 21 29.3 22.5 28.5" stroke="#b07a6a" stroke-width="0.9" fill="none" stroke-linecap="round"/>` +
+    `<path d="M14 36 L20 33 L26 36" stroke="#111" stroke-width="2.4" fill="none"/></svg>`;
+  const emil = (g = `em${uid++}`) => `<svg viewBox="0 0 40 40"><defs><radialGradient id="${g}" cx="0.38" cy="0.32" r="0.75"><stop offset="0" stop-color="#fbf6e6"/><stop offset="0.7" stop-color="#e6dcc0"/><stop offset="1" stop-color="#b9ac8a"/></radialGradient></defs>` +
+    `<circle cx="20" cy="20" r="17" fill="url(#${g})" stroke="#8a7d5e" stroke-width="0.8"/>` +
+    `<ellipse cx="13.3" cy="17" rx="4.6" ry="5.4" fill="#1d1a16"/><ellipse cx="26.7" cy="17" rx="4.6" ry="5.4" fill="#1d1a16"/>` +
+    `<circle cx="12" cy="15.2" r="1.2" fill="#fff" opacity="0.8"/><circle cx="25.4" cy="15.2" r="1.2" fill="#fff" opacity="0.8"/>` +
+    `<path d="M9.5 25.5 C14 31.5 26 31.5 30.5 25.5 C26 28 14 28 9.5 25.5 Z" fill="#1d1a16"/>` +
+    `<path d="M14 27.6 L14.4 29.3 M17.3 28.3 L17.5 30.2 M20 28.5 L20 30.4 M22.7 28.3 L22.5 30.2 M26 27.6 L25.6 29.3" stroke="#e6dcc0" stroke-width="0.9"/></svg>`;
+  const soon = () => `<svg viewBox="0 0 40 40"><rect x="1.5" y="9" width="37" height="22" rx="4" fill="#db6a41"/>` +
+    `<rect x="3.6" y="11.1" width="32.8" height="17.8" rx="2.6" fill="none" stroke="#fff" stroke-width="1.3"/>` +
+    `<text x="20" y="23.2" text-anchor="middle" font-size="8.6" font-weight="900" font-style="italic" font-family="-apple-system, system-ui, sans-serif" fill="#fff" letter-spacing="-0.2" textLength="24" lengthAdjust="spacingAndGlyphs">Soon!!</text></svg>`;
+  function secret() {
+    const id = `se${uid++}`;
+    return `<svg viewBox="0 0 40 40"><ellipse cx="20" cy="36" rx="14" ry="2.2" fill="#000" opacity="0.3"/>` +
+      plaid("M6 35 C6 26 10 17 20 17 C30 17 34 26 34 35 C31 33.5 29 35.5 26.5 34 C24 35.5 22 33.5 20 35 C18 33.5 16 35.5 13.5 34 C11 35.5 9 33.5 6 35 Z", 5, 16, 30, 20, id) +
+      `<text x="20" y="15" text-anchor="middle" font-size="15" font-weight="900" font-family="-apple-system, system-ui, sans-serif" fill="#ffcf6e" stroke="#1f2228" stroke-width="2" paint-order="stroke">?</text>` +
+      `<path d="M31 6 L31.8 8.2 L34 9 L31.8 9.8 L31 12 L30.2 9.8 L28 9 L30.2 8.2 Z" fill="#ffcf6e"/><path d="M9 9 L9.5 10.5 L11 11 L9.5 11.5 L9 13 L8.5 11.5 L7 11 L8.5 10.5 Z" fill="#ffcf6e"/></svg>`;
+  }
+  return { stopwatch, shield, carpet, firstFall, backHome, newHome, theWorld, theWorldSaver, saverMaster, automata, emil, soon, secret };
+})();
+const oldest = (h, f) => { for (let k = h.length - 1; k >= 0; k--) if (f(h[k])) return h[k]; return null; };
+const byHand = g => !g.saver && !g.auto;
+const ACH = [
+  { id: "soon", icon: ICON.soon, name: "順順順", desc: "被被順起來～用剛好 33 次拉掉被被。",
+    check: g => byHand(g) && g.drags === 33 },
+  { id: "first", icon: ICON.firstFall, name: "掉下來了", desc: "讓小被被第一次掉下去",
+    check: byHand, past: h => oldest(h, x => !x.auto) },
+  { id: "speed-iron", icon: () => ICON.stopwatch("steel"), name: "鐵牌速通", desc: "用 11～15 次把被被拉下去",
+    check: g => byHand(g) && g.drags >= 2 && g.drags <= 15 },
+  { id: "speed-bronze", icon: () => ICON.stopwatch("bronze"), name: "銅牌速通", desc: "一次就把被被拉下去",
+    check: g => byHand(g) && g.drags === 1, past: h => oldest(h, x => !x.auto && x.drags === 1) },
+  { id: "speed-silver", icon: () => ICON.stopwatch("silver"), name: "銀牌速通", desc: "用 6～10 次把被被拉下去",
+    check: g => byHand(g) && g.drags >= 2 && g.drags <= 10 },
+  { id: "speed-gold", icon: () => ICON.stopwatch("gold"), name: "金牌速通", desc: "用 3～5 次把被被拉下去",
+    check: g => byHand(g) && g.drags >= 2 && g.drags <= 5 },
+  { id: "speed-platinum", icon: () => ICON.stopwatch("platinum"), name: "白金速通", desc: "用 2 次把被被拉下去", show: "icon",
+    check: g => byHand(g) && g.drags === 2 },
+  { id: "hold-bronze", icon: () => ICON.shield("bronze"), name: "銅牌撐住", desc: "被被撐住 100 次以上",
+    check: g => byHand(g) && g.drags >= 100 },
+  { id: "hold-silver", icon: () => ICON.shield("silver"), name: "銀牌撐住", desc: "被被撐住 300 次以上", show: "name",
+    check: g => byHand(g) && g.drags >= 300, past: h => oldest(h, x => !x.auto && x.drags >= 300) },
+  { id: "hold-gold", icon: () => ICON.shield("gold"), name: "黃金撐住", desc: "被被撐住 1000 次以上", show: "name",
+    check: g => byHand(g) && g.drags >= 1000, past: h => oldest(h, x => !x.auto && x.drags >= 1000) },
+  { id: "hold-platinum", icon: () => ICON.shield("platinum"), name: "白金撐住", desc: "被被撐住 10000 次以上", show: "icon",
+    check: g => byHand(g) && g.drags >= 10000, past: h => oldest(h, x => !x.auto && x.drags >= 10000) },
+  { id: "carpet", icon: ICON.carpet, name: "魔毯", desc: "被被飛起來了", show: "name",
+    check: g => byHand(g) && g.ach.flights >= FLIGHTS },
+  { id: "back", icon: ICON.backHome, name: "放回去", desc: "把被被放回去", show: "name" },
+  { id: "move-right", icon: () => ICON.newHome("right"), name: "被被搬新家", gc: "被被搬新家（右邊）", desc: "被被在右邊找到新家", show: "name" },
+  { id: "move-down", icon: () => ICON.newHome("down"), name: "被被搬新家", gc: "被被搬新家（樓下）", desc: "被被搬到樓下", show: "name" },
+  { id: "the-world", icon: ICON.theWorld, name: "The World!", desc: "ザ・ワールド！", show: "name" },
+  { id: "the-world-saver", icon: ICON.theWorldSaver, name: "The World!!!!!", desc: "ザ・ワールド！！！", show: "name" },
+  { id: "automata", icon: ICON.automata, name: "自動人形", desc: "自動拉掉被被",
+    check: g => !g.saver && !!g.auto },
+  { id: "nier", icon: ICON.emil, name: "NieR", desc: "儘管如此，你仍舊希望拯救某個素不相識的人嗎？" },
+  { id: "saver-master", icon: ICON.saverMaster, name: "螢幕保護大師", desc: "螢幕被好好保護了。如果你是用映像管螢幕的話。", show: "name" },
+];
+const ACH_KEY = "blanket.ach.v1", ACH_TOAST_MS = 3200, ACH_TOAST_EACH_MS = 600;
+const MEDALS = [
+  ["bronze", 10, "銅牌"], ["gold", 15, "金牌"], ["platinum", 20, "白金獎牌"],
+];
+const FLIGHTS = 5, FLIGHT_STEPS = 36, FLIGHT_GAP = SNAP_IDLE, REST_STEPS = 120;
+const SHELF_MID = (SHELF.z0 + SHELF.z1) / 2;
+function achAtRelease(g) {
+  const n = game.ach;
+  if (BL.clips.every(ids => { const a = clipAnchor(ids); return a && a.z > SHELF_MID; })) achNow("move-right");
+  const snaps = game.rec.snaps;
+  let k = snaps.length;
+  while (k > 0 && snaps[k - 1].step >= g.step0) k--;
+  let from = null, prev = null;
+  for (; k < snaps.length; k++) {
+    const { step, q } = snaps[k];
+    let air = true;
+    for (let i = 0; i < BL.w.length && air; i++) air = !onShelfAt(i, q, SNAP_SCALE) && !onLowerAt(i, q, SNAP_SCALE);
+    if (!air || (prev != null && step - prev > FLIGHT_GAP)) from = null;
+    if (air) { if (from == null) from = step; if (step - from >= FLIGHT_STEPS) { n.flights++; return; } }
+    prev = step;
+  }
+}
+function achAtStep() {
+  const n = game.ach, m = game.rec.motion;
+  n.still = BL.grab || (m[m.length - 1] ?? 0) >= LAND_STILL ? 0 : (n.still || 0) + 1;
+  if (!n.still) n.looked = false;
+  if (n.still < REST_STEPS || n.looked || BL.clipped) return;
+  n.looked = true;
+  if (!onShelf() && onLower()) achNow("move-down");
+  if (!backCheck()) achNow("back");
+}
+function achNow(id) {
+  if (achLoad().got[id]) return;
+  (game.ach.now ||= []).push(id);
+  achGrant([[ACH.find(a => a.id === id), null]]);
+}
+function backCheck() {
+  const z = i => BL.pos[i * 3 + 2], x = i => BL.pos[i * 3];
+  const clips = BL.CLIP_V.map(([v0, v1]) => BL.CLIP_U.map(u => { const r = []; for (let v = v0; v <= v1; v++) r.push(v * BL.NU + u); return r; }));
+  const all = clips.flat(2);
+  if (!all.every(i => onShelfAt(i))) return "不在陽台頂上";
+  if (!all.every(i => z(i) < SHELF_MID)) return "不在左半邊";
+  if (Math.max(...clips[0].flat().map(z)) >= Math.min(...clips[1].flat().map(z))) return "兩個夾子的順序不對";
+  for (const [near, far] of clips) {
+    for (const row of [near, far]) for (let k = 1; k < row.length; k++) if (z(row[k]) <= z(row[k - 1])) return "左右順序不對";
+    for (let k = 0; k < near.length; k++) if (x(near[k]) <= x(far[k])) return "前後順序不對";
+  }
+  return "";
+}
+function achEvent(id, gameId) {
+  const x = gameId && (loadHist().find(r => r.id === gameId) || Object.values(achLoad().got).find(r => r.game === gameId));
+  achGrant([[ACH.find(a => a.id === id), x ? { id: gameId, t: x.t, day: x.day, drags: x.drags } : null]]);
+}
+const achLoad = () => { let st = null; try { st = JSON.parse(localStorage.getItem(ACH_KEY)); } catch (_) {} return { got: {}, sent: [], past: [], seen: [], medals: {}, ...st }; };
+const achSpan = st => { const ts = Object.values(st.got).map(x => x.t); return ts.length ? Math.max(...ts) - Math.min(...ts) : 0; };
+function achTook(ms) {
+  const m = Math.floor(ms / 60000), h = Math.floor(m / 60), d = Math.floor(h / 24);
+  return d ? `${d} 天${h % 24 ? ` ${h % 24} 小時` : ""}` : h ? `${h} 小時${m % 60 ? ` ${m % 60} 分` : ""}` : m ? `${m} 分鐘` : "不到 1 分鐘";
+}
+const achSave = st => { try { localStorage.setItem(ACH_KEY, JSON.stringify(st)); } catch (_) {} };
+const achGames = () => Object.values(achLoad().got).map(x => x.game).filter(Boolean);
+const achCount = st => ACH.filter(a => st.got[a.id]).length;
+const medalOf = n => MEDALS.reduce((m, [k, at]) => n >= at ? k : m, "");
+const achUI = { queue: [], busy: false, open: false, from: null, timer: 0, view: null, sel: null };
+function achGrant(list, past) {
+  const st = achLoad(), before = medalOf(achCount(st)), fresh = [];
+  for (const [a, x] of list) {
+    if (!a || st.got[a.id]) continue;
+    const r = x && x !== true ? x : null;
+    st.got[a.id] = { t: past && r ? r.t : Date.now(), ...(r && { game: r.id, day: r.day, drags: r.drags }), ...(past && { past: true }) };
+    fresh.push(a);
+  }
+  if (!fresh.length) return;
+  const n = achCount(st), m = medalOf(n);
+  for (const [k, at] of MEDALS) if (n >= at && !st.medals[k]) st.medals[k] = { t: Date.now(), took: achSpan(st) };
+  achSave(st);
+  achUI.queue.push({ list: fresh, past });
+  if (m && m !== before) achUI.queue.push({ medal: m });
+  if (navigator.storage && navigator.storage.persist && !/Firefox/.test(navigator.userAgent)) navigator.storage.persist().catch(() => {});
+  achHub(); achSend();
+}
+function achSend() {
+  if (!(window.goatcounter && goatcounter.count)) return;
+  const st = achLoad(), n = achCount(st), want = ACH.filter(a => st.got[a.id]).map(a => [`ach-${a.id}`, `成就：${a.gc || a.name}`]);
+  for (const [k, at, name] of MEDALS) if (n >= at) want.push([`ach-${k}`, `成就：${name}`]);
+  const todo = want.filter(([p]) => !st.sent.includes(p));
+  if (!todo.length) return;
+  for (const [p, t] of todo) gcEvent(p, t);
+  st.sent.push(...todo.map(([p]) => p)); achSave(st);
+}
+addEventListener("load", achSend);
+function achAtFall() {
+  const h = game.saver ? null : loadHist(), x = h && h.find(r => r.id === game.histId);
+  if (x && game.ach.now) {
+    const st = achLoad();
+    for (const id of game.ach.now) if (st.got[id] && !st.got[id].game) Object.assign(st.got[id], { game: x.id, day: x.day, drags: x.drags });
+    achSave(st);
+  }
+  achGrant(ACH.filter(a => { try { return a.check && a.check(game, h); } catch (e) { console.warn(a.id, e); return false; } }).map(a => [a, x]));
+}
+function achBackfill() {
+  const st = achLoad(), h = loadHist(), todo = ACH.filter(a => a.past && !st.past.includes(a.id));
+  if (!todo.length) return;
+  const found = todo.filter(a => !st.got[a.id]).map(a => { try { return [a, a.past(h)]; } catch (_) { return [a, null]; } }).filter(([, x]) => x);
+  st.past.push(...todo.map(a => a.id)); achSave(st);
+  achGrant(found, true);
+}
+const achWait = () => !!game && !game.saver && game.over && document.getElementById("result").style.display !== "block";
+function achRun() {
+  if (achUI.busy || !achUI.queue.length || achWait()) return;
+  achUI.busy = true;
+  const it = achUI.queue.shift();
+  if (it.medal) return achMedal(it.medal);
+  const el = document.getElementById("achToast"), { list, past } = it, n = list.length;
+  const head = past ? `從以前的紀錄找到 ${n} 個成就` : n > 1 ? `解鎖 ${n} 個成就` : "解鎖成就";
+  el.innerHTML = n === 1 ? `<span class="achIc">${list[0].icon()}</span><span><small>${head}</small><b>${list[0].name}</b></span>` :
+    `<span><small>${head}</small><ol class="achMany">${list.map(a => `<li><span class="achIc">${a.icon()}</span><b>${a.name}</b></li>`).join("")}</ol></span>`;
+  el.classList.add("on");
+  achUI.timer = setTimeout(achNext, ACH_TOAST_MS + Math.min(n - 1, 6) * ACH_TOAST_EACH_MS);
+}
+function achNext() {
+  clearTimeout(achUI.timer);
+  document.getElementById("achToast").classList.remove("on");
+  setTimeout(() => { achUI.busy = false; achRun(); }, 400);
+}
+function achMedal(m) {
+  const c = document.getElementById("medalCard");
+  c.querySelector(".medal").className = `medal ${m}`;
+  const [, at, name] = MEDALS.find(([k]) => k === m);
+  c.querySelector("h2").textContent = `${name}！`;
+  const got = achLoad().medals[m];
+  c.querySelector("p").textContent = `解鎖了 ${at} 個成就` + (got ? `，花了 ${achTook(got.took)}` : "");
+  c.classList.remove("still"); c.style.display = "block"; document.getElementById("medalDim").style.display = "block";
+}
+document.querySelector("#medalCard button").onclick = () => {
+  document.getElementById("medalCard").style.display = "none"; document.getElementById("medalDim").style.display = "none";
+  achUI.busy = false; achRun();
+};
+const achUnseen = st => ACH.filter(a => st.got[a.id] && !st.seen.includes(a.id)).map(a => a.id);
+function achHub() {
+  const st = achLoad(), n = achCount(st), unseen = achUnseen(st).length > 0;
+  for (const b of document.querySelectorAll(".achHub")) {
+    b.innerHTML = `<i class="medal ${medalOf(n)}"></i><span>${n}/${ACH.length}</span>`;
+    b.classList.toggle("new", unseen);
+  }
+}
+const APP_NAMES = { t: "Threads", g: "Instagram", f: "Facebook", l: "LINE", x: "這個 App" };
+function achHint() {
+  const c = uaCode();
+  if (c[0] === c[0].toUpperCase()) return "";
+  const app = APP_NAMES[c[1]], br = c[0] === "i" ? "Safari" : c[0] === "a" ? "Chrome" : "瀏覽器", w = s => /^[A-Za-z]/.test(s) ? ` ${s} ` : s;
+  return `<p class="achHint">成就只存在${w(app)}的瀏覽器裡，可能會不見；用${w(br)}開比較穩。</p>`;
+}
+async function achRender() {
+  const st = achLoad(), n = achCount(st), m = medalOf(n), unseen = achUnseen(st);
+  const top = Math.max(MEDALS[MEDALS.length - 1][1], ACH.length), up = MEDALS.find(([, at]) => n < at);
+  let have = new Set(); try { have = new Set(await idbDo("readonly", s => s.getAllKeys())); } catch (_) {}
+  achUI.view = { st, have, unseen }; achUI.sel = null;
+  const next = up ? `再 ${up[1] - n} 個拿${up[2]}` : n < ACH.length ? `還有 ${ACH.length - n} 個沒解鎖` : "成就全部解鎖了！";
+  const cell = a => {
+    const x = st.got[a.id], show = x ? "all" : a.show || "all";
+    const cls = [x ? "got" : "no", show === "secret" && "secret", unseen.includes(a.id) && "new", achUI.sel === a.id && "sel"].filter(Boolean).join(" ");
+    return `<li class="${cls}" data-ach="${a.id}"><span class="achIc">${show === "secret" ? ICON.secret() : a.icon()}</span>` +
+      `<i>${show === "secret" || show === "icon" ? "？？？" : a.name}</i></li>`;
+  };
+  document.getElementById("aCount").textContent = `${n} / ${ACH.length}`;
+  document.getElementById("aList").innerHTML = `<div class="achTop"><i class="medal ${m}"></i><div>` +
+    `<b>${m ? MEDALS.find(([k]) => k === m)[2] : "還沒有獎牌"}${m && st.medals[m] ? `<small class="took">花了 ${achTook(st.medals[m].took)}</small>` : ""}</b>` +
+    `<small>${next}</small></div></div>` +
+    `<div class="achBar"><i style="width:${Math.min(1, n / top) * 100}%"></i>` +
+    MEDALS.slice(0, -1).map(([, at]) => `<s style="left:${at / top * 100}%"></s>`).join("") + `</div>` +
+    achHint() + `<ol class="achGrid">${ACH.map(cell).join("")}</ol><div class="achDetail"></div>`;
+  achDetail();
+}
+function achDetail() {
+  const el = document.querySelector("#aList .achDetail"), a = ACH.find(a => a.id === achUI.sel);
+  if (!el) return;
+  el.className = "achDetail" + (a ? "" : " none");
+  if (!a) { el.textContent = "點一下圖示，看看是什麼成就"; return; }
+  const { st, have } = achUI.view, x = st.got[a.id], show = x ? "all" : a.show || "all";
+  const date = t => { const d = new Date(t); return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`; };
+  if (!x) el.classList.add("no");
+  if (show === "secret") el.classList.add("secret");
+  el.innerHTML = `<span class="achIc">${show === "secret" ? ICON.secret() : a.icon()}</span>` +
+    `<span class="tx"><b>${show === "secret" || show === "icon" ? "？？？" : a.name}</b>` +
+    `<small>${show === "all" ? a.desc : show === "secret" ? a.hint || "？？？" : "？？？"}</small>` +
+    (x ? `<small class="when">${date(x.t)}${x.day ? ` · 第 ${x.day} 天 ${x.drags} 次` : ""}</small>` : "") + `</span>` +
+    (x && x.game && have.has(x.game) ? `<button data-replay="${x.game}">重播</button>` : "");
+}
+document.getElementById("aList").addEventListener("click", e => {
+  const li = e.target.closest("li[data-ach]");
+  if (!li) return;
+  achUI.sel = li.dataset.ach; gcEvent("ach-tap", "點了成就的圖示");
+  for (const c of document.querySelectorAll("#aList .achGrid li")) c.classList.toggle("sel", c === li);
+  achDetail();
+  if (li.classList.contains("new")) {
+    const st = achLoad(); st.seen = [...new Set([...st.seen, achUI.sel])]; achSave(st);
+    li.classList.remove("new"); achHub();
+  }
+});
+async function openAch(from) {
+  if (achUI.open || hist.open) return;
+  achUI.from = from; gcEvent("ach-panel", "打開成就");
+  await achRender();
+  document.getElementById("aList").scrollTop = 0;
+  flip(document.getElementById(from), document.getElementById("ach"), "flex", () => { achUI.open = true; });
+}
+function closeAch() { flip(document.getElementById("ach"), document.getElementById(achUI.from), "block", () => { achUI.open = false; }); }
 const KEEP_LAST = 50, STORE_EVERY = 2, STORE_SCALE = 500;
 let idbOpen = null;
 const idb = () => idbOpen ||= new Promise((ok, fail) => {
@@ -1642,10 +2094,11 @@ function closeHistory() {
 }
 function resultUI() {
   const replaying = !!sway && !sway.idle && !title.on;
-  const show = !!game && game.over && !game.saver && !replaying && !hist.open, rc = document.getElementById("result");
+  achRun();
+  const show = !!game && game.over && !game.saver && !replaying && !hist.open && !achUI.open, rc = document.getElementById("result");
   if (show && rc.style.display !== "block" && !rc.classList.contains("flipIn")) rc.classList.remove("still");
   rc.style.display = show ? "block" : "none";
-  document.getElementById("dim").style.display = show || title.on || (hist.open && !replaying) ? "block" : "none";
+  document.getElementById("dim").style.display = show || title.on || ((hist.open || achUI.open) && !replaying) ? "block" : "none";
   if (show) document.getElementById("tip").style.display = "none";
   document.getElementById("hud").style.display = replaying || (game && !game.over) || saver.on ? "block" : "none";
   document.getElementById("gSaver").style.display = saver.on ? "" : "none";
@@ -1681,6 +2134,10 @@ function gameUI() {
     return a ? Math.max(0, Math.round((clipEdge(ids) - BL.RELEASE_EDGE) / (game.start[k] - BL.RELEASE_EDGE) * 100)) + "%"
       : game.start[k] == null ? "落下中" : "鬆脫";
   }).join(" · ");
+  if (DEBUG) {
+    const zs = BL.clips.map(ids => { const c = clipAnchor(ids); return c ? (c.z > SHELF_MID ? "右" : "左") + c.z.toFixed(2) : "鬆"; });
+    grip.textContent += ` ｜ 放回去：${BL.clipped ? "夾著" : backCheck() || "✓"} · 夾子 ${zs.join("/")}（中線 ${SHELF_MID.toFixed(2)}）· 飛 ${game.ach.flights}`;
+  }
 }
 const SWAY_S = 10;
 const SWAY_DEG = 25;
@@ -1719,7 +2176,9 @@ function squeezeSchedule(r, end, play) {
   const owner = new Int32Array(end + 1).fill(-1), wins = [];
   r.events.forEach(([s0, g], k) => {
     if (!g || (k && r.events[k - 1][1])) return;
-    const up = r.events.slice(k + 1).find(e => !e[1]), a = Math.max(inEnd, s0 - 20), b = Math.min(outStart - 1, (up ? up[0] : end) + 90);
+    let up = null;
+    for (let j = k + 1; j < r.events.length && !up; j++) if (!r.events[j][1]) up = r.events[j];
+    const a = Math.max(inEnd, s0 - 20), b = Math.min(outStart - 1, (up ? up[0] : end) + 90);
     const w = { steps: [], imp: 0 };
     for (let j = a; j <= b; j++) if (owner[j] < 0) { owner[j] = wins.length; w.steps.push(j); w.imp += motion[j] || 0; }
     if (w.steps.length) wins.push(w);
@@ -1773,6 +2232,7 @@ function prepareReplay() {
   }
   frames.hits = r.hits.slice();
   frames.freeze = freeze; frames.pre = pre;
+  frames.id = game.histId;
   game.frames = frames;
 }
 function replay() { if (game && game.frames) playFrames(game.frames, game.fellDay); }
@@ -1813,16 +2273,18 @@ function playFrames(frames, fellDay, done) {
     hp.style.visibility = ""; hp.classList.remove("replay");
     if (game) hpSet(hpValue(), game.over ? 0 : game.hpShown ?? 1);
     if (idle || (game && game.over && !title.on && !DEBUG)) idleScene(idle);
+    if (fz < last) achEvent("the-world", frames.id);
     if (done) done();
   })();
 }
 async function playStored(id) {
   if (BL.paused) return;
-  const x = loadHist().find(r => r.id === id);
+  const x = loadHist().find(r => r.id === id) || Object.values(achLoad().got).find(r => r.game === id);
   let rec; try { rec = await idbDo("readonly", st => st.get(id)); } catch (_) {}
   if (!x || !rec) return;
-  const frames = await decodeReplay(rec), fromTitle = title.on, fromHist = hist.open, list = document.getElementById("hList"), y = list.scrollTop;
-  if (fromHist) { hist.open = false; document.getElementById("history").style.display = "none"; }
+  const back = hist.open ? { st: hist, card: "history", list: "hList" } : achUI.open ? { st: achUI, card: "ach", list: "aList" } : null;
+  const frames = Object.assign(await decodeReplay(rec), { id }), fromTitle = title.on, list = back && document.getElementById(back.list), y = list && list.scrollTop;
+  if (back) { back.st.open = false; document.getElementById(back.card).style.display = "none"; }
   if (fromTitle) {
     title.on = false; sway = null; document.getElementById("title").style.display = "none";
     look.yaw = look.pitch = 0; camZoom = 1; setMode("Day 1");
@@ -1830,9 +2292,10 @@ async function playStored(id) {
   document.getElementById("dim").style.display = "none";
   playFrames(frames, x.day, () => {
     if (fromTitle) showTitle();
-    if (fromHist) {
-      hist.open = true; document.getElementById("title").style.display = "none";
-      document.getElementById("history").style.display = "flex"; list.scrollTop = y;
+    if (back) {
+      back.st.open = true; document.getElementById("title").style.display = "none";
+      document.getElementById(back.card).style.display = "flex";
+      if (back.card === "ach") achRender().then(() => { list.scrollTop = y; }); else list.scrollTop = y;
     }
   });
 }
@@ -1842,6 +2305,12 @@ const clipViz = new THREE.Group(); clipViz.visible = MESH_VIEW; scene.add(clipVi
   const zone = [[xs, R.z0 + e], [xs, R.z1 - e], [0, R.z0 + e], [xs, R.z0 + e], [0, R.z1 - e], [xs, R.z1 - e]]
     .map(([x, z]) => new THREE.Vector3(x, y(x), z));
   clipViz.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(zone), new THREE.LineBasicMaterial({ color: 0xe74c3c, transparent: true })));
+  const mid = (R.z0 + R.z1) / 2, half = (za, zb, color, opacity) => {
+    const p = (x, z) => [x, y(x), z], geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute([...p(-1, za), ...p(0, za), ...p(0, zb), ...p(-1, za), ...p(0, zb), ...p(-1, zb)], 3));
+    clipViz.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity, depthWrite: false })));
+  };
+  half(R.z0, mid, 0x2ecc71, 0.35); half(mid, R.z1, 0x4f8cff, 0.35); half(mid - 0.01, mid + 0.01, 0xffffff, 0.9);
   clipViz.userData.clips = BL.clips.map(() => {
     const anchor = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.03, 0.12), new THREE.MeshBasicMaterial({ color: 0x222222, depthTest: false, transparent: true }));
     const spring = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
@@ -1901,12 +2370,12 @@ addEventListener("scroll", keepOffEdge); addEventListener("resize", keepOffEdge)
 for (const ev of ["touchstart", "touchmove"]) wrapEl.addEventListener(ev, e => { if (offEdge()) e.preventDefault(); }, { passive: false });
 function countReplay(from) {
   gcEvent("replay", "重播");
-  gcEvent(`replay-${from}`, { game: "重播（剛玩完的這場）", title: "重播（標題的紀錄）", result: "重播（結果的紀錄）", records: "重播（全部紀錄）" }[from]);
+  gcEvent(`replay-${from}`, { game: "重播（剛玩完的這場）", title: "重播（標題的紀錄）", result: "重播（結果的紀錄）", records: "重播（全部紀錄）", achievements: "重播（成就）" }[from]);
 }
 document.getElementById("gReplay").onclick = () => { countReplay("game"); finishRecording(); replay(); };
-for (const id of ["tBest", "rBest", "hList"]) document.getElementById(id).addEventListener("click", e => {
+for (const id of ["tBest", "rBest", "hList", "aList"]) document.getElementById(id).addEventListener("click", e => {
   const b = e.target.closest("button[data-replay]");
-  if (b) { countReplay({ tBest: "title", rBest: "result", hList: "records" }[id]); finishRecording(); playStored(+b.dataset.replay); }
+  if (b) { countReplay({ tBest: "title", rBest: "result", hList: "records", aList: "achievements" }[id]); finishRecording(); playStored(+b.dataset.replay); }
   if (e.target.closest("button[data-all]")) openHistory(id === "tBest" ? "title" : "result");
   const sw = e.target.closest("button[data-auto]");
   if (sw) {
@@ -1917,6 +2386,12 @@ for (const id of ["tBest", "rBest", "hList"]) document.getElementById(id).addEve
   }
 });
 document.getElementById("hBack").onclick = closeHistory;
+document.getElementById("aBack").onclick = closeAch;
+for (const b of document.querySelectorAll(".achHub")) b.onclick = () => openAch(b.dataset.from);
+document.getElementById("achToast").onclick = () => {
+  achNext();
+  for (const id of ["title", "result"]) if (document.getElementById(id).style.display === "block") return openAch(id);
+};
 document.getElementById("hClear").onclick = async e => {
   const b = e.currentTarget;
   if (!b.classList.contains("armed")) {
@@ -1926,9 +2401,13 @@ document.getElementById("hClear").onclick = async e => {
   }
   clearTimeout(b.timer); b.classList.remove("armed"); b.textContent = "清除所有紀錄";
   try { localStorage.removeItem(HIST_KEY); } catch (_) {}
-  try { await idbDo("readwrite", st => st.clear()); } catch (_) {}
+  try {
+    const keep = new Set(achGames()), ids = await idbDo("readonly", st => st.getAllKeys());
+    for (const k of ids) if (!keep.has(k)) await idbDo("readwrite", st => st.delete(k));
+  } catch (_) {}
   for (const id of ["hList", "tBest", "rBest"]) showRecords(document.getElementById(id), false, id === "hList");
   closeHistory();
+  achEvent("nier");
 };
 function resize() {
   const W = innerWidth, H = innerHeight;
@@ -1942,6 +2421,12 @@ function resize() {
 addEventListener("resize", resize);
 setMode("Day 1");
 if (DEBUG) document.getElementById("ui").style.display = ""; else { document.getElementById("ui").style.display = "none"; showTitle(); }
+if (new URLSearchParams(location.search).has("clear_achievements")) {
+  const st = achLoad();
+  achSave({ sent: st.sent, past: st.past });
+  const u = new URL(location.href); u.searchParams.delete("clear_achievements"); history.replaceState(null, "", u);
+}
+achHub(); achBackfill(); achRun();
 (function loop() {
   requestAnimationFrame(loop);
   controls.enabled = !BL.grab && !viewLocked();
