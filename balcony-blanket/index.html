@@ -117,12 +117,16 @@
   #hList { flex: 1; overflow-y: auto; overscroll-behavior: contain; margin-top: 10px; padding-right: 2px; }
   #history, #ach { background: rgba(28, 31, 37, 0.85); }
   #hClear { flex: none; margin: 8px auto 2px; }
-  #hClear.armed { background: #c0453b; border-color: #c0453b; color: #fff; font-weight: 700; }
+  .card button#aClear { flex: none; white-space: nowrap; font-size: 12px; padding: 4px 10px; background: #ffffff24; border-color: #ffffff4d; }
+  #aList .achTop > div { flex: 1; min-width: 0; }
+  #aList .achName { display: flex; align-items: center; justify-content: space-between; gap: 8px; } #aList .achName b { white-space: nowrap; }
+  #hClear.armed, .card button#aClear.armed { background: #c0453b; border-color: #c0453b; color: #fff; font-weight: 700; }
   #hList .rday { position: sticky; top: 0; background: #2a2d33; z-index: 1; padding: 6px 0 4px; margin-top: 6px; }
   .records .more { display: block; margin: 8px auto 0; font-size: 14px; }
   .medal { display: inline-block; width: 16px; height: 16px; border-radius: 50%; flex: none; background: radial-gradient(circle at 35% 30%, #8a8f98, #4a4f56); box-shadow: inset 0 0 0 1.5px #ffffff33; }
   .medal.bronze { background: radial-gradient(circle at 35% 30%, #f6cfa5, #c27a3e 45%, #7a4520); box-shadow: 0 0 6px #c27a3e88; }
   .medal.gold { background: radial-gradient(circle at 35% 30%, #fff3c4, #ffcf6e 45%, #b8862b); box-shadow: 0 0 6px #ffcf6e88; }
+  .medal.trueplatinum { background: radial-gradient(circle at 35% 30%, #fff, #eef6ff 30%, #cdbdff 58%, #7fa3b8); box-shadow: 0 0 10px #d6c4ffcc, 0 0 3px #fff; }
   .medal.platinum { background: radial-gradient(circle at 35% 30%, #fff, #d6edf5 45%, #7fa3b8); box-shadow: 0 0 8px #bfeaffaa; }
   .card button.achHub { position: absolute; left: 8px; top: 8px; margin: 0; padding: 5px 5px 3px; min-height: 0; min-width: 34px; border-radius: 10px;
     font-size: 10px; line-height: 1.1; display: flex; flex-direction: column; align-items: center; gap: 3px; background: #2a2e36b3; border: 1px solid #ffffff1f;
@@ -134,8 +138,8 @@
   #aList { flex: 1; overflow-y: auto; overscroll-behavior: contain; margin-top: 10px; padding-right: 2px; text-align: left; }
   #aList .achTop { display: flex; align-items: center; gap: 12px; margin: 2px 0 8px; }
   #aList .achTop .medal { width: 40px; height: 40px; }
-  #aList .achTop b { display: block; font-size: 17px; } #aList .achTop small { color: var(--muted); font-size: 13px; }
-  #aList .achTop b small.took { display: inline; font-size: 12px; font-weight: 400; color: #ffcf6e; margin-left: 8px; }
+  #aList .achTop b { display: block; font-size: 17px; } #aList .achTop small { display: block; color: var(--muted); font-size: 13px; }
+  #aList .achTop small.took { color: #ffcf6e; font-size: 12px; }
   #aList .achBar { position: relative; height: 6px; border-radius: 3px; background: #ffffff1a; margin: 0 0 12px; }
   #aList .achBar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: #ffcf6e; }
   #aList .achBar s { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: #ffcf6e; opacity: 0.6; }
@@ -148,7 +152,7 @@
   #aList .achGrid li.no i { color: var(--muted); }
   #aList .achDetail { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 9px 10px; border-radius: 12px; background: #ffffff0d; min-height: 46px; }
   #aList .achDetail.none { color: var(--muted); font-size: 13px; justify-content: center; }
-  @media (max-height: 700px) {
+  @media (max-height: 770px) {
     #aList .achGrid .achIc { width: 36px; height: 36px; border-radius: 10px; } #aList .achGrid .achIc svg { width: 28px; height: 28px; }
     #aList .achGrid li { padding: 2px 1px; gap: 2px; }
     #aList .achTop { margin: 0 0 6px; } #aList .achTop .medal { width: 30px; height: 30px; } #aList .achTop b { font-size: 15px; }
@@ -159,10 +163,13 @@
   @media (max-height: 600px) {
     #ach { top: max(8px, env(safe-area-inset-top)); height: calc(100% - max(8px, env(safe-area-inset-top)) - 8px); }
     #aList .achHint { font-size: 10.5px; padding: 4px 8px; margin-bottom: 6px; }
+    #aList .achGrid { gap: 1px 2px; } #aList .achGrid li { padding: 1px; gap: 1px; }
+    #aList .achGrid .achIc { width: 30px; height: 30px; border-radius: 8px; } #aList .achGrid .achIc svg { width: 24px; height: 24px; }
+    #aList .achGrid i { font-size: 9.5px; }
+    #aList .achTop .medal { width: 24px; height: 24px; } #aList .achTop b { font-size: 14px; } #aList .achBar { margin: 0 0 6px; }
   }
   .achIc { width: 42px; height: 42px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #ffcf6e22; border: 1px solid #ffcf6e55; text-shadow: none; }
   #aList .no .achIc { background: #ffffff0d; border-color: #ffffff1f; filter: grayscale(1); opacity: 0.4; }
-  #aList .secret .achIc { filter: none; opacity: 1; }
   .achIc svg { width: 32px; height: 32px; }
   #aList .tx { flex: 1; min-width: 0; }
   #aList .tx b { display: block; font-size: 15px; } #aList .no .tx b { color: var(--muted); }
@@ -183,6 +190,7 @@
   #achToast .achMany b { font-size: 14px; }
   #medalDim { position: absolute; inset: 0; z-index: 8; background: rgba(10, 12, 16, 0.55); display: none; animation: fade 0.25s ease-out; }
   #medalCard { z-index: 9; top: 20%; background: rgba(28, 31, 37, 0.92); }
+  #medalCard p b { color: #ffcf6e; }
   #medalCard .medal { display: block; width: 96px; height: 96px; margin: 6px auto 16px; animation: medalIn 0.7s ease-out; }
   @keyframes medalIn { from { transform: scale(0.3) rotateY(180deg); opacity: 0; } 70% { transform: scale(1.1); } }
   button[data-replay], #gReplay { background: #c0453b; border-color: #c0453b; color: #fff; }
@@ -302,7 +310,7 @@
 <script>const MODEL = {"units": "shelf depth = 1", "panels": {"tiled wall": [[-3.4573474529930546, -6.131390371509298, 0], [0, -6.131390371509298, 0], [0, 2.0, 0], [-3.4573474529930546, 2.0, 0]], "brick wall": [[0, -6.131390371509298, 0], [0, -6.131390371509298, 5.819273773032827], [0, 2.0, 5.819273773032827], [0, 2.0, 0]], "shelf top": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -0.19744447424806616, 5.819273773032827], [0, 0, 5.819273773032827]], "cage front": [[-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827]], "cage bottom": [[0.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827]], "cage side": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [0.0, -1.5546877931476362, 0.3528517337232067], [0, -1.5546877931476362, 0.3528517337232067]], "window grill bottom": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [0, 1.5288228462737465, 5.819273773032827]], "window grill front": [[-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827]], "window grill side": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [0, 3.083510639421383, 0.6190854656051468]], "window grill top": [[0, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "window grill end": [[0, 1.5288228462737465, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "lower shelf top": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [0, -4.036587215910913, 5.819273773032827]], "lower shelf front": [[-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827]], "lower shelf bottom": [[0, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "lower shelf side": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [0, -5.591275009058549, 0.08936327713881974]], "lower shelf end": [[0, -4.036587215910913, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "cage end": [[0, 0, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827], [0, -1.5546877931476362, 5.819273773032827]]}, "stripes": [[[-3.4573474529930546, 0.0834075259675885, 0], [0, 0.0834075259675885, 0]], [[-3.4573474529930546, -0.15926488730384458, 0], [0, -0.15926488730384458, 0]], [[-3.4573474529930546, -3.166934160631353, 0], [0, -3.166934160631353, 0]], [[-3.4573474529930546, -3.4178596819025113, 0], [0, -3.4178596819025113, 0]]], "tiles": {"pitch": 0.1251614296913404, "base": -3.417422816646296, "stripes": [[0.3374200740939157, 0.4625815037852561], [0.087097214711235, 0.21225864440257539], [-0.16322564467144574, -0.03806421498010534], [-3.1670999572636154, -3.041938527572275], [-3.417422816646296, -3.2922613869549555], [-3.667745676028977, -3.5425842463376362]], "fit": [-0.003689688743646488, 0.003960757367601153, 0.00016579663226234942, -0.0004368652562152242]}, "floors": {"height": 3.2541971719748504, "levels": [-9.550332871521976, -6.296135699547126, -3.041938527572275, 0.21225864440257558, 3.466455816377426, 6.720652988352277]}, "cage_post": [[-1.0, -0.19744447424806616, 4.51964696395023], [-1.0, -1.5546877931476362, 4.51964696395023]], "points": {"point_1": [-0.06815006589404175, -0.013455853930420139, 0.4728716980308348], "point_2": [-0.06815006589404175, -0.013455853930420139, 1.0396087165902814], "point_3": [-1.0018076813476873, -0.1978013909413683, 2.1334721171114586]}, "guides": {"cage bottom level at brick wall": [[0, -1.5546877931476362, 0], [0, -1.5546877931476362, 5.819273773032827]]}, "measurements": {"yf": -0.19744447424806616, "y_cage": -1.5546877931476362, "z_post": 4.51964696395023, "s1": 0.0834075259675885, "s2": -0.15926488730384458, "s3": -3.166934160631353, "s4": -3.4178596819025113, "x12": -0.06815006589404175, "z1": 0.4728716980308348, "z2": 1.0396087165902814, "x3": -1.0018076813476873, "z3": 2.1334721171114586, "z_slat": 3.369499353854658, "x_g": -0.7496369159300176, "z_g": 0.6190854656051468, "g_back": 1.5288228462737465, "g_front": 1.5127790163709456, "z_mid": 0.3528517337232067, "x_l": -0.8847462189288654, "z_l": 0.08936327713881974, "l_back": -4.036587215910913}, "roof_slope_deg": -11.16907426402621, "cameras": {"Day 1": {"center": [-2.5763902424813807, 1.8485481115884668, 7.480000418376799], "R": [[0.9678969244908487, 0.030032064951085586, 0.24954682653948826], [-0.06859502767522094, -0.9235863169825995, 0.3772042381267117], [0.2418062566175477, -0.38221249346049785, -0.8918763053828247]], "f_px": 2261.0088796691516, "image": [1440, 1920]}, "Day 189": {"center": [-3.5582223799683477, 1.8324280503581372, 7.612198135614894], "R": [[0.9358564085164711, 0.022360387969925025, 0.3516714314363431], [-0.1038266688189778, -0.9361843480523512, 0.3358256829126512], [0.33673848232806186, -0.35079749074306205, -0.8738125170811899]], "f_px": 2194.932560259106, "image": [1440, 1920]}}, "fit_px": {"Day 1": {"point_1": 0.9887886333426447, "point_2": 1.7264496185290532, "point_3": 7.14562915172034, "shelf_back": 3.4384179676648197, "shelf_front": 11.844323006130528, "cage_bottom": 12.55918300684493, "wall_corner": 2.5100142332881084, "tile_vertical": 2.106940384485275, "stripe_1": 4.192962072560722, "stripe_2": 2.710436133038165, "stripe_3": 1.9390894287237819, "stripe_4": 1.656020611511733, "cage_post": 5.645671705311196, "box_corner": 0.5007117842603408, "grill_back": 3.1098141272041637, "grill_front": 1.4372123767723186, "cage_top_left": 1.1164990606838758, "lower_back": 2.620815313671605, "lower_front": 3.252742702884892, "lower_top_left": 3.84486510104268, "slat": 5.452513487194732}, "Day 189": {"point_1": 1.2306705815705334, "point_2": 2.176784613225029, "point_3": 7.228472584903843, "shelf_back": 5.3538490560462835, "shelf_front": 8.026824328055795, "cage_bottom": 10.029425753830143, "wall_corner": 2.2114350412003305, "tile_vertical": 1.0914710113648947, "stripe_1": 1.4981777920548534, "stripe_2": 0.3837978321787298, "stripe_3": 3.2926728729008343, "stripe_4": 2.7412516909896, "cage_post": 5.026196858192163, "box_corner": 0.5435323324289093, "grill_back": 3.5550210021148696, "grill_front": 1.7717190304777877, "cage_top_left": 2.662866445615572, "lower_back": 2.004687646849801, "lower_front": 2.6464799275829396, "lower_top_left": 3.8651708969272933, "slat": 5.487491786240904}}};
 const PAGE = {"mode": "game", "photos": null};
 const PHOTOS = {"size": [1080, 1440], "group2": 189, "upside_down": [380], "easter_eggs": {}, "H": {}};
-const VERSION = "ae7fa26";
+const VERSION = "e5c6f43";
 function uaCode(ua = navigator.userAgent) {
   const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/.test(ua);
   const app = /Barcelona/.test(ua) ? "t" : /Instagram/.test(ua) ? "g" : /FBAN|FBAV|FB_IAB/.test(ua) ? "f" : /\bLine\//.test(ua) ? "l"
@@ -1210,7 +1218,7 @@ function recordSnap(force) {
   r.snaps.push({ step: r.step, q: Int16Array.from(BL.pos, v => Math.round(v * SNAP_SCALE)) });
   if (r.snaps.length > SNAP_MAX) {
     const mid = r.snaps.slice(SNAP_HEAD, -SNAP_TAIL);
-    r.snaps = [...r.snaps.slice(0, SNAP_HEAD), ...mid.filter((_, k) => k % 2 === 0), ...r.snaps.slice(-SNAP_TAIL)];
+    r.snaps = [...r.snaps.slice(0, SNAP_HEAD), ...mid.filter((x, k) => k % 2 === 0 || x.keep), ...r.snaps.slice(-SNAP_TAIL)];
   }
 }
 function recordMotion() {
@@ -1711,8 +1719,26 @@ const ICON = (() => {
       `<text x="20" y="15" text-anchor="middle" font-size="15" font-weight="900" font-family="-apple-system, system-ui, sans-serif" fill="#ffcf6e" stroke="#1f2228" stroke-width="2" paint-order="stroke">?</text>` +
       `<path d="M31 6 L31.8 8.2 L34 9 L31.8 9.8 L31 12 L30.2 9.8 L28 9 L30.2 8.2 Z" fill="#ffcf6e"/><path d="M9 9 L9.5 10.5 L11 11 L9.5 11.5 L9 13 L8.5 11.5 L7 11 L8.5 10.5 Z" fill="#ffcf6e"/></svg>`;
   }
-  return { stopwatch, shield, carpet, firstFall, backHome, newHome, theWorld, theWorldSaver, saverMaster, automata, emil, soon, secret };
+  function overheal() {
+    return `<svg viewBox="0 0 40 40">` +
+      `<rect x="2.5" y="17" width="29" height="11" rx="2" fill="#1f2228" stroke="#ffffffaa" stroke-width="1.2"/>` +
+      `<rect x="4" y="18.5" width="26" height="8" rx="1" fill="#3cc8d8"/>` +
+      `<path d="M29.5 18.5 H34.5 C37 18.5 38 20.3 38 22.5 C38 24.7 37 26.5 34.5 26.5 H29.5 Z" fill="#8fe9f2"/>` +
+      `<path d="M27 5 V15 M22 10 H32" stroke="#3cc8d8" stroke-width="3.4" stroke-linecap="round"/>` +
+      `<path d="M9 33 H25" stroke="#3cc8d8" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/></svg>`;
+  }
+  function lunarTear() {
+    const g = `lt${uid++}`;
+    return `<svg viewBox="0 0 40 40"><defs><radialGradient id="${g}" cx="0.5" cy="0.35" r="0.7">` +
+      `<stop offset="0" stop-color="#ffffff"/><stop offset="0.6" stop-color="#dcefff"/><stop offset="1" stop-color="#8fb8e8"/></radialGradient></defs>` +
+      `<circle cx="20" cy="18" r="16" fill="#bfe0ff" opacity="0.16"/>` +
+      `<path d="M20 25 C19.5 30 18.5 34 16.5 38" stroke="#6f9a78" stroke-width="1.6" fill="none" stroke-linecap="round"/>` +
+      [0, 72, 144, 216, 288].map(a => `<ellipse cx="20" cy="10.5" rx="4.6" ry="7.6" fill="url(#${g})" stroke="#9cc4ee" stroke-width="0.6" transform="rotate(${a} 20 18)"/>`).join("") +
+      `<circle cx="20" cy="18" r="2.6" fill="#fff6c8"/></svg>`;
+  }
+  return { stopwatch, shield, carpet, firstFall, backHome, newHome, theWorld, theWorldSaver, saverMaster, automata, emil, soon, secret, overheal, lunarTear };
 })();
+const BLANKET_DAY1 = Date.UTC(2024, 2, 17, 16), realDay = (t = Date.now()) => Math.floor((t - BLANKET_DAY1) / 864e5) + 1;
 const oldest = (h, f) => { for (let k = h.length - 1; k >= 0; k--) if (f(h[k])) return h[k]; return null; };
 const byHand = g => !g.saver && !g.auto;
 const ACH = [
@@ -1720,6 +1746,9 @@ const ACH = [
     check: g => byHand(g) && g.drags === 33 },
   { id: "first", icon: ICON.firstFall, name: "掉下來了", desc: "被被掉下去了", how: "第一次拉掉被被",
     check: byHand, past: h => oldest(h, x => !x.auto) },
+  { id: "back", icon: ICON.backHome, name: "放回去", desc: "被被回家了", how: "在扯掉被被以後，把他放回遊戲一開始的地方，方向正確並且鋪平", hideDesc: true, hideHow: true },
+  { id: "move-right", icon: () => ICON.newHome("right"), name: "被被搬新家", gc: "被被搬新家（右邊）", desc: "被被在右邊找到新家", how: "在被被還固定住的情況下，把他拉到陽台右半邊", hideDesc: true, hideHow: true },
+  { id: "move-down", icon: () => ICON.newHome("down"), name: "被被搬新家", gc: "被被搬新家（樓下）", desc: "被被搬到樓下", how: "把被被放在下一層的鐵窗", hideDesc: true, hideHow: true },
   { id: "speed-iron", icon: () => ICON.stopwatch("steel"), name: "鐵牌速通", desc: "速通玩家 - 鐵牌", how: "用 11～15 次把被被拉下去",
     check: g => byHand(g) && g.drags >= 2 && g.drags <= 15 },
   { id: "speed-bronze", icon: () => ICON.stopwatch("bronze"), name: "銅牌速通", desc: "訣竅就是趁他不注意的時候...", how: "用 1 次就把被被拉下去", hideDesc: true,
@@ -1730,29 +1759,30 @@ const ACH = [
     check: g => byHand(g) && g.drags >= 2 && g.drags <= 5 },
   { id: "speed-platinum", icon: () => ICON.stopwatch("platinum"), name: "白金速通", desc: "我覺得很難，直到我加入了馬戲團", how: "用 2 次把被被拉下去", hideName: true, hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags === 2 },
+  { id: "overheal", icon: ICON.overheal, name: "過補", desc: "原來可以超過 100 喔?!", how: "被被的血量超過 100", hideDesc: true, hideHow: true },
   { id: "hold-bronze", icon: () => ICON.shield("bronze"), name: "銅牌撐住", desc: "🫡", how: "完成一場超過 100 次的遊戲",
     check: g => byHand(g) && g.drags >= 100 },
   { id: "hold-silver", icon: () => ICON.shield("silver"), name: "銀牌撐住", desc: "🫡🫡", how: "完成一場超過 300 次的遊戲", hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags >= 300, past: h => oldest(h, x => !x.auto && x.drags >= 300) },
   { id: "hold-gold", icon: () => ICON.shield("gold"), name: "黃金撐住", desc: "🫡🫡🫡", how: "完成一場超過 1000 次的遊戲", hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags >= 1000, past: h => oldest(h, x => !x.auto && x.drags >= 1000) },
-  { id: "hold-platinum", icon: () => ICON.shield("platinum"), name: "白金撐住", desc: "🫡🫡🫡🫡🫡🫡🫡🫡🫡🫡", how: "完成一場超過 10000 次的遊戲", hideName: true, hideDesc: true, hideHow: true,
-    check: g => byHand(g) && g.drags >= 10000, past: h => oldest(h, x => !x.auto && x.drags >= 10000) },
-  { id: "carpet", icon: ICON.carpet, name: "魔毯", desc: "被被飛起來了", how: "在空中連續拋接被被 5 次", hideDesc: true, hideHow: true,
-    check: g => byHand(g) && g.ach.flights >= FLIGHTS },
-  { id: "back", icon: ICON.backHome, name: "放回去", desc: "被被回家了", how: "在扯掉被被以後，把他放回遊戲一開始的地方，方向正確並且鋪平", hideDesc: true, hideHow: true },
-  { id: "move-right", icon: () => ICON.newHome("right"), name: "被被搬新家", gc: "被被搬新家（右邊）", desc: "被被在右邊找到新家", how: "在被被還固定住的情況下，把他拉到陽台右半邊", hideDesc: true, hideHow: true },
-  { id: "move-down", icon: () => ICON.newHome("down"), name: "被被搬新家", gc: "被被搬新家（樓下）", desc: "被被搬到樓下", how: "把被被放在下一層的鐵窗", hideDesc: true, hideHow: true },
+  { id: "hold-platinum", icon: () => ICON.shield("platinum"), name: "白金撐住", desc: "跟真的被被一樣堅持", how: "完成一場 {N} 天以上的遊戲。", hideName: true, hideHow: true,
+    check: g => byHand(g) && g.fellDay >= realDay(), past: h => oldest(h, x => !x.auto && x.day >= realDay(x.t)), pastKey: "hold-platinum-days",
+    n: x => x ? x.day : realDay() },
   { id: "the-world", icon: ICON.theWorld, name: "The World!", desc: "ザ・ワールド！", how: "在重播的時候遇到 Dio 大人", hideDesc: true, hideHow: true },
   { id: "the-world-saver", icon: ICON.theWorldSaver, name: "The World!!!!!", desc: "ザ・ワールド！！！", how: "在螢幕保護模式裡面遇到 Dio 大人", hideDesc: true, hideHow: true },
   { id: "automata", icon: ICON.automata, name: "自動人形", desc: "「感情……是禁止的。」", how: "第一次用自動模式",
     check: g => !g.saver && !!g.auto },
   { id: "nier", icon: ICON.emil, name: "NieR", desc: "儘管如此，你仍舊希望拯救某個素不相識的人嗎？", how: "刪除所有紀錄。", hideHow: true },
+  { id: "nier-replicant", icon: ICON.lunarTear, name: "人工生命", desc: "總覺得……自己好像，得到了一個非常珍貴的東西……。", how: "持有白金獎牌的時候刪除全成就", hideHow: true, kept: true, after: "nier" },
+  { id: "carpet", icon: ICON.carpet, name: "魔毯", desc: "被被飛起來了", how: "在空中連續拋接被被 5 次", hideDesc: true, hideHow: true,
+    check: g => byHand(g) && g.ach.flights >= FLIGHTS },
   { id: "saver-master", icon: ICON.saverMaster, name: "螢幕保護大師", desc: "螢幕被好好保護了。如果你是用映像管螢幕的話。", how: "一次性的在螢幕保護模式看到 7 條以上的被被掉落。", hideDesc: true, hideHow: true },
 ];
 const ACH_KEY = "blanket.ach.v1", ACH_TOAST_MS = 3200, ACH_TOAST_EACH_MS = 600;
 const MEDALS = [
-  ["bronze", 10, "銅牌"], ["gold", 15, "金牌"], ["platinum", 20, "白金獎牌"],
+  ["bronze", 10, "銅牌"], ["gold", 15, "金牌"], ["platinum", 21, "白金獎牌"],
+  ["trueplatinum", 22, "真・白金", true],
 ];
 const FLIGHTS = 5, FLIGHT_STEPS = 36, FLIGHT_GAP = SNAP_IDLE, REST_STEPS = 120;
 const SHELF_MID = (SHELF.z0 + SHELF.z1) / 2;
@@ -1773,7 +1803,8 @@ function achAtRelease(g) {
   }
 }
 function achAtStep() {
-  const n = game.ach, m = game.rec.motion;
+  const n = game.ach, m = game.rec.motion, hp = game.rec.hp;
+  if (!n.over && hp[hp.length - 1] > 1.005) { n.over = true; achNow("overheal"); }
   n.still = BL.grab || (m[m.length - 1] ?? 0) >= LAND_STILL ? 0 : (n.still || 0) + 1;
   if (!n.still) n.looked = false;
   if (n.still < REST_STEPS || n.looked || BL.clipped) return;
@@ -1786,7 +1817,12 @@ function achNow(id) {
   const got = achLoad().got[id], n = game.ach;
   if (got && !(STOP_AT.includes(id) && !got.stop) || (n.now ||= []).includes(id)) return;
   n.now.push(id);
-  if (game.rec && STOP_AT.includes(id)) (n.at ||= {})[id] = game.rec.step;
+  if (game.rec && STOP_AT.includes(id)) {
+    const r = game.rec;
+    (n.at ||= {})[id] = r.step;
+    if (!r.snaps.length || r.snaps[r.snaps.length - 1].step !== r.step) recordSnap(true);
+    r.snaps[r.snaps.length - 1].keep = true;
+  }
   if (!got) achGrant([[ACH.find(a => a.id === id), null]]);
 }
 function backCheck() {
@@ -1806,7 +1842,7 @@ function achEvent(id, gameId) {
   const x = gameId && (loadHist().find(r => r.id === gameId) || Object.values(achLoad().got).find(r => r.game === gameId));
   achGrant([[ACH.find(a => a.id === id), x ? { id: gameId, t: x.t, day: x.day, drags: x.drags } : null]]);
 }
-const achLoad = () => { let st = null; try { st = JSON.parse(localStorage.getItem(ACH_KEY)); } catch (_) {} return { got: {}, sent: [], past: [], seen: [], medals: {}, ...st }; };
+const achLoad = () => { let st = null; try { st = JSON.parse(localStorage.getItem(ACH_KEY)); } catch (_) {} return { got: {}, sent: [], past: [], seen: [], medals: {}, best: {}, ...st }; };
 const achSpan = st => { const ts = Object.values(st.got).map(x => x.t); return ts.length ? Math.max(...ts) - Math.min(...ts) : 0; };
 function achTook(ms) {
   const m = Math.floor(ms / 60000), h = Math.floor(m / 60), d = Math.floor(h / 24);
@@ -1814,11 +1850,28 @@ function achTook(ms) {
 }
 const achSave = st => { try { localStorage.setItem(ACH_KEY, JSON.stringify(st)); } catch (_) {} };
 const achGames = () => Object.values(achLoad().got).map(x => x.game).filter(Boolean);
-const achCount = st => ACH.filter(a => st.got[a.id]).length;
-const medalOf = n => MEDALS.reduce((m, [k, at]) => n >= at ? k : m, "");
+const achCount = st => ACH.filter(a => st.got[a.id] && !a.kept).length;
+const achTotal = st => ACH.filter(a => st.got[a.id]).length;
+const medalCount = (st, md) => md[3] ? achTotal(st) : achCount(st);
+const medalHas = (st, md) => medalCount(st, md) >= md[1] || !!st.medals[md[0]];
+const medalOf = st => MEDALS.reduce((m, md) => medalHas(st, md) ? md[0] : m, "");
+function achClear() {
+  const st = achLoad(), best = { ...st.best };
+  for (const [k, m] of Object.entries(st.medals)) if (m && m.took != null) best[k] = best[k] == null ? m.took : Math.min(best[k], m.took);
+  const kept = id => (ACH.find(a => a.id === id) || {}).kept;
+  achSave({ sent: st.sent, past: st.past, medals21: true, best,
+    got: Object.fromEntries(Object.entries(st.got).filter(([id]) => kept(id))), seen: st.seen.filter(kept) });
+}
+function medalsKept() {
+  const st = achLoad();
+  if (st.medals21) return;
+  st.medals21 = true;
+  if (achCount(st) >= 20 && !st.medals.platinum) st.medals.platinum = { t: Date.now(), took: achSpan(st) };
+  achSave(st);
+}
 const achUI = { queue: [], busy: false, open: false, from: null, timer: 0, view: null, sel: null };
 function achGrant(list, past) {
-  const st = achLoad(), before = medalOf(achCount(st)), fresh = [];
+  const st = achLoad(), before = medalOf(st), fresh = [];
   for (const [a, x] of list) {
     if (!a || st.got[a.id]) continue;
     const r = x && x !== true ? x : null;
@@ -1826,8 +1879,13 @@ function achGrant(list, past) {
     fresh.push(a);
   }
   if (!fresh.length) return;
-  const n = achCount(st), m = medalOf(n);
-  for (const [k, at] of MEDALS) if (n >= at && !st.medals[k]) st.medals[k] = { t: Date.now(), took: achSpan(st) };
+  const m = medalOf(st);
+  for (const md of MEDALS) if (medalCount(st, md) >= md[1] && !st.medals[md[0]]) {
+    const k = md[0];
+    const took = achSpan(st), prev = st.best[k];
+    st.medals[k] = { t: Date.now(), took, ...(prev != null && { prev }) };
+    st.best[k] = prev == null ? took : Math.min(prev, took);
+  }
   achSave(st);
   achUI.queue.push({ list: fresh, past });
   if (m && m !== before) achUI.queue.push({ medal: m });
@@ -1836,8 +1894,8 @@ function achGrant(list, past) {
 }
 function achSend() {
   if (!(window.goatcounter && goatcounter.count)) return;
-  const st = achLoad(), n = achCount(st), want = ACH.filter(a => st.got[a.id]).map(a => [`ach-${a.id}`, `成就：${a.gc || a.name}`]);
-  for (const [k, at, name] of MEDALS) if (n >= at) want.push([`ach-${k}`, `成就：${name}`]);
+  const st = achLoad(), want = ACH.filter(a => st.got[a.id]).map(a => [`ach-${a.id}`, `成就：${a.gc || a.name}`]);
+  for (const md of MEDALS) if (medalHas(st, md)) want.push([`ach-${md[0]}`, `成就：${md[2]}`]);
   const todo = want.filter(([p]) => !st.sent.includes(p));
   if (!todo.length) return;
   for (const [p, t] of todo) gcEvent(p, t);
@@ -1857,10 +1915,10 @@ function achAtFall() {
   achGrant(ACH.filter(a => { try { return a.check && a.check(game, h); } catch (e) { console.warn(a.id, e); return false; } }).map(a => [a, x]));
 }
 function achBackfill() {
-  const st = achLoad(), h = loadHist(), todo = ACH.filter(a => a.past && !st.past.includes(a.id));
+  const st = achLoad(), h = loadHist(), key = a => a.pastKey || a.id, todo = ACH.filter(a => a.past && !st.past.includes(key(a)));
   if (!todo.length) return;
   const found = todo.filter(a => !st.got[a.id]).map(a => { try { return [a, a.past(h)]; } catch (_) { return [a, null]; } }).filter(([, x]) => x);
-  st.past.push(...todo.map(a => a.id)); achSave(st);
+  st.past.push(...todo.map(key)); achSave(st);
   achGrant(found, true);
 }
 const achWait = () => !!game && !game.saver && game.over && document.getElementById("result").style.display !== "block";
@@ -1886,8 +1944,9 @@ function achMedal(m) {
   c.querySelector(".medal").className = `medal ${m}`;
   const [, at, name] = MEDALS.find(([k]) => k === m);
   c.querySelector("h2").textContent = `${name}！`;
-  const got = achLoad().medals[m];
-  c.querySelector("p").textContent = `解鎖了 ${at} 個成就` + (got ? `，花了 ${achTook(got.took)}` : "");
+  const got = achLoad().medals[m], beat = got && got.prev != null && got.took < got.prev;
+  c.querySelector("p").innerHTML = `解鎖了 ${at} 個成就` + (got ? `，花了 ${achTook(got.took)}` : "") +
+    (got && got.prev != null ? (beat ? `<br><b>新紀錄！</b>之前最快 ${achTook(got.prev)}` : `<br>最快紀錄：${achTook(got.prev)}`) : "");
   c.classList.remove("still"); c.style.display = "block"; document.getElementById("medalDim").style.display = "block";
 }
 document.querySelector("#medalCard button").onclick = () => {
@@ -1896,9 +1955,9 @@ document.querySelector("#medalCard button").onclick = () => {
 };
 const achUnseen = st => ACH.filter(a => st.got[a.id] && !st.seen.includes(a.id)).map(a => a.id);
 function achHub() {
-  const st = achLoad(), n = achCount(st), unseen = achUnseen(st).length > 0;
+  const st = achLoad(), n = achTotal(st), unseen = achUnseen(st).length > 0;
   for (const b of document.querySelectorAll(".achHub")) {
-    b.innerHTML = `<i class="medal ${medalOf(n)}"></i><span>${n}/${ACH.length}</span>`;
+    b.innerHTML = `<i class="medal ${medalOf(st)}"></i><span>${n}/${ACH.length}</span>`;
     b.classList.toggle("new", unseen);
   }
 }
@@ -1910,28 +1969,31 @@ function achHint() {
   return `<p class="achHint">成就只存在${w(app)}的瀏覽器裡，可能會不見；用${w(br)}開比較穩。</p>`;
 }
 async function achRender() {
-  const st = achLoad(), n = achCount(st), m = medalOf(n), unseen = achUnseen(st);
-  const top = Math.max(MEDALS[MEDALS.length - 1][1], ACH.length), up = MEDALS.find(([, at]) => n < at);
+  const st = achLoad(), n = achTotal(st), m = medalOf(st), unseen = achUnseen(st);
+  const top = Math.max(MEDALS[MEDALS.length - 1][1], ACH.length), up = MEDALS.find(md => !medalHas(st, md));
   let have = new Set(); try { have = new Set(await idbDo("readonly", s => s.getAllKeys())); } catch (_) {}
   achUI.view = { st, have, unseen }; achUI.sel = null;
-  const next = up ? `再 ${up[1] - n} 個拿${up[2]}` : n < ACH.length ? `還有 ${ACH.length - n} 個沒解鎖` : "成就全部解鎖了！";
+  const next = up ? `再 ${up[1] - medalCount(st, up)} 個拿${up[2]}` : n < ACH.length ? `還有 ${ACH.length - n} 個沒解鎖` : "成就全部解鎖了！";
   const cell = a => {
-    const x = st.got[a.id], { secret, name } = achShown(a, x);
+    const x = st.got[a.id], { secret, name } = achShown(a, x, st);
     const cls = [x ? "got" : "no", secret && "secret", unseen.includes(a.id) && "new", achUI.sel === a.id && "sel"].filter(Boolean).join(" ");
     return `<li class="${cls}" data-ach="${a.id}"><span class="achIc">${secret ? ICON.secret() : a.icon()}</span>` +
       `<i>${name ? a.name : "？？？"}</i></li>`;
   };
   document.getElementById("aCount").textContent = `${n} / ${ACH.length}`;
   document.getElementById("aList").innerHTML = `<div class="achTop"><i class="medal ${m}"></i><div>` +
-    `<b>${m ? MEDALS.find(([k]) => k === m)[2] : "還沒有獎牌"}${m && st.medals[m] ? `<small class="took">花了 ${achTook(st.medals[m].took)}</small>` : ""}</b>` +
+    `<div class="achName"><b>${m ? MEDALS.find(([k]) => k === m)[2] : "還沒有獎牌"}</b>` +
+    (n ? `<button id="aClear" class="small">清除所有成就</button>` : "") + `</div>` + (m && st.medals[m] ? `<small class="took">花了 ${achTook(st.medals[m].took)}` +
+      (st.best[m] != null && st.best[m] < st.medals[m].took ? `（最快 ${achTook(st.best[m])}）` : "") + `</small>` : "") +
     `<small>${next}</small></div></div>` +
     `<div class="achBar"><i style="width:${Math.min(1, n / top) * 100}%"></i>` +
     MEDALS.slice(0, -1).map(([, at]) => `<s style="left:${at / top * 100}%"></s>`).join("") + `</div>` +
     achHint() + `<ol class="achGrid">${ACH.map(cell).join("")}</ol><div class="achDetail"></div>`;
+  if (n) achClearAsk(document.getElementById("aClear"));
   achDetail();
 }
-const achShown = (a, x) => {
-  const secret = !x && a.show === "secret";
+const achShown = (a, x, st) => {
+  const secret = !x && (a.show === "secret" || !!a.after && !st.got[a.after]);
   return { secret, name: x || !secret && !a.hideName, desc: x || !secret && !a.hideDesc, how: x || !secret && !a.hideHow };
 };
 function achDetail() {
@@ -1939,14 +2001,14 @@ function achDetail() {
   if (!el) return;
   el.className = "achDetail" + (a ? "" : " none");
   if (!a) { el.textContent = "點一下圖示，看看是什麼成就"; return; }
-  const { st, have } = achUI.view, x = st.got[a.id], { secret, name, desc, how } = achShown(a, x);
+  const { st, have } = achUI.view, x = st.got[a.id], { secret, name, desc, how } = achShown(a, x, st);
   const date = t => { const d = new Date(t); return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`; };
   if (!x) el.classList.add("no");
   if (secret) el.classList.add("secret");
   el.innerHTML = `<span class="achIc">${secret ? ICON.secret() : a.icon()}</span>` +
     `<span class="tx"><b>${name ? a.name : "？？？"}</b>` +
     `<small>${desc ? a.desc : secret ? a.hint || "？？？" : "？？？"}</small>` +
-    (a.how && how ? `<small class="how">${a.how}</small>` : "") +
+    (a.how && how ? `<small class="how">${a.how.replace("{N}", a.n ? a.n(x) : "")}</small>` : "") +
     (x ? `<small class="when">${date(x.t)}${x.day ? ` · 第 ${x.day} 天 ${x.drags} 次` : ""}</small>` : "") +
     (x && STOP_AT.includes(a.id) && !x.stop ? `<small class="redo">上次的成果沒有拍到，可以再挑戰一次嗎？</small>` : "") + `</span>` +
     (x && x.game && have.has(x.game) ? `<button data-replay="${x.game}">重播</button>` : "");
@@ -2238,8 +2300,10 @@ function replaySchedule(r) {
   const at = {};
   for (const [id, s] of musts) {
     let k = 0;
-    for (let f = 1; f <= n1; f++) if (Math.abs(steps[f] - s) < Math.abs(steps[k] - s)) k = f;
-    at[id] = k;
+    for (let f = STORE_EVERY; f <= n1; f += STORE_EVERY) if (Math.abs(steps[f] - s) < Math.abs(steps[k] - s)) k = f;
+    at[id] = k; steps[k] = s;
+    for (let f = k - 1; f > k - STORE_EVERY && f >= 0; f--) steps[f] = Math.min(steps[f], s);
+    for (let f = k + 1; f < k + STORE_EVERY && f < steps.length; f++) steps[f] = Math.max(steps[f], s);
   }
   const span = end - free, fits = span <= POST_S * STEPS_PER_S;
   for (let f = 1; f <= n2; f++) steps.push(free + (fits ? Math.min(span, Math.round(f / 60 * STEPS_PER_S)) : Math.round(f / n2 * span)));
@@ -2424,14 +2488,19 @@ document.getElementById("achToast").onclick = () => {
   achNext();
   for (const id of ["title", "result"]) if (document.getElementById(id).style.display === "block") return openAch(id);
 };
-document.getElementById("hClear").onclick = async e => {
-  const b = e.currentTarget;
-  if (!b.classList.contains("armed")) {
-    b.classList.add("armed"); b.textContent = "確定要清除嗎？再按一次";
-    clearTimeout(b.timer); b.timer = setTimeout(() => { b.classList.remove("armed"); b.textContent = "清除所有紀錄"; }, 3000);
-    return;
-  }
-  clearTimeout(b.timer); b.classList.remove("armed"); b.textContent = "清除所有紀錄";
+function asking(b, act) {
+  const label = b.textContent;
+  b.onclick = () => {
+    if (!b.classList.contains("armed")) {
+      b.classList.add("armed"); b.textContent = "確定要清除嗎？再按一次";
+      clearTimeout(b.timer); b.timer = setTimeout(() => { b.classList.remove("armed"); b.textContent = label; }, 3000);
+      return;
+    }
+    clearTimeout(b.timer); b.classList.remove("armed"); b.textContent = label;
+    act();
+  };
+}
+asking(document.getElementById("hClear"), async () => {
   try { localStorage.removeItem(HIST_KEY); } catch (_) {}
   try {
     const keep = new Set(achGames()), ids = await idbDo("readonly", st => st.getAllKeys());
@@ -2440,7 +2509,15 @@ document.getElementById("hClear").onclick = async e => {
   for (const id of ["hList", "tBest", "rBest"]) showRecords(document.getElementById(id), false, id === "hList");
   closeHistory();
   achEvent("nier");
-};
+});
+const achClearAsk = b => asking(b, async () => {
+  const st = achLoad(), platinum = medalHas(st, MEDALS.find(([k]) => k === "platinum"));
+  gcEvent("ach-clear", "清除所有成就");
+  for (const md of MEDALS) if (medalHas(st, md)) gcEvent(`ach-drop-${md[0]}`, `清除所有成就：放棄${md[2]}`);
+  achClear();
+  if (platinum) achGrant([[ACH.find(a => a.id === "nier-replicant"), null]]);
+  await achRender(); achHub();
+});
 function resize() {
   const W = innerWidth, H = innerHeight;
   if (mode !== "free") {
@@ -2454,11 +2531,10 @@ addEventListener("resize", resize);
 setMode("Day 1");
 if (DEBUG) document.getElementById("ui").style.display = ""; else { document.getElementById("ui").style.display = "none"; showTitle(); }
 if (new URLSearchParams(location.search).has("clear_achievements")) {
-  const st = achLoad();
-  achSave({ sent: st.sent, past: st.past });
+  achClear();
   const u = new URL(location.href); u.searchParams.delete("clear_achievements"); history.replaceState(null, "", u);
 }
-achHub(); achBackfill(); achRun();
+medalsKept(); achHub(); achBackfill(); achRun();
 (function loop() {
   requestAnimationFrame(loop);
   controls.enabled = !BL.grab && !viewLocked();
