@@ -168,6 +168,8 @@
   #aList .tx b { display: block; font-size: 15px; } #aList .no .tx b { color: var(--muted); }
   #aList .tx small { display: block; color: var(--muted); font-size: 12.5px; }
   #aList .tx small.when { color: #ffcf6e; font-size: 11px; margin-top: 1px; }
+  #aList .tx small.how { color: #9cc3ff; font-size: 12px; margin-top: 2px; }
+  #aList .tx small.redo { color: #e08a3c; font-size: 11px; margin-top: 1px; }
   #aList button { font-size: 13px; padding: 6px 11px; min-height: 0; margin: 0; flex: none; }
   #achToast { position: absolute; z-index: 7; left: 50%; top: max(10px, calc(env(safe-area-inset-top) + 8px)); transform: translate(-50%, -160%); opacity: 0;
     transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.25s; display: flex; align-items: center; gap: 12px; background: #1f2228f0;
@@ -300,7 +302,7 @@
 <script>const MODEL = {"units": "shelf depth = 1", "panels": {"tiled wall": [[-3.4573474529930546, -6.131390371509298, 0], [0, -6.131390371509298, 0], [0, 2.0, 0], [-3.4573474529930546, 2.0, 0]], "brick wall": [[0, -6.131390371509298, 0], [0, -6.131390371509298, 5.819273773032827], [0, 2.0, 5.819273773032827], [0, 2.0, 0]], "shelf top": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -0.19744447424806616, 5.819273773032827], [0, 0, 5.819273773032827]], "cage front": [[-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827]], "cage bottom": [[0.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827]], "cage side": [[0, 0, 0.3528517337232067], [-1.0, -0.19744447424806616, 0.3528517337232067], [-1.0, -1.5546877931476362, 0.3528517337232067], [0.0, -1.5546877931476362, 0.3528517337232067], [0, -1.5546877931476362, 0.3528517337232067]], "window grill bottom": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [0, 1.5288228462737465, 5.819273773032827]], "window grill front": [[-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827]], "window grill side": [[0, 1.5288228462737465, 0.6190854656051468], [-0.7496369159300176, 1.5127790163709456, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [0, 3.083510639421383, 0.6190854656051468]], "window grill top": [[0, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 0.6190854656051468], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "window grill end": [[0, 1.5288228462737465, 5.819273773032827], [-0.7496369159300176, 1.5127790163709456, 5.819273773032827], [-0.7496369159300176, 3.083510639421383, 5.819273773032827], [0, 3.083510639421383, 5.819273773032827]], "lower shelf top": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [0, -4.036587215910913, 5.819273773032827]], "lower shelf front": [[-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827]], "lower shelf bottom": [[0, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "lower shelf side": [[0, -4.036587215910913, 0.08936327713881974], [-0.8847462189288654, -4.211275467950287, 0.08936327713881974], [-0.8847462189288654, -5.591275009058549, 0.08936327713881974], [0, -5.591275009058549, 0.08936327713881974]], "lower shelf end": [[0, -4.036587215910913, 5.819273773032827], [-0.8847462189288654, -4.211275467950287, 5.819273773032827], [-0.8847462189288654, -5.591275009058549, 5.819273773032827], [0, -5.591275009058549, 5.819273773032827]], "cage end": [[0, 0, 5.819273773032827], [-1.0, -0.19744447424806616, 5.819273773032827], [-1.0, -1.5546877931476362, 5.819273773032827], [0.0, -1.5546877931476362, 5.819273773032827], [0, -1.5546877931476362, 5.819273773032827]]}, "stripes": [[[-3.4573474529930546, 0.0834075259675885, 0], [0, 0.0834075259675885, 0]], [[-3.4573474529930546, -0.15926488730384458, 0], [0, -0.15926488730384458, 0]], [[-3.4573474529930546, -3.166934160631353, 0], [0, -3.166934160631353, 0]], [[-3.4573474529930546, -3.4178596819025113, 0], [0, -3.4178596819025113, 0]]], "tiles": {"pitch": 0.1251614296913404, "base": -3.417422816646296, "stripes": [[0.3374200740939157, 0.4625815037852561], [0.087097214711235, 0.21225864440257539], [-0.16322564467144574, -0.03806421498010534], [-3.1670999572636154, -3.041938527572275], [-3.417422816646296, -3.2922613869549555], [-3.667745676028977, -3.5425842463376362]], "fit": [-0.003689688743646488, 0.003960757367601153, 0.00016579663226234942, -0.0004368652562152242]}, "floors": {"height": 3.2541971719748504, "levels": [-9.550332871521976, -6.296135699547126, -3.041938527572275, 0.21225864440257558, 3.466455816377426, 6.720652988352277]}, "cage_post": [[-1.0, -0.19744447424806616, 4.51964696395023], [-1.0, -1.5546877931476362, 4.51964696395023]], "points": {"point_1": [-0.06815006589404175, -0.013455853930420139, 0.4728716980308348], "point_2": [-0.06815006589404175, -0.013455853930420139, 1.0396087165902814], "point_3": [-1.0018076813476873, -0.1978013909413683, 2.1334721171114586]}, "guides": {"cage bottom level at brick wall": [[0, -1.5546877931476362, 0], [0, -1.5546877931476362, 5.819273773032827]]}, "measurements": {"yf": -0.19744447424806616, "y_cage": -1.5546877931476362, "z_post": 4.51964696395023, "s1": 0.0834075259675885, "s2": -0.15926488730384458, "s3": -3.166934160631353, "s4": -3.4178596819025113, "x12": -0.06815006589404175, "z1": 0.4728716980308348, "z2": 1.0396087165902814, "x3": -1.0018076813476873, "z3": 2.1334721171114586, "z_slat": 3.369499353854658, "x_g": -0.7496369159300176, "z_g": 0.6190854656051468, "g_back": 1.5288228462737465, "g_front": 1.5127790163709456, "z_mid": 0.3528517337232067, "x_l": -0.8847462189288654, "z_l": 0.08936327713881974, "l_back": -4.036587215910913}, "roof_slope_deg": -11.16907426402621, "cameras": {"Day 1": {"center": [-2.5763902424813807, 1.8485481115884668, 7.480000418376799], "R": [[0.9678969244908487, 0.030032064951085586, 0.24954682653948826], [-0.06859502767522094, -0.9235863169825995, 0.3772042381267117], [0.2418062566175477, -0.38221249346049785, -0.8918763053828247]], "f_px": 2261.0088796691516, "image": [1440, 1920]}, "Day 189": {"center": [-3.5582223799683477, 1.8324280503581372, 7.612198135614894], "R": [[0.9358564085164711, 0.022360387969925025, 0.3516714314363431], [-0.1038266688189778, -0.9361843480523512, 0.3358256829126512], [0.33673848232806186, -0.35079749074306205, -0.8738125170811899]], "f_px": 2194.932560259106, "image": [1440, 1920]}}, "fit_px": {"Day 1": {"point_1": 0.9887886333426447, "point_2": 1.7264496185290532, "point_3": 7.14562915172034, "shelf_back": 3.4384179676648197, "shelf_front": 11.844323006130528, "cage_bottom": 12.55918300684493, "wall_corner": 2.5100142332881084, "tile_vertical": 2.106940384485275, "stripe_1": 4.192962072560722, "stripe_2": 2.710436133038165, "stripe_3": 1.9390894287237819, "stripe_4": 1.656020611511733, "cage_post": 5.645671705311196, "box_corner": 0.5007117842603408, "grill_back": 3.1098141272041637, "grill_front": 1.4372123767723186, "cage_top_left": 1.1164990606838758, "lower_back": 2.620815313671605, "lower_front": 3.252742702884892, "lower_top_left": 3.84486510104268, "slat": 5.452513487194732}, "Day 189": {"point_1": 1.2306705815705334, "point_2": 2.176784613225029, "point_3": 7.228472584903843, "shelf_back": 5.3538490560462835, "shelf_front": 8.026824328055795, "cage_bottom": 10.029425753830143, "wall_corner": 2.2114350412003305, "tile_vertical": 1.0914710113648947, "stripe_1": 1.4981777920548534, "stripe_2": 0.3837978321787298, "stripe_3": 3.2926728729008343, "stripe_4": 2.7412516909896, "cage_post": 5.026196858192163, "box_corner": 0.5435323324289093, "grill_back": 3.5550210021148696, "grill_front": 1.7717190304777877, "cage_top_left": 2.662866445615572, "lower_back": 2.004687646849801, "lower_front": 2.6464799275829396, "lower_top_left": 3.8651708969272933, "slat": 5.487491786240904}}};
 const PAGE = {"mode": "game", "photos": null};
 const PHOTOS = {"size": [1080, 1440], "group2": 189, "upside_down": [380], "easter_eggs": {}, "H": {}};
-const VERSION = "3a63475";
+const VERSION = "ae7fa26";
 function uaCode(ua = navigator.userAgent) {
   const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/.test(ua);
   const app = /Barcelona/.test(ua) ? "t" : /Instagram/.test(ua) ? "g" : /FBAN|FBAV|FB_IAB/.test(ua) ? "f" : /\bLine\//.test(ua) ? "l"
@@ -1714,39 +1716,39 @@ const ICON = (() => {
 const oldest = (h, f) => { for (let k = h.length - 1; k >= 0; k--) if (f(h[k])) return h[k]; return null; };
 const byHand = g => !g.saver && !g.auto;
 const ACH = [
-  { id: "soon", icon: ICON.soon, name: "順順順", desc: "被被順起來～用剛好 33 次拉掉被被。",
+  { id: "soon", icon: ICON.soon, name: "順順順", desc: "被被順起來～", how: "用剛好 33 次拉掉被被。",
     check: g => byHand(g) && g.drags === 33 },
-  { id: "first", icon: ICON.firstFall, name: "掉下來了", desc: "讓小被被第一次掉下去",
+  { id: "first", icon: ICON.firstFall, name: "掉下來了", desc: "被被掉下去了", how: "第一次拉掉被被",
     check: byHand, past: h => oldest(h, x => !x.auto) },
-  { id: "speed-iron", icon: () => ICON.stopwatch("steel"), name: "鐵牌速通", desc: "用 11～15 次把被被拉下去",
+  { id: "speed-iron", icon: () => ICON.stopwatch("steel"), name: "鐵牌速通", desc: "速通玩家 - 鐵牌", how: "用 11～15 次把被被拉下去",
     check: g => byHand(g) && g.drags >= 2 && g.drags <= 15 },
-  { id: "speed-bronze", icon: () => ICON.stopwatch("bronze"), name: "銅牌速通", desc: "一次就把被被拉下去",
+  { id: "speed-bronze", icon: () => ICON.stopwatch("bronze"), name: "銅牌速通", desc: "訣竅就是趁他不注意的時候...", how: "用 1 次就把被被拉下去", hideDesc: true,
     check: g => byHand(g) && g.drags === 1, past: h => oldest(h, x => !x.auto && x.drags === 1) },
-  { id: "speed-silver", icon: () => ICON.stopwatch("silver"), name: "銀牌速通", desc: "用 6～10 次把被被拉下去",
+  { id: "speed-silver", icon: () => ICON.stopwatch("silver"), name: "銀牌速通", desc: "我覺得很難，直到我加入了馬戲團", how: "用 6～10 次把被被拉下去", hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags >= 2 && g.drags <= 10 },
-  { id: "speed-gold", icon: () => ICON.stopwatch("gold"), name: "金牌速通", desc: "用 3～5 次把被被拉下去",
+  { id: "speed-gold", icon: () => ICON.stopwatch("gold"), name: "金牌速通", desc: "我覺得很難，直到我加入了馬戲團", how: "用 3～5 次把被被拉下去", hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags >= 2 && g.drags <= 5 },
-  { id: "speed-platinum", icon: () => ICON.stopwatch("platinum"), name: "白金速通", desc: "用 2 次把被被拉下去", show: "icon",
+  { id: "speed-platinum", icon: () => ICON.stopwatch("platinum"), name: "白金速通", desc: "我覺得很難，直到我加入了馬戲團", how: "用 2 次把被被拉下去", hideName: true, hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags === 2 },
-  { id: "hold-bronze", icon: () => ICON.shield("bronze"), name: "銅牌撐住", desc: "被被撐住 100 次以上",
+  { id: "hold-bronze", icon: () => ICON.shield("bronze"), name: "銅牌撐住", desc: "🫡", how: "完成一場超過 100 次的遊戲",
     check: g => byHand(g) && g.drags >= 100 },
-  { id: "hold-silver", icon: () => ICON.shield("silver"), name: "銀牌撐住", desc: "被被撐住 300 次以上", show: "name",
+  { id: "hold-silver", icon: () => ICON.shield("silver"), name: "銀牌撐住", desc: "🫡🫡", how: "完成一場超過 300 次的遊戲", hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags >= 300, past: h => oldest(h, x => !x.auto && x.drags >= 300) },
-  { id: "hold-gold", icon: () => ICON.shield("gold"), name: "黃金撐住", desc: "被被撐住 1000 次以上", show: "name",
+  { id: "hold-gold", icon: () => ICON.shield("gold"), name: "黃金撐住", desc: "🫡🫡🫡", how: "完成一場超過 1000 次的遊戲", hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags >= 1000, past: h => oldest(h, x => !x.auto && x.drags >= 1000) },
-  { id: "hold-platinum", icon: () => ICON.shield("platinum"), name: "白金撐住", desc: "被被撐住 10000 次以上", show: "icon",
+  { id: "hold-platinum", icon: () => ICON.shield("platinum"), name: "白金撐住", desc: "🫡🫡🫡🫡🫡🫡🫡🫡🫡🫡", how: "完成一場超過 10000 次的遊戲", hideName: true, hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.drags >= 10000, past: h => oldest(h, x => !x.auto && x.drags >= 10000) },
-  { id: "carpet", icon: ICON.carpet, name: "魔毯", desc: "被被飛起來了", show: "name",
+  { id: "carpet", icon: ICON.carpet, name: "魔毯", desc: "被被飛起來了", how: "在空中連續拋接被被 5 次", hideDesc: true, hideHow: true,
     check: g => byHand(g) && g.ach.flights >= FLIGHTS },
-  { id: "back", icon: ICON.backHome, name: "放回去", desc: "把被被放回去", show: "name" },
-  { id: "move-right", icon: () => ICON.newHome("right"), name: "被被搬新家", gc: "被被搬新家（右邊）", desc: "被被在右邊找到新家", show: "name" },
-  { id: "move-down", icon: () => ICON.newHome("down"), name: "被被搬新家", gc: "被被搬新家（樓下）", desc: "被被搬到樓下", show: "name" },
-  { id: "the-world", icon: ICON.theWorld, name: "The World!", desc: "ザ・ワールド！", show: "name" },
-  { id: "the-world-saver", icon: ICON.theWorldSaver, name: "The World!!!!!", desc: "ザ・ワールド！！！", show: "name" },
-  { id: "automata", icon: ICON.automata, name: "自動人形", desc: "自動拉掉被被",
+  { id: "back", icon: ICON.backHome, name: "放回去", desc: "被被回家了", how: "在扯掉被被以後，把他放回遊戲一開始的地方，方向正確並且鋪平", hideDesc: true, hideHow: true },
+  { id: "move-right", icon: () => ICON.newHome("right"), name: "被被搬新家", gc: "被被搬新家（右邊）", desc: "被被在右邊找到新家", how: "在被被還固定住的情況下，把他拉到陽台右半邊", hideDesc: true, hideHow: true },
+  { id: "move-down", icon: () => ICON.newHome("down"), name: "被被搬新家", gc: "被被搬新家（樓下）", desc: "被被搬到樓下", how: "把被被放在下一層的鐵窗", hideDesc: true, hideHow: true },
+  { id: "the-world", icon: ICON.theWorld, name: "The World!", desc: "ザ・ワールド！", how: "在重播的時候遇到 Dio 大人", hideDesc: true, hideHow: true },
+  { id: "the-world-saver", icon: ICON.theWorldSaver, name: "The World!!!!!", desc: "ザ・ワールド！！！", how: "在螢幕保護模式裡面遇到 Dio 大人", hideDesc: true, hideHow: true },
+  { id: "automata", icon: ICON.automata, name: "自動人形", desc: "「感情……是禁止的。」", how: "第一次用自動模式",
     check: g => !g.saver && !!g.auto },
-  { id: "nier", icon: ICON.emil, name: "NieR", desc: "儘管如此，你仍舊希望拯救某個素不相識的人嗎？" },
-  { id: "saver-master", icon: ICON.saverMaster, name: "螢幕保護大師", desc: "螢幕被好好保護了。如果你是用映像管螢幕的話。", show: "name" },
+  { id: "nier", icon: ICON.emil, name: "NieR", desc: "儘管如此，你仍舊希望拯救某個素不相識的人嗎？", how: "刪除所有紀錄。", hideHow: true },
+  { id: "saver-master", icon: ICON.saverMaster, name: "螢幕保護大師", desc: "螢幕被好好保護了。如果你是用映像管螢幕的話。", how: "一次性的在螢幕保護模式看到 7 條以上的被被掉落。", hideDesc: true, hideHow: true },
 ];
 const ACH_KEY = "blanket.ach.v1", ACH_TOAST_MS = 3200, ACH_TOAST_EACH_MS = 600;
 const MEDALS = [
@@ -1779,10 +1781,13 @@ function achAtStep() {
   if (!onShelf() && onLower()) achNow("move-down");
   if (!backCheck()) achNow("back");
 }
+const STOP_AT = ["back", "move-right", "move-down"];
 function achNow(id) {
-  if (achLoad().got[id]) return;
-  (game.ach.now ||= []).push(id);
-  achGrant([[ACH.find(a => a.id === id), null]]);
+  const got = achLoad().got[id], n = game.ach;
+  if (got && !(STOP_AT.includes(id) && !got.stop) || (n.now ||= []).includes(id)) return;
+  n.now.push(id);
+  if (game.rec && STOP_AT.includes(id)) (n.at ||= {})[id] = game.rec.step;
+  if (!got) achGrant([[ACH.find(a => a.id === id), null]]);
 }
 function backCheck() {
   const z = i => BL.pos[i * 3 + 2], x = i => BL.pos[i * 3];
@@ -1843,7 +1848,10 @@ function achAtFall() {
   const h = game.saver ? null : loadHist(), x = h && h.find(r => r.id === game.histId);
   if (x && game.ach.now) {
     const st = achLoad();
-    for (const id of game.ach.now) if (st.got[id] && !st.got[id].game) Object.assign(st.got[id], { game: x.id, day: x.day, drags: x.drags });
+    for (const id of game.ach.now) {
+      const g = st.got[id], stop = game.ach.at && game.ach.at[id] != null;
+      if (g && (!g.game || stop && !g.stop)) Object.assign(g, { game: x.id, day: x.day, drags: x.drags }, stop && { stop: true });
+    }
     achSave(st);
   }
   achGrant(ACH.filter(a => { try { return a.check && a.check(game, h); } catch (e) { console.warn(a.id, e); return false; } }).map(a => [a, x]));
@@ -1908,10 +1916,10 @@ async function achRender() {
   achUI.view = { st, have, unseen }; achUI.sel = null;
   const next = up ? `再 ${up[1] - n} 個拿${up[2]}` : n < ACH.length ? `還有 ${ACH.length - n} 個沒解鎖` : "成就全部解鎖了！";
   const cell = a => {
-    const x = st.got[a.id], show = x ? "all" : a.show || "all";
-    const cls = [x ? "got" : "no", show === "secret" && "secret", unseen.includes(a.id) && "new", achUI.sel === a.id && "sel"].filter(Boolean).join(" ");
-    return `<li class="${cls}" data-ach="${a.id}"><span class="achIc">${show === "secret" ? ICON.secret() : a.icon()}</span>` +
-      `<i>${show === "secret" || show === "icon" ? "？？？" : a.name}</i></li>`;
+    const x = st.got[a.id], { secret, name } = achShown(a, x);
+    const cls = [x ? "got" : "no", secret && "secret", unseen.includes(a.id) && "new", achUI.sel === a.id && "sel"].filter(Boolean).join(" ");
+    return `<li class="${cls}" data-ach="${a.id}"><span class="achIc">${secret ? ICON.secret() : a.icon()}</span>` +
+      `<i>${name ? a.name : "？？？"}</i></li>`;
   };
   document.getElementById("aCount").textContent = `${n} / ${ACH.length}`;
   document.getElementById("aList").innerHTML = `<div class="achTop"><i class="medal ${m}"></i><div>` +
@@ -1922,19 +1930,25 @@ async function achRender() {
     achHint() + `<ol class="achGrid">${ACH.map(cell).join("")}</ol><div class="achDetail"></div>`;
   achDetail();
 }
+const achShown = (a, x) => {
+  const secret = !x && a.show === "secret";
+  return { secret, name: x || !secret && !a.hideName, desc: x || !secret && !a.hideDesc, how: x || !secret && !a.hideHow };
+};
 function achDetail() {
   const el = document.querySelector("#aList .achDetail"), a = ACH.find(a => a.id === achUI.sel);
   if (!el) return;
   el.className = "achDetail" + (a ? "" : " none");
   if (!a) { el.textContent = "點一下圖示，看看是什麼成就"; return; }
-  const { st, have } = achUI.view, x = st.got[a.id], show = x ? "all" : a.show || "all";
+  const { st, have } = achUI.view, x = st.got[a.id], { secret, name, desc, how } = achShown(a, x);
   const date = t => { const d = new Date(t); return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`; };
   if (!x) el.classList.add("no");
-  if (show === "secret") el.classList.add("secret");
-  el.innerHTML = `<span class="achIc">${show === "secret" ? ICON.secret() : a.icon()}</span>` +
-    `<span class="tx"><b>${show === "secret" || show === "icon" ? "？？？" : a.name}</b>` +
-    `<small>${show === "all" ? a.desc : show === "secret" ? a.hint || "？？？" : "？？？"}</small>` +
-    (x ? `<small class="when">${date(x.t)}${x.day ? ` · 第 ${x.day} 天 ${x.drags} 次` : ""}</small>` : "") + `</span>` +
+  if (secret) el.classList.add("secret");
+  el.innerHTML = `<span class="achIc">${secret ? ICON.secret() : a.icon()}</span>` +
+    `<span class="tx"><b>${name ? a.name : "？？？"}</b>` +
+    `<small>${desc ? a.desc : secret ? a.hint || "？？？" : "？？？"}</small>` +
+    (a.how && how ? `<small class="how">${a.how}</small>` : "") +
+    (x ? `<small class="when">${date(x.t)}${x.day ? ` · 第 ${x.day} 天 ${x.drags} 次` : ""}</small>` : "") +
+    (x && STOP_AT.includes(a.id) && !x.stop ? `<small class="redo">上次的成果沒有拍到，可以再挑戰一次嗎？</small>` : "") + `</span>` +
     (x && x.game && have.has(x.game) ? `<button data-replay="${x.game}">重播</button>` : "");
 }
 document.getElementById("aList").addEventListener("click", e => {
@@ -1986,7 +2000,8 @@ async function encodeReplay(frames) {
   return { n, m, packed: typeof CompressionStream !== "undefined", data: await squeeze(bytes),
     drags: Uint16Array.from(keep, f => f.drags), fell: keep.findIndex(f => f.fell),
     hp: Uint16Array.from(keep, f => Math.round(f.hp * 200)), hits: frames.hits || [],
-    pre: frames.pre, freeze: Math.ceil(frames.freeze / STORE_EVERY) };
+    pre: frames.pre, freeze: Math.ceil(frames.freeze / STORE_EVERY),
+    at: Object.fromEntries(Object.entries(frames.at || {}).map(([id, f]) => [id, Math.round(f / STORE_EVERY)])) };
 }
 async function decodeReplay(r) {
   const bytes = r.packed ? await squeeze(r.data, true) : r.data, { n, m } = r, prev = new Int32Array(m), frames = [];
@@ -1999,7 +2014,7 @@ async function decodeReplay(r) {
     frames.push({ pos, drags: r.drags[k], fell: r.fell >= 0 && k >= r.fell, hp: r.hp ? r.hp[k] / 200 : null });
   }
   frames.hits = r.hits || [];
-  if (r.pre != null) return Object.assign(frames, { pre: r.pre, freeze: r.freeze });
+  if (r.pre != null) return Object.assign(frames, { pre: r.pre, freeze: r.freeze, at: r.at || {} });
   if (r.dur != null) {
     const fz = r.freeze >= 0 ? r.freeze : n - 1;
     return Object.assign(frames, { pre: r.dur * fz / (n - 1), freeze: fz });
@@ -2145,6 +2160,7 @@ const REPLAY_IN = 0.5;
 const REPLAY_OUT = 0.5;
 const STOP_LEAD = 0.5;
 const STOP_OUT = 1.5;
+const MOMENT_S = 5;
 const TIME_STOP_NEGATIVE = !new URLSearchParams(location.search).has("no_negative");
 function stopWords(ts, tp) {
   return ts < 0 || tp >= STOP_OUT ? "" : tp >= -STOP_LEAD ? "そして時は動き出す" : ts < 1 ? "時よ止まれ！" : `${Math.floor(ts)}秒経過！`;
@@ -2169,8 +2185,10 @@ function swayFrame() {
   camera.quaternion.copy(q).multiply(sway.quat);
 }
 const REPLAY_MIN_FRAMES = 16, REPLAY_QUIET = 0.05;
-function squeezeSchedule(r, end, play) {
+function squeezeSchedule(r, end, play, musts = []) {
   const n = Math.round(play * 60) + 1, motion = r.motion;
+  const starts = r.events.filter(([, g], k) => g && !(k && r.events[k - 1][1])).map(([s0]) => s0);
+  const lastStart = musts.map(s => Math.max(-1, ...starts.filter(s0 => s0 <= s)));
   const inEnd = Math.min(60, end), outStart = Math.max(inEnd, end - REPLAY_OUT * STEPS_PER_S);
   const mid = Math.round((play - REPLAY_IN - REPLAY_OUT) * 60);
   const owner = new Int32Array(end + 1).fill(-1), wins = [];
@@ -2178,12 +2196,14 @@ function squeezeSchedule(r, end, play) {
     if (!g || (k && r.events[k - 1][1])) return;
     let up = null;
     for (let j = k + 1; j < r.events.length && !up; j++) if (!r.events[j][1]) up = r.events[j];
-    const a = Math.max(inEnd, s0 - 20), b = Math.min(outStart - 1, (up ? up[0] : end) + 90);
-    const w = { steps: [], imp: 0 };
+    const holds = musts.filter((_, m) => lastStart[m] === s0);
+    const a = Math.max(inEnd, s0 - 20), b = Math.min(outStart - 1, Math.max((up ? up[0] : end) + 90, ...holds.map(s => s + 30)));
+    const w = { steps: [], imp: 0, must: holds.length > 0 };
     for (let j = a; j <= b; j++) if (owner[j] < 0) { owner[j] = wins.length; w.steps.push(j); w.imp += motion[j] || 0; }
     if (w.steps.length) wins.push(w);
   });
-  const kept = wins.slice().sort((x, y) => y.imp - x.imp).slice(0, Math.max(1, Math.floor(mid / REPLAY_MIN_FRAMES)));
+  const most = Math.max(1, Math.floor(mid / REPLAY_MIN_FRAMES)), must = wins.filter(w => w.must);
+  const kept = [...must, ...wins.filter(w => !w.must).sort((x, y) => y.imp - x.imp)].slice(0, Math.max(most, must.length));
   const impSum = kept.reduce((t, w) => t + w.imp, 0) || 1, weight = new Float64Array(end + 1);
   for (const w of kept) {
     const share = (1 - REPLAY_QUIET) * mid * (0.5 / kept.length + 0.5 * w.imp / impSum);
@@ -2213,13 +2233,20 @@ function replaySchedule(r) {
   const end = r.end, free = Math.max(1, Math.min(end, game.freeStep ?? end)), preS = free / STEPS_PER_S;
   const slot = preS <= PRE_SPLIT ? PRE_SHORT : PRE_LONG, squeezed = preS > slot;
   const n1 = Math.max(1, Math.round((squeezed ? slot : preS) * 60)), n2 = Math.round(POST_S * 60);
-  const steps = squeezed ? squeezeSchedule(r, free, slot) : Array.from({ length: n1 + 1 }, (_, f) => f / n1 * free);
+  const musts = Object.entries(game.ach && game.ach.at || {}).filter(([, s]) => s < free);
+  const steps = squeezed ? squeezeSchedule(r, free, slot, musts.map(([, s]) => s)) : Array.from({ length: n1 + 1 }, (_, f) => f / n1 * free);
+  const at = {};
+  for (const [id, s] of musts) {
+    let k = 0;
+    for (let f = 1; f <= n1; f++) if (Math.abs(steps[f] - s) < Math.abs(steps[k] - s)) k = f;
+    at[id] = k;
+  }
   const span = end - free, fits = span <= POST_S * STEPS_PER_S;
   for (let f = 1; f <= n2; f++) steps.push(free + (fits ? Math.min(span, Math.round(f / 60 * STEPS_PER_S)) : Math.round(f / n2 * span)));
-  return { steps, freeze: n1, pre: n1 / 60 };
+  return { steps, freeze: n1, pre: n1 / 60, at };
 }
 function prepareReplay() {
-  const r = game.rec, { steps, freeze, pre } = replaySchedule(r), snaps = r.snaps, frames = [];
+  const r = game.rec, { steps, freeze, pre, at } = replaySchedule(r), snaps = r.snaps, frames = [];
   let j = 0, mk = 0, drags = 0;
   for (const st of steps) {
     while (j < snaps.length - 2 && snaps[j + 1].step <= st) j++;
@@ -2232,6 +2259,7 @@ function prepareReplay() {
   }
   frames.hits = r.hits.slice();
   frames.freeze = freeze; frames.pre = pre;
+  frames.at = at;
   frames.id = game.histId;
   game.frames = frames;
 }
@@ -2247,26 +2275,30 @@ function playFrames(frames, fellDay, done) {
   hp.style.visibility = frames[0].hp == null ? "hidden" : ""; hp.classList.add("replay");
   hpSet(frames[0].hp ?? 1, frames[0].hp ?? 1);
   let drags = frames[0].drags;
-  const t0 = performance.now(), slot = frames.pre <= PRE_SPLIT ? PRE_SHORT : PRE_LONG, total = slot + BULLET_S + POST_S;
+  const t0 = performance.now(), slot = frames.pre <= PRE_SPLIT ? PRE_SHORT : PRE_LONG;
   const pre = Math.max(1e-3, Math.min(frames.pre, slot)), fz = frames.freeze, last = frames.length - 1;
-  const phase = slot === PRE_SHORT ? Math.PI : 0;
+  const moments = [...new Set(Object.values(frames.at || {}))].filter(k => k < fz).sort((p, q) => p - q);
+  const total = slot + BULLET_S + POST_S + moments.length * MOMENT_S;
+  const phase = (slot === PRE_SHORT ? Math.PI : 0) - 2 * Math.PI * moments.length * MOMENT_S / SWAY_S;
   (function tick() {
-    const t = Math.min(total, (performance.now() - t0) / 1000), tp = t - slot - BULLET_S;
-    const x = t < pre ? fz * t / pre : tp < 0 ? fz : fz + (last - fz) * Math.min(1, tp / POST_S);
+    let t = Math.min(total, (performance.now() - t0) / 1000), still = -1;
+    const wv = Math.sin(2 * Math.PI * t / SWAY_S + phase);
+    for (const k of moments) { const at = pre * k / fz; if (t < at) break; if (t < at + MOMENT_S) { still = k; break; } t -= MOMENT_S; }
+    const tp = t - slot - BULLET_S;
+    const x = still >= 0 ? still : t < pre ? fz * t / pre : tp < 0 ? fz : fz + (last - fz) * Math.min(1, tp / POST_S);
     const a = frames[Math.floor(x)], b = frames[Math.min(frames.length - 1, Math.floor(x) + 1)], f = x - Math.floor(x);
     for (let k = 0; k < BL.pos.length; k++) BL.pos[k] = a.pos[k] + (b.pos[k] - a.pos[k]) * f;
     BL.mesh.geometry.attributes.position.needsUpdate = true;
-    const wv = Math.sin(2 * Math.PI * t / SWAY_S + phase);
     sway.a = -SWAY_DEG * Math.PI / 180 * wv * (wv > 0 ? 1 : 0.5);
     st.textContent = a.fell ? `重播 · 第 ${fellDay} 天掉下去了` : `重播 · 第 ${dayOf(a.drags)} 天`;
-    stopShow(fz >= last ? "" : stopWords(t - pre, tp), tp < 0);
+    stopShow(fz >= last || still >= 0 ? "" : stopWords(t - pre, tp), tp < 0);
     if (a.hp != null) {
       hpBar("--hpF", a.hp + (b.hp - a.hp) * f);
       if (a.drags > drags && frames.hits[a.drags]) hpHit(frames.hits[a.drags], a.hp);
       if (a.fell) hpBar("--hpL", 0);
     }
     drags = a.drags;
-    if (t < total) return requestAnimationFrame(tick);
+    if ((performance.now() - t0) / 1000 < total) return requestAnimationFrame(tick);
     stopShow("", false);
     camera.position.copy(sway.pivot).add(sway.offset); camera.quaternion.copy(sway.quat); sway = null;
     setBlanketState(live); BL.paused = false;
