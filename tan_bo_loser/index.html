@@ -5,7 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#16181c">
 <title>等無 × 魯之歌 混音台</title>
-<meta name="description" content="用兩個 YouTube 播放器即時混音：魯之歌在等無的副歌加入，並在第二次副歌接手；也可以改以魯之歌為主軌。">
+<meta name="description" content="用兩個 YouTube 播放器即時混音：魯之歌在等無的副歌加入，並在第二次副歌接手。">
+<!-- link previews. og:image should be the full https:// address once the GitHub Pages URL is known -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="等無 × 魯之歌 混音台">
+<meta property="og:description" content="用兩個 YouTube 播放器即時混音：魯之歌在等無的副歌加入，並在第二次副歌接手。">
+<meta property="og:image" content="og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="等無與魯之歌兩個播放器並排，下方是兩首歌的波形與混音片段">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="等無 × 魯之歌 混音台">
+<meta name="twitter:image" content="og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -25,6 +37,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);fon
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
 body:not(.advanced) .adv{display:none!important}
+[hidden]{display:none!important}
 .wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}
 h1{font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:.04em;margin:0}
@@ -129,12 +142,12 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
   .console{grid-template-columns:1fr;padding:12px}
   .panels{grid-template-columns:1fr}
   /* phone: the transport docks to the bottom edge */
-  body{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+  body{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
   .transport{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(31,34,40,.97);border-top:1px solid var(--line);
     padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-    display:grid;grid-template-columns:auto 1fr;grid-template-areas:"clock main" "btns btns";gap:8px 12px;align-items:center;
+    display:grid;grid-template-columns:1fr;grid-template-areas:"clock" "btns";gap:8px 12px;align-items:center;
     -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-  .transport .clock{grid-area:clock;font-size:20px;text-align:left}
+  .transport .clock{grid-area:clock;font-size:20px;text-align:center}
   .transport .mainbox{grid-area:main}
   .transport .tbtns{grid-area:btns}
   .transport .mainlabel{display:none}
@@ -184,13 +197,13 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
           <button id="replay" disabled>↺ 重播</button>
           <button class="play" id="play" disabled>▶ 播放</button>
         </div>
-        <div class="mainbox">
+        <div class="mainbox" hidden><!-- main-song choice hidden for now; 等無 is always the main song -->
           <div class="mainlabel"><span class="label">主軌</span></div>
           <div class="mainsel" role="group" aria-label="主軌"><button id="mainA" aria-pressed="true">等無</button><button id="mainB" aria-pressed="false">魯之歌</button></div>
         </div>
       </div>
       <div class="seekbtns adv"><button id="back">« 4 小節</button><button id="fwd">4 小節 »</button></div>
-      <label class="inline adv">魯之歌為主軌時的等無音量（%） <input type="number" id="flipLvl" min="0" max="100" step="5"></label>
+      <label class="inline adv" hidden>魯之歌為主軌時的等無音量（%） <input type="number" id="flipLvl" min="0" max="100" step="5"></label>
       <div class="xfade adv">
         <div class="ends"><span>A</span><span class="label">交叉推桿</span><span>B</span></div>
         <input type="range" id="xf" min="0" max="1" step="0.01" value="0.5" aria-label="交叉推桿">
@@ -225,11 +238,15 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
         <label>對齊 <select id="snap"><option value="beat">拍點</option><option value="off">關閉</option></select></label>
         <label>縮放 <input type="range" id="zoom" min="0" max="1" step="0.001" value="0.15" style="width:140px"></label>
         <label><input type="checkbox" id="follow" checked> 跟隨播放位置</label>
+        <label><input type="checkbox" id="simSolo"> 模擬手機播放（一次一首）</label>
+        <button id="soloAdd" type="button">在播放位置加入切換點</button>
+        <button id="soloReset" type="button">切換點恢復預設</button>
       </div>
     </div>
     <div class="canvas-box"><canvas id="tl" tabindex="0" aria-label="時間軸：上方為等無，下方為魯之歌。點一下即可跳轉。"></canvas></div>
     <input type="range" id="scroll" class="adv" min="0" max="1" step="0.0001" value="0" aria-label="捲動時間軸">
     <p class="hint">點一下波形即可跳到該處。白線是每首歌的音量。</p>
+    <p class="hint adv" id="soloInfo" hidden>手機切換點（尺規上的色條）：<span id="soloList"></span><br>按「在播放位置加入切換點」可在播放位置換成另一首歌；拖曳尺規上的白色三角形可移動切換點（會對齊主軌拍點），點兩下則刪除。這些調整只存在這個瀏覽器；要讓所有手機訪客套用，請複製「混音設定」交給 Claude 寫進頁面。</p>
     <p class="hint adv">拖曳方框片段可移動位置，拖曳邊緣可裁切，拖曳小方塊可設定淡入淡出。<kbd>Space</kbd> 播放／暫停 · <kbd>←</kbd><kbd>→</kbd> 將所選片段移動一拍（<kbd>Shift</kbd> = 10 毫秒）· <kbd>Ctrl/⌘</kbd> + 滾輪縮放。</p>
   </section>
 
@@ -351,6 +368,36 @@ function soloDeck(t) {
   for (let d = 0.25; d <= 3 && run < 3 && rawSolo(t - d) === r; d += 0.25) run += 0.25;
   return run >= 2.75 ? r : null;
 }
+// ---------- phone mode: one song at a time ----------
+let SIM = false;                               // desktop preview of the phone behaviour
+const soloMode = () => IOS || SIM;
+let autoCache = { plan: null, vol: '', list: null };
+function autoSwitches() {
+  const key = MC.st.volA + '/' + MC.st.volB;
+  if (autoCache.plan === MC.plan && autoCache.vol === key) return autoCache.list;
+  const list = []; let prev;
+  for (let t = 0; t < MC.plan.len; t += 0.05) { const s = soloDeck(t); if (s !== prev) { list.push([+t.toFixed(2), s]); prev = s; } }
+  autoCache = { plan: MC.plan, vol: key, list };
+  return list;
+}
+// switch points for the current main song: [time on the main clock, deck or null], custom ones if the user moved any
+const switches = () => MC.st.solo[MC.plan.baseDeck] || autoSwitches();
+function soloAt(t) { let d = null; for (const [t0, k] of switches()) { if (t0 <= t) d = k; else break; } return d; }
+// phone mode: the song that has the turn keeps playing until the next switch, even past the end of its clip,
+// by carrying on at the alignment of its nearest clip
+function phoneInfo(k, m) {
+  const i = MC.deckAt(k, m, MC.PREROLL);
+  if (i && i.audible) return i;
+  let best = null, bd = Infinity;
+  for (const s of MC.plan[k]) { const d = m < s.start ? s.start - m : m > s.end ? m - s.end : 0; if (d < bd) { bd = d; best = s; } }
+  if (!best) return i;
+  const t = m - best.offset;
+  if (t < 0 || t > lastSound[k]) return i;
+  return { seg: best, gain: 1, t, audible: true };
+}
+const infoAt = (k, m) => soloMode() ? phoneInfo(k, m) : MC.deckAt(k, m, MC.PREROLL);
+function nearestBeat(arr, t) { let best = t, bd = Infinity; for (const b of arr) { const d = Math.abs(b - t); if (d < bd) { bd = d; best = b; } } return best; }
+
 function masterAt(m, infoA, infoB) {
   const plan = MC.plan, base = plan.baseDeck, other = base === 'A' ? 'B' : 'A';
   const baseSeg = plan[base][0], info = { A: infoA, B: infoB };
@@ -364,14 +411,16 @@ function tick() {
   const tms = performance.now();
   if (!running) { setVol('A', 0); setVol('B', 0); return; }
   let m = clockNow();
-  let info = { A: MC.deckAt('A', m, MC.PREROLL), B: MC.deckAt('B', m, MC.PREROLL) };
+  let info = { A: infoAt('A', m), B: infoAt('B', m) };
   // iPhone/iPad: one deck with sound at a time; the next one may already run, muted, to be in sync when it takes over
   let solo = null, next = null;
-  if (IOS) {
-    solo = soloDeck(m); next = soloDeck(m + 1.5);
+  if (soloMode()) {
+    solo = soloAt(m); next = soloAt(m + 1.5);
+    if (solo && !info[solo]) solo = null;   // a switch can point at a song that has nothing to play there
+    if (next && !info[next]) next = null;
     for (const k of ['A', 'B']) if (k !== solo && k !== next) info[k] = null;
   }
-  const master = IOS ? (solo || next) : masterAt(m, info.A, info.B);
+  const master = soloMode() ? (solo || next) : masterAt(m, info.A, info.B);
   if (master) {
     const s = stateOf(master);
     if (s === YT_PLAYING) {
@@ -379,7 +428,7 @@ function tick() {
       if (isFinite(mm)) {
         hold = false; anchor(mm); m = mm;
         const keep = { A: !!info.A, B: !!info.B };
-        info = { A: keep.A ? MC.deckAt('A', m, MC.PREROLL) : null, B: keep.B ? MC.deckAt('B', m, MC.PREROLL) : null };
+        info = { A: keep.A ? infoAt('A', m) : null, B: keep.B ? infoAt('B', m) : null };
       }
     } else {
       if (!hold) { pos = clockNow(); hold = true; }
@@ -399,7 +448,7 @@ function tick() {
     if (Math.abs(err) > +$('tol').value && tms - d.lastCmd > 900) cmdSeek(k, target, tms);
   }
   const st = MC.st, xa = Math.min(1, 2 * (1 - st.xf)), xb = Math.min(1, 2 * st.xf);
-  if (IOS) {
+  if (soloMode()) {
     // mute the outgoing deck before unmuting the incoming one, so two never sound together
     for (const k of ['A', 'B']) if (k !== solo) setVol(k, 0);
     if (solo) setVol(solo, 100);
@@ -442,8 +491,28 @@ const engine = {
       else { el.textContent = (e >= 0 ? '+' : '') + Math.round(e * 1000) + ' ms'; el.className = 'v ' + (Math.abs(e) <= +$('tol').value ? 'ok' : 'warn'); }
     }
     $('play').textContent = playing ? '❚❚ 暫停' : '▶ 播放';
+    if (soloMode()) { const list = switches(); if (list !== shownList) { shownList = list; $('soloList').textContent = list.map(([t, k]) => `${MC.fmt(t)} ${k ? MC.NAMES[k] : '靜音'}`).join(' → ') + (MC.st.solo[MC.plan.baseDeck] ? '' : '（自動）'); } }
+  },
+  // phone mode: a band under the ruler shows which song is heard; white triangles mark the switch points
+  drawOverlay(c, v) {
+    if (!soloMode()) return;
+    const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+    const list = switches(), y = v.RULER - 6;
+    list.forEach(([t, k], i) => {
+      if (!k) return;
+      const t2 = i + 1 < list.length ? list[i + 1][0] : MC.plan.len;
+      c.fillStyle = css(k === 'A' ? '--a' : '--b'); c.fillRect(v.X(t), y, v.X(t2) - v.X(t), 6);
+    });
+    if (!document.body.classList.contains('advanced')) return;
+    c.fillStyle = css('--fg');
+    for (let i = 1; i < list.length; i++) {
+      const x = v.X(list[i][0]); if (x < -8 || x > v.W + 8) continue;
+      c.globalAlpha = 0.35; c.fillRect(Math.round(x), v.RULER, 1, v.H - v.RULER); c.globalAlpha = 1;
+      c.beginPath(); c.moveTo(x - 7, 0); c.lineTo(x + 7, 0); c.lineTo(x, v.RULER - 6); c.closePath(); c.fill();
+    }
   },
 };
+let shownList = null;
 
 window.onYouTubeIframeAPIReady = () => {
   const vars = { controls: 0, disablekb: 1, playsinline: 1, rel: 0, fs: 0, iv_load_policy: 3 };
@@ -466,6 +535,71 @@ window.onYouTubeIframeAPIReady = () => {
   }
 };
 
+// ---------- dragging phone switch points (advanced, phone mode) ----------
+const cv = $('tl'); let sdrag = null;
+function markerAt(e) {
+  if (!soloMode() || !document.body.classList.contains('advanced')) return -1;
+  const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  if (y > 24) return -1;
+  const list = switches();
+  for (let i = 1; i < list.length; i++) if (Math.abs(MC.timeToX(list[i][0]) - x) <= 9) return i;
+  return -1;
+}
+let lastTap = { t: 0, i: -1 };
+cv.addEventListener('pointerdown', e => {
+  const i = markerAt(e); if (i < 0) return;
+  e.stopImmediatePropagation(); e.preventDefault();
+  if (e.pointerType === 'touch') {   // double-tap a triangle to remove that switch
+    const now = performance.now();
+    if (lastTap.i === i && now - lastTap.t < 400) { customList().splice(i, 1); MC.refresh(); lastTap = { t: 0, i: -1 }; return; }
+    lastTap = { t: now, i };
+  }
+  cv.setPointerCapture(e.pointerId);
+  const base = MC.plan.baseDeck;
+  if (!MC.st.solo[base]) MC.st.solo[base] = switches().map(p => p.slice());
+  sdrag = { i, base };
+}, { capture: true });
+cv.addEventListener('pointermove', e => {
+  if (!sdrag) { if (markerAt(e) >= 0) { cv.style.cursor = 'ew-resize'; e.stopImmediatePropagation(); } return; }
+  e.stopImmediatePropagation();
+  const r = cv.getBoundingClientRect(), L = MC.st.solo[sdrag.base], i = sdrag.i;
+  let t = MC.xToTime(e.clientX - r.left);
+  if ($('snap').value !== 'off') t = nearestBeat(sdrag.base === 'A' ? MC.G.new.beats : MC.G.old.beats, t);
+  const lo = L[i - 1][0] + 0.5, hi = i + 1 < L.length ? L[i + 1][0] - 0.5 : MC.plan.len;
+  L[i][0] = +MC.clamp(t, lo, hi).toFixed(3);
+  MC.refresh();
+}, { capture: true });
+const endS = e => { if (sdrag) { sdrag = null; e.stopImmediatePropagation(); } };
+cv.addEventListener('pointerup', endS, { capture: true }); cv.addEventListener('pointercancel', endS, { capture: true });
+function setSim(on) {
+  SIM = on; $('simSolo').checked = on;
+  $('soloInfo').hidden = !soloMode();
+  try { localStorage.setItem('tan_bo_loser-sim', on ? '1' : '0'); } catch (e) {}
+  if (MC.playing) MC.seek(MC.now());   // restart so the decks follow the new mode right away
+  MC.refresh();
+}
+$('simSolo').addEventListener('change', () => setSim($('simSolo').checked));
+$('soloReset').addEventListener('click', () => { const base = MC.plan.baseDeck; MC.st.solo[base] = MC.defaults().solo[base]; MC.refresh(); });
+function customList() { const base = MC.plan.baseDeck; if (!MC.st.solo[base]) MC.st.solo[base] = switches().map(p => p.slice()); return MC.st.solo[base]; }
+// add a switch at the playhead: from there on, the other song plays (until the next switch)
+$('soloAdd').addEventListener('click', () => {
+  const base = MC.plan.baseDeck, L = customList();
+  let t = MC.now();
+  if ($('snap').value !== 'off') t = nearestBeat(base === 'A' ? MC.G.new.beats : MC.G.old.beats, t);
+  t = +t.toFixed(3);
+  if (L.some(([t0]) => Math.abs(t0 - t) < 0.5)) return;
+  const cur = soloAt(t), deck = cur === 'A' ? 'B' : cur === 'B' ? 'A' : base;
+  L.push([t, deck]); L.sort((a, b) => a[0] - b[0]);
+  MC.refresh();
+});
+// double-click / double-tap a triangle to remove that switch
+cv.addEventListener('dblclick', e => {
+  const i = markerAt(e); if (i < 0) return;
+  e.stopImmediatePropagation(); e.preventDefault();
+  customList().splice(i, 1); MC.refresh();
+}, { capture: true });
+
+
 // ---------- simple / advanced ----------
 function setAdvanced(on) {
   document.body.classList.toggle('advanced', on);
@@ -481,7 +615,12 @@ if (location.protocol === 'file:') $('fileBanner').hidden = false;
 if (IOS) $('iosNote').hidden = false;
 $('srcA').href = 'https://www.youtube.com/watch?v=' + VIDEO.A;
 $('srcB').href = 'https://www.youtube.com/watch?v=' + VIDEO.B;
-const CLIP_ZH = { '1st chorus': '第一次副歌', 'Pre-2nd': '第二次副歌前', '2nd chorus': '第二次副歌', 'Tail': '尾段', 'Outro': '尾奏' };
+// open the page with ?reset to clear everything it saved in this browser, then load clean
+if (new URLSearchParams(location.search).has('reset')) {
+  try { Object.keys(localStorage).filter(k => k.startsWith('tan_bo_loser') || k.startsWith('gsmix-yt')).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+  history.replaceState(null, '', location.pathname);
+}
+const CLIP_ZH = { '1st chorus': '第一次副歌', 'Pre-2nd': '第二次副歌前', '2nd chorus': '第二次副歌', 'Return': '回到魯之歌', 'Tail': '尾段', 'Outro': '尾奏' };
 const STRINGS = {
   clipName: n => CLIP_ZH[n] || n,
   add: '＋ 在播放位置加入魯之歌片段', remove: n => `移除 ${n}`,
@@ -490,11 +629,12 @@ const STRINGS = {
   copied: '已複製', selected: '已選取，請按 ⌘C 複製', loaded: '已載入設定', loadFail: '無法讀取設定：',
   noClips: '設定裡沒有任何片段', missing: i => `第 ${i} 個片段缺少入點、出點或開始時間`,
 };
-MC.init(engine, { strings: STRINGS, storageKey: 'tan_bo_loser-v2', legacyKeys: ['tan_bo_loser-v1', 'gsmix-yt-v1'], volMax: 1, levelMax: 100,
-  migrate: (st, preset) => { const p = preset.find(c => c.deck === 'A' && c.name === 'Outro'), o = st.clips.find(c => c.deck === 'A' && c.name === 'Outro'); if (p) { if (o) Object.assign(o, p); else st.clips.push(p); } } })
+MC.init(engine, { strings: STRINGS, storageKey: 'tan_bo_loser-v5', volMax: 1, levelMax: 100 })
 .then(() => {
   MC.setFlip(false);   // every visit starts with 等無 as the main song
   measureLastSound();
+  if (IOS) { $('simSolo').checked = true; $('simSolo').disabled = true; $('soloInfo').hidden = false; }
+  else { let sim = false; try { sim = localStorage.getItem('tan_bo_loser-sim') === '1'; } catch (e) {} setSim(sim); }
   let adv = false; try { adv = localStorage.getItem('tan_bo_loser-advanced') === '1'; } catch (e) {}
   setAdvanced(adv);
   const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api';

@@ -7,6 +7,7 @@ A two-deck YouTube mix of 等無 (Deck A) and 魯之歌 (Deck B). The page plays
 - `index.html`: the page and its YouTube sync engine
 - `mix-core.js`: the mix plan, timeline and controls (shared with the hosted-audio version)
 - `grid.json`: beat positions, keys and waveform outlines measured from the songs (no audio)
+- `og.png`: the 1200×630 link-preview image (a screenshot of the page)
 
 ## Run locally
 

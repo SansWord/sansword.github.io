@@ -7,15 +7,21 @@ const NAMES = { A: '等無', B: '魯之歌' };
 
 // "offset" = main-clock time minus the deck's own time. Main clock = 等無's time in the normal mix.
 const PRESET = [
-  { deck: 'B', name: '1st chorus', offset: 28.752, inPt: 72.754,  outPt: 121.173, fi: 2, fo: 8, duck: 0,  level: 100 },
+  // 1st chorus: 魯之歌 joins on its pickup; a clean cut at 等無 2:05.7 leaves 等無 alone again
+  { deck: 'B', name: '1st chorus', offset: 28.752, inPt: 72.754,  outPt: 96.909,  fi: 2, fo: 0, duck: 40, level: 100 },   // 等無 at 60% underneath
   { deck: 'B', name: 'Pre-2nd',    offset: 34.679, inPt: 159.642, outPt: 171.321, fi: 8, fo: 0, duck: 0,  level: 100 },
-  { deck: 'B', name: '2nd chorus', offset: 34.679, inPt: 171.321, outPt: 252.666, fi: 0, fo: 0, duck: 40, level: 100 },
-  // 等無 after the handover: stays underneath while it still matches (to 4:15)
-  { deck: 'A', name: 'Tail',       offset: 0,      inPt: 229.358, outPt: 255.2,   fi: 8, fo: 4, duck: 0,  level: 30 },
+  // 2nd chorus: 魯之歌 over 等無 until a clean cut at 等無 3:47.6, where 等無 plays alone…
+  { deck: 'B', name: '2nd chorus', offset: 34.679, inPt: 171.321, outPt: 192.923, fi: 0, fo: 0, duck: 40, level: 100 },
+  // …until another clean cut at 等無 4:13.3 hands the song back to 魯之歌 for the rest
+  { deck: 'B', name: 'Return',     offset: 34.679, inPt: 218.627, outPt: 252.666, fi: 0, fo: 0, duck: 0,  level: 100 },
   // 等無's ending: comes up over 魯之歌's last bars, then rings out alone to 等無's own end
   { deck: 'A', name: 'Outro',      offset: 5.852,  inPt: 269.0,   outPt: 301.232, fi: 16, fo: 0, duck: 0, level: 100 },
 ];
-const DEFAULTS = { clips: PRESET, sel: 0, volA: 1, volB: 1, xf: 0.5, handover: { on: true, at: 229.358, beats: 8 }, flip: false, flipLevel: 45, corrA: 0, corrB: 0 };
+const DEFAULTS = { clips: PRESET, sel: 0, volA: 1, volB: 1, xf: 0.5,
+  handover: { on: true, at: 253.306, beats: 0 },   // 等無 cuts out (no fade) when 魯之歌 returns at 4:13.3
+  flip: false, flipLevel: 45, corrA: 0, corrB: 0,
+  // phone switch points per main song (time on the main clock, song heard from there); null = automatic
+  solo: { A: [[0, 'A'], [101.86, 'B'], [125.661, 'A'], [204.423, 'B'], [227.602, 'A'], [253.306, 'B'], [287.289, null]], B: null } };
 const clone = o => JSON.parse(JSON.stringify(o));
 // UI text; a page can override any of these through init({ strings })
 let S = {
@@ -225,6 +231,7 @@ function draw() {
     c2.fillStyle = COL.hot; c2.fillRect(Math.round(hx), RULER, 1, H - RULER);
     c2.font = `700 11px ${css('--f-display')}`; c2.textBaseline = 'top'; c2.fillText('等無 → 魯之歌', hx + 5, LANE.A[0] + 16);
   }
+  if (engine && engine.drawOverlay) engine.drawOverlay(c2, { X, M, W, H, RULER, LANE });
   const px = X(now()); if (px >= 0 && px <= W) { c2.fillStyle = COL.hot; c2.fillRect(Math.round(px) - 1, 0, 2, H); }
 }
 
@@ -324,6 +331,7 @@ function recipe() {
     new_fades_out: h.on ? { start_on_new_s: +h.at.toFixed(3), length_s: +(h.beats * BEAT).toFixed(3) } : null,
     deck_volume: { new: st.volA, old: st.volB }, crossfader: st.xf,
     youtube_corrections_s: { new: st.corrA, old: st.corrB },
+    phone_switches: st.solo,
     clips: st.clips.map((c, i) => { const len = ce(c) - cs(c); return {
       clip: i + 1, deck: c.deck === 'A' ? 'new' : 'old', name: c.name,
       deck_in_s: +c.inPt.toFixed(3), deck_out_s: +c.outPt.toFixed(3),
@@ -348,6 +356,7 @@ function loadRecipe(text) {
   if (r.deck_volume) { st.volA = +r.deck_volume.new || 1; st.volB = +r.deck_volume.old || 1; }
   if (isFinite(+r.crossfader)) st.xf = +r.crossfader;
   if (r.youtube_corrections_s) { st.corrA = +r.youtube_corrections_s.new || 0; st.corrB = +r.youtube_corrections_s.old || 0; }
+  if (r.phone_switches) st.solo = Object.assign({ A: null, B: null }, r.phone_switches);
   st.flip = /old|魯之歌/.test(r.main_track || ''); if (isFinite(+r.flipped_new_level_percent)) st.flipLevel = +r.flipped_new_level_percent;
   if (opts.volMax) { st.volA = Math.min(st.volA, opts.volMax); st.volB = Math.min(st.volB, opts.volMax); }
 }
@@ -430,7 +439,7 @@ function adopt(s) {
   if (!s || !Array.isArray(s.clips) || !s.clips.length) return false;
   const clips = s.clips.map(c => Object.assign({ deck: 'B', level: 100, duck: 0 }, c));
   if (!clips.some(c => c.deck === 'A')) clips.push(...clone(PRESET.filter(c => c.deck === 'A')));
-  st = Object.assign(clone(DEFAULTS), s, { clips, handover: Object.assign({}, DEFAULTS.handover, s.handover || {}) });
+  st = Object.assign(clone(DEFAULTS), s, { clips, handover: Object.assign({}, DEFAULTS.handover, s.handover || {}), solo: Object.assign({ A: null, B: null }, s.solo || {}) });
   st.sel = Math.min(st.sel | 0, st.clips.length - 1);
   return true;
 }
@@ -474,7 +483,9 @@ async function init(eng, o) {
 window.MixCore = {
   BEAT, BAR, PREROLL, NAMES, init, deckAt, setStatus, fmt, clamp,
   get st() { return st; }, get plan() { return PLAN; }, get G() { return G; },
-  get playing() { return playing; }, now, pause, setFlip, seek, playFrom,
+  defaults: () => clone(DEFAULTS),
+  get playing() { return playing; }, now, pause, setFlip, seek, playFrom, refresh: changed,
+  timeToX: m => X(m), xToTime: x => M(x),
   setSimple(v) { editOn = !v; if (editOn) { pps = zoomToPps(+$('zoom').value); view = Math.max(0, now() - W * 0.15 / pps); syncScroll(); } draw(); },
 };
 })();
