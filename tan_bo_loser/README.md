@@ -8,6 +8,7 @@ A two-deck YouTube mix of 等無 (Deck A) and 魯之歌 (Deck B). The page plays
 - `mix-core.js`: the mix plan, timeline and controls (shared with the hosted-audio version)
 - `grid.json`: beat positions, keys and waveform outlines measured from the songs (no audio)
 - `og.png`: the 1200×630 link-preview image (a screenshot of the page)
+- `stamp.py`: writes the version code shown at the bottom right of the page. Run `python3 stamp.py` after every change, before publishing.
 
 ## Run locally
 

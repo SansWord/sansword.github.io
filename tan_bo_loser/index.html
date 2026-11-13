@@ -119,6 +119,7 @@ canvas#tl{display:block;width:100%;height:260px;touch-action:pan-y}
 #scroll{width:100%;accent-color:var(--muted)}
 .hint{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
 .hint kbd{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:3px;padding:0 4px;color:var(--fg)}
+.build{text-align:right;font-family:var(--f-mono);font-size:11px;color:var(--muted);user-select:all}
 
 .panels{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -299,9 +300,10 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
       <div class="btnrow"><button id="copy">複製設定</button><button id="loadRecipe">載入設定</button><span class="status" id="copied"></span></div>
     </div>
   </section>
+  <footer class="build" title="版本代碼：頁面檔案的 SHA-256 前 7 碼">版本 <span id="buildId"></span></footer>
 </div>
 
-<script src="mix-core.js"></script>
+<script src="mix-core.js?v=6866b02"></script>
 <script>
 (() => {
 // ---------- YouTube engine ----------
@@ -406,6 +408,20 @@ function masterAt(m, infoA, infoB) {
   if (info[base]) return base;
   return info[other] ? other : null;
 }
+const PHONE_PREROLL = 3;       // phone mode: the incoming song starts (muted) this many seconds before its turn
+let stallSince = 0, switchTimer = null, switchFor = null;
+// fire the mute/unmute at the switch moment itself, not at the next 50 ms tick
+function scheduleSwitch(t0, m) {
+  const wait = t0 - m;
+  if (wait > 0.08 || wait <= 0 || switchFor === t0) return;
+  switchFor = t0; clearTimeout(switchTimer);
+  switchTimer = setTimeout(() => {
+    if (!running || !soloMode()) return;
+    const k = soloAt(t0 + 0.001);
+    for (const o of ['A', 'B']) if (o !== k) setVol(o, 0);   // outgoing first, so two never sound together
+    if (k) setVol(k, 100);
+  }, wait * 1000);
+}
 function tick() {
   if (!D.A.ready || !D.B.ready || !MC.plan) return;
   const tms = performance.now();
@@ -413,9 +429,10 @@ function tick() {
   let m = clockNow();
   let info = { A: infoAt('A', m), B: infoAt('B', m) };
   // iPhone/iPad: one deck with sound at a time; the next one may already run, muted, to be in sync when it takes over
-  let solo = null, next = null;
+  let solo = null, next = null, nextSwitchIn = Infinity;
   if (soloMode()) {
-    solo = soloAt(m); next = soloAt(m + 1.5);
+    solo = soloAt(m); next = soloAt(m + PHONE_PREROLL);
+    const ns = switches().find(([t0]) => t0 > m); if (ns) { nextSwitchIn = ns[0] - m; scheduleSwitch(ns[0], m); }
     if (solo && !info[solo]) solo = null;   // a switch can point at a song that has nothing to play there
     if (next && !info[next]) next = null;
     for (const k of ['A', 'B']) if (k !== solo && k !== next) info[k] = null;
@@ -430,8 +447,13 @@ function tick() {
         const keep = { A: !!info.A, B: !!info.B };
         info = { A: keep.A ? infoAt('A', m) : null, B: keep.B ? infoAt('B', m) : null };
       }
+      stallSince = 0;
     } else {
-      if (!hold) { pos = clockNow(); hold = true; }
+      if (!stallSince) stallSince = tms;
+      // phone mode: right after a switch the incoming player may still be settling; keep time running for a moment
+      // instead of freezing everything (a freeze is heard as a pause). Hold only at start-up or on real buffering.
+      const keepGoing = soloMode() && !hold && tms - startedAt > 3000 && tms - stallSince < 1500;
+      if (!keepGoing && !hold) { pos = clockNow(); hold = true; }
       if (tms - D[master].lastCmd > 1500) cmdSeek(master, info[master].t + corr(master), tms);
     }
   } else if (hold) { hold = false; anchor(pos); }
@@ -445,7 +467,8 @@ function tick() {
     if (s !== YT_PLAYING) { if (tms - d.lastCmd > 1500) cmdSeek(k, target, tms); d.err = null; continue; }
     const err = timeOf(k) - target; d.err = err;
     if (d.check && tms >= d.check) { d.lead = MC.clamp(d.lead - err * 0.6, 0, 0.8); d.check = 0; }   // learn this player's seek delay
-    if (Math.abs(err) > +$('tol').value && tms - d.lastCmd > 900) cmdSeek(k, target, tms);
+    const aboutToTakeOver = soloMode() && k === next && k !== solo && nextSwitchIn < 1.0;
+    if (!aboutToTakeOver && Math.abs(err) > +$('tol').value && tms - d.lastCmd > 900) cmdSeek(k, target, tms);
   }
   const st = MC.st, xa = Math.min(1, 2 * (1 - st.xf)), xb = Math.min(1, 2 * st.xf);
   if (soloMode()) {
@@ -473,6 +496,7 @@ const engine = {
   // mobile browsers only let a video start with sound from a user gesture
   start(m) {
     anchor(m); running = true; hold = true; startedAt = performance.now(); D.A.lastCmd = D.B.lastCmd = 0;
+    clearTimeout(switchTimer); switchFor = null; stallSince = 0;
     for (const k of ['A', 'B']) {
       const inf = MC.deckAt(k, m, 30);
       try { P[k].seekTo(Math.max(0, (inf ? inf.t : 0) + corr(k)), true); P[k].playVideo(); D[k].lastCmd = performance.now(); } catch (e) {}
@@ -620,6 +644,9 @@ if (new URLSearchParams(location.search).has('reset')) {
   try { Object.keys(localStorage).filter(k => k.startsWith('tan_bo_loser') || k.startsWith('gsmix-yt')).forEach(k => localStorage.removeItem(k)); } catch (e) {}
   history.replaceState(null, '', location.pathname);
 }
+// version code, written by stamp.py: first 7 hex of SHA-256 over index.html (with this code blanked), mix-core.js and grid.json
+const BUILD = '6866b02';
+$('buildId').textContent = BUILD;
 const CLIP_ZH = { '1st chorus': '第一次副歌', 'Pre-2nd': '第二次副歌前', '2nd chorus': '第二次副歌', 'Return': '回到魯之歌', 'Tail': '尾段', 'Outro': '尾奏' };
 const STRINGS = {
   clipName: n => CLIP_ZH[n] || n,
@@ -629,7 +656,7 @@ const STRINGS = {
   copied: '已複製', selected: '已選取，請按 ⌘C 複製', loaded: '已載入設定', loadFail: '無法讀取設定：',
   noClips: '設定裡沒有任何片段', missing: i => `第 ${i} 個片段缺少入點、出點或開始時間`,
 };
-MC.init(engine, { strings: STRINGS, storageKey: 'tan_bo_loser-v5', volMax: 1, levelMax: 100 })
+MC.init(engine, { strings: STRINGS, gridUrl: 'grid.json?v=' + BUILD, storageKey: 'tan_bo_loser-v5', volMax: 1, levelMax: 100 })
 .then(() => {
   MC.setFlip(false);   // every visit starts with 等無 as the main song
   measureLastSound();
