@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16181c">
 <title>等無 × 魯之歌 Mix Desk</title>
 <meta name="description" content="Two YouTube decks mixed live: 魯之歌 joins 等無's choruses and takes over in the 2nd chorus, or flip it so 魯之歌 is the main track.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: hardware console — Deck A | mixer | Deck B on top, arrangement timeline below. Single dark look (club gear). */
+/* Layout: two decks (video + disc) around a small transport; waveform below; everything else behind Advanced.
+   On phones the transport docks to the bottom of the screen. Single dark look (club gear). */
 :root{
   --bg:#16181c; --panel:#1f2228; --panel-2:#272b33; --line:#353a44; --fg:#e7e4dc; --muted:#9097a3;
   --a:#f2a541; --b:#6fb7d8; --hot:#e8615a; --ok:#7cc48a;
@@ -18,57 +20,77 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg)}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:14px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
-.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px}
-h1{font-family:var(--f-display);font-weight:700;font-size:28px;letter-spacing:.04em;margin:0}
-.sub{color:var(--muted);max-width:75ch;margin:4px 0 0;line-height:1.45}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+body:not(.advanced) .adv{display:none!important}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}
+h1{font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:.04em;margin:0}
+.head-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .status{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
 .status.err{color:var(--hot)}
 .label{font-family:var(--f-display);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .banner{border:1px solid var(--hot);background:rgba(232,97,90,.1);border-radius:8px;padding:10px 14px;line-height:1.5}
 .banner code{font-family:var(--f-mono);font-size:12px}
+.banner.info{border-color:var(--line);background:var(--panel)}
+
+button{font-family:var(--f-display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:13px;color:var(--fg);background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer;touch-action:manipulation}
+button:hover{border-color:var(--muted)}
+button:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible,textarea:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+button:disabled{opacity:.4;cursor:default}
+#advToggle[aria-pressed="true"]{border-color:var(--fg)}
 
 .console{display:grid;grid-template-columns:1fr 260px 1fr;gap:12px;background:linear-gradient(#23262d,#1b1d22);border:1px solid var(--line);border-radius:10px;padding:14px}
-@media (max-width:900px){.console{grid-template-columns:1fr}}
-.deck{display:flex;flex-direction:column;gap:10px;min-width:0;padding:4px}
+.deck{display:flex;flex-direction:column;gap:10px;min-width:0}
 .video{position:relative;width:100%;height:200px;border-radius:8px;overflow:hidden;background:#0d0e10}
 .video iframe,.video > div{position:absolute;inset:0;width:100%;height:100%;border:0}
 .deck.a .video{box-shadow:0 0 0 2px var(--a)} .deck.b .video{box-shadow:0 0 0 2px var(--b)}
-.deck-name{font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:.06em}
+.deck-row{display:flex;align-items:center;gap:14px;min-width:0}
+.platter{flex:none;width:84px;height:84px;border-radius:50%;position:relative;
+  background:repeating-radial-gradient(circle at 50% 50%,#0d0e10 0 2px,#17191d 2px 3px);
+  box-shadow:0 0 0 4px #2c3038,0 0 0 5px #0e0f12,0 6px 16px rgba(0,0,0,.5)}
+.platter .disc{position:absolute;inset:0;border-radius:50%}
+.platter .center{position:absolute;inset:32%;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:11px;color:#16181c}
+.deck.a .center{background:var(--a)} .deck.b .center{background:var(--b)}
+.platter .mark{position:absolute;left:50%;top:6%;width:3px;height:18%;margin-left:-1.5px;border-radius:2px;background:var(--fg);opacity:.8}
+.platter .spindle{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#cfd3da}
+.deck.on .platter{box-shadow:0 0 0 4px #2c3038,0 0 0 5px #0e0f12,0 0 18px 2px var(--glow)}
+.deck.a{--glow:rgba(242,165,65,.45)} .deck.b{--glow:rgba(111,183,216,.45)}
+.deck-info{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.deck-name{font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:.06em;line-height:1.1}
 .deck.a .deck-name{color:var(--a)} .deck.b .deck-name{color:var(--b)}
-.deck-name .was{font-size:14px;color:var(--muted);letter-spacing:.1em}
+.deck-name .was{font-size:13px;color:var(--muted);letter-spacing:.1em}
+.deck-time{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.deck.on .deck-time{color:var(--fg)}
 .src{font-size:12px;color:var(--muted);text-underline-offset:2px}
-.src:hover{color:var(--fg)}
-.readouts{display:grid;grid-template-columns:repeat(4,auto);gap:4px 14px;justify-content:start}
-.readouts .v{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.readouts{display:grid;grid-template-columns:repeat(3,auto);gap:2px 14px;justify-content:start}
+.readouts .v{font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
 .v.ok{color:var(--ok)} .v.warn{color:var(--hot)}
-.ctrl{display:grid;grid-template-columns:52px 1fr 54px;align-items:center;gap:8px}
+.ctrl{display:grid;grid-template-columns:44px 1fr 48px;align-items:center;gap:8px}
 .ctrl output{font-family:var(--f-mono);font-size:12px;text-align:right;color:var(--muted)}
 input[type=range]{width:100%;accent-color:var(--fg)}
 .deck.a input[type=range]{accent-color:var(--a)} .deck.b input[type=range]{accent-color:var(--b)}
 
-.mixer{display:flex;flex-direction:column;gap:12px;justify-content:center;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.mixer{display:flex;flex-direction:column;gap:12px;justify-content:center;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.transport{display:flex;flex-direction:column;gap:10px}
 .clock{font-family:var(--f-mono);font-size:26px;text-align:center;font-variant-numeric:tabular-nums}
-.transport{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-button{font-family:var(--f-display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:13px;color:var(--fg);background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer}
-button:hover{border-color:var(--muted)}
-button:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible,textarea:focus-visible{outline:2px solid var(--b);outline-offset:2px}
-button.play{background:var(--fg);color:var(--bg);min-width:84px}
+.tbtns{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+.tbtns button{min-height:48px;font-size:16px}
+button.play{background:var(--fg);color:var(--bg)}
 button.play.on{background:var(--hot);color:#fff;border-color:var(--hot)}
-button:disabled{opacity:.4;cursor:default}
 .mainsel{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.mainsel button{text-transform:none;letter-spacing:.04em;font-size:15px}
+.mainsel button{text-transform:none;letter-spacing:.04em;font-size:16px;min-height:44px}
 #mainA[aria-pressed="true"]{background:var(--a);color:var(--bg);border-color:var(--a)}
 #mainB[aria-pressed="true"]{background:var(--b);color:var(--bg);border-color:var(--b)}
+.mainlabel{display:flex;justify-content:space-between;align-items:baseline}
 .inline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}
 .inline input{width:70px;font-family:var(--f-mono);background:#15171b;color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:4px 6px}
 .xfade{display:flex;flex-direction:column;gap:4px}
 .xfade .ends{display:flex;justify-content:space-between;font-family:var(--f-display);font-weight:700;letter-spacing:.1em;font-size:12px}
 .xfade .ends span:first-child{color:var(--a)} .xfade .ends span:last-child{color:var(--b)}
-.note{font-size:12px;line-height:1.4;color:var(--muted)}
+.seekbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 
 .timeline{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}
 .tl-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
@@ -76,20 +98,19 @@ button:disabled{opacity:.4;cursor:default}
 .tl-tools label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
 select{font-family:var(--f-body);background:var(--panel-2);color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:4px 6px}
 .canvas-box{position:relative;border-radius:6px;overflow:hidden;background:#121417;border:1px solid var(--line)}
-canvas#tl{display:block;width:100%;height:260px;touch-action:none}
+canvas#tl{display:block;width:100%;height:260px;touch-action:pan-y}
 #scroll{width:100%;accent-color:var(--muted)}
 .hint{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
 .hint kbd{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:3px;padding:0 4px;color:var(--fg)}
 
 .panels{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
-@media (max-width:900px){.panels{grid-template-columns:1fr}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
 fieldset.plain{border:0;padding:0;margin:0;min-width:0;display:flex;flex-direction:column;gap:12px}
 fieldset.plain:disabled{opacity:.45}
 .panel h2{font-family:var(--f-display);font-weight:700;font-size:16px;letter-spacing:.1em;text-transform:uppercase;margin:0}
-.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
 .field{display:flex;flex-direction:column;gap:4px;min-width:0}
-.field input[type=number]{font-family:var(--f-mono);font-size:14px;background:#15171b;color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:6px 8px;width:100%}
+.field input[type=number]{font-family:var(--f-mono);font-size:16px;background:#15171b;color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:6px 8px;width:100%}
 .field input:disabled{opacity:.4}
 .field small{color:var(--muted);font-family:var(--f-mono);font-size:11px}
 .btnrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -99,82 +120,119 @@ fieldset.plain:disabled{opacity:.45}
 #clipTabs button.deck-B[aria-selected="true"]{background:var(--b);color:var(--bg);border-color:var(--b)}
 #clipTabs .add{border-style:dashed}
 textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);font-size:12px;background:#15171b;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:8px}
+
+@media (max-width:900px){
+  .console{grid-template-columns:1fr;padding:12px}
+  .panels{grid-template-columns:1fr}
+  /* phone: the transport docks to the bottom edge */
+  body{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+  .transport{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(31,34,40,.97);border-top:1px solid var(--line);
+    padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+    display:grid;grid-template-columns:auto 1fr;grid-template-areas:"clock main" "btns btns";gap:8px 12px;align-items:center;
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .transport .clock{grid-area:clock;font-size:20px;text-align:left}
+  .transport .mainbox{grid-area:main}
+  .transport .tbtns{grid-area:btns}
+  .transport .mainlabel{display:none}
+  body:not(.advanced) .mixer{padding:0;border:0;background:none;gap:0}
+  .mixer{order:1}
+  .deck.a{order:0} .deck.b{order:2}
+  canvas#tl{height:260px}
+}
+@media (prefers-reduced-motion:reduce){.platter .disc{transition:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div>
-      <h1>等無 × 魯之歌 Mix Desk</h1>
-      <p class="sub">Both decks stream from YouTube. With 等無 as the main track, 魯之歌 joins the 1st chorus and the pre-2nd, rises over the 2nd chorus and takes over halfway. When 魯之歌 finishes, 等無's outro comes back up and rings out to the end. Switch the main track to 魯之歌 to hear it the other way round.</p>
+    <h1>等無 × 魯之歌</h1>
+    <div class="head-right">
+      <span class="status" id="status">Loading YouTube players…</span>
+      <button id="advToggle" aria-pressed="false">Advanced</button>
     </div>
-    <div class="status" id="status">Loading YouTube players…</div>
   </header>
   <div class="banner" id="fileBanner" hidden>This page is open as a local file, and YouTube's player usually refuses to run that way. In Terminal, run <code>cd tan_bo_loser && python3 -m http.server 8000</code>, then open <code>http://localhost:8000</code>.</div>
+  <div class="banner" id="soundBanner" hidden>Your browser started a video without sound. Tap the video that's silent once, then press Play again.</div>
+  <div class="banner info" id="iosNote" hidden>On iPhone and iPad, YouTube can't change a video's volume, so each song switches fully on or off instead of fading.</div>
 
-  <section class="console" aria-label="Decks and mixer">
-    <div class="deck a">
+  <section class="console" aria-label="Decks and transport">
+    <div class="deck a" id="deckA">
       <div class="video"><div id="ytA"></div></div>
-      <div class="deck-name">等無 <span class="was">· New · Deck A</span></div>
-      <div class="readouts">
-        <span class="label">BPM</span><span class="label">Key</span><span class="label">Time</span><span class="label">Sync</span>
-        <span class="v">164.4</span><span class="v">D maj</span><span class="v" id="timeA">—</span><span class="v" id="syncA">—</span>
+      <div class="deck-row">
+        <div class="platter" aria-hidden="true"><div class="disc" id="discA"><div class="mark"></div></div><div class="center">A</div><div class="spindle"></div></div>
+        <div class="deck-info">
+          <div class="deck-name">等無 <span class="was">· Deck A</span></div>
+          <div class="deck-time" id="timeA">—</div>
+          <div class="readouts adv">
+            <span class="label">BPM</span><span class="label">Key</span><span class="label">Sync</span>
+            <span class="v">164.4</span><span class="v">D maj</span><span class="v" id="syncA">—</span>
+          </div>
+        </div>
       </div>
-      <div class="ctrl"><span class="label">Vol</span><input type="range" id="volA" min="0" max="1" step="0.01" value="1"><output id="volAo">100%</output></div>
-      <a class="src" id="srcA" target="_blank" rel="noopener">Open on YouTube ↗</a>
+      <div class="ctrl adv"><span class="label">Vol</span><input type="range" id="volA" min="0" max="1" step="0.01" value="1"><output id="volAo">100%</output></div>
+      <a class="src adv" id="srcA" target="_blank" rel="noopener">Open on YouTube ↗</a>
     </div>
 
     <div class="mixer">
-      <div class="clock" id="clock">0:00.0</div>
       <div class="transport">
-        <button id="back" title="Back 4 bars">« 4 bars</button>
-        <button class="play" id="play" disabled>Play</button>
-        <button id="fwd" title="Forward 4 bars">4 bars »</button>
+        <div class="clock" id="clock">0:00.0</div>
+        <div class="tbtns">
+          <button id="replay" disabled>↺ Replay</button>
+          <button class="play" id="play" disabled>▶ Play</button>
+        </div>
+        <div class="mainbox">
+          <div class="mainlabel"><span class="label">Main song</span></div>
+          <div class="mainsel" role="group" aria-label="Main song"><button id="mainA" aria-pressed="true">等無</button><button id="mainB" aria-pressed="false">魯之歌</button></div>
+        </div>
       </div>
-      <div>
-        <div class="label" style="margin-bottom:6px">Main track</div>
-        <div class="mainsel"><button id="mainA" aria-pressed="true">等無</button><button id="mainB" aria-pressed="false">魯之歌</button></div>
-      </div>
-      <label class="inline">等無 level when 魯之歌 is main (%) <input type="number" id="flipLvl" min="0" max="100" step="5"></label>
-      <div class="xfade">
+      <div class="seekbtns adv"><button id="back">« 4 bars</button><button id="fwd">4 bars »</button></div>
+      <label class="inline adv">等無 level when 魯之歌 is main (%) <input type="number" id="flipLvl" min="0" max="100" step="5"></label>
+      <div class="xfade adv">
         <div class="ends"><span>A</span><span class="label">Crossfader</span><span>B</span></div>
         <input type="range" id="xf" min="0" max="1" step="0.01" value="0.5" aria-label="Crossfader">
       </div>
-      <label class="inline">Sync tolerance
+      <label class="inline adv">Sync tolerance
         <select id="tol"><option value="0.04">40 ms</option><option value="0.08" selected>80 ms</option><option value="0.15">150 ms</option></select>
       </label>
     </div>
 
-    <div class="deck b">
+    <div class="deck b" id="deckB">
       <div class="video"><div id="ytB"></div></div>
-      <div class="deck-name">魯之歌 <span class="was">· Old · Deck B</span></div>
-      <div class="readouts">
-        <span class="label">BPM</span><span class="label">Key</span><span class="label">Time</span><span class="label">Sync</span>
-        <span class="v">164.4</span><span class="v">G maj</span><span class="v" id="timeB">—</span><span class="v" id="syncB">—</span>
+      <div class="deck-row">
+        <div class="platter" aria-hidden="true"><div class="disc" id="discB"><div class="mark"></div></div><div class="center">B</div><div class="spindle"></div></div>
+        <div class="deck-info">
+          <div class="deck-name">魯之歌 <span class="was">· Deck B</span></div>
+          <div class="deck-time" id="timeB">—</div>
+          <div class="readouts adv">
+            <span class="label">BPM</span><span class="label">Key</span><span class="label">Sync</span>
+            <span class="v">164.4</span><span class="v">G maj</span><span class="v" id="syncB">—</span>
+          </div>
+        </div>
       </div>
-      <div class="ctrl"><span class="label">Vol</span><input type="range" id="volB" min="0" max="1" step="0.01" value="1"><output id="volBo">100%</output></div>
-      <a class="src" id="srcB" target="_blank" rel="noopener">Open on YouTube ↗</a>
+      <div class="ctrl adv"><span class="label">Vol</span><input type="range" id="volB" min="0" max="1" step="0.01" value="1"><output id="volBo">100%</output></div>
+      <a class="src adv" id="srcB" target="_blank" rel="noopener">Open on YouTube ↗</a>
     </div>
   </section>
 
   <section class="timeline" aria-label="Arrangement">
-    <div class="tl-head">
-      <span class="label">Arrangement · time on the main track's clock</span>
+    <div class="tl-head adv">
+      <span class="label">Arrangement · time on the main song's clock</span>
       <div class="tl-tools">
         <label>Snap <select id="snap"><option value="beat">Beat</option><option value="off">Off</option></select></label>
         <label>Zoom <input type="range" id="zoom" min="0" max="1" step="0.001" value="0.15" style="width:140px"></label>
         <label><input type="checkbox" id="follow" checked> Follow playhead</label>
       </div>
     </div>
-    <div class="canvas-box"><canvas id="tl" tabindex="0" aria-label="Timeline: top lane 等無, bottom lane 魯之歌"></canvas></div>
-    <input type="range" id="scroll" min="0" max="1" step="0.0001" value="0" aria-label="Scroll timeline">
-    <p class="hint">Click the ruler or an empty spot to jump. Drag a boxed clip to shift it, drag its edges to trim, drag the small squares to set fades. The white line is each deck's volume. YouTube volume tops out at 100%, so a louder 魯之歌 comes from turning 等無 down. <kbd>Space</kbd> play/pause · <kbd>←</kbd><kbd>→</kbd> nudge the selected clip one beat (<kbd>Shift</kbd> = 10 ms) · <kbd>Ctrl/⌘</kbd> + scroll to zoom.</p>
+    <div class="canvas-box"><canvas id="tl" tabindex="0" aria-label="Timeline: top lane 等無, bottom lane 魯之歌. Tap to jump."></canvas></div>
+    <input type="range" id="scroll" class="adv" min="0" max="1" step="0.0001" value="0" aria-label="Scroll timeline">
+    <p class="hint">Tap the waveform to jump there. The white line is each song's volume.</p>
+    <p class="hint adv">Drag a boxed clip to shift it, drag its edges to trim, drag the small squares to set fades. <kbd>Space</kbd> play/pause · <kbd>←</kbd><kbd>→</kbd> nudge the selected clip one beat (<kbd>Shift</kbd> = 10 ms) · <kbd>Ctrl/⌘</kbd> + scroll to zoom.</p>
   </section>
 
-  <section class="panels">
+  <section class="panels adv">
     <div class="panel">
       <h2>Clips</h2>
-      <p class="hint" id="flipNote" hidden>魯之歌 is the main track. It plays start to finish and 等無 comes in wherever the two overlap in the normal mix. To change where or how, switch back to 等無 as main and edit the clips there; this view follows.</p>
+      <p class="hint" id="flipNote" hidden>魯之歌 is the main song. It plays start to finish and 等無 comes in wherever the two overlap in the normal mix. To change where or how, switch back to 等無 as main and edit the clips there; this view follows.</p>
       <fieldset class="plain" id="editPanel">
         <div class="btnrow" id="clipTabs" role="tablist" aria-label="Clips"></div>
         <div class="fields">
@@ -209,7 +267,7 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
     </div>
     <div class="panel">
       <h2>YouTube timing</h2>
-      <p class="hint">All times come from the analysed audio files. If a YouTube upload starts earlier or later than that file, enter the difference here (positive = the YouTube version runs later).</p>
+      <p class="hint">All times come from the analysed audio. If a YouTube upload starts earlier or later than that, enter the difference here (positive = the YouTube version runs later).</p>
       <div class="fields">
         <div class="field"><span class="label">等無 correction (s)</span><input type="number" id="corrA" step="0.01"><small>added to Deck A times</small></div>
         <div class="field"><span class="label">魯之歌 correction (s)</span><input type="number" id="corrB" step="0.01"><small>added to Deck B times</small></div>
@@ -228,17 +286,31 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
 // ---------- YouTube engine ----------
 const VIDEO = { A: 'I9LDJl7SfIw', B: '6pGcWmHKaqE' };   // 等無, 魯之歌
 const MC = window.MixCore, $ = id => document.getElementById(id);
+// iPhone/iPad ignore volume changes on media, so there a deck is either fully on or muted
+const IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const IOS_ON = 50;   // on iOS, a deck sounds when its target volume is at least this (%)
 const P = { A: null, B: null };
 const D = { A: { ready: false, lead: 0.12, lastCmd: 0, check: 0, err: null }, B: { ready: false, lead: 0.12, lastCmd: 0, check: 0, err: null } };
 const YT_PLAYING = 1, YT_BUFFERING = 3;
-let running = false, hold = true, m0 = 0, t0 = 0, pos = 0;
+let running = false, hold = true, m0 = 0, t0 = 0, pos = 0, startedAt = 0;
 const clockNow = () => running && !hold ? m0 + (performance.now() - t0) / 1000 : pos;
 const anchor = m => { m0 = m; t0 = performance.now(); pos = m; };
 const stateOf = k => { try { return P[k].getPlayerState(); } catch (e) { return -1; } };
 const timeOf = k => { try { return P[k].getCurrentTime(); } catch (e) { return NaN; } };
 const corr = k => k === 'A' ? MC.st.corrA : MC.st.corrB;
-const lastVol = { A: -1, B: -1 };
-function setVol(k, v) { v = Math.round(MC.clamp(v, 0, 100)); if (v !== lastVol[k]) { try { P[k].setVolume(v); lastVol[k] = v; } catch (e) {} } }
+const vol = { A: -1, B: -1 }, muted = { A: true, B: true };
+function setVol(k, v) {
+  v = Math.round(MC.clamp(v, 0, 100));
+  try {
+    if (IOS) {
+      const on = v >= IOS_ON;
+      if (on === muted[k]) { on ? P[k].unMute() : P[k].mute(); muted[k] = !on; }
+      return;
+    }
+    if (v !== vol[k]) { P[k].setVolume(v); vol[k] = v; }
+    if (v > 0 && muted[k]) { P[k].unMute(); muted[k] = false; }
+  } catch (e) {}
+}
 function cmdSeek(k, target, tms) {
   const d = D[k];
   P[k].seekTo(Math.max(0, target + d.lead), true);
@@ -275,9 +347,9 @@ function tick() {
 
   for (const k of ['A', 'B']) {
     const inf = info[k], d = D[k], s = stateOf(k);
-    if (!inf) { if (s === YT_PLAYING || s === YT_BUFFERING) P[k].pauseVideo(); d.err = null; continue; }
+    if (!inf) { if ((s === YT_PLAYING || s === YT_BUFFERING) && tms - startedAt > 600) P[k].pauseVideo(); d.err = null; continue; }
     if (k === master) { d.err = 0; continue; }
-    if (hold) { if (s === YT_PLAYING) P[k].pauseVideo(); continue; }
+    if (hold) { if (s === YT_PLAYING && tms - startedAt > 600) P[k].pauseVideo(); continue; }
     const target = inf.t + corr(k);
     if (s !== YT_PLAYING) { if (tms - d.lastCmd > 1500) cmdSeek(k, target, tms); d.err = null; continue; }
     const err = timeOf(k) - target; d.err = err;
@@ -287,20 +359,38 @@ function tick() {
   const st = MC.st, xa = Math.min(1, 2 * (1 - st.xf)), xb = Math.min(1, 2 * st.xf);
   setVol('A', info.A && info.A.audible ? 100 * st.volA * xa * info.A.gain : 0);
   setVol('B', info.B && info.B.audible ? 100 * st.volB * xb * info.B.gain : 0);
+  // a deck that should be heard but the browser kept muted: ask for one tap on it
+  if (tms - startedAt > 2500) {
+    const blocked = ['A', 'B'].some(k => info[k] && info[k].audible && !muted[k] && stateOf(k) === YT_PLAYING && (() => { try { return P[k].isMuted(); } catch (e) { return false; } })());
+    $('soundBanner').hidden = !blocked;
+  }
 }
 
 const engine = {
   ready: () => D.A.ready && D.B.ready,
   now: clockNow,
-  start(m) { pauseBoth(); anchor(m); running = true; hold = true; D.A.lastCmd = D.B.lastCmd = 0; tick(); },
+  // called straight from a tap (Play, Replay, main song, timeline), so both players start inside that tap:
+  // mobile browsers only let a video start with sound from a user gesture
+  start(m) {
+    anchor(m); running = true; hold = true; startedAt = performance.now(); D.A.lastCmd = D.B.lastCmd = 0;
+    for (const k of ['A', 'B']) {
+      const inf = MC.deckAt(k, m, 30);
+      try { P[k].seekTo(Math.max(0, (inf ? inf.t : 0) + corr(k)), true); P[k].playVideo(); D[k].lastCmd = performance.now(); } catch (e) {}
+    }
+    tick();
+  },
   stop() { pos = clockNow(); running = false; hold = true; pauseBoth(); },
   uiFrame(m, playing) {
     for (const k of ['A', 'B']) {
+      const info = MC.deckAt(k, m);
+      $('disc' + k).style.transform = `rotate(${((info ? info.t : 0) * 200) % 360}deg)`;
+      $('deck' + k).classList.toggle('on', !!(playing && info && info.gain > 0.05));
       const e = D[k].err, el = $('sync' + k);
-      if (!playing || e === null || !MC.deckAt(k, m)) { el.textContent = '—'; el.className = 'v'; }
-      else if (e === 0 && MC.plan && masterAt(m, MC.deckAt('A', m), MC.deckAt('B', m)) === k) { el.textContent = hold ? 'buffering' : 'clock'; el.className = 'v'; }
+      if (!playing || e === null || !info) { el.textContent = '—'; el.className = 'v'; }
+      else if (e === 0) { el.textContent = hold ? 'buffering' : 'clock'; el.className = 'v'; }
       else { el.textContent = (e >= 0 ? '+' : '') + Math.round(e * 1000) + ' ms'; el.className = 'v ' + (Math.abs(e) <= +$('tol').value ? 'ok' : 'warn'); }
     }
+    $('play').textContent = playing ? '❚❚ Pause' : '▶ Play';
   },
 };
 
@@ -311,7 +401,10 @@ window.onYouTubeIframeAPIReady = () => {
     P[k] = new YT.Player('yt' + k, {
       videoId: VIDEO[k], width: '100%', height: '100%', playerVars: vars,
       events: {
-        onReady: () => { D[k].ready = true; P[k].setVolume(0); lastVol[k] = 0; if (engine.ready()) { $('play').disabled = false; MC.setStatus('Ready · press Play. The first seconds may stutter while both videos buffer.'); } },
+        onReady: () => {
+          D[k].ready = true; P[k].mute(); muted[k] = true; P[k].setVolume(0); vol[k] = 0;
+          if (engine.ready()) { $('play').disabled = false; $('replay').disabled = false; MC.setStatus('Ready'); }
+        },
         onError: e => {
           const why = { 2: 'bad video id', 5: 'HTML5 player error', 100: 'video not found or private', 101: 'the uploader does not allow embedding', 150: 'the uploader does not allow embedding', 153: 'YouTube needs the page served over http(s)' }[e.data] || ('error ' + e.data);
           MC.setStatus(`Deck ${k} (${MC.NAMES[k]}): ${why}.`, true);
@@ -321,12 +414,27 @@ window.onYouTubeIframeAPIReady = () => {
   }
 };
 
+// ---------- simple / advanced ----------
+function setAdvanced(on) {
+  document.body.classList.toggle('advanced', on);
+  $('advToggle').setAttribute('aria-pressed', on ? 'true' : 'false');
+  $('advToggle').textContent = on ? 'Simple' : 'Advanced';
+  MC.setSimple(!on);
+  try { localStorage.setItem('tan_bo_loser-advanced', on ? '1' : '0'); } catch (e) {}
+}
+$('advToggle').addEventListener('click', () => setAdvanced(!document.body.classList.contains('advanced')));
+$('replay').addEventListener('click', () => MC.playFrom(0));
+
 if (location.protocol === 'file:') $('fileBanner').hidden = false;
+if (IOS) $('iosNote').hidden = false;
 $('srcA').href = 'https://www.youtube.com/watch?v=' + VIDEO.A;
 $('srcB').href = 'https://www.youtube.com/watch?v=' + VIDEO.B;
 MC.init(engine, { storageKey: 'tan_bo_loser-v2', legacyKeys: ['tan_bo_loser-v1', 'gsmix-yt-v1'], volMax: 1, levelMax: 100,
-  // saved settings from before: keep them, but give the 等無 Outro its ring-out ending
-  migrate: (st, preset) => { const p = preset.find(c => c.deck === 'A' && c.name === 'Outro'), o = st.clips.find(c => c.deck === 'A' && c.name === 'Outro'); if (p) { if (o) Object.assign(o, p); else st.clips.push(p); } } }).then(() => {
+  migrate: (st, preset) => { const p = preset.find(c => c.deck === 'A' && c.name === 'Outro'), o = st.clips.find(c => c.deck === 'A' && c.name === 'Outro'); if (p) { if (o) Object.assign(o, p); else st.clips.push(p); } } })
+.then(() => {
+  MC.setFlip(false);   // every visit starts with 等無 as the main song
+  let adv = false; try { adv = localStorage.getItem('tan_bo_loser-advanced') === '1'; } catch (e) {}
+  setAdvanced(adv);
   const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api';
   s.onerror = () => MC.setStatus('Could not load the YouTube player API. Check your connection or ad blocker.', true);
   document.head.appendChild(s);

@@ -169,10 +169,12 @@ function keyStrip(keys, dur, y, map, x0, x1) {
   }
   c2.restore();
 }
-const editable = s => !PLAN.flip && s.clip;
+let editOn = true;   // false = simple mode: timeline is view-only and shows the whole song
+const editable = s => editOn && !PLAN.flip && s.clip;
 function handlePos(c, which) { const p = envPoints(c); return { x: X(which === 'fi' ? p[1][0] : p[2][0]), y: LANE[c.deck][0] + 16 }; }
 function draw() {
   if (!G || !W || !PLAN) return;
+  if (!editOn) { pps = W / PLAN.len; view = 0; }
   c2.setTransform(dpr, 0, 0, dpr, 0, 0); c2.clearRect(0, 0, W, H);
   c2.fillStyle = '#1a1c21'; c2.fillRect(0, 0, W, RULER);
   const step = [1, 2, 5, 10, 15, 30, 60].find(s => s * pps >= 70) || 60;
@@ -223,7 +225,7 @@ function hit(x, y) {
   if (y < RULER) return { k: 'seek' };
   const d = y >= LANE.A[0] && y < LANE.A[0] + LANE.A[1] ? 'A' : y >= LANE.B[0] && y < LANE.B[0] + LANE.B[1] ? 'B' : null;
   if (!d) return null;
-  if (PLAN.flip) return { k: 'seek' };
+  if (PLAN.flip || !editOn) return { k: 'seek' };
   const idx = st.clips.map((c, i) => i).filter(i => st.clips[i].deck === d).sort((a, b) => (b === st.sel) - (a === st.sel));
   for (const i of idx) for (const w of ['fi', 'fo']) { const hp = handlePos(st.clips[i], w); if (Math.abs(x - hp.x) <= 8 && Math.abs(y - hp.y) <= 8) return { k: w, i }; }
   for (const i of idx) { const c = st.clips[i], xs = X(cs(c)), xe = X(ce(c));
@@ -270,7 +272,7 @@ function bindTimeline() {
   const end = () => { drag = null; };
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
   cv.addEventListener('wheel', e => {
-    if (!G) return; e.preventDefault();
+    if (!G || !editOn) return; e.preventDefault();
     const r = cv.getBoundingClientRect(), x = e.clientX - r.left;
     if (e.ctrlKey || e.metaKey) { const mAt = M(x); const z = clamp(+$('zoom').value - e.deltaY * 0.0015, 0, 1); $('zoom').value = z; pps = zoomToPps(z); view = Math.max(0, mAt - x / pps); syncScroll(); draw(); return; }
     const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
@@ -411,7 +413,7 @@ function bindPanels() {
   });
   if (has('snap')) $('snap').addEventListener('change', save);
 }
-function nudge(n) { if (st.flip) return; const d = n === 'bar' ? BAR : n === '-bar' ? -BAR : n === 'beat' ? BEAT : n === '-beat' ? -BEAT : parseFloat(n); C().offset += d; changed(); }
+function nudge(n) { if (st.flip || !editOn) return; const d = n === 'bar' ? BAR : n === '-bar' ? -BAR : n === 'beat' ? BEAT : n === '-beat' ? -BEAT : parseFloat(n); C().offset += d; changed(); }
 
 // ---------- persistence ----------
 function save() { try { localStorage.setItem(opts.storageKey, JSON.stringify(st)); } catch (e) {} }
@@ -439,7 +441,7 @@ function frame(ts) {
     $('clock').textContent = fmt(m);
     for (const d of ['A', 'B']) { const info = deckAt(d, m); if (has('time' + d)) $('time' + d).textContent = info ? fmt(info.t) : '—'; }
     if (engine.uiFrame) engine.uiFrame(m, playing);
-    if (playing && $('follow').checked && !drag) { const x = X(m); if (x > W * 0.85 || x < 0) { view = Math.max(0, m - W * 0.15 / pps); syncScroll(); } }
+    if (editOn && playing && $('follow').checked && !drag) { const x = X(m); if (x > W * 0.85 || x < 0) { view = Math.max(0, m - W * 0.15 / pps); syncScroll(); } }
     if (playing || ts - lastDraw > 250) { draw(); lastDraw = ts; }
   }
   requestAnimationFrame(frame);
@@ -463,6 +465,7 @@ async function init(eng, o) {
 window.MixCore = {
   BEAT, BAR, PREROLL, NAMES, init, deckAt, setStatus, fmt, clamp,
   get st() { return st; }, get plan() { return PLAN; }, get G() { return G; },
-  get playing() { return playing; }, now, pause, setFlip,
+  get playing() { return playing; }, now, pause, setFlip, seek, playFrom,
+  setSimple(v) { editOn = !v; if (editOn) { pps = zoomToPps(+$('zoom').value); view = Math.max(0, now() - W * 0.15 / pps); syncScroll(); } draw(); },
 };
 })();
