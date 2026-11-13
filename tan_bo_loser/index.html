@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#16181c">
-<title>等無 × 魯之歌 Mix Desk</title>
-<meta name="description" content="Two YouTube decks mixed live: 魯之歌 joins 等無's choruses and takes over in the 2nd chorus, or flip it so 魯之歌 is the main track.">
+<title>等無 × 魯之歌 混音台</title>
+<meta name="description" content="用兩個 YouTube 播放器即時混音：魯之歌在等無的副歌加入，並在第二次副歌接手；也可以改以魯之歌為主軌。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -47,6 +47,10 @@ button:disabled{opacity:.4;cursor:default}
 .video{position:relative;width:100%;height:200px;border-radius:8px;overflow:hidden;background:#0d0e10}
 .video iframe,.video > div{position:absolute;inset:0;width:100%;height:100%;border:0}
 .deck.a .video{box-shadow:0 0 0 2px var(--a)} .deck.b .video{box-shadow:0 0 0 2px var(--b)}
+/* transparent cover: the page drives both players, so taps never reach YouTube's own controls */
+.video .shield{position:absolute;inset:0;z-index:2;background:transparent;cursor:default;-webkit-tap-highlight-color:transparent}
+.video.unlock .shield{display:none}
+.video.unlock{box-shadow:0 0 0 3px var(--hot)!important}
 .deck-row{display:flex;align-items:center;gap:14px;min-width:0}
 .platter{flex:none;width:84px;height:84px;border-radius:50%;position:relative;
   background:repeating-radial-gradient(circle at 50% 50%,#0d0e10 0 2px,#17191d 2px 3px);
@@ -147,135 +151,135 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
   <header>
     <h1>等無 × 魯之歌</h1>
     <div class="head-right">
-      <span class="status" id="status">Loading YouTube players…</span>
-      <button id="advToggle" aria-pressed="false">Advanced</button>
+      <span class="status" id="status">正在載入 YouTube 播放器…</span>
+      <button id="advToggle" aria-pressed="false">進階</button>
     </div>
   </header>
-  <div class="banner" id="fileBanner" hidden>This page is open as a local file, and YouTube's player usually refuses to run that way. In Terminal, run <code>cd tan_bo_loser && python3 -m http.server 8000</code>, then open <code>http://localhost:8000</code>.</div>
-  <div class="banner" id="soundBanner" hidden>Your browser started a video without sound. Tap the video that's silent once, then press Play again.</div>
-  <div class="banner info" id="iosNote" hidden>On iPhone and iPad, YouTube can't change a video's volume, so each song switches fully on or off instead of fading.</div>
+  <div class="banner" id="fileBanner" hidden>此頁面是以本機檔案開啟，YouTube 播放器通常無法這樣執行。請在終端機執行 <code>cd tan_bo_loser && python3 -m http.server 8000</code>，再開啟 <code>http://localhost:8000</code>。</div>
+  <div class="banner" id="soundBanner" hidden>瀏覽器播放影片時沒有聲音。請點一下紅框標示的影片，再按一次「播放」。</div>
+  <div class="banner info" id="iosNote" hidden>由於手機限制，同時間只能播一首歌，用桌機開啟可以獲得更好的體驗。</div>
 
-  <section class="console" aria-label="Decks and transport">
+  <section class="console" aria-label="播放軌與播放控制">
     <div class="deck a" id="deckA">
-      <div class="video"><div id="ytA"></div></div>
+      <div class="video"><div id="ytA"></div><div class="shield" aria-hidden="true"></div></div>
       <div class="deck-row">
         <div class="platter" aria-hidden="true"><div class="disc" id="discA"><div class="mark"></div></div><div class="center">A</div><div class="spindle"></div></div>
         <div class="deck-info">
-          <div class="deck-name">等無 <span class="was">· Deck A</span></div>
+          <div class="deck-name">等無 <span class="was">· A 軌</span></div>
           <div class="deck-time" id="timeA">—</div>
           <div class="readouts adv">
-            <span class="label">BPM</span><span class="label">Key</span><span class="label">Sync</span>
-            <span class="v">164.4</span><span class="v">D maj</span><span class="v" id="syncA">—</span>
+            <span class="label">BPM</span><span class="label">調性</span><span class="label">同步</span>
+            <span class="v">164.4</span><span class="v">D 大調</span><span class="v" id="syncA">—</span>
           </div>
         </div>
       </div>
-      <div class="ctrl adv"><span class="label">Vol</span><input type="range" id="volA" min="0" max="1" step="0.01" value="1"><output id="volAo">100%</output></div>
-      <a class="src adv" id="srcA" target="_blank" rel="noopener">Open on YouTube ↗</a>
+      <div class="ctrl adv"><span class="label">音量</span><input type="range" id="volA" min="0" max="1" step="0.01" value="1"><output id="volAo">100%</output></div>
+      <a class="src" id="srcA" target="_blank" rel="noopener">在 YouTube 開啟 ↗</a>
     </div>
 
     <div class="mixer">
       <div class="transport">
         <div class="clock" id="clock">0:00.0</div>
         <div class="tbtns">
-          <button id="replay" disabled>↺ Replay</button>
-          <button class="play" id="play" disabled>▶ Play</button>
+          <button id="replay" disabled>↺ 重播</button>
+          <button class="play" id="play" disabled>▶ 播放</button>
         </div>
         <div class="mainbox">
-          <div class="mainlabel"><span class="label">Main song</span></div>
-          <div class="mainsel" role="group" aria-label="Main song"><button id="mainA" aria-pressed="true">等無</button><button id="mainB" aria-pressed="false">魯之歌</button></div>
+          <div class="mainlabel"><span class="label">主軌</span></div>
+          <div class="mainsel" role="group" aria-label="主軌"><button id="mainA" aria-pressed="true">等無</button><button id="mainB" aria-pressed="false">魯之歌</button></div>
         </div>
       </div>
-      <div class="seekbtns adv"><button id="back">« 4 bars</button><button id="fwd">4 bars »</button></div>
-      <label class="inline adv">等無 level when 魯之歌 is main (%) <input type="number" id="flipLvl" min="0" max="100" step="5"></label>
+      <div class="seekbtns adv"><button id="back">« 4 小節</button><button id="fwd">4 小節 »</button></div>
+      <label class="inline adv">魯之歌為主軌時的等無音量（%） <input type="number" id="flipLvl" min="0" max="100" step="5"></label>
       <div class="xfade adv">
-        <div class="ends"><span>A</span><span class="label">Crossfader</span><span>B</span></div>
-        <input type="range" id="xf" min="0" max="1" step="0.01" value="0.5" aria-label="Crossfader">
+        <div class="ends"><span>A</span><span class="label">交叉推桿</span><span>B</span></div>
+        <input type="range" id="xf" min="0" max="1" step="0.01" value="0.5" aria-label="交叉推桿">
       </div>
-      <label class="inline adv">Sync tolerance
-        <select id="tol"><option value="0.04">40 ms</option><option value="0.08" selected>80 ms</option><option value="0.15">150 ms</option></select>
+      <label class="inline adv">同步容許誤差
+        <select id="tol"><option value="0.04">40 毫秒</option><option value="0.08" selected>80 毫秒</option><option value="0.15">150 毫秒</option></select>
       </label>
     </div>
 
     <div class="deck b" id="deckB">
-      <div class="video"><div id="ytB"></div></div>
+      <div class="video"><div id="ytB"></div><div class="shield" aria-hidden="true"></div></div>
       <div class="deck-row">
         <div class="platter" aria-hidden="true"><div class="disc" id="discB"><div class="mark"></div></div><div class="center">B</div><div class="spindle"></div></div>
         <div class="deck-info">
-          <div class="deck-name">魯之歌 <span class="was">· Deck B</span></div>
+          <div class="deck-name">魯之歌 <span class="was">· B 軌</span></div>
           <div class="deck-time" id="timeB">—</div>
           <div class="readouts adv">
-            <span class="label">BPM</span><span class="label">Key</span><span class="label">Sync</span>
-            <span class="v">164.4</span><span class="v">G maj</span><span class="v" id="syncB">—</span>
+            <span class="label">BPM</span><span class="label">調性</span><span class="label">同步</span>
+            <span class="v">164.4</span><span class="v">G 大調</span><span class="v" id="syncB">—</span>
           </div>
         </div>
       </div>
-      <div class="ctrl adv"><span class="label">Vol</span><input type="range" id="volB" min="0" max="1" step="0.01" value="1"><output id="volBo">100%</output></div>
-      <a class="src adv" id="srcB" target="_blank" rel="noopener">Open on YouTube ↗</a>
+      <div class="ctrl adv"><span class="label">音量</span><input type="range" id="volB" min="0" max="1" step="0.01" value="1"><output id="volBo">100%</output></div>
+      <a class="src" id="srcB" target="_blank" rel="noopener">在 YouTube 開啟 ↗</a>
     </div>
   </section>
 
-  <section class="timeline" aria-label="Arrangement">
+  <section class="timeline" aria-label="編排">
     <div class="tl-head adv">
-      <span class="label">Arrangement · time on the main song's clock</span>
+      <span class="label">編排 · 以主軌時間計</span>
       <div class="tl-tools">
-        <label>Snap <select id="snap"><option value="beat">Beat</option><option value="off">Off</option></select></label>
-        <label>Zoom <input type="range" id="zoom" min="0" max="1" step="0.001" value="0.15" style="width:140px"></label>
-        <label><input type="checkbox" id="follow" checked> Follow playhead</label>
+        <label>對齊 <select id="snap"><option value="beat">拍點</option><option value="off">關閉</option></select></label>
+        <label>縮放 <input type="range" id="zoom" min="0" max="1" step="0.001" value="0.15" style="width:140px"></label>
+        <label><input type="checkbox" id="follow" checked> 跟隨播放位置</label>
       </div>
     </div>
-    <div class="canvas-box"><canvas id="tl" tabindex="0" aria-label="Timeline: top lane 等無, bottom lane 魯之歌. Tap to jump."></canvas></div>
-    <input type="range" id="scroll" class="adv" min="0" max="1" step="0.0001" value="0" aria-label="Scroll timeline">
-    <p class="hint">Tap the waveform to jump there. The white line is each song's volume.</p>
-    <p class="hint adv">Drag a boxed clip to shift it, drag its edges to trim, drag the small squares to set fades. <kbd>Space</kbd> play/pause · <kbd>←</kbd><kbd>→</kbd> nudge the selected clip one beat (<kbd>Shift</kbd> = 10 ms) · <kbd>Ctrl/⌘</kbd> + scroll to zoom.</p>
+    <div class="canvas-box"><canvas id="tl" tabindex="0" aria-label="時間軸：上方為等無，下方為魯之歌。點一下即可跳轉。"></canvas></div>
+    <input type="range" id="scroll" class="adv" min="0" max="1" step="0.0001" value="0" aria-label="捲動時間軸">
+    <p class="hint">點一下波形即可跳到該處。白線是每首歌的音量。</p>
+    <p class="hint adv">拖曳方框片段可移動位置，拖曳邊緣可裁切，拖曳小方塊可設定淡入淡出。<kbd>Space</kbd> 播放／暫停 · <kbd>←</kbd><kbd>→</kbd> 將所選片段移動一拍（<kbd>Shift</kbd> = 10 毫秒）· <kbd>Ctrl/⌘</kbd> + 滾輪縮放。</p>
   </section>
 
   <section class="panels adv">
     <div class="panel">
-      <h2>Clips</h2>
-      <p class="hint" id="flipNote" hidden>魯之歌 is the main song. It plays start to finish and 等無 comes in wherever the two overlap in the normal mix. To change where or how, switch back to 等無 as main and edit the clips there; this view follows.</p>
+      <h2>片段</h2>
+      <p class="hint" id="flipNote" hidden>目前以魯之歌為主軌：它會從頭播到尾，等無則在一般混音中兩首重疊的地方加入。若要調整位置或方式，請切回以等無為主軌並在那裡編輯片段，這裡會跟著更新。</p>
       <fieldset class="plain" id="editPanel">
-        <div class="btnrow" id="clipTabs" role="tablist" aria-label="Clips"></div>
+        <div class="btnrow" id="clipTabs" role="tablist" aria-label="片段"></div>
         <div class="fields">
-          <div class="field"><span class="label" id="fInL">In (s)</span><input type="number" id="fIn" step="0.01" min="0"><small id="fInT"></small></div>
-          <div class="field"><span class="label" id="fOutL">Out (s)</span><input type="number" id="fOut" step="0.01" min="0"><small id="fOutT"></small></div>
-          <div class="field"><span class="label">Starts at, on 等無's clock (s)</span><input type="number" id="fStart" step="0.001"><small id="fStartT"></small></div>
-          <div class="field"><span class="label">Fade in (beats)</span><input type="number" id="fFi" step="1" min="0"><small id="fFiT"></small></div>
-          <div class="field"><span class="label">Fade out (beats)</span><input type="number" id="fFo" step="1" min="0"><small id="fFoT"></small></div>
-          <div class="field"><span class="label">Clip level (%)</span><input type="number" id="fLvl" step="5" min="0" max="100"><small>this clip's volume</small></div>
-          <div class="field"><span class="label">Duck 等無 (%)</span><input type="number" id="fDuck" step="5" min="0" max="100"><small>魯之歌 clips only</small></div>
+          <div class="field"><span class="label" id="fInL">入點（秒）</span><input type="number" id="fIn" step="0.01" min="0"><small id="fInT"></small></div>
+          <div class="field"><span class="label" id="fOutL">出點（秒）</span><input type="number" id="fOut" step="0.01" min="0"><small id="fOutT"></small></div>
+          <div class="field"><span class="label">開始位置（等無時間，秒）</span><input type="number" id="fStart" step="0.001"><small id="fStartT"></small></div>
+          <div class="field"><span class="label">淡入（拍）</span><input type="number" id="fFi" step="1" min="0"><small id="fFiT"></small></div>
+          <div class="field"><span class="label">淡出（拍）</span><input type="number" id="fFo" step="1" min="0"><small id="fFoT"></small></div>
+          <div class="field"><span class="label">片段音量（%）</span><input type="number" id="fLvl" step="5" min="0" max="100"><small>此片段的音量</small></div>
+          <div class="field"><span class="label">壓低等無（%）</span><input type="number" id="fDuck" step="5" min="0" max="100"><small>僅限魯之歌片段</small></div>
         </div>
         <div class="btnrow">
-          <span class="label">Nudge</span>
-          <button data-nudge="-bar">−1 bar</button><button data-nudge="-beat">−1 beat</button><button data-nudge="-0.01">−10 ms</button>
-          <button data-nudge="0.01">+10 ms</button><button data-nudge="beat">+1 beat</button><button data-nudge="bar">+1 bar</button>
+          <span class="label">微調</span>
+          <button data-nudge="-bar">−1 小節</button><button data-nudge="-beat">−1 拍</button><button data-nudge="-0.01">−10 毫秒</button>
+          <button data-nudge="0.01">+10 毫秒</button><button data-nudge="beat">+1 拍</button><button data-nudge="bar">+1 小節</button>
         </div>
         <div class="btnrow">
-          <span class="label">Audition</span>
-          <button id="audIn">From 2 bars before fade-in</button><button id="audOut">From 2 bars before fade-out</button><button id="reset">Reset all</button>
+          <span class="label">試聽</span>
+          <button id="audIn">從淡入前 2 小節</button><button id="audOut">從淡出前 2 小節</button><button id="reset">全部重設</button>
         </div>
-        <h2>Hand over to 魯之歌</h2>
+        <h2>交棒給魯之歌</h2>
         <div class="fields">
-          <div class="field"><span class="label"><label><input type="checkbox" id="hOn"> 等無 fades out at (s)</label></span><input type="number" id="hAt" step="0.001" min="0"><small id="hAtT"></small></div>
-          <div class="field"><span class="label">Fade length (beats)</span><input type="number" id="hBeats" step="1" min="0"><small id="hBeatsT"></small></div>
+          <div class="field"><span class="label"><label><input type="checkbox" id="hOn"> 等無淡出時間（秒）</label></span><input type="number" id="hAt" step="0.001" min="0"><small id="hAtT"></small></div>
+          <div class="field"><span class="label">淡出長度（拍）</span><input type="number" id="hBeats" step="1" min="0"><small id="hBeatsT"></small></div>
         </div>
         <div class="btnrow">
-          <span class="label">Move</span>
-          <button data-hnudge="-4">−4 bars</button><button data-hnudge="-1">−1 bar</button><button data-hnudge="1">+1 bar</button><button data-hnudge="4">+4 bars</button>
-          <button id="hAud">Audition from 4 bars before</button>
+          <span class="label">移動</span>
+          <button data-hnudge="-4">−4 小節</button><button data-hnudge="-1">−1 小節</button><button data-hnudge="1">+1 小節</button><button data-hnudge="4">+4 小節</button>
+          <button id="hAud">從 4 小節前試聽</button>
         </div>
       </fieldset>
     </div>
     <div class="panel">
-      <h2>YouTube timing</h2>
-      <p class="hint">All times come from the analysed audio. If a YouTube upload starts earlier or later than that, enter the difference here (positive = the YouTube version runs later).</p>
+      <h2>YouTube 時間校正</h2>
+      <p class="hint">所有時間都來自分析過的音訊。如果 YouTube 上的版本比分析用的音訊早或晚開始，請在這裡輸入差值（正值 = YouTube 版本較晚）。</p>
       <div class="fields">
-        <div class="field"><span class="label">等無 correction (s)</span><input type="number" id="corrA" step="0.01"><small>added to Deck A times</small></div>
-        <div class="field"><span class="label">魯之歌 correction (s)</span><input type="number" id="corrB" step="0.01"><small>added to Deck B times</small></div>
+        <div class="field"><span class="label">等無校正（秒）</span><input type="number" id="corrA" step="0.01"><small>加到 A 軌的時間</small></div>
+        <div class="field"><span class="label">魯之歌校正（秒）</span><input type="number" id="corrB" step="0.01"><small>加到 B 軌的時間</small></div>
       </div>
-      <h2>Mix recipe</h2>
-      <p class="hint">Same format as the hosted mixer. Copy it out, or paste one in and press Load recipe.</p>
-      <textarea id="recipe" aria-label="Mix recipe" spellcheck="false"></textarea>
-      <div class="btnrow"><button id="copy">Copy recipe</button><button id="loadRecipe">Load recipe</button><span class="status" id="copied"></span></div>
+      <h2>混音設定</h2>
+      <p class="hint">格式與網頁版混音台相同。可以複製出來，或貼上設定後按「載入設定」。</p>
+      <textarea id="recipe" aria-label="混音設定" spellcheck="false"></textarea>
+      <div class="btnrow"><button id="copy">複製設定</button><button id="loadRecipe">載入設定</button><span class="status" id="copied"></span></div>
     </div>
   </section>
 </div>
@@ -319,6 +323,34 @@ function cmdSeek(k, target, tms) {
 }
 function pauseBoth() { for (const k of ['A', 'B']) { try { P[k].pauseVideo(); } catch (e) {} } }
 
+// last moment each song actually makes sound (its file can end with a few seconds of silence)
+const lastSound = { A: Infinity, B: Infinity };
+function measureLastSound() {
+  const G = MC.G;
+  for (const [k, d] of [['A', G.new], ['B', G.old]]) { let i = d.peaks.length - 1; while (i > 0 && d.peaks[i] < 6) i--; lastSound[k] = i / 50; }
+}
+// iPhone/iPad: which single deck should be heard at time t — the louder one; on a tie, the song being mixed in
+function rawSolo(t) {
+  const plan = MC.plan, base = plan.baseDeck, other = base === 'A' ? 'B' : 'A';
+  const g = {};
+  for (const k of ['A', 'B']) {
+    g[k] = 0;
+    for (const dt of [-0.05, 0, 0.05]) {   // look a hair either side, so the instant where two clips join doesn't count as a gap
+      const i = MC.deckAt(k, t + dt);
+      if (i && i.audible && i.t <= lastSound[k]) g[k] = Math.max(g[k], i.gain * (k === 'A' ? MC.st.volA : MC.st.volB));
+    }
+  }
+  if (g[base] < 0.02 && g[other] < 0.02) return null;
+  return g[other] >= g[base] - 0.05 ? other : base;
+}
+// a deck only gets a turn if it would keep it for at least 3 s; shorter turns would just be a blip
+function soloDeck(t) {
+  const r = rawSolo(t); if (!r) return null;
+  let run = 0;
+  for (let d = 0.25; d <= 3 && rawSolo(t + d) === r; d += 0.25) run += 0.25;
+  for (let d = 0.25; d <= 3 && run < 3 && rawSolo(t - d) === r; d += 0.25) run += 0.25;
+  return run >= 2.75 ? r : null;
+}
 function masterAt(m, infoA, infoB) {
   const plan = MC.plan, base = plan.baseDeck, other = base === 'A' ? 'B' : 'A';
   const baseSeg = plan[base][0], info = { A: infoA, B: infoB };
@@ -333,12 +365,22 @@ function tick() {
   if (!running) { setVol('A', 0); setVol('B', 0); return; }
   let m = clockNow();
   let info = { A: MC.deckAt('A', m, MC.PREROLL), B: MC.deckAt('B', m, MC.PREROLL) };
-  const master = masterAt(m, info.A, info.B);
+  // iPhone/iPad: one deck with sound at a time; the next one may already run, muted, to be in sync when it takes over
+  let solo = null, next = null;
+  if (IOS) {
+    solo = soloDeck(m); next = soloDeck(m + 1.5);
+    for (const k of ['A', 'B']) if (k !== solo && k !== next) info[k] = null;
+  }
+  const master = IOS ? (solo || next) : masterAt(m, info.A, info.B);
   if (master) {
     const s = stateOf(master);
     if (s === YT_PLAYING) {
       const mm = timeOf(master) - corr(master) + info[master].seg.offset;
-      if (isFinite(mm)) { hold = false; anchor(mm); m = mm; info = { A: MC.deckAt('A', m, MC.PREROLL), B: MC.deckAt('B', m, MC.PREROLL) }; }
+      if (isFinite(mm)) {
+        hold = false; anchor(mm); m = mm;
+        const keep = { A: !!info.A, B: !!info.B };
+        info = { A: keep.A ? MC.deckAt('A', m, MC.PREROLL) : null, B: keep.B ? MC.deckAt('B', m, MC.PREROLL) : null };
+      }
     } else {
       if (!hold) { pos = clockNow(); hold = true; }
       if (tms - D[master].lastCmd > 1500) cmdSeek(master, info[master].t + corr(master), tms);
@@ -357,12 +399,21 @@ function tick() {
     if (Math.abs(err) > +$('tol').value && tms - d.lastCmd > 900) cmdSeek(k, target, tms);
   }
   const st = MC.st, xa = Math.min(1, 2 * (1 - st.xf)), xb = Math.min(1, 2 * st.xf);
-  setVol('A', info.A && info.A.audible ? 100 * st.volA * xa * info.A.gain : 0);
-  setVol('B', info.B && info.B.audible ? 100 * st.volB * xb * info.B.gain : 0);
+  if (IOS) {
+    // mute the outgoing deck before unmuting the incoming one, so two never sound together
+    for (const k of ['A', 'B']) if (k !== solo) setVol(k, 0);
+    if (solo) setVol(solo, 100);
+  } else {
+    setVol('A', info.A && info.A.audible ? 100 * st.volA * xa * info.A.gain : 0);
+    setVol('B', info.B && info.B.audible ? 100 * st.volB * xb * info.B.gain : 0);
+  }
   // a deck that should be heard but the browser kept muted: ask for one tap on it
   if (tms - startedAt > 2500) {
-    const blocked = ['A', 'B'].some(k => info[k] && info[k].audible && !muted[k] && stateOf(k) === YT_PLAYING && (() => { try { return P[k].isMuted(); } catch (e) { return false; } })());
-    $('soundBanner').hidden = !blocked;
+    const silent = k => info[k] && info[k].audible && !muted[k] && stateOf(k) === YT_PLAYING && (() => { try { return P[k].isMuted(); } catch (e) { return false; } })();
+    const blocked = { A: silent('A'), B: silent('B') };
+    $('soundBanner').hidden = !(blocked.A || blocked.B);
+    // lift the cover only on the video that needs a direct tap
+    for (const k of ['A', 'B']) $('deck' + k).querySelector('.video').classList.toggle('unlock', blocked[k]);
   }
 }
 
@@ -387,10 +438,10 @@ const engine = {
       $('deck' + k).classList.toggle('on', !!(playing && info && info.gain > 0.05));
       const e = D[k].err, el = $('sync' + k);
       if (!playing || e === null || !info) { el.textContent = '—'; el.className = 'v'; }
-      else if (e === 0) { el.textContent = hold ? 'buffering' : 'clock'; el.className = 'v'; }
+      else if (e === 0) { el.textContent = hold ? '緩衝中' : '基準'; el.className = 'v'; }
       else { el.textContent = (e >= 0 ? '+' : '') + Math.round(e * 1000) + ' ms'; el.className = 'v ' + (Math.abs(e) <= +$('tol').value ? 'ok' : 'warn'); }
     }
-    $('play').textContent = playing ? '❚❚ Pause' : '▶ Play';
+    $('play').textContent = playing ? '❚❚ 暫停' : '▶ 播放';
   },
 };
 
@@ -403,11 +454,12 @@ window.onYouTubeIframeAPIReady = () => {
       events: {
         onReady: () => {
           D[k].ready = true; P[k].mute(); muted[k] = true; P[k].setVolume(0); vol[k] = 0;
-          if (engine.ready()) { $('play').disabled = false; $('replay').disabled = false; MC.setStatus('Ready'); }
+          try { P[k].getIframe().setAttribute('tabindex', '-1'); } catch (e) {}   // keep keyboard focus out of the player too
+          if (engine.ready()) { $('play').disabled = false; $('replay').disabled = false; MC.setStatus('就緒'); }
         },
         onError: e => {
-          const why = { 2: 'bad video id', 5: 'HTML5 player error', 100: 'video not found or private', 101: 'the uploader does not allow embedding', 150: 'the uploader does not allow embedding', 153: 'YouTube needs the page served over http(s)' }[e.data] || ('error ' + e.data);
-          MC.setStatus(`Deck ${k} (${MC.NAMES[k]}): ${why}.`, true);
+          const why = { 2: '影片 ID 錯誤', 5: 'HTML5 播放器錯誤', 100: '找不到影片，或影片已設為私人', 101: '上傳者不允許嵌入播放', 150: '上傳者不允許嵌入播放', 153: 'YouTube 需要透過 http(s) 開啟頁面' }[e.data] || ('錯誤 ' + e.data);
+          MC.setStatus(`${k} 軌（${MC.NAMES[k]}）：${why}。`, true);
         }
       }
     });
@@ -418,7 +470,7 @@ window.onYouTubeIframeAPIReady = () => {
 function setAdvanced(on) {
   document.body.classList.toggle('advanced', on);
   $('advToggle').setAttribute('aria-pressed', on ? 'true' : 'false');
-  $('advToggle').textContent = on ? 'Simple' : 'Advanced';
+  $('advToggle').textContent = on ? '簡易' : '進階';
   MC.setSimple(!on);
   try { localStorage.setItem('tan_bo_loser-advanced', on ? '1' : '0'); } catch (e) {}
 }
@@ -429,17 +481,27 @@ if (location.protocol === 'file:') $('fileBanner').hidden = false;
 if (IOS) $('iosNote').hidden = false;
 $('srcA').href = 'https://www.youtube.com/watch?v=' + VIDEO.A;
 $('srcB').href = 'https://www.youtube.com/watch?v=' + VIDEO.B;
-MC.init(engine, { storageKey: 'tan_bo_loser-v2', legacyKeys: ['tan_bo_loser-v1', 'gsmix-yt-v1'], volMax: 1, levelMax: 100,
+const CLIP_ZH = { '1st chorus': '第一次副歌', 'Pre-2nd': '第二次副歌前', '2nd chorus': '第二次副歌', 'Tail': '尾段', 'Outro': '尾奏' };
+const STRINGS = {
+  clipName: n => CLIP_ZH[n] || n,
+  add: '＋ 在播放位置加入魯之歌片段', remove: n => `移除 ${n}`,
+  inL: n => `${n} 入點（秒）`, outL: n => `${n} 出點（秒）`, onClock: '等無時間 ',
+  len: (s, b) => `${s} 秒 · ${b} 小節`, main: ' · 主軌',
+  copied: '已複製', selected: '已選取，請按 ⌘C 複製', loaded: '已載入設定', loadFail: '無法讀取設定：',
+  noClips: '設定裡沒有任何片段', missing: i => `第 ${i} 個片段缺少入點、出點或開始時間`,
+};
+MC.init(engine, { strings: STRINGS, storageKey: 'tan_bo_loser-v2', legacyKeys: ['tan_bo_loser-v1', 'gsmix-yt-v1'], volMax: 1, levelMax: 100,
   migrate: (st, preset) => { const p = preset.find(c => c.deck === 'A' && c.name === 'Outro'), o = st.clips.find(c => c.deck === 'A' && c.name === 'Outro'); if (p) { if (o) Object.assign(o, p); else st.clips.push(p); } } })
 .then(() => {
   MC.setFlip(false);   // every visit starts with 等無 as the main song
+  measureLastSound();
   let adv = false; try { adv = localStorage.getItem('tan_bo_loser-advanced') === '1'; } catch (e) {}
   setAdvanced(adv);
   const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api';
-  s.onerror = () => MC.setStatus('Could not load the YouTube player API. Check your connection or ad blocker.', true);
+  s.onerror = () => MC.setStatus('無法載入 YouTube 播放器 API，請檢查網路連線或廣告攔截器。', true);
   document.head.appendChild(s);
   setInterval(tick, 50);
-}).catch(err => MC.setStatus('Could not load grid.json: ' + err.message + (location.protocol === 'file:' ? ' (open the page through a local server, see the banner above)' : ''), true));
+}).catch(err => MC.setStatus('無法載入 grid.json：' + err.message + (location.protocol === 'file:' ? '（請透過本機伺服器開啟頁面，見上方說明）' : ''), true));
 })();
 </script>
 </body>

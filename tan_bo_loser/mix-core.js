@@ -17,6 +17,15 @@ const PRESET = [
 ];
 const DEFAULTS = { clips: PRESET, sel: 0, volA: 1, volB: 1, xf: 0.5, handover: { on: true, at: 229.358, beats: 8 }, flip: false, flipLevel: 45, corrA: 0, corrB: 0 };
 const clone = o => JSON.parse(JSON.stringify(o));
+// UI text; a page can override any of these through init({ strings })
+let S = {
+  clipName: n => n,
+  add: '+ 魯之歌 clip at playhead', remove: n => `Remove ${n}`,
+  inL: n => `${n} in (s)`, outL: n => `${n} out (s)`, onClock: '等無 clock ',
+  len: (s, b) => `${s} s · ${b} bars`, main: ' · MAIN',
+  copied: 'Copied', selected: 'Selected, press ⌘C', loaded: 'Recipe loaded', loadFail: 'Could not read the recipe: ',
+  noClips: 'the recipe has no clips', missing: i => `clip ${i} is missing its in, out or start time`,
+};
 
 const $ = id => document.getElementById(id);
 const has = id => !!document.getElementById(id);
@@ -199,7 +208,7 @@ function draw() {
       c2.strokeStyle = COL.fg; c2.lineWidth = 1.5; c2.beginPath();
       s.pts.forEach(([m, g], k) => { const x = X(m), y = yB - Math.min(1, g) * (yB - yT); k ? c2.lineTo(x, y) : c2.moveTo(x, y); }); c2.stroke();
       if (editable(s)) for (const w of ['fi', 'fo']) { const hp = handlePos(s.clip, w); c2.fillStyle = COL.fg; c2.fillRect(hp.x - 5, hp.y - 5, 10, 10); c2.strokeStyle = '#16181c'; c2.lineWidth = 1; c2.strokeRect(hp.x - 5, hp.y - 5, 10, 10); }
-      const label = s.clip ? s.clip.name : s.label;
+      const label = S.clipName(s.clip ? s.clip.name : s.label);
       if (label && !s.base) {
         const g = s.clip ? lvl(s.clip) : st.flipLevel / 100;
         c2.font = `700 11px ${css('--f-display')}`; c2.textBaseline = 'bottom'; c2.fillStyle = col;
@@ -208,7 +217,7 @@ function draw() {
     }
     c2.font = `700 12px ${css('--f-display')}`; c2.textBaseline = 'bottom'; c2.fillStyle = col;
     const main = PLAN.baseDeck === d;
-    if (main || !PLAN[d].some(s => X(s.start) < 110 && X(s.end) > 0)) c2.fillText(`${d} · ${NAMES[d]}${main ? ' · MAIN' : ''}`, 6, y0 + h - 4);
+    if (main || !PLAN[d].some(s => X(s.start) < 110 && X(s.end) > 0)) c2.fillText(`${d} · ${NAMES[d]}${main ? S.main : ''}`, 6, y0 + h - 4);
   }
   if (!PLAN.flip && st.handover.on) {
     const hx = X(st.handover.at), hx2 = X(handEnd());
@@ -289,11 +298,11 @@ function renderTabs() {
   st.clips.forEach((c, i) => {
     const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab');
     b.setAttribute('aria-selected', i === st.sel ? 'true' : 'false'); b.className = 'deck-' + c.deck;
-    b.textContent = `${NAMES[c.deck]} · ${c.name} · ${fmt(cs(c), 0)}`;
+    b.textContent = `${NAMES[c.deck]} · ${S.clipName(c.name)} · ${fmt(cs(c), 0)}`;
     b.addEventListener('click', () => { st.sel = i; renderTabs(); changed(); });
     box.appendChild(b);
   });
-  const add = document.createElement('button'); add.type = 'button'; add.className = 'add'; add.textContent = '+ 魯之歌 clip at playhead';
+  const add = document.createElement('button'); add.type = 'button'; add.className = 'add'; add.textContent = S.add;
   add.addEventListener('click', () => {
     const base = clipsOf('B')[0] || { offset: 0 };
     const inPt = clamp(now() - base.offset, 0, G.old.duration - 16 * BAR);
@@ -302,7 +311,7 @@ function renderTabs() {
   });
   box.appendChild(add);
   if (st.clips.length > 1) {
-    const del = document.createElement('button'); del.type = 'button'; del.textContent = `Remove ${NAMES[C().deck]} · ${C().name}`;
+    const del = document.createElement('button'); del.type = 'button'; del.textContent = S.remove(`${NAMES[C().deck]} · ${S.clipName(C().name)}`);
     del.addEventListener('click', () => { st.clips.splice(st.sel, 1); st.sel = Math.max(0, st.sel - 1); renderTabs(); changed(); });
     box.appendChild(del);
   }
@@ -326,11 +335,11 @@ function recipe() {
 }
 function loadRecipe(text) {
   const r = JSON.parse(text);
-  if (!r || !Array.isArray(r.clips) || !r.clips.length) throw new Error('the recipe has no clips');
+  if (!r || !Array.isArray(r.clips) || !r.clips.length) throw new Error(S.noClips);
   const clips = r.clips.map((c, i) => {
     const deck = c.deck === 'new' ? 'A' : 'B';
     const inPt = +(c.deck_in_s ?? c.old_in_s), outPt = +(c.deck_out_s ?? c.old_out_s), at = +(c.place_on_new_clock_s ?? c.place_on_new_at_s);
-    if (![inPt, outPt, at].every(isFinite)) throw new Error(`clip ${i + 1} is missing its in, out or start time`);
+    if (![inPt, outPt, at].every(isFinite)) throw new Error(S.missing(i + 1));
     return { deck, name: c.name || `Clip ${i + 1}`, inPt, outPt, offset: at - inPt, fi: Math.round((+c.fade_in_s || 0) / BEAT), fo: Math.round((+c.fade_out_s || 0) / BEAT),
       duck: +c.duck_new_percent || 0, level: c.level_percent ?? c.old_level_percent ?? 100 };
   });
@@ -345,16 +354,16 @@ function loadRecipe(text) {
 function renderFields() {
   const c = C(), set = (id, v) => { if (has(id) && document.activeElement !== $(id)) $(id).value = v; };
   const nm = NAMES[c.deck];
-  $('fInL').textContent = nm + ' in (s)'; $('fOutL').textContent = nm + ' out (s)';
+  $('fInL').textContent = S.inL(nm); $('fOutL').textContent = S.outL(nm);
   set('fIn', c.inPt.toFixed(2)); $('fInT').textContent = nm + ' ' + fmt(c.inPt, 2);
   set('fOut', c.outPt.toFixed(2)); $('fOutT').textContent = nm + ' ' + fmt(c.outPt, 2);
-  set('fStart', cs(c).toFixed(3)); $('fStartT').textContent = '等無 clock ' + fmt(cs(c), 2) + ' → ' + fmt(ce(c), 2);
-  set('fFi', c.fi); $('fFiT').textContent = (c.fi * BEAT).toFixed(2) + ' s · ' + (c.fi / 4) + ' bars';
-  set('fFo', c.fo); $('fFoT').textContent = (c.fo * BEAT).toFixed(2) + ' s · ' + (c.fo / 4) + ' bars';
+  set('fStart', cs(c).toFixed(3)); $('fStartT').textContent = S.onClock + fmt(cs(c), 2) + ' → ' + fmt(ce(c), 2);
+  set('fFi', c.fi); $('fFiT').textContent = S.len((c.fi * BEAT).toFixed(2), c.fi / 4);
+  set('fFo', c.fo); $('fFoT').textContent = S.len((c.fo * BEAT).toFixed(2), c.fo / 4);
   set('fLvl', Math.round(lvl(c) * 100)); set('fDuck', c.deck === 'B' ? c.duck : 0); $('fDuck').disabled = c.deck !== 'B' || st.flip;
   const h = st.handover;
   $('hOn').checked = h.on; set('hAt', h.at.toFixed(3)); set('hBeats', h.beats);
-  $('hAtT').textContent = '等無 ' + fmt(h.at, 2) + ' → ' + fmt(handEnd(), 2); $('hBeatsT').textContent = (h.beats * BEAT).toFixed(2) + ' s · ' + (h.beats / 4) + ' bars';
+  $('hAtT').textContent = '等無 ' + fmt(h.at, 2) + ' → ' + fmt(handEnd(), 2); $('hBeatsT').textContent = S.len((h.beats * BEAT).toFixed(2), h.beats / 4);
   set('corrA', st.corrA); set('corrB', st.corrB);
   $('volA').value = st.volA; $('volAo').textContent = Math.round(st.volA * 100) + '%';
   $('volB').value = st.volB; $('volBo').textContent = Math.round(st.volB * 100) + '%';
@@ -363,7 +372,7 @@ function renderFields() {
   set('flipLvl', st.flipLevel); $('flipLvl').disabled = !st.flip;
   $('editPanel').disabled = st.flip; $('flipNote').hidden = !st.flip;
   const tabs = $('clipTabs').querySelectorAll('[role=tab]');
-  st.clips.forEach((cl, i) => { if (tabs[i]) tabs[i].textContent = `${NAMES[cl.deck]} · ${cl.name} · ${fmt(cs(cl), 0)}`; });
+  st.clips.forEach((cl, i) => { if (tabs[i]) tabs[i].textContent = `${NAMES[cl.deck]} · ${S.clipName(cl.name)} · ${fmt(cs(cl), 0)}`; });
   if (document.activeElement !== $('recipe')) $('recipe').value = JSON.stringify(recipe(), null, 2);
 }
 function bindPanels() {
@@ -398,12 +407,12 @@ function bindPanels() {
   $('copy').addEventListener('click', () => {
     const t = JSON.stringify(recipe(), null, 2); $('recipe').value = t;
     const done = msg => { $('copied').textContent = msg; setTimeout(() => $('copied').textContent = '', 2500); };
-    try { navigator.clipboard.writeText(t).then(() => done('Copied'), () => { $('recipe').select(); done('Selected, press ⌘C'); }); }
-    catch (e) { $('recipe').select(); done('Selected, press ⌘C'); }
+    try { navigator.clipboard.writeText(t).then(() => done(S.copied), () => { $('recipe').select(); done(S.selected); }); }
+    catch (e) { $('recipe').select(); done(S.selected); }
   });
   if (has('loadRecipe')) $('loadRecipe').addEventListener('click', () => {
-    try { loadRecipe($('recipe').value); $('recipe').blur(); renderTabs(); changed(); if (engine.mixerChanged) engine.mixerChanged(); $('copied').textContent = 'Recipe loaded'; }
-    catch (e) { $('copied').textContent = 'Could not read the recipe: ' + e.message; }
+    try { loadRecipe($('recipe').value); $('recipe').blur(); renderTabs(); changed(); if (engine.mixerChanged) engine.mixerChanged(); $('copied').textContent = S.loaded; }
+    catch (e) { $('copied').textContent = S.loadFail + e.message; }
   });
   document.addEventListener('keydown', e => {
     if (e.target.matches('input,textarea,select')) return;
@@ -448,7 +457,7 @@ function frame(ts) {
 }
 
 async function init(eng, o) {
-  engine = eng; opts = o || {};
+  engine = eng; opts = o || {}; if (opts.strings) S = Object.assign({}, S, opts.strings);
   cv = $('tl'); c2 = cv.getContext('2d');
   COL = { a: css('--a'), b: css('--b'), fg: css('--fg'), muted: css('--muted'), hot: css('--hot') };
   G = await (await fetch(opts.gridUrl || 'grid.json')).json();
