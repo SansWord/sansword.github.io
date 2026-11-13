@@ -303,7 +303,7 @@ textarea{width:100%;min-height:160px;resize:vertical;font-family:var(--f-mono);f
   <footer class="build" title="版本代碼：頁面檔案的 SHA-256 前 7 碼">版本 <span id="buildId"></span></footer>
 </div>
 
-<script src="mix-core.js?v=6866b02"></script>
+<script src="mix-core.js?v=dc1b99e"></script>
 <script>
 (() => {
 // ---------- YouTube engine ----------
@@ -437,7 +437,25 @@ function tick() {
     if (next && !info[next]) next = null;
     for (const k of ['A', 'B']) if (k !== solo && k !== next) info[k] = null;
   }
-  const master = soloMode() ? (solo || next) : masterAt(m, info.A, info.B);
+  let master = null;
+  if (soloMode()) {
+    // phone mode: the clock runs on steady time and only ever moves forward; both players follow it.
+    // (Taking the time from whichever song was heard let the clock jump back across a switch when the incoming
+    // player was still a little behind, so the songs flipped A → B → A.)
+    const lead = solo || next;
+    if (hold && lead) {
+      // start-up only: wait until the first song is really playing, then start the clock from it
+      if (stateOf(lead) === YT_PLAYING) {
+        const mm = timeOf(lead) - corr(lead) + info[lead].seg.offset;
+        if (isFinite(mm)) {
+          hold = false; anchor(mm); m = mm;
+          const keep = { A: !!info.A, B: !!info.B };
+          info = { A: keep.A ? infoAt('A', m) : null, B: keep.B ? infoAt('B', m) : null };
+        }
+      } else if (tms - D[lead].lastCmd > 1500) cmdSeek(lead, info[lead].t + corr(lead), tms);
+    } else if (hold) { hold = false; anchor(pos); }
+  } else {
+  master = masterAt(m, info.A, info.B);
   if (master) {
     const s = stateOf(master);
     if (s === YT_PLAYING) {
@@ -450,24 +468,25 @@ function tick() {
       stallSince = 0;
     } else {
       if (!stallSince) stallSince = tms;
-      // phone mode: right after a switch the incoming player may still be settling; keep time running for a moment
-      // instead of freezing everything (a freeze is heard as a pause). Hold only at start-up or on real buffering.
-      const keepGoing = soloMode() && !hold && tms - startedAt > 3000 && tms - stallSince < 1500;
-      if (!keepGoing && !hold) { pos = clockNow(); hold = true; }
+      if (!hold) { pos = clockNow(); hold = true; }
       if (tms - D[master].lastCmd > 1500) cmdSeek(master, info[master].t + corr(master), tms);
     }
   } else if (hold) { hold = false; anchor(pos); }
+  }
 
   for (const k of ['A', 'B']) {
     const inf = info[k], d = D[k], s = stateOf(k);
     if (!inf) { if ((s === YT_PLAYING || s === YT_BUFFERING) && tms - startedAt > 600) P[k].pauseVideo(); d.err = null; continue; }
     if (k === master) { d.err = 0; continue; }
-    if (hold) { if (s === YT_PLAYING && tms - startedAt > 600) P[k].pauseVideo(); continue; }
+    // while waiting at start-up: the layered mix pauses the other song; phone mode lets the next song keep warming up
+    if (hold) { if (!soloMode() && s === YT_PLAYING && tms - startedAt > 600) P[k].pauseVideo(); continue; }
     const target = inf.t + corr(k);
     if (s !== YT_PLAYING) { if (tms - d.lastCmd > 1500) cmdSeek(k, target, tms); d.err = null; continue; }
     const err = timeOf(k) - target; d.err = err;
     if (d.check && tms >= d.check) { d.lead = MC.clamp(d.lead - err * 0.6, 0, 0.8); d.check = 0; }   // learn this player's seek delay
-    const aboutToTakeOver = soloMode() && k === next && k !== solo && nextSwitchIn < 1.0;
+    // in its last second before taking over, leave small drift alone (a jump then could rebuffer it);
+    // a big lag still gets fixed now, while it is silent, not after it becomes the song you hear
+    const aboutToTakeOver = soloMode() && k === next && k !== solo && nextSwitchIn < 1.0 && Math.abs(err) < 0.25;
     if (!aboutToTakeOver && Math.abs(err) > +$('tol').value && tms - d.lastCmd > 900) cmdSeek(k, target, tms);
   }
   const st = MC.st, xa = Math.min(1, 2 * (1 - st.xf)), xb = Math.min(1, 2 * st.xf);
@@ -645,7 +664,7 @@ if (new URLSearchParams(location.search).has('reset')) {
   history.replaceState(null, '', location.pathname);
 }
 // version code, written by stamp.py: first 7 hex of SHA-256 over index.html (with this code blanked), mix-core.js and grid.json
-const BUILD = '6866b02';
+const BUILD = 'dc1b99e';
 $('buildId').textContent = BUILD;
 const CLIP_ZH = { '1st chorus': '第一次副歌', 'Pre-2nd': '第二次副歌前', '2nd chorus': '第二次副歌', 'Return': '回到魯之歌', 'Tail': '尾段', 'Outro': '尾奏' };
 const STRINGS = {
